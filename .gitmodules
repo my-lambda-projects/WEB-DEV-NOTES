@@ -19,3 +19,6 @@
 [submodule "Ubuntu-basrc-profile-and-aliases"]
 	path = Ubuntu-basrc-profile-and-aliases
 	url = https://github.com/bgoonz/Ubuntu-basrc-profile-and-aliases.git
+[submodule "w10-d2-projects"]
+	path = w10-d2-projects
+	url = https://github.com/bgoonz/w10-d2-projects.git
