@@ -1,0 +1,12 @@
+.main__unordered-list {
+    display: flex;  
+    justify-content: center;
+     
+}
+
+.main__unordered-list > li {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 12px;
+}

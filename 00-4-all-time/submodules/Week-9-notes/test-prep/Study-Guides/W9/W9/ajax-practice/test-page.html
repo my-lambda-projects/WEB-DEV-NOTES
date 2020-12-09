@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GET assessment</title>
+  <link href="node_modules/mocha/mocha.css" rel="stylesheet">
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <div>
+    <h4>Current Location of the International Space Station</h4>
+    <div id="space-station">This div should contain the coordinates returned from the API</div>
+  </div>
+
+  <script>var module = {};</script>
+  <script src="node_modules/assertion-error/index.js"></script>
+  <script src="node_modules/chai/chai.js"></script>
+  <script src="node_modules/chai-spies/chai-spies.js"></script>
+  <script src="node_modules/mocha/mocha.js"></script>
+  <script>mocha.setup('bdd');</script>
+  <script src="test/response.js"></script>
+  <script src="test/01-fetch-get-spec.js"></script>
+  <script src="01-fetch-get.js"></script>
+  <script>mocha.run();</script>
+</body>
+</html>

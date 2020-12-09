@@ -1,0 +1,27 @@
+header,
+footer,
+main{
+    max-width: 1400px;
+    margin: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+body{
+    font-family: arial, helvetica, sans-serif ;
+    line-height: 1em;
+    position: relative; 
+}
+
+button {
+    background-color: #6288A5;
+    border-radius: 3px;
+    font-family: arial, helvetica, sans-serif;
+    font-weight: bold; 
+    color: white; 
+    font-size: 11px; 
+    padding: 7px 9px 7px 9px; 
+    margin-left: 4px;
+    margin-right: 4px;  
+}
+

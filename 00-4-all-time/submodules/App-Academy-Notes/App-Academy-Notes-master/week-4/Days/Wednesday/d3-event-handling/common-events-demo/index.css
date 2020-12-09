@@ -1,0 +1,61 @@
+body > * {
+	margin:50px;
+}
+
+body {
+		display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+h1 {
+	color:red;
+	font-family: sans-serif;
+	margin-bottom: 50px;;
+}
+
+button {
+	max-width:200px;
+}
+
+
+li {
+	display:flex;
+	justify-content: space-evenly;
+}
+
+li > * {
+	margin:20px;
+}
+
+
+label + div {
+	width:200px;
+	height:200px;
+}
+
+img {
+	width:200px;
+
+}
+
+
+.hide {
+	display:none;
+}
+
+
+section {
+	display:flex;
+	justify-content: space-evenly;
+}
+
+
+section > * {
+	margin:20px;
+}
+
+#my-div {
+	height:200px;
+	width:200px;
+	border: 2px solid black;
+}

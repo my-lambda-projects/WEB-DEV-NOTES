@@ -1,0 +1,35 @@
+.container {
+	display: flex;
+	background-color: lightblue;
+	width: 1000px;
+	height: 400px;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+
+	/* Align-content will adjust how the rows themselves are spaced out */
+	/* It's easiest to see this by creating multiple rows (reduce width to 300 px) */
+	/* align-content: flex-start; */
+
+	/* Not related to flex */
+	/* justify-items: center; */
+}
+
+.box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	height: 100px;
+	width: 100px;
+	background-color: purple;
+	border: 2px solid black;
+}
+
+.content {
+	box-sizing: border-box;
+	height: 20px;
+	width: 20px;
+	background-color: greenyellow;
+	border: 2px solid black;
+}

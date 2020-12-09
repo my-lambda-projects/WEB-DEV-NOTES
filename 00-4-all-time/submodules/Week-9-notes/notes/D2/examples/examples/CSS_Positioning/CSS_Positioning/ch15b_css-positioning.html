@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<!--TODO: Clean up the notes so that the code examples are beside every example within the visible HTML elements, for easy live reference. -->
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chapter 15: Floating and Positioning</title>
+  <style>
+    @import "about_stylesheets.css";
+    
+    * {outline: red dotted 0px; }
+    
+    body {
+      font-family: Calibri, Verdana, sans-serif;
+      width: 500px;
+      }
+    li {
+      list-style-type: none; 
+      margin: 1em;
+      }
+    
+    .box {
+      background-color: silver; 
+      border: 5px dashed gray; 
+      padding: 20px;
+      }
+
+    /* float
+    #inline-text-float {
+      float: right;
+      width: 200px;
+      color: midnightblue;
+      background-color: skyblue;
+      font: 0.8em "Courier Sans", monospace;
+    }
+    .solution-text-float {
+      float: right;
+      margin: 1em;
+      padding: 1em;
+      width: 400px;
+      color: midnightblue;
+      background-color: skyblue;
+    }
+    #clearfix:after {
+      content: " ";
+      display: block;
+      clear: both;
+    }
+
+    /* shape-outside */
+    /* img.circle {
+      float: left;
+      -webkit-shape-outside: circle(80px);
+      shape-outside: circle(80px);
+      background-color: silver;
+    }
+    img.ellipse {
+      float: left;
+      -webkit-shape-outside: ellipse(80px 120px at 50% 50%);
+      shape-outside: (80px 120px at 50% 50%);
+      background-color: lightblue;
+    }
+    img.polygon {
+      float: left;
+      shape-outside: polygon(0px 0px, 120px 0px, 120px 20px, 130px 50px, 150px 50px, 130px 100px, 150px 150px, 120px 150px, 120px 180px, 0px 180px);
+    } */ 
+
+    /* position */
+    .static {
+      border: black 1px dashed;
+      background-color: white;
+    }
+    .relative {
+      position: relative;
+      top: 2em;
+      left: 3em;
+      border: 1px midnightblue dashed;
+      background-color: lightblue;
+    }
+    .absolute {
+      position: absolute;
+      top: 2em;
+      left: 3em;
+      border: 1px seagreen dashed;
+      background-color: lightgreen;
+    }
+    .fixed {
+      position: fixed;
+      top: 2em;
+      left: 3em;
+      border: 1px goldenrod dashed;
+      background-color: yellow;
+    }
+    .sticky {
+      position: sticky;
+      top: 2em;
+      border: 1px darkorange dashed;
+      background-color: sandybrown;
+    }
+  </style>
+</head>
+
+<body>
+
+<main>
+<h2 id=#position style="text-align: center">Position</h2>
+<ul>
+  <li class="box">This is an example of a <i>[<span class="static">static</span>]</i> position element. This is the default position, and it behaves within the normal flow.</li>
+  <li class="box">This is an example of a <i>[<span class="sticky">sticky</span>]</i> position element. It behaves as though statically positioned, until it is scrolled into a specified position relative to the viewport with a 'top' style set (top must be set, value 0 is okay). It then remains 'fixed'. If it is contained within another element, the sticky will stop once the user scrolls out of the container as well. Test it out here by squishing the page, then scrolling down.</li> 
+  <li class="box" style="position: relative">This is an example of a <i>[<span class="fixed">fixed</span>]</i> (fixed)  position element. It stays on one 'fixed' point in the viewport no matter the place the user is scrolled to in the window.</li>
+  <li class="box">This is an example of a <i>[<span class="relative">relative</span>]</i> (relative) positioned inline element. The element is moved relative to its original position, from the top-left corner. Note that the space it originally occupied is still 'occupied' in that nothing else can move in to fill up the space left behind. These relatively positioned elements can also overlap other elements.</li>
+  <li class="box">This is an example of an <i>[<span class="absolute">absolute</span>]</i> (absolute) positioned inline element. The element is moved relative to its 'positioned containing block', not 'relative' to the element's original position, and defaults to the viewport if there is none. The space originally occupied is now filled in.</li>
+  <li class="box" style="position: relative">This is an example of an <i>[<span class="absolute">absolute</span>]</i> (absolute) positioned inline element within a containing block set to 'position: relative'. An element functions as a containing block if its position property is set to relative, absolute, or fixed but <strong>not</strong> the default 'static' property.</li>
+</ul>
+
+<hr>
+
+
+
+<h3>z-index</h3>
+<p>By default, items by the order that they are in the code. So, the first item placed is on the bottom and the last item placed is on the top, like in the first example here.</p>
+<p>The stacking order can be changed with the z-index property. Higher numbers are pushed to the top and lower numbers are pushed to the bottom. Negative and positive values are both okay, and skipping values are okay. The only thing that matters is how the numbers are relative to each other.</p>
+<ul>
+  <li style="position: relative">
+    <img src="media/image_1.png" alt="1" style="position: relative; left: 100px">
+    <img src="media/image_2.png" alt="2" style="position: relative; top: 100px">
+    <img src="media/image_3.png" alt="3" style="position: relative; top: -50px; left: 50px">
+  </li>
+  <li style="position: relative">
+    <div height=350>
+    <img src="media/image_1.png" alt="1" style="z-index: 1; position: absolute; left: 100px">
+    <img src="media/image_2.png" alt="2" style="z-index: 0; position: absolute; top: 100px">
+    <img src="media/image_3.png" alt="3" style="z-index: -1; position: absolute; top: 150px; left: 150px">
+    </div>
+  </li>
+</ul>
+
+
+</body>
+</html>

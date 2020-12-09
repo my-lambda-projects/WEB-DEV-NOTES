@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <link rel="stylesheet" type="text/css" href="storage-project.css">
+  <script type="text/javascript" src="storage-project.js"></script>
+</head>
+
+
+<body>
+  <h1>Local Storage Project</h1>
+
+  <div class="items items__container">
+    <h2>Add Items</h2>
+
+    <form class="form form__container">
+      <label for="items">Items:</label>
+      <!--label for DROP DOWN MENU-->
+
+        <!--DROP DOWN MENU-->
+        <!--The above example shows typical <select> usage.
+          It is given an id attribute to enable it to be associated with a (!!<label> for accessibility!!) purposes,
+            as well as a name attribute to represent the name of the associated data point submitted to the server.
+            Each menu option is defined by an <option> element nested inside the <select>.
+                Each <option> element should have a value attribute containing the data value to submit to the server
+                  when that option is selected
+                  If no value attribute is included, the value defaults to the text contained inside the element.
+                  You can include a selected attribute on an
+                <option> element to make it selected by default when the page first loads.
+                  The <select> element has some unique attributes you can use to control it, such as multiple to
+                    specify whether multiple options can be selected, and size to specify how many options should be
+                    shown at once. It also accepts most of the general form input attributes such as required,disabled,
+                    autofocus-->
+                    <!--DROP DOWN MENU-->
+                    <select class="form__field-items" id="items" name="Items">Items:
+                      <option value="Apple">Apple</option>
+                      <option value="Banana">Banana (bunch)</option>
+                      <option value="Cookie">Cookie</option>
+                      <option value="Donut">Donut</option>
+                      <option value="Eggs">Eggs (dozen)</option>
+                      <option value="Falafel">Falafel</option>
+                      <option value="Granola Bar">Granola Bar</option>
+                      <option value="Hot Dog">Hot Dog</option>
+                      <option value="Ice Cream Pint">Ice Cream Pint</option>
+                      <option value="Jalepeno">Jalepeno</option>
+                    </select>
+
+
+
+                    <!--input field for quantity to add to cart-->
+                      <label for="quantity">Quantity:</label>
+                      <input class="form__field-quantity" id="quantity" type="number" />
+
+
+                      <!--ADD TO CART BUTTON-->
+                      <button class="form__submit" id="add-to-cart">Add To Cart</button>
+
+                      <!--Add to cart button is inside of form so maybe use submit event???-->
+    </form>
+
+  </div>
+
+
+  <div class="cart cart__container" id="shopping-cart">
+    <h2>Shopping Cart</h2>
+  </div>
+
+
+</body>
+
+</html>

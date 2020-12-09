@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "8606e1f5-b2ce-4770-ba48-bcbf1c76988e",
+    "name": "Make It Pretty Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/career/objectives/reading-learning-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "make-it-pretty-objectives"
+    ],
+    "topic": "Monday - Hello, Database!",
+    "subtopic": "Learning Objectives",
+    "body": "# Portfolio Quality\n\nIt is really important that you make the best impression that you can with the\nprojects that you will soon start. To that end, the objectives for your learning\nwith this section should allow you to\n\n* Recall the items recruiters are most interested\n* Explain the aspects of good looking Web application\n* Identify App Academy's expectations of your projects for after you graduate\n* Practice good code hygiene when making projects live\n"
+  },
+  "success": true
+}

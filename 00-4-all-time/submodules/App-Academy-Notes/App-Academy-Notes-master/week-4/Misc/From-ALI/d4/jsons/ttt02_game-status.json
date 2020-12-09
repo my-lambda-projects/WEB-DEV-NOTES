@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "3c7dc401-5464-4ee2-9a24-ba6f0a212c34",
+    "name": "TTT: Game Status",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-03-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--game-status"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Requirement 3: Determining Game Status\n\nIn this requirement, you will now determine if a game is won or in a tie state.\nTo do this, you will need to check the following:\n\n* If a player has any three in a row, then that player wins.\n* If a player has any three in a column, then that player wins.\n* If a player has either of the diagonals, then that player wins.\n* If there is no win _and_ all squares have a player symbol in there, then\n  the game is a tie.\n* When the game begins, the header at the top should have no text in it.\n* When a player wins the game, then the following happens:\n  * The header at the top should read \"Winner: X\" or \"Winner: Y\" depending on\n    which player won.\n  * Empty squares in the grid no longer react to clicks.\n* When the game goes into a tied state, the header at the top should read\n  \"Winner: None\".\n\nDuring development, you can just refresh the browser to clear the board.\n"
+  },
+  "success": true
+}

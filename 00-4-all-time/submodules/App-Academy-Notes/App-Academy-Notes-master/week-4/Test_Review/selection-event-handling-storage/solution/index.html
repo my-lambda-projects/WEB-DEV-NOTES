@@ -1,0 +1,203 @@
+<!-- DO NOT CHANGE THE HTML IN THIS FILE OR YOU MAY FAIL -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selection, Event Handling, and Storage Assessment Project</title>
+  <link href="./site.css" rel="stylesheet">
+</head>
+
+<body>
+  <h3>Important Note:</h3>
+  <p><strong>
+      Don't forget to refresh the page when you save changes to the "your-code.js"
+      file!
+    </strong>
+  </p>
+  <fieldset>
+    <legend>PROBLEM 1: Make the circle blue</legend>
+    <ul>
+      <li>Button id: <code>make-circle-blue</code></li>
+      <li>Div id: <code>blue-circumference-circle</code></li>
+    </ul>
+    <p>
+      When you click the button below, you should add the "blue" CSS class to the
+      circle with the blue circumference. Adding the "blue" CSS class will turn the
+      inside of the circle blue. Write code in the "your-code.js" file to make that happen.
+    </p>
+    <div class="problem-area" id="problem-area-1">
+      <button id="make-circle-blue">Turn the circle solid blue</button>
+      <div id="blue-circumference-circle"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>PROBLEM 2: Remove Text</legend>
+    <ul>
+      <li>Button id: <code>remove-content-from-apples</code></li>
+      <li>Div id: <code>apples-div</code></li>
+    </ul>
+    <p>
+      When you click on the button below, you should set the innerHTML of the div
+      with the id "made-for-apples" to be an empty string - removing the text
+      "Apples" from the div.
+      Write code in the "your-code.js" file to make that happen.
+    </p>
+    <div class="problem-area" id="problem-area-2">
+      <button id="remove-content-from-apples">Clear out "Apples" text</button>
+      <div id="apples-div">Apples</div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>PROBLEM 3: Add an image</legend>
+    <ul>
+      <li>Button id: <code>add-image-btn</code></li>
+      <li>Div Id: <code>add-image</code></li>
+    </ul>
+    <p>When you click the button below one of two things will happen:</p>
+      <ul>
+        <li>
+          <strong>A.</strong> If the div with the id of "add-image" does not
+          have children, then you should create an image element, set its source
+          attribute to "./images/logo-emblem-black.svg" and append it to the div
+          with the id of "add-image".
+        </li>
+        <li>
+          <strong>B.</strong> If the div with the id of "add-image"
+          <strong>has</strong> children, nothing should happen (no image should
+          be added to the element).
+        </li>
+      </ul>
+      <p>Write code in the "your-code.js" file to make that happen.</p>
+    <div class="problem-area" id="problem-area-3">
+      <button id="add-image-btn">Add image to the square</button>
+      <div id="add-image"></div>
+    </div>
+  </fieldset> 
+
+  <fieldset>
+    <legend>PROBLEM 4: Stop the bubbling!</legend>
+    <ul>
+      <li>Div id: <code>bubble-foe</code></li>
+      <li>Input id: <code>bubble-friend</code></li>
+    </ul>
+    <p>
+      Currently when you type anything into the blue outlined rectangle below
+      the whole rectangle surrounding it turns red. This is because the Div with
+      the id of "bubble-foe" is listening to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event" target="_blank">
+      "keydown"</a> event of the input box (the blue outlined rectangle).
+      Write code so that when you input text in the box below the rectangle
+      surrounding it does not turn red: because you have stopped the
+      propagation of the event up the stack. Write code in the "your-code.js"
+      file to make that happen.
+    </p>
+    <div class="problem-area" id="problem-area-4">
+      <div id="bubble-foe">
+      <input type="text" id="bubble-friend" placeholder="Hopefully I don't turn red...">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>PROBLEM 5: Adding and Multiplying</legend>
+    <ul>
+      <li>Global variable name: <code>total</code></li>
+      <li>Multiply button id: <code>multiply</code></li>
+      <li>Add button id: <code>add-two</code></li>
+      <li>Reset button id: <code>reset-total</code></li>
+      <li>Total value span id: <code>total-value</code></li>
+    </ul>
+    <p>
+      There's a global variable available named <code>total</code> that
+      currently evaluates to the integer 1.
+    </p>
+    <ul>
+      <li>
+        When you click the "Multiply by Two(x2)" button, you should multiply the
+        value of <code>total</code> by 2 and update the inner HTML of
+        the element with the id of "total-value" with the new value of
+        <code>total</code>.
+      </li>
+      <li>
+        When you click the "Add Two(+2)" button, you should add 2 to the
+        value of <code>total</code> and update the inner HTML of the
+        element with the id of "total-value" with the new value of
+        <code>total</code>.
+      </li>
+      <li>
+        When you click the "Reset to One" button, you should set the value of
+        <code>total</code> to one and update the inner HTML of the
+        element with the id of "total-value" with the new value of
+        <code>total</code>.
+      </li>
+    </ul>
+    <p>
+      Write code in the "your-code.js" file to make that happen.
+    </p>
+    <div class="problem-area" id="problem-area-5">
+      <button id="multiply">Multiply by Two(x2)</button>
+      <button id="add-two">Add Two(+2)</button>
+      <button id="reset-total">Reset to One</button>
+      <div id="total-value-message">
+        Total value: <span id="total-value"></span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>PROBLEM 6: Storage and key presses</legend>
+    <ul>
+      <li>Input box id: <code>my-name-is</code></li>
+      <li>Store Flavor button id: <code>store-flavor</code></li>
+    </ul>
+    <p>
+      When the button below is clicked, store the value of the input box in
+      local storage. When the page loads, if there's a stored value in local
+      storage for the input box, set the value of the input box to the stored
+      value. Write code in the "your-code.js" file to make that happen.
+    </p>
+    <p>
+      When you refresh the page, the input value should still be in the input
+      box. For example, if someone types "chocolate" into the text box, clicks
+      the "Store Flavor" button, and then refreshes the page, the text
+      "chocolate" should show back up in the text box after the page reloads.
+    </p>
+    <p>
+      To get the value of what is in the text box, get the element by its id and
+      use the <code>value</code> property to get and set the value of the input
+      box. For example, if you had the following HTML:
+      <pre>&lt;input type="text" id="nickname"&gt;</pre>
+      the following code would set the value of the input box to "Dima".
+      <pre>document.getElementById('nickname').value = 'Dima';</pre>
+    </p>
+    <div class="problem-area" id="problem-area-6">
+      <input type="text" id="fav-flavor" placeholder="What's your Favorite Flavor?"/>
+      <button id="store-flavor">Store Flavor</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>PROBLEM 7: Can't click this!</legend>
+    <ul>
+      <li>Input id: <code>will-not-check</code></li>
+    </ul>
+    <p>
+      Subscribe to the "click" event of the checkbox below and prevent the
+      default behavior from occurring. You'll know it works when you click on
+      the checkbox and nothing happens (it won't check and uncheck).
+    </p>
+    <div class="problem-area" id="problem-area-7">
+      <label>Can't Check This!
+        <input id="will-not-check" type="checkbox">
+      </label>
+    </div>
+  </fieldset>
+
+  <script src="./scripts/not-your-code.js"></script>
+  <script src="./your-code.js"></script>
+</body>
+
+</html>

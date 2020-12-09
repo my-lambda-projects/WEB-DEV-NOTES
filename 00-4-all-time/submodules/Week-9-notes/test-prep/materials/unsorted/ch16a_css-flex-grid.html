@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chapter 16: Flexbox and Grid</title>
+  <style>
+    @import "about_stylesheets.css";
+    * {outline: 0px red dashed; }
+    
+    /* Define container borders for clarity. */
+    .big-box, .tall-box {
+      display: flex; 
+      border: 2px black dashed; 
+    }
+    
+    /* Define container sizes to test flex behavior. */
+    .big-box {
+      width: 250px;
+      height: 300px;
+    }
+    .tall-box {
+      height: 500px;
+    }
+    .col {flex-direction: column; }
+    .shrink div {width: 100px; }
+    
+    /* Style flex item boxes to help clarity. */
+    .box {font-family: Calibri, sans-serif; }
+    .two {color: white; }
+    .sized {width: 100px; height: 100px; }
+    #a {background: pink; }
+    #b {background: orange; font-size: 4em; }
+    #c {background: gold; font-size: 3em; }
+    #d {background: lightgreen; font-size: 2em; }
+    #e {background: skyblue; font-size: 5em; }
+  </style>
+</head>
+
+<body>
+<header id="top">
+  <nav>
+    <ul>
+      <li><a href="about_selectors.html">About Selectors &amp; Misc.</a></li>
+      <li><a href="ch05_marking_up_text.html">ch05<br> Marking Up Text</a></li>
+      <li><a href="ch06_???.html">ch06<br> ?Links?</a></li>
+      <li><a href="ch07_tablemarkup.html">ch07<br> Table Markup</a></li>
+      <li><a href="ch08_???.html">ch08<br> ???</a></li>
+      <li><a href="ch09_forms.html">ch09<br> Forms</a></li>
+      <li><a href="ch10_embedded_media.html">ch10<br> Embedded Media</a></li>
+      <li><a href="ch12_formatting_text.html">ch12<br> Formatting Text</a></li>
+      <li><a href="ch13_colors_and_backgrounds.html">ch13<br> Colors and Backgrounds</a></li>
+      <li><a href="ch14_thinking_inside_the_box.html">ch14<br> Thinking Inside the Box</a></li>
+      <li><a href="ch15_floating_and_positioning.html">ch15<br> Floating and Positioning</a></li>
+      <li><a href="ch16a_flexbox.html">Chapter 16a: Flexbox</a></li>
+      <li><a href="ch16b_grid.html">Chapter 16b: Grid</a></li>
+      <li><a href="">Chapter ?20?: JavaScript</a></li>
+      <li><a href="">Chapter ?21?: Javascript 2</a></li>
+    </ul>
+  </nav>
+  <h1>Chapter 16a: Flexbox</h2>
+</header>
+
+
+<div id="index">
+  <!-- TODO: What is a less way to create a vertical space here? -->
+  <br>
+  <nav>
+    <ul>
+      <li><a href="#sample">Reference Sample</a></li>
+      <li><a href="#flexbox">Flexbox Containers</a></li>
+      <li><a href="#flex-flow">flex-flow, flex-direction, flex-wrap (shortcut)</a></li>
+      <li><a href="#justify">justify-content / row, column</a></li>
+      <li><a href="#align-item">align-item row </a></li>
+      <li><a href="#align-self">align-self</a></li>
+      <li><a href="#align-content">align-content</a></li>
+      <li><a href="#margins">aligning with margins</a></li>
+      <li><a href="flex">flex</a></li>
+    </ul>
+  </nav>
+  </div>
+
+<div id="to-top"><a href="#top">TOP</a></div>
+
+<main>
+<article id="flexbox">
+<h2>Flexbox</h2>
+<p>Flex containers automatically convert their direct children into flex items, but not deeper descendants. Flexboxes can be nested.</p>
+<p>Elements line up from top to bottom by default. Flex items can line up from either axis and from either direction, defaulting to from left to right.
+<ul class="examples">
+  <li>
+    <h3>display: blox (Default, Block Layout Mode)</h3>
+    <div>
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li>
+    <h3>display: flex (Flex Layout Mode)</h3>
+    <div style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<section id="flex-direction-wrap-flow">
+<h2 id="flex-direction">flex-direction</h2>
+<ul class="examples">
+  <li>
+    <h3>flex-direction: row (default)</h3>
+    <div style="display: flex; flex-direction: row">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li>
+    <h3>flex-direction: row-reverse</h3>
+    <div style="display: flex; flex-direction: row-reverse">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li>
+    <h3>flex-direction: column</h3>
+    <div style="display: flex; flex-direction: column">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li>
+    <h3>flex-direction: column-reverse</h3>
+    <div style="display: flex; flex-direction: column-reverse">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2 id="flex-wrap">flex-wrap 1/2</h2>
+<h4>(flex-direction: row)</h4>
+<ul class="examples">
+  <li><h3>flex-wrap: nowrap (default)</h3>
+    <div class="big-box" style="width: 200px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>flex-wrap: wrap</h3>
+    <div class="big-box" style="flex-wrap: wrap; width: 200px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>flex-wrap: wrap-reverse</h3>
+    <div class="big-box" style="flex-wrap: wrap-reverse; width: 200px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2>flex-wrap 2/2</h2>
+<h4>(flex-direction: column)</h4>
+<ul class="examples">
+  <li><h3>flex-wrap: nowrap (default)</h3>
+    <div class="big-box col">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>flex-wrap: wrap</h3>
+    <div class="big-box col" style="flex-wrap: wrap">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>flex-wrap: wrap-reverse</h3>
+    <div class="big-box col" style="flex-wrap: wrap-reverse">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2 id="flex-flow">flex-flow: <i>flex-direction flex-wrap</i></h2>
+<h4>(shortcut)</h4>
+<h3>flex-flow: column wrap</h3>
+    <div class="big-box" style="flex-flow: column wrap">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+</section>
+
+<hr>
+
+
+<section id="justify-content">
+<h2 id="justify-content_row">justify-content (flex-direction: row)</h2>
+<ul class="examples">
+  <li><h3>justify-content: flex-start (default)</h3>
+    <div style="display: flex;">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: flex-end</h3>
+    <div style="display: flex; justify-content: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: center</h3>
+    <div style="display: flex; justify-content: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: space-between</h3>
+    <div style="display: flex; justify-content: space-between">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: space-around</h3>
+    <div style="display: flex; justify-content: space-around">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2 id="justify-content_column">justify-content (flex-direction: column)</h2>
+<ul class="examples">
+  <li><h3>justify-content: flex-start (default)</h3>
+    <div class="tall-box col" style="display: flex;">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: flex-end</h3>
+    <div class="tall-box col" style="display: flex; justify-content: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: center</h3>
+    <div class="tall-box col" style="display: flex; justify-content: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: space-between</h3>
+    <div class="tall-box col" style="display: flex; justify-content: space-between">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>justify-content: space-around</h3>
+    <div class="tall-box col" style="display: flex; justify-content: space-around">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+</section>
+
+<hr>
+
+<section id="align">
+<h2>align-items (row)</h2>
+<ul class="examples">
+  <li><h3>align-item: stretch (default)</h3>
+    <div class="big-box">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: flex-start</h3>
+    <div class="big-box" style="align-items: flex-start">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: flex-end</h3>
+    <div class="big-box" style="align-items: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: center</h3>
+    <div class="big-box" style="align-items: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: baseline</h3>
+    <div class="big-box" style="align-items: baseline">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2>align-items (column)</h2>
+<ul class="examples">
+  <li><h3>align-item: stretch (default)</h3>
+    <div class="tall-box col">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: flex-start</h3>
+    <div class="tall-box col" style="align-items: flex-start">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: flex-end</h3>
+    <div class="tall-box col" style="align-items: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: center</h3>
+    <div class="tall-box col" style="align-items: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-item: baseline</h3>
+    <div class="tall-box col" style="align-items: baseline">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+
+<h2>align-self</h2>
+<ul class="examples">
+  <li><h3>align-self: flex-start</h3>
+    <div class="big-box" >
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="align-self: flex-start">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-self: flex-end</h3>
+    <div class="big-box">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="align-self: flex-end">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-self: center</h3>
+    <div class="big-box">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="align-self: center">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-self: baseline</h3>
+    <div class="big-box">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="align-self: baseline">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-self: flex-start</h3>
+    <div class="big-box" style="align-items: flex-start" >
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="align-self: stretch">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+
+<h2>align-content (flex-direction: row)</h2>
+<p>The effect of this property can only be observed when the flex container is set to 'flex-wrap: wrap' and the flex items wrap around to multiple lines.</p>
+<ul class="examples">
+  <li><h3>align-content: stretch (default)</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: stretch">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: flex-start</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: flex-start">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: flex-end</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: center</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: space-around</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: space-around">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: space-between</h3>
+    <div class="big-box" style="flex-wrap: wrap; align-content: space-between">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2>align-content (flex-direction: column)</h2>
+<ul class="examples">
+  <li><h3>align-content: stretch (default)</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: stretch">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: flex-start</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: flex-start">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: flex-end</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: flex-end">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: center</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: center">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: space-around</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: space-around">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>align-content: space-between</h3>
+    <div class="big-box col" style="flex-wrap: wrap; align-content: space-between">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+</ul>
+
+
+<h2 id="align-margin">Aligning Items with Margins</h2>
+<ul class="examples">
+  <li><h3>Default</h3>
+    <div style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>margin-right: auto (A)</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="margin-right: auto">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>margin-left: auto (C)</h3>
+    <div style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="margin-right: auto">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>margin-right: auto; margin-left: auto (C)</h3>
+    <div style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c" style="margin-right: auto; margin-left: auto;">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>margin-top: auto (E)</h3>
+    <div class="tall-box col" style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e" style="margin-top: auto">E</div>
+    </div>
+  </li>
+</ul>
+</section>
+
+<hr>
+
+
+
+<section id="flex">
+<h2>flex: <i>flex-grow flex-shrink flex-basis</i> (shortcut)</h2>
+<p>This property applies to flex items, not flex containers. Though this property is a shortcut for the three properties 'flex-grow', 'flex-shrink', and 'flex-basis', is it highly recommended to always use 'flex' in order to avoid conflicting default values.</p>
+<p>The order of the properties matters for flex. Grow and shrink properties behave like True/False booleans. 1 = on, 0 = off.  flex-basis sets the starting dimensions, either to a specific size or a size based on the contents.</p>
+
+<h3>Example</h3>
+<p>List item starts at 200px wide. It is allowed to expand to fill extra space (1), but it is not allowed to shrink (0) narrower than 200px.</p>
+<pre>li {flex: 1 0 200px; }</pre>
+
+<h3>flex-grow</h3>
+<p>Default is 0, which means the item is not permitted to grow wider than the size of its content or its specified width. Having this turned off allows alignment properties to work, but if it is turned on, any extra space is filled, making alignment obsolete.</p>
+<p>Assigning a higher flex-grow integer to an item makes it behave as a ratio. In the third example here, 'C' has 3 times more space than the other items, which are set to '1'.</p>
+<ul class="examples">
+  <li>
+    <h3>flex-grow: 0 (default)</h3>
+    <div style="display: flex">
+      <div class="box" id="a">0</div>
+      <div class="box" id="b">0</div>
+      <div class="box" id="c">0</div>
+      <div class="box" id="d">0</div>
+      <div class="box" id="e">0</div>
+    </div>
+  </li>
+  <li>
+    <h3>flex-grow: 1</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex-grow: 1">1</div>
+      <div class="box" id="b" style="flex-grow: 1">1</div>
+      <div class="box" id="c" style="flex-grow: 1">1</div>
+      <div class="box" id="d" style="flex-grow: 1">1</div>
+      <div class="box" id="e" style="flex-grow: 1">1</div>
+    </div>
+  </li>
+  <li>
+    <h3>flex-grow: 3 (C)</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex-grow: 1">1</div>
+      <div class="box" id="b" style="flex-grow: 1">1</div>
+      <div class="box" id="c" style="flex-grow: 3">3</div>
+      <div class="box" id="d" style="flex-grow: 1">1</div>
+      <div class="box" id="e" style="flex-grow: 1">1</div>
+    </div>
+  </li>
+</ul>
+
+<h3>flex-shrink</h3>
+<ul class="examples">
+  <li><h3>flex-shrink: 0</h3>
+    <div class="shrink" style="display: flex">
+      <div class="box" id="a" style="flex-shrink: 0">0</div>
+      <div class="box" id="b" style="flex-shrink: 0">0</div>
+      <div class="box" id="c" style="flex-shrink: 0">0</div>
+      <div class="box" id="d" style="flex-shrink: 0">0</div>
+      <div class="box" id="e" style="flex-shrink: 0">0</div>
+    </div>
+  </li>
+  <li><h3>flex-shrink: 1 (default)</h3>
+    <div class="shrink" style="display: flex">
+      <div class="box" id="a" style="flex-shrink: 1">1</div>
+      <div class="box" id="b" style="flex-shrink: 1">1</div>
+      <div class="box" id="c" style="flex-shrink: 1">1</div>
+      <div class="box" id="d" style="flex-shrink: 1">1</div>
+      <div class="box" id="e" style="flex-shrink: 1">1</div>
+    </div>
+  </li>
+  <li><h3>flex-shrink: <i>integer</i></h3>
+    <div class="shrink" style="display: flex">
+      <div class="box" id="a" style="flex-shrink: 2">2</div>
+      <div class="box" id="b" style="flex-shrink: 1">1</div>
+      <div class="box" id="c" style="flex-shrink: 4">4</div>
+      <div class="box" id="d" style="flex-shrink: 1">1</div>
+      <div class="box" id="e" style="flex-shrink: 1">1</div>
+    </div>
+  </li>
+</ul>
+
+<h2>flex-basis</h2>
+<p>Defines the starting size of the item before any wrapping, growing, or shrinking occurs. This can be used instead of the width/height property for flex items. Flex settings also override specified width/height properties for items.</p>
+<ul class="examples">
+  <li><h3>flex-basis: auto (default)</h3>
+    <div style="display: flex">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>flex-basis: 100px</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex-basis: 100px">A</div>
+      <div class="box" id="b" style="flex-basis: 100px">B</div>
+      <div class="box" id="c" style="flex-basis: 100px">C</div>
+      <div class="box" id="d" style="flex-basis: 100px">D</div>
+      <div class="box" id="e" style="flex-basis: 100px">E</div>
+    </div>
+  </li>
+  <li><h3>flex-basis: 50px (A)<br>
+  flex-basis: 100px (B, C, D)<br>
+  flex-basis: 200px (E)</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex-basis: 50px">A</div>
+      <div class="box" id="b" style="flex-basis: 100px">B</div>
+      <div class="box" id="c" style="flex-basis: 100px">C</div>
+      <div class="box" id="d" style="flex-basis: 100px">D</div>
+      <div class="box" id="e" style="flex-basis: 200px">E</div>
+    </div>
+  </li>
+</ul>
+
+<h2>flex shortcuts</h2>
+<ul class="examples">
+  <li><h3>flex: initial (flex: 0 1 auto)</h3>
+  Prevents the flex item from growing even when there is extra space, but allows it to shrink to fit in the container. Size is based on specified width/height properties, defauting to the size of the content. Justify-content can be used for horizontal alignment.
+  <div style="display: flex">
+      <div class="sized box" id="a" style="flex: initial">A</div>
+      <div class="sized box" id="b" style="flex: initial">B</div>
+      <div class="sized box" id="c" style="flex: initial">C</div>
+      <div class="sized box" id="d" style="flex: initial">D</div>
+      <div class="sized box" id="e" style="flex: initial">E</div>
+    </div></li>
+  <li><h3>flex: auto (flex: 1 1 auto)</h3>
+  <p>Allows items to be fully fexible, growing or shrinking as needed. Size is based on specified width/height properties.</p>
+    <div style="display: flex">
+      <div class="sized box" id="a" style="flex: auto">A</div>
+      <div class="sized box" id="b" style="flex: auto">B</div>
+      <div class="sized box" id="c" style="flex: auto">C</div>
+      <div class="sized box" id="d" style="flex: auto">D</div>
+      <div class="sized box" id="e" style="flex: auto">E</div>
+    </div></li>
+  <li><h3>flex: none (flex: 0 0 auto)</h3>
+  <p>Creates a completely inflexible flex item, sizing to specified width/height properties. Justify-content can be used for alignment.</p>
+    <div style="display: flex">
+      <div class="sized box" id="a" style="flex: none">A</div>
+      <div class="sized box" id="b" style="flex: none">B</div>
+      <div class="sized box" id="c" style="flex: none">C</div>
+      <div class="sized box" id="d" style="flex: none">D</div>
+      <div class="sized box" id="e" style="flex: none">E</div>
+    </div></li>
+  <li><h3>flex: <i>integer</i> (flex: <i>integer</i> 1 0px)</h3>
+  <p>Creates a flexible item with the flex basis of 0. This means the flex item has absolute flex, and free space is allocated according to the flex number applied to items</p>
+  <p>Relative flex assigns extra space to items based on the size of the flex item's contents, and it applies to flex items with a flex-basis set to a size other than 0, such as with a width/height value or auto.</p>
+  <p>Absolute flex assigns extra size proportionally according to universal flex ratios. It applies to flex items with a flex-basis of 0. It is recommended to always inlude a unit after the 0, like 0px or 0%.</p>
+  <figure>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex: 1">1</div>
+      <div class="box" id="b" style="flex: 1">1</div>
+      <div class="box" id="c" style="flex: 1">1</div>
+      <div class="box" id="d" style="flex: 1">1</div>
+      <div class="box" id="e" style="flex: 1">1</div>
+    </div>
+    <div style="display: flex">
+      <div class="box" id="a" style="flex: 1 1 auto">1</div>
+      <div class="box" id="b" style="flex: 1 1 auto">1</div>
+      <div class="box" id="c" style="flex: 1 1 auto">1</div>
+      <div class="box" id="d" style="flex: 1 1 auto">1</div>
+      <div class="box" id="e" style="flex: 1 1 auto">1</div>
+    </div>
+  </figure>
+  <figcaption>Top row has flex: 1, so it has absolute flex applied. Bottom row is included for comparison. It has flex: 1 1 auto, so it has relative flex applied.</figcaption>
+  </li>
+  </ul>
+</section>
+
+<hr>
+
+
+<h2 id="order">order</h2>
+<p>The default is order: 0, upon which items will be ordered according to their semantic order. If multiple items have the same order number, it will refer to the semantic order to decide priority. Positive and negative values can both be used. The behavior is somewhat similar to z-index. However, the higher the number, the further pushed down it is, not higher.
+<ul class="examples">
+  <li><h3>order: 1 (A)<br>
+  order: -1 (E)</h3>
+    <div style="display: flex">
+      <div class="box" id="a" style="order: 1">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e" style="order: -1">E</div>
+    </div>
+  </li>
+</article>
+
+<hr>
+
+
+<article id="grid">
+<h1>Grid</h1>
+<p>Grid track sizes can be specified in many ways, include: absolute units, relative units, percentages, and newer Grid-specific values. Examples: fr unit, minmax() function, auto, and content-based values min-content/max-content. repeat() function, optional auto-fill and auto-fit values.
+<ul>
+  <li>display: grid</li>
+  <li>display: inline-grid</li>
+  <li>grid container</li>
+  <li>grid item (direct children of grid container)</li>
+  <li>grid line</li>
+  <li>grid cell</li>
+  <li>grid area</li>
+  <li>grid track</li>
+</ul>
+  
+
+<ul class="examples">
+  <li><h3>Grid Example</h3>
+      <code>
+      grid-template-rows: 50px 200px 50px;<br>
+      grid-template-columns: 100px 250px 100px;</code>
+    <div style="display: grid;
+      grid-template-rows: 50px 200px 50px;
+      grid-template-columns: 100px 250px 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+  <li><h3>Grid Items Less Than Grid Cells</h3>
+    <div style="display: grid;
+      grid-template-rows: 50px 200px 50px;
+      grid-template-columns: 100px 250px 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>Grid Items More Than Grid Cells</h3>
+    <div style="display: grid;
+      grid-template-rows: 50px 200px 50px;
+      grid-template-columns: 100px 250px 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>Absolute Values</h3>
+    <div style="display: grid;
+      grid-template-rows: [header-start] 50px [header-end content-start] 200px [content-end footer-start] 50px;
+      grid-template-columns: [ads] 100px [main] 250px [links] 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+
+  <li><h3>Absolute and Relative Values</h3>
+    <code>grid-template-rows: 1fr 200px 1fr;<br>
+      grid-template-columns: 100px 1fr 100px;</code>
+    <div style="display: grid;
+      grid-template-rows: 1fr 200px 1fr;
+      grid-template-columns: 100px 1fr 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+  <li><h3>Relative Values</h3>
+    <code>grid-template-rows: 1fr 2fr 1fr;<br>
+      grid-template-columns: 1fr 2fr 1fr;</code>
+    <div style="display: grid;
+      grid-template-rows: 1fr 2fr 1fr;
+      grid-template-columns: 1fr 2fr 1fr">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+  <li><h3>minmax()</h3>
+    <code>grid-template-rows: 50px 200px 50px;<br>
+      grid-template-columns: 100px minmax(15em, 30em) 100px</code>
+    <div style="display: grid;
+      grid-template-rows: 50px 200px 50px;
+      grid-template-columns: 100px minmax(15em, 30em) 100px">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+  <li><h3>min-content, max-content</h3>
+    <code>grid-template-rows: min-content 200px 50px;<br>
+      grid-template-columns: max-content min-content 100px;</code>
+    <p>The min-content, max-content, and auto values size tracks based on the size of the content within it. The min-content value is the smallest that a track can get without overflowing. The max-content property allots the maximum amount of space needed for the content, even if that means extending the track beyond the boundaries of the grid container. When used as a column width, the column track will be as wide as the widest possible content in t hat track without line wrapping. Auto lets the browser make their 'best judgment' on how to best fit the content while still considering other restrictions in place. minmax() behaves like minmax(min-content, max-content).</p>
+    <p>The rules continue, but it's rather fussy and complex, so I'll leave the details be for now. p457.</p>
+    <div style="display: grid;
+      grid-template-rows: min-content 200px 50px;
+      grid-template-columns: max-content min-content 100px">
+      <div class="box" id="a"> </div>
+      <div class="box" id="b" style="font-size: 1em">The min-content, max-content, and auto values size tracks based on the size of the content within it.</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d" style="font-size: 1em">The max-content property allots the maximum amount of space needed for the content, even if that means extending the track beyond the boundaries of the grid container.</div>
+      <div class="box" id="e" style="font-size: 1em">The min-content value is the smallest that a track can get without over-flowing.</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+
+  </li>
+  <li><h3>repeat()</h3>
+    <code>grid-template-rows: repeat(2, 50px 8em);<br>
+      grid-template-columns: repeat(2, 20px 1fr);</code>
+    <div style="display: grid;
+      grid-template-rows: repeat(2, 50px 8em);
+      grid-template-columns: repeat(2, 20px 1fr)">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+  </li>
+  <li><h3>repeat(auto-fill, <i>length</i>), repeat(auto-fit, <i>length</i>)</h3>
+    <code>grid-template-rows: repeat(auto-fill, 100px 50px);
+      grid-template-columns: repeat(auto-fill, 100px 50px);</code>
+    <div style="display: grid;
+      grid-template-rows: repeat(auto-fill, 100px 50px);
+      grid-template-columns: repeat(auto-fill, 100px 50px)">
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+      <div class="box two" id="e">E</div>
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+    </div>
+    why is row repeat auto-fill not working beyond the first two rows? =w= also, auto-fit fits here too. they are very similar.
+  </li>
+  <li><h3>grid-template-areas</h3>
+    <code>grid-template-rows: [header-start] 50px [content-start] 200px [footer-start] 50px;<br>
+      grid-template-columns: [ads] 100px [main] 1fr [links] 100px;<br>
+      grid-template-areas:<br>
+        "header header header"<br>
+        ". main links"<br>
+        "footer footer footer"<br></code>
+    <div style="display: grid;
+      grid-template-rows: [header-start] 50px [content-start] 200px [footer-start] 50px;
+      grid-template-columns: [ads] 100px [main] 1fr [links] 100px;
+      grid-template-areas:
+        "header header header"
+        ". main links"
+        "footer footer footer";>
+      <div class="box" id="a">A</div>
+      <div class="box" id="b">B</div>
+      <div class="box" id="c">C</div>
+      <div class="box" id="d">D</div>
+      <div class="box" id="e">E</div>
+      <div class="box two" id="a">A</div>
+      <div class="box two" id="b">B</div>
+      <div class="box two" id="c">C</div>
+      <div class="box two" id="d">D</div>
+    </div>
+  </li>
+  <li><h3>grid (shortcut)</h3>
+    <p>Two shortcuts for grid are 'grid' and 'grid-template'. Of the two, using 'grid' is the recommended option unless you want some specific cascading behavior from grid-template. Additionally, neither shortcut should be used for anything except the most simple grids, as more complex grids become much harder to manage with the shortcut style.</p>
+    <code>grid:<br>
+      [header-start] "header header header" 50px<br>
+      [content-start] ". main links" 200px<br>
+      [footer-start] "footer footer footer" 50px<br>
+      /[.] 200px [main] 1fr [links] 100px;</code>
+  </li>
+</ul>
+
+<h2>Placing Grid Items</h2>
+grid-row-start
+grid-row-end
+grid-column-start
+grid-column-end
+grid-row
+grid-column
+grid-area
+
+grid-auto-rows
+grid-auto-columns
+grid-auto-flow
+
+<h2>Spacing and Alignment</h2>
+grid-row-gap
+grid-column-gap
+grid-gap
+
+justify-self
+align-self
+
+justify-items
+align-items
+
+justify-content
+align-content
+
+</article>
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

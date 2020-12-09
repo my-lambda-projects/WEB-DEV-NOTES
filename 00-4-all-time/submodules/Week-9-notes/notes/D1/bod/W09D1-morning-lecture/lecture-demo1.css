@@ -1,0 +1,89 @@
+/* TYPE SELECTOR */
+body {
+ /* font-family: Arial, Helvetica, sans-serif;
+  margin: auto;
+  width: max-content; */
+}
+
+/* CLASS SELECTOR */
+.heading1{
+   color: red 
+}
+
+.heading2{
+   color: green; 
+}
+
+/* ID SELECTOR */
+#sadText{
+  /* font-size: xx-small; */
+}
+
+/* ATTRIBUTE */
+a[href="https://sambrady.me"]{
+  /* font-weight: bold; */
+}
+
+/* COMPOUND CLASSES */
+.box.demo {
+   background-color: red; 
+}
+/*
+multiple selectors can be targeted seperated by a comma... could also target a class
+*/
+/* MULTIPLE SELECTORS - comma */
+h1,
+h2 {
+  /* font-style: italic; */
+}
+
+/* DESCENDENT SELECTORS - space/tab/enter */
+li a {
+  /* font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif; */
+}
+
+/* DIRECT CHILD SELECTORS - sideways carrot */
+div > a {
+  /* color: orange; */
+}
+/* ADJACENT SIBLING SELECTORS - + sign*/
+li + li {
+  /* color: purple; */
+}
+
+/* PSEUDO-CLASS - colon */
+h1:hover {
+  /* color: black; */
+}
+
+/* PSEUDO-SELECTOR - double-colon */
+
+div::before {
+  /* background-color: lightblue;
+  border-right: 4px solid violet;
+  content: ':-) ';
+  margin-right: 4px;
+  padding-left: 4px; */
+}
+
+/* SPECIFICITY */
+
+/* ID > CLASS > TAG/TYPE */
+/* 
+ID == 100
+CLASS == 10
+TAG == 1 
+*/
+
+/* EXAMPLE */
+h1 {
+  /* background-color: blue; */
+}
+
+.heading1 {
+  /* background-color: green; */
+}
+
+#heading1 {
+  /* background-color: yellow; */
+}

@@ -1,0 +1,87 @@
+.masthead{
+    height: 200px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) ;
+    grid-template-rows: 1fr 1fr 3fr;
+    grid-template-areas:
+    "ms . ab"
+    ". lt ."
+    "date logo today"; 
+}
+
+.masthead__actions{
+    grid-area: ab;
+    display: flex; 
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.masthead__actions:hover {
+    background-color: #326891;
+    text-transform: uppercase;
+    transition-duration: 0.3s;
+}
+
+.masthead__btn-icons{
+    font-size: 11px;
+    padding: 7px 9px 7px 9px; 
+}
+
+.masthead__btn-icons:hover{
+    background-color: #f7f7f5;
+}
+
+.masthead__date{
+    grid-area: date;
+    display: flex;
+    align-items: center; 
+    border-bottom: 1px solid #e2e2e2;
+    border-top: 1px solid #e2e2e2;
+}
+
+.masthead__logo{
+    grid-area: logo;
+    display: flex; 
+    align-items: flex-start;
+    text-align: center; 
+    border-bottom: 1px solid #e2e2e2;
+    padding-top: 11px;
+}
+
+.masthead__menu-and-search{
+    grid-area: ms;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.masthead__paper{
+    grid-area: today;
+    display: flex; 
+    align-items: flex-end; 
+    justify-content: flex-end;
+    border-bottom: 1px solid #e2e2e2;
+    border-top: 1px solid #e2e2e2;
+    padding-bottom: 11px; 
+}
+
+.masthead__technologies{
+    grid-area: lt;
+    text-align: center; 
+    margin: 0 4px;
+    display: flex; 
+    align-items: flex-end;
+    justify-content: center;
+    border-right: 1px solid #e2e2e2;
+    border-top: 1px solid #e2e2e2;
+    border-left: 1px solid #e2e2e2;
+}
+
+.masthead__technology-list {
+    color: #6f6f6f; 
+    font-size: 10px;      
+    text-transform: uppercase;
+}
+
+
+

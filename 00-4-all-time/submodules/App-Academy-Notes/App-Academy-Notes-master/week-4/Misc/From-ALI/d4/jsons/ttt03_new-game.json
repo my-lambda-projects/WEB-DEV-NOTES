@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "1424f396-e731-418e-8e02-aec624565dc8",
+    "name": "TTT: New Game",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-04-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--new-game"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Requirement 4: Creating A New Game\n\nIn this requirement, you will now make the \"New Game\" button work. To do this,\nyou will need to perform the following:\n\n* When the game status is not \"won\" or \"tied\", then the \"New Game\" button is\n  disabled.\n* When the game status is \"won\" or \"tied\", then the \"New Game\" button is\n  enabled.\n* When a player clicks the \"New Game\" button, then it\n  * clears the game status,\n  * clears the header,\n  * clears the board, and\n  * makes it so the next click of the tic-tac-toe board is an \"X\"\n  * (disables the \"New Game\" button)\n\nDuring development, you can just refresh the browser to clear the board.\n"
+  },
+  "success": true
+}

@@ -1,0 +1,35 @@
+version: '{build}'
+
+platform:
+  - x64
+
+services:
+  - mssql2017
+
+shallow_clone: true
+
+environment:
+  matrix:
+    - { NODE_VERSION: 12, DIALECT: mssql, COVERAGE: true }
+
+install:
+  - ps: Install-Product node $env:NODE_VERSION x64
+  - npm ci
+  - npm install --save-dev codecov
+
+build: off
+
+before_test:
+  - ps: . .\scripts\appveyor-setup.ps1
+
+test_script:
+  - npm run tsc
+  - 'IF "%COVERAGE%" == "true" (npm run cover) ELSE (npm test)'
+
+after_test:
+  - npx codecov
+
+branches:
+  only:
+    - master
+    - /^greenkeeper/.*$/

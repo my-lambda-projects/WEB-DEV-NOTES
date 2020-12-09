@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 700 700" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Artboard1" transform="matrix(0.27451,0,0,0.212121,0,0)">
+        <rect x="0" y="0" width="2550" height="3300" style="fill:none;"/>
+        <g transform="matrix(0.990601,0,0,1.55132,10.1663,4.88687)">
+            <rect x="26.511" y="27.239" width="2500.65" height="2066.45" style="fill:rgb(235,235,235);stroke:black;stroke-width:3.31px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,18.328)">
+            <path d="M10,81.668L690,81.668" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-337.862)">
+            <path d="M10,81.668L690,81.668" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,2867.85)">
+            <path d="M10,81.668L690,81.668" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-199.206)">
+            <path d="M10,203.367L690,203.367" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-187.214)">
+            <path d="M10,276.379L690,276.379" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-84.3612)">
+            <path d="M10,330.117L690,330.117" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-84.1545)">
+            <path d="M10,405.629L690,405.629" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-60.9289)">
+            <path d="M10,476.258L690,476.258" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-14.7027)">
+            <path d="M10,542.008L690,542.008" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,-16.89)">
+            <path d="M10,618.027L690,618.027" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,-355.504,0)">
+            <path d="M543.665,85.556L543.665,159.969" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,0)">
+            <text x="272.156px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">header</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,-2.18492e-13,359.16)">
+            <text x="173.851px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">main</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,1588.56,359.16)">
+            <text x="49.967px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">sidebar</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,2.07072e-13,712.381)">
+            <text x="226.331px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">other-news</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,2.07072e-13,1068.57)">
+            <text x="199.976px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">smarter-living</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,2.07072e-13,1424.76)">
+            <text x="259.668px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">features</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,1780.95)">
+            <text x="244.409px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">discovery</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,2.07072e-13,2137.14)">
+            <text x="204.102px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">most-popular</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,2493.33)">
+            <text x="291.638px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">news</text>
+        </g>
+        <g transform="matrix(3.64286,0,0,4.71429,0,2849.52)">
+            <text x="286.072px" y="65.685px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">footer</text>
+        </g>
+    </g>
+</svg>

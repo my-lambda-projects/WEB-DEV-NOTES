@@ -1,0 +1,44 @@
+.demo3-container {
+  background-color: #2b2d2f;
+  height: 1000px;
+}
+
+.demo3-element {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100px;
+  height: 280px;
+  font-size: 36px;
+}
+
+#demo3_yellow-box {
+  background-color: #ffff00;
+}
+
+#demo3_blue-box {
+  background-color: #00eeee;
+}
+
+#demo3_pink-box {
+  background-color: #ff69b4;
+
+  /* RELATIVE */
+  /* position: relative;
+  top: 60px; */
+
+  /* ABSOLUTE */
+  /* 
+  position: absolute;
+  top: 60px; */
+
+  /* FIXED */
+/*   
+  left: 300px;
+  position: fixed;
+  top: 15%; */
+
+  /* STICKY */
+  
+  /* position: sticky;
+  top: 60px; */
+}

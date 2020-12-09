@@ -1,0 +1,17 @@
+botocore==1.6.3
+chardet==3.0.4
+click==6.7
+colorama==0.3.7
+docopt==0.6.2
+docutils==0.14
+idna==2.6
+itsdangerous==0.24
+jmespath==0.9.3
+Markdown==2.6.11
+MarkupSafe==1.0
+mkdocs==0.17.2
+pipreqs==0.4.9
+PyYAML==3.12
+tornado==4.5.3
+urllib3==1.22
+yarg==0.1.9

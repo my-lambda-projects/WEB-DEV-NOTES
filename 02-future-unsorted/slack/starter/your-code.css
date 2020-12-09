@@ -1,0 +1,23 @@
+/* Problem 5 */
+.inner-layer-5 {
+    grid-column: 2 / 6;
+    /* grid-column: 2 / 4 span; */
+    /* grid-column: 4 span / 6; */
+
+}
+
+/* Problem 6 */
+.outer-layer-6 {
+    box-shadow: 0 0 4px rgba(0,0, 255, 0.6);
+}
+
+/* Problem 7 */
+.outer-layer-7 {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/* Problem 8 */
+.uppercase.bold {
+	font-family: 'Courier New';
+}

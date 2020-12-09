@@ -1,0 +1,76 @@
+/* Write your CSS here. */
+/* body {
+    zoom: 0.75;
+} */
+
+.pf {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas:
+    "mole-1 mole-2 mole-3 mole-4"
+    "mole-5 mole-6 mole-7 mole-8";
+}
+
+.wgs {
+    display: inline-block;
+    height: 241px;
+    width: 320px;
+    position: relative;
+    overflow: hidden;
+}
+
+.wgs__mole-head {
+    height: 178px;
+    width: 188px;
+    position: absolute;
+    left: 54.5px;
+    transition-duration: 0.25s;
+}
+
+/* .wgs__mole-head:hover {
+    margin-top: 300px;
+} */
+
+.wgs__mole-head--hidden{
+    margin-top: 241px;
+}
+
+.wgs__dirt-pile {
+    height: 110px;
+    width: 320px;
+    position: absolute;
+    bottom: 0;
+}
+
+.wgs__mole-1 {
+    grid-area: mole-1;
+}
+
+.wgs__mole-2 {
+    grid-area: mole-2;
+}
+
+.wgs__mole-3 {
+    grid-area: mole-3;
+}
+
+.wgs__mole-4 {
+    grid-area: mole-4;
+}
+
+.wgs__mole-5 {
+    grid-area: mole-5;
+}
+
+.wgs__mole-6 {
+    grid-area: mole-6;
+}
+
+.wgs__mole-7 {
+    grid-area: mole-7;
+}
+
+.wgs__mole-8 {
+    grid-area: mole-8;
+}

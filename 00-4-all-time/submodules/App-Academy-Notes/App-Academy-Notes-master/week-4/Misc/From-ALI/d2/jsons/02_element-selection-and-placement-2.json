@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "8af5286d-b5e9-4647-aef4-4940ec2929c6",
+    "name": "Element Selection &amp; Placement 2",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/topics/element-selection-placement/readings/reading-element-selection-placement-part2-js.md",
+    "type": "Reading",
+    "timeEstimate": 540,
+    "urls": [
+      "element-selection--amp--placement-2"
+    ],
+    "topic": "Homework for Tuesday",
+    "subtopic": "Homework",
+    "body": "# Hello, World DOMination: Inserting Elements in JS File and Script Block\n\nLet's practice adding new elements to our page. We'll create a second element, a\n`div` with an id of `lickable-frog`, and append it to the `body` like we did the\nfirst time. Update the Javascript function to append a second element to the\npage.\n\n**Javascript**\n\n```js\nconst addElements = () => {\n  // create a new div element\n  const newElement = document.createElement(\"h1\");\n\n  // set the h1's id\n  newElement.setAttribute(\"id\", \"sleeping-giant\");\n\n  // and give it some content\n  const newContent = document.createTextNode(\"Jell-O, Burled!\");\n\n  // add the text node to the newly created div\n  newElement.appendChild(newContent);\n\n  // add the newly created element and its content into the DOM\n  document.body.appendChild(newElement);\n\n  // append a second element to the DOM after the first one\n  const lastElement = document.createElement(\"div\");\n  lastElement.setAttribute(\"id\", \"lickable-frog\");\n  document.body.appendChild(lastElement);\n};\n// run script when page is loaded\nwindow.onload = addElements;\n```\n\nNotice that our function is now called `addElements`, plural, because we're\nappending two elements to the `body`. Save your Javascript file and refresh the\nHTML file in the browser. When you inspect the page, you should now see two\nelements in the `body`, the `h1` and the `div` we added via Javascript.\n\n## Referencing a JS File vs. Using a Script Block\n\nIn our test example above, we referenced an external JS file, which contained\nour function to add new elements to the DOM. Typically, we would keep Javascript\nin a separate file, but we could also write a script block directly in our HTML\nfile. Let's try it. First, we'll delete the script source so that we have an\nempty script block.\n\n**HTML**\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <script type=\"text/javascript\">\n      //Javascript goes here!\n    </script>\n  </head>\n  <body></body>\n</html>\n```\n\nInside of our script block, we'll:\n\n- create a `ul` element with no id\n- create an `li` element with the id `dreamy-eyes`\n- add the `li` as a child to the `ul` element\n- add the `ul` element as the first child of the `body` element.\n\n**HTML**\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Cool Website</title>\n    <script type=\"text/javascript\">\n      const addListElement = () => {\n        const listElement = document.createElement(\"ul\");\n        const listItem = document.createElement(\"li\");\n        listItem.setAttribute(\"id\", \"dreamy-eyes\");\n        listElement.appendChild(listItem);\n        document.body.prepend(listElement);\n      };\n      window.onload = addListElement;\n    </script>\n  </head>\n  <body></body>\n</html>\n```\n\nRefresh the HTML in your browser, inspect the page, and notice the `ul` and `li`\nelements that were created in the script block.\n"
+  },
+  "success": true
+}

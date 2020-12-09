@@ -1,0 +1,42 @@
+@import url('global.css');
+@import url('demo1.css');
+@import url('demo2.css');
+@import url('demo3.css');
+@import url('demo4.css');
+@import url('demo5.css');
+/*
+LECTURE NOTES: 
+
+TRIVIA:
+1. Shorthand FOR EVERYTHING (margin vs margin-top, left, etc...
+2. default values/positions (diff b/w div and span) -- USE MDN
+3. class and id attributes will stack on top of each other (e.g. .element and #blue-box; id > class)
+4. Auto height/width usually fits what is inside element; if empty, may be invisible
+5. . vs # vs nothing(class vs id vs element)
+6. DEV TOOLS IN CHROME (right click + inspect, elements, point & click, styles)
+7. Some attributes conflict, especially with FLEX/GRID or other FLEX attributes!
+
+POSITIONING:
+Static - In Flow; NOT positioned
+Relative - In Flow; IS positioned; relative to PAGE FLOW
+Absolute - OUT of Flow; IS positioned; relative to ANCESTOR/CONTAINER
+Fixed - OUT of Flow; IS positioned; relative to HTML DOM; doesn't move 
+Sticky - IN Flow; IS positioned; relative to ANCESTOR/CONTAINER UNTIL 'SCROLL POINT'
+
+FLEX: 
+1. container: 
+  a. display: flex
+  b. flex-flow: direction, wrap
+  c. justify-content, align-content, align-items
+2. item:
+  a. flex-grow  
+  b. flex-shrink 
+  c. flex-basis
+  d. align-self
+
+GRID: 
+1. Pick a way to do it and stick with it! Grid-template OR Grid-area; different implementations, same goal
+2. Pay attention to sizing problems
+3. grid-template-area === STRING, grid-area === VARIABLE (NOT STRING)
+4. grid-area
+*/

@@ -1,0 +1,28 @@
+{
+  "name": "ajax-assessment",
+  "version": "1.0.0",
+  "description": "The solution for the AJAX assessment.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "test-with-json": "mocha --reporter json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appacademy/assessment-ajax-js-starter.git"
+  },
+  "keywords": [
+    "ajax"
+  ],
+  "author": "App Academy Academics",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://github.com/appacademy/assessment-ajax-js-starter#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "jsdom": "^16.2.1",
+    "mocha": "^7.1.1",
+    "node-fetch": "^2.6.0"
+  },
+  "private": true
+}

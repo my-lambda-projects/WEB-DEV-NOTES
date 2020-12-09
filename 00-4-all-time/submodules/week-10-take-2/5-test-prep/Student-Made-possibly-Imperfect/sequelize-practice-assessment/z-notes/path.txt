@@ -1,0 +1,2 @@
+pwd
+/mnt/c/Users/15512/OneDrive/Documents/Google Drive/a-A-Google-Drive/0-REPOSITORY/00-weeks/04-module-4/week-10/5-test-prep/Student-Made-possibly-Imperfect/d5-eod-prac/W10-Study-Guide/sequelize-practice-assessment/starter

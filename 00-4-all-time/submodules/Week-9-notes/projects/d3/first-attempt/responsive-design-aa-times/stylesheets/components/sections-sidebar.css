@@ -1,0 +1,36 @@
+.sidebar {
+    font-weight: bold;
+    position: fixed;  
+    top: 50px; 
+    z-index: 1; 
+    background-color: white;
+    height: 1100px; 
+}
+
+.sidebar--hidden {
+    display: none; 
+}
+
+.sidebar__list > li {
+    padding-top: 10px; 
+    padding-bottom: 10px;
+    padding-left: 30px;  
+}
+
+.sidebar__submenu {
+    background-color: white; 
+    position: fixed; 
+    left: 140px; 
+    top: 100px; 
+    height: 150px; 
+    overflow: scroll;
+}
+
+.sidebar__submenu li {
+    padding-top: 10px;
+    padding-bottom: 10px; 
+}
+
+.sidebar__submenu--hidden {
+    display: none; 
+}

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "7a80840c-29ca-4dc3-aff4-9540b64211cd",
+    "name": "TTT: Giving Up Hints",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-05-hints-js.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "ttt--giving-up-hints"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Hints 5: Giving Up\n\nA way to tackle this is to subscribe to the click event of the \"Give Up\" button.\nThen, in that click event handler, end the game for the \"other\" player according\nto your game logic.\n\nIf you've reviewed the hints for steps 1, 2, 3, and 4, then you can follow these\ndirections to make it work.\n\n## In the HTML file\n\n* Add an `id` attribute with a value of `give-up` to the `<button>` with the\n  text \"Give Up\"\n\n## In the JavaScript file\n\n* In the `checkGameStatus` function, in the last check to see if `gameStatus`\n  is not an empty string, add new code in there to set the `give-up` button's\n  `disabled` property to `true`.\n* In the `DOMContentLoaded` event handler, add a click event handler to the\n  element with the `give-up` id.\n* In the click event handler, set the variable `gameStatus` to the upper-cased\n  version of the \"other\" player's symbol.\n* Also, perform the same logic as found in the last steps of `checkGameStatus`\n  to set the header, enable the \"New Game\" button, and disable the \"Give Up\"\n  button.\n* In the click event handler for the \"new-game\" button, add a line in there to\n  set the \"give-up\" button's `disabled` state to `false`.\n\n\nWhen you get done, it should look something like this.\n\n![giving up](https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/requirement-5.gif)\n"
+  },
+  "success": true
+}

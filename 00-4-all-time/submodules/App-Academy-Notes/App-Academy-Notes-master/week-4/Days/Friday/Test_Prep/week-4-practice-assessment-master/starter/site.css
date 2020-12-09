@@ -1,0 +1,146 @@
+/* DO NOT CHANGE THE CSS IN THIS FILE OR YOU MAY FAIL */
+* {
+  box-sizing: border-box;
+}
+
+button,
+input[type="text"] {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+button + button {
+  margin-left: 20px;
+}
+
+code {
+  background-color: #efefef;
+  border: 1px solid #dfdfdf;
+  border-radius: 2px;
+  padding: 0.1em;
+}
+
+fieldset {
+  background-color: white;
+  border-radius: 4px;
+  margin-bottom: 1em;
+}
+
+html,
+body {
+  background-color: #efefef;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.25em;
+}
+
+legend {
+  background-color: white;
+  border: 1px solid #333;
+  padding: 0.25em 0.25em;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+pre {
+  background-color: #efefef;
+  border: 1px solid #dfdfdf;
+  border-radius: 2px;
+  font-family: Monaco, Consolas, "Courier New", Courier, monospace;
+  padding: 0.1em;
+}
+
+#bubble-foe {
+  background-color: #efefef;
+  border: 1px solid black;
+  color: white;
+  padding: 1em;
+  list-style: none;
+}
+
+#bubble-friend {
+  border: 1px solid blue;
+  color: blue;
+  text-align: center;
+  padding: 1em;
+  width: 80%;
+}
+
+#total-value {
+  font-weight: bold;
+  margin-left: 0.5em;
+}
+
+#total-value-message {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  margin-left: 40px;
+  text-transform: uppercase;
+}
+
+#apples-div {
+  border: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: bold;
+  height: 40px;
+  margin-left: 40px;
+  width: 80px;
+}
+
+#add-image {
+  border: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: bold;
+  height: 40px;
+  margin-left: 40px;
+  width: 40px;
+}
+
+#fav-flavor {
+  padding: 1em;
+  width: 50%;
+}
+
+#store-flavor {
+  padding: 1em;
+  width: 20%;
+}
+
+#problem-area-1,
+#problem-area-2,
+#problem-area-3,
+#problem-area-5 {
+  display: flex;
+}
+
+#problem-area-4 > div:first-child {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+#blue-circumference-circle {
+  border: 2px solid blue;
+  border-radius: 50%;
+  height: 40px;
+  margin-left: 40px;
+  width: 40px;
+}
+
+#blue-circumference-circle.blue {
+  background-color: blue;
+}
+
+.problem-area {
+  margin: 2em auto;
+}

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "adca803e-4118-479a-a183-9411850a39cf",
+    "name": "JSON Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/objectives/reading-json-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 300,
+    "urls": [
+      "json-learning-objectives"
+    ],
+    "topic": "Homework for Thursday",
+    "subtopic": "Learning Objectives",
+    "body": "# JSON Learning Objectives\n\n**The objective of this lesson** is to familiarize you with the JSON format and\nhow to serialize to and deserialize from that format.\n\n**The learning objectives** for this lesson are that you can:\n\n1. Identify and generate valid JSON-formatted strings\n2. Use `JSON.parse` to deserialize JSON-formatted strings\n3. Use `JSON.stringify` to serialize JavaScript objects\n4. Correctly identify the definition of \"deserialize\"\n5. Correctly identify the definition of \"serialize\"\n\n**This lesson is relevant** because JSON is the _lingua franca_ of data\ninterchange.\n"
+  },
+  "success": true
+}

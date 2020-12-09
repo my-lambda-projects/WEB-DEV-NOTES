@@ -1,0 +1,89 @@
+.interests-bar {
+    display: grid; 
+    grid-template-columns: 1fr 2fr 1fr 2fr 1fr 2fr 2fr 1fr 0.75fr;
+    grid-template-areas: 
+    "dog-img dog-words cat-img cat-words plug-img plug-words stocks sun-img temp";
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    margin-top: 10px; 
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.interests-bar__headline {
+    margin: 0;
+    padding-top: 10px; 
+    padding-left: 10px; 
+}
+
+.interests-bar__image {
+    padding-top: 5px; 
+    padding-bottom: 5px; 
+}
+
+.interests-bar__story {
+    font-size: 10px;
+    padding-left: 10px; 
+    padding-right: 10px; 
+}
+
+.interests-bar__dog-img {
+    grid-area: dog-img;
+}
+
+.interests-bar__dog-text {
+    grid-area: dog-words;
+}
+
+.interests-bar__cat-img {
+    grid-area: cat-img;
+    padding-left: 5px; 
+    border-left: 1px solid grey;
+}
+
+.interests-bar__cat-text {
+    grid-area: cat-words;
+}
+
+.interests-bar__plug-img {
+    grid-area: plug-img;
+    border-left: 1px solid grey;
+}
+
+.interests-bar__plug-text {
+    grid-area: plug-words;
+}
+
+.interests-bar__stock-prices {
+    grid-area: stocks;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-around;
+    border-left: 1px solid grey;
+}
+
+.interests-bar__stock-price {
+    display: flex;
+    justify-content: space-around;
+}
+
+.interests-bar__weather-img {
+    grid-area: sun-img;
+    border-left: 1px solid grey;
+    padding-left: 5px;
+}
+
+.interests-bar__weather-text {
+    grid-area: temp;
+    font-weight: bold;
+    padding: 35px 5px 15px 5px;  
+    margin: 0 auto; 
+}
+
+@media screen and (max-width: 999px) {
+    .interests-bar {
+        display: none; 
+    }
+}
+
+

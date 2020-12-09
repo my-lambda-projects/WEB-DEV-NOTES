@@ -1,0 +1,2 @@
+// session storage stores data for just a single session. does not persist.
+//Key difference between cookies and web storage: cookie data is sent to server and web storage is stored on your machine on the client side

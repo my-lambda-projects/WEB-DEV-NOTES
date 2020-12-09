@@ -1,0 +1,19 @@
+{
+  "template": {
+    "taskId": "91070f31-6664-41d2-a202-031c47ef9f55",
+    "name": "Small Db Mgmt Project",
+    "repo": "Modular-Curriculum",
+    "path": "content/relational-databases/topics/sql/projects/project-1-user-database-and-table-management/README.md",
+    "type": "Project",
+    "timeEstimate": 1800,
+    "urls": [
+      "small-db-mgmt-project"
+    ],
+    "topic": "Monday - Hello, Database!",
+    "subtopic": "Practices",
+    "download": "",
+    "solution": "",
+    "body": "# Database Management Project\n\nThis project asks you to write some SQL to make some tests pass. You must do\nthem in order of the file name.\n\nYou'll be writing your SQL in *.sql files. This is just like writing it in the\n`psql` client. You put semicolons after each statement. But, you don't have to\nworry about silly mistakes because it's in a file and they're easy to fix.\n\n## Instructions\n\n* Clone the project from\n  https://github.com/appacademy-starters/sql-database-management-starter.\n* `cd` into the project folder\n* `npm install` to install dependencies in the project root directory\n* `npm test` to run the specs\n* You can view the test cases in `test`. Your job is to write code in\n  * **01-create-users.sql** to write statements that will create users\n  * **01-create-databases.sql** to write statements that will create databases\n  * **01-create-aa-times-tables.sql** will create related tables in a database\n"
+  },
+  "success": true
+}

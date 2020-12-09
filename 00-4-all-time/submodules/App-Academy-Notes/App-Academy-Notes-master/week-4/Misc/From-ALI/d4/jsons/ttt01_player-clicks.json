@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "8e2aec7f-742a-48ec-a930-4b81e4fda918",
+    "name": "TTT: Player Clicks",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-02-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--player-clicks"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Requirement 2: Tracking Grid Clicks\n\nIn this requirement, you will now track the clicks of the players and fill the\ngrid with the appropriate symbols.\n\n* For the \"X\" player, use the image found at\n  https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg.\n* For the \"O\" player, use the image found at\n  https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg.\n* When the player clicks an empty square, then it is filled with that player's\n  symbol.\n* When the player clicks a square that already contains a symbol, the game does\n  nothing.\n* The first click results in an \"X\". After that, the symbols \"O\" and \"X\"\n  alternate with each click per the rules of tic-tac-toe.\n\nDuring development, you can just refresh the browser to clear the board.\n\nTo make this game work, you'll eventually get around to checking if one of the\nplayers won or if there is a tie. Plan ahead for how you track the grid clicks\nbecause you'll need to know the \"value\" of each square to calculate wins.\n"
+  },
+  "success": true
+}
