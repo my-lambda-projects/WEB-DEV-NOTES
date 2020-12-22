@@ -1,0 +1,6 @@
+.vscode/**
+.gitignore
+.github
+.editorconfig
+*.vsix
+*.code-workspace

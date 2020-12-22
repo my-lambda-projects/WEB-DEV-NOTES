@@ -1,0 +1,2542 @@
+{
+    "iconDefinitions": {
+        "adobe-after_effects.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-after_effects.light.svg"
+        },
+        "adobe-after_effects": {
+            "iconPath": "./icons/minimalistic-icons/adobe-after_effects.svg"
+        },
+        "adobe-animate.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-animate.light.svg"
+        },
+        "adobe-animate": {
+            "iconPath": "./icons/minimalistic-icons/adobe-animate.svg"
+        },
+        "adobe-dreamweaver.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-dreamweaver.light.svg"
+        },
+        "adobe-dreamweaver": {
+            "iconPath": "./icons/minimalistic-icons/adobe-dreamweaver.svg"
+        },
+        "adobe-illustrator.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-illustrator.light.svg"
+        },
+        "adobe-illustrator": {
+            "iconPath": "./icons/minimalistic-icons/adobe-illustrator.svg"
+        },
+        "adobe-indesign.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-indesign.light.svg"
+        },
+        "adobe-indesign": {
+            "iconPath": "./icons/minimalistic-icons/adobe-indesign.svg"
+        },
+        "adobe-lightroom.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-lightroom.light.svg"
+        },
+        "adobe-lightroom": {
+            "iconPath": "./icons/minimalistic-icons/adobe-lightroom.svg"
+        },
+        "adobe-muse.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-muse.light.svg"
+        },
+        "adobe-muse": {
+            "iconPath": "./icons/minimalistic-icons/adobe-muse.svg"
+        },
+        "adobe-photoshop.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-photoshop.light.svg"
+        },
+        "adobe-photoshop": {
+            "iconPath": "./icons/minimalistic-icons/adobe-photoshop.svg"
+        },
+        "adobe-premiere_pro.light": {
+            "iconPath": "./icons/minimalistic-icons/adobe-premiere_pro.light.svg"
+        },
+        "adobe-premiere_pro": {
+            "iconPath": "./icons/minimalistic-icons/adobe-premiere_pro.svg"
+        },
+        "angular.light": {
+            "iconPath": "./icons/minimalistic-icons/angular.light.svg"
+        },
+        "angular": {
+            "iconPath": "./icons/minimalistic-icons/angular.svg"
+        },
+        "ansible.light": {
+            "iconPath": "./icons/minimalistic-icons/ansible.light.svg"
+        },
+        "ansible": {
+            "iconPath": "./icons/minimalistic-icons/ansible.svg"
+        },
+        "apache.light": {
+            "iconPath": "./icons/minimalistic-icons/apache.light.svg"
+        },
+        "apache": {
+            "iconPath": "./icons/minimalistic-icons/apache.svg"
+        },
+        "api_blueprint.light": {
+            "iconPath": "./icons/minimalistic-icons/api_blueprint.light.svg"
+        },
+        "api_blueprint": {
+            "iconPath": "./icons/minimalistic-icons/api_blueprint.svg"
+        },
+        "appveyor.light": {
+            "iconPath": "./icons/minimalistic-icons/appveyor.light.svg"
+        },
+        "appveyor": {
+            "iconPath": "./icons/minimalistic-icons/appveyor.svg"
+        },
+        "archlinux.light": {
+            "iconPath": "./icons/minimalistic-icons/archlinux.light.svg"
+        },
+        "archlinux": {
+            "iconPath": "./icons/minimalistic-icons/archlinux.svg"
+        },
+        "azure.light": {
+            "iconPath": "./icons/minimalistic-icons/azure.light.svg"
+        },
+        "azure": {
+            "iconPath": "./icons/minimalistic-icons/azure.svg"
+        },
+        "azure_pipelines.light": {
+            "iconPath": "./icons/minimalistic-icons/azure_pipelines.light.svg"
+        },
+        "azure_pipelines": {
+            "iconPath": "./icons/minimalistic-icons/azure_pipelines.svg"
+        },
+        "babel.light": {
+            "iconPath": "./icons/minimalistic-icons/babel.light.svg"
+        },
+        "babel": {
+            "iconPath": "./icons/minimalistic-icons/babel.svg"
+        },
+        "blade.light": {
+            "iconPath": "./icons/minimalistic-icons/blade.light.svg"
+        },
+        "blade": {
+            "iconPath": "./icons/minimalistic-icons/blade.svg"
+        },
+        "bolt.light": {
+            "iconPath": "./icons/minimalistic-icons/bolt.light.svg"
+        },
+        "bolt": {
+            "iconPath": "./icons/minimalistic-icons/bolt.svg"
+        },
+        "bower.light": {
+            "iconPath": "./icons/minimalistic-icons/bower.light.svg"
+        },
+        "bower": {
+            "iconPath": "./icons/minimalistic-icons/bower.svg"
+        },
+        "build-coffeescript.light": {
+            "iconPath": "./icons/minimalistic-icons/build-coffeescript.light.svg"
+        },
+        "build-coffeescript": {
+            "iconPath": "./icons/minimalistic-icons/build-coffeescript.svg"
+        },
+        "build-d.light": {
+            "iconPath": "./icons/minimalistic-icons/build-d.light.svg"
+        },
+        "build-d": {
+            "iconPath": "./icons/minimalistic-icons/build-d.svg"
+        },
+        "build-idris.light": {
+            "iconPath": "./icons/minimalistic-icons/build-idris.light.svg"
+        },
+        "build-idris": {
+            "iconPath": "./icons/minimalistic-icons/build-idris.svg"
+        },
+        "build-ruby.light": {
+            "iconPath": "./icons/minimalistic-icons/build-ruby.light.svg"
+        },
+        "build-ruby": {
+            "iconPath": "./icons/minimalistic-icons/build-ruby.svg"
+        },
+        "build-swift.light": {
+            "iconPath": "./icons/minimalistic-icons/build-swift.light.svg"
+        },
+        "build-swift": {
+            "iconPath": "./icons/minimalistic-icons/build-swift.svg"
+        },
+        "build.light": {
+            "iconPath": "./icons/minimalistic-icons/build.light.svg"
+        },
+        "build": {
+            "iconPath": "./icons/minimalistic-icons/build.svg"
+        },
+        "c.light": {
+            "iconPath": "./icons/minimalistic-icons/c.light.svg"
+        },
+        "c": {
+            "iconPath": "./icons/minimalistic-icons/c.svg"
+        },
+        "camelia.light": {
+            "iconPath": "./icons/minimalistic-icons/camelia.light.svg"
+        },
+        "camelia": {
+            "iconPath": "./icons/minimalistic-icons/camelia.svg"
+        },
+        "circleci.light": {
+            "iconPath": "./icons/minimalistic-icons/circleci.light.svg"
+        },
+        "circleci": {
+            "iconPath": "./icons/minimalistic-icons/circleci.svg"
+        },
+        "clojure.light": {
+            "iconPath": "./icons/minimalistic-icons/clojure.light.svg"
+        },
+        "clojure": {
+            "iconPath": "./icons/minimalistic-icons/clojure.svg"
+        },
+        "cmake.light": {
+            "iconPath": "./icons/minimalistic-icons/cmake.light.svg"
+        },
+        "cmake": {
+            "iconPath": "./icons/minimalistic-icons/cmake.svg"
+        },
+        "codeclimate.light": {
+            "iconPath": "./icons/minimalistic-icons/codeclimate.light.svg"
+        },
+        "codeclimate": {
+            "iconPath": "./icons/minimalistic-icons/codeclimate.svg"
+        },
+        "codecov.light": {
+            "iconPath": "./icons/minimalistic-icons/codecov.light.svg"
+        },
+        "codecov": {
+            "iconPath": "./icons/minimalistic-icons/codecov.svg"
+        },
+        "coffeescript.light": {
+            "iconPath": "./icons/minimalistic-icons/coffeescript.light.svg"
+        },
+        "coffeescript": {
+            "iconPath": "./icons/minimalistic-icons/coffeescript.svg"
+        },
+        "config.light": {
+            "iconPath": "./icons/minimalistic-icons/config.light.svg"
+        },
+        "config": {
+            "iconPath": "./icons/minimalistic-icons/config.svg"
+        },
+        "console.light": {
+            "iconPath": "./icons/minimalistic-icons/console.light.svg"
+        },
+        "console": {
+            "iconPath": "./icons/minimalistic-icons/console.svg"
+        },
+        "contribution.light": {
+            "iconPath": "./icons/minimalistic-icons/contribution.light.svg"
+        },
+        "contribution": {
+            "iconPath": "./icons/minimalistic-icons/contribution.svg"
+        },
+        "cpp.light": {
+            "iconPath": "./icons/minimalistic-icons/cpp.light.svg"
+        },
+        "cpp": {
+            "iconPath": "./icons/minimalistic-icons/cpp.svg"
+        },
+        "crystal-chevrons.light": {
+            "iconPath": "./icons/minimalistic-icons/crystal-chevrons.light.svg"
+        },
+        "crystal-chevrons": {
+            "iconPath": "./icons/minimalistic-icons/crystal-chevrons.svg"
+        },
+        "crystal.light": {
+            "iconPath": "./icons/minimalistic-icons/crystal.light.svg"
+        },
+        "crystal": {
+            "iconPath": "./icons/minimalistic-icons/crystal.svg"
+        },
+        "csharp.light": {
+            "iconPath": "./icons/minimalistic-icons/csharp.light.svg"
+        },
+        "csharp": {
+            "iconPath": "./icons/minimalistic-icons/csharp.svg"
+        },
+        "css.light": {
+            "iconPath": "./icons/minimalistic-icons/css.light.svg"
+        },
+        "css": {
+            "iconPath": "./icons/minimalistic-icons/css.svg"
+        },
+        "csscomb.light": {
+            "iconPath": "./icons/minimalistic-icons/csscomb.light.svg"
+        },
+        "csscomb": {
+            "iconPath": "./icons/minimalistic-icons/csscomb.svg"
+        },
+        "cucumber.light": {
+            "iconPath": "./icons/minimalistic-icons/cucumber.light.svg"
+        },
+        "cucumber": {
+            "iconPath": "./icons/minimalistic-icons/cucumber.svg"
+        },
+        "cuda.light": {
+            "iconPath": "./icons/minimalistic-icons/cuda.light.svg"
+        },
+        "cuda": {
+            "iconPath": "./icons/minimalistic-icons/cuda.svg"
+        },
+        "d.light": {
+            "iconPath": "./icons/minimalistic-icons/d.light.svg"
+        },
+        "d": {
+            "iconPath": "./icons/minimalistic-icons/d.svg"
+        },
+        "dart.light": {
+            "iconPath": "./icons/minimalistic-icons/dart.light.svg"
+        },
+        "dart": {
+            "iconPath": "./icons/minimalistic-icons/dart.svg"
+        },
+        "database.light": {
+            "iconPath": "./icons/minimalistic-icons/database.light.svg"
+        },
+        "database": {
+            "iconPath": "./icons/minimalistic-icons/database.svg"
+        },
+        "directx.light": {
+            "iconPath": "./icons/minimalistic-icons/directx.light.svg"
+        },
+        "directx": {
+            "iconPath": "./icons/minimalistic-icons/directx.svg"
+        },
+        "disc.light": {
+            "iconPath": "./icons/minimalistic-icons/disc.light.svg"
+        },
+        "disc": {
+            "iconPath": "./icons/minimalistic-icons/disc.svg"
+        },
+        "docker.light": {
+            "iconPath": "./icons/minimalistic-icons/docker.light.svg"
+        },
+        "docker": {
+            "iconPath": "./icons/minimalistic-icons/docker.svg"
+        },
+        "dotnet.light": {
+            "iconPath": "./icons/minimalistic-icons/dotnet.light.svg"
+        },
+        "dotnet": {
+            "iconPath": "./icons/minimalistic-icons/dotnet.svg"
+        },
+        "dune-build.light": {
+            "iconPath": "./icons/minimalistic-icons/dune-build.light.svg"
+        },
+        "dune-build": {
+            "iconPath": "./icons/minimalistic-icons/dune-build.svg"
+        },
+        "editorconfig.light": {
+            "iconPath": "./icons/minimalistic-icons/editorconfig.light.svg"
+        },
+        "editorconfig": {
+            "iconPath": "./icons/minimalistic-icons/editorconfig.svg"
+        },
+        "elixir.light": {
+            "iconPath": "./icons/minimalistic-icons/elixir.light.svg"
+        },
+        "elixir": {
+            "iconPath": "./icons/minimalistic-icons/elixir.svg"
+        },
+        "elm.light": {
+            "iconPath": "./icons/minimalistic-icons/elm.light.svg"
+        },
+        "elm": {
+            "iconPath": "./icons/minimalistic-icons/elm.svg"
+        },
+        "ensime.light": {
+            "iconPath": "./icons/minimalistic-icons/ensime.light.svg"
+        },
+        "ensime": {
+            "iconPath": "./icons/minimalistic-icons/ensime.svg"
+        },
+        "erlang.light": {
+            "iconPath": "./icons/minimalistic-icons/erlang.light.svg"
+        },
+        "erlang": {
+            "iconPath": "./icons/minimalistic-icons/erlang.svg"
+        },
+        "eslint.light": {
+            "iconPath": "./icons/minimalistic-icons/eslint.light.svg"
+        },
+        "eslint": {
+            "iconPath": "./icons/minimalistic-icons/eslint.svg"
+        },
+        "favicon.light": {
+            "iconPath": "./icons/minimalistic-icons/favicon.light.svg"
+        },
+        "favicon": {
+            "iconPath": "./icons/minimalistic-icons/favicon.svg"
+        },
+        "file-binary.light": {
+            "iconPath": "./icons/minimalistic-icons/file-binary.light.svg"
+        },
+        "file-binary": {
+            "iconPath": "./icons/minimalistic-icons/file-binary.svg"
+        },
+        "file-csv.light": {
+            "iconPath": "./icons/minimalistic-icons/file-csv.light.svg"
+        },
+        "file-csv": {
+            "iconPath": "./icons/minimalistic-icons/file-csv.svg"
+        },
+        "file-diff.light": {
+            "iconPath": "./icons/minimalistic-icons/file-diff.light.svg"
+        },
+        "file-diff": {
+            "iconPath": "./icons/minimalistic-icons/file-diff.svg"
+        },
+        "file-doxygen.light": {
+            "iconPath": "./icons/minimalistic-icons/file-doxygen.light.svg"
+        },
+        "file-doxygen": {
+            "iconPath": "./icons/minimalistic-icons/file-doxygen.svg"
+        },
+        "file-git.light": {
+            "iconPath": "./icons/minimalistic-icons/file-git.light.svg"
+        },
+        "file-git": {
+            "iconPath": "./icons/minimalistic-icons/file-git.svg"
+        },
+        "file-json.light": {
+            "iconPath": "./icons/minimalistic-icons/file-json.light.svg"
+        },
+        "file-json": {
+            "iconPath": "./icons/minimalistic-icons/file-json.svg"
+        },
+        "file-pdf.light": {
+            "iconPath": "./icons/minimalistic-icons/file-pdf.light.svg"
+        },
+        "file-pdf": {
+            "iconPath": "./icons/minimalistic-icons/file-pdf.svg"
+        },
+        "file-swift.light": {
+            "iconPath": "./icons/minimalistic-icons/file-swift.light.svg"
+        },
+        "file-swift": {
+            "iconPath": "./icons/minimalistic-icons/file-swift.svg"
+        },
+        "file-text.light": {
+            "iconPath": "./icons/minimalistic-icons/file-text.light.svg"
+        },
+        "file-text": {
+            "iconPath": "./icons/minimalistic-icons/file-text.svg"
+        },
+        "file-toml.light": {
+            "iconPath": "./icons/minimalistic-icons/file-toml.light.svg"
+        },
+        "file-toml": {
+            "iconPath": "./icons/minimalistic-icons/file-toml.svg"
+        },
+        "file-xml.light": {
+            "iconPath": "./icons/minimalistic-icons/file-xml.light.svg"
+        },
+        "file-xml": {
+            "iconPath": "./icons/minimalistic-icons/file-xml.svg"
+        },
+        "file-yaml.light": {
+            "iconPath": "./icons/minimalistic-icons/file-yaml.light.svg"
+        },
+        "file-yaml": {
+            "iconPath": "./icons/minimalistic-icons/file-yaml.svg"
+        },
+        "file.light": {
+            "iconPath": "./icons/minimalistic-icons/file.light.svg"
+        },
+        "file": {
+            "iconPath": "./icons/minimalistic-icons/file.svg"
+        },
+        "firebase.light": {
+            "iconPath": "./icons/minimalistic-icons/firebase.light.svg"
+        },
+        "firebase": {
+            "iconPath": "./icons/minimalistic-icons/firebase.svg"
+        },
+        "flash.light": {
+            "iconPath": "./icons/minimalistic-icons/flash.light.svg"
+        },
+        "flash": {
+            "iconPath": "./icons/minimalistic-icons/flash.svg"
+        },
+        "flow.light": {
+            "iconPath": "./icons/minimalistic-icons/flow.light.svg"
+        },
+        "flow": {
+            "iconPath": "./icons/minimalistic-icons/flow.svg"
+        },
+        "folder-bower.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-bower.light.svg"
+        },
+        "folder-bower": {
+            "iconPath": "./icons/minimalistic-icons/folder-bower.svg"
+        },
+        "folder-build.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-build.light.svg"
+        },
+        "folder-build": {
+            "iconPath": "./icons/minimalistic-icons/folder-build.svg"
+        },
+        "folder-ci.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-ci.light.svg"
+        },
+        "folder-ci": {
+            "iconPath": "./icons/minimalistic-icons/folder-ci.svg"
+        },
+        "folder-css.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-css.light.svg"
+        },
+        "folder-css": {
+            "iconPath": "./icons/minimalistic-icons/folder-css.svg"
+        },
+        "folder-d.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-d.light.svg"
+        },
+        "folder-d": {
+            "iconPath": "./icons/minimalistic-icons/folder-d.svg"
+        },
+        "folder-font.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-font.light.svg"
+        },
+        "folder-font": {
+            "iconPath": "./icons/minimalistic-icons/folder-font.svg"
+        },
+        "folder-git.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-git.light.svg"
+        },
+        "folder-git": {
+            "iconPath": "./icons/minimalistic-icons/folder-git.svg"
+        },
+        "folder-haxe.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-haxe.light.svg"
+        },
+        "folder-haxe": {
+            "iconPath": "./icons/minimalistic-icons/folder-haxe.svg"
+        },
+        "folder-html.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-html.light.svg"
+        },
+        "folder-html": {
+            "iconPath": "./icons/minimalistic-icons/folder-html.svg"
+        },
+        "folder-image.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-image.light.svg"
+        },
+        "folder-image": {
+            "iconPath": "./icons/minimalistic-icons/folder-image.svg"
+        },
+        "folder-javascript.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-javascript.light.svg"
+        },
+        "folder-javascript": {
+            "iconPath": "./icons/minimalistic-icons/folder-javascript.svg"
+        },
+        "folder-locale.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-locale.light.svg"
+        },
+        "folder-locale": {
+            "iconPath": "./icons/minimalistic-icons/folder-locale.svg"
+        },
+        "folder-nodejs.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-nodejs.light.svg"
+        },
+        "folder-nodejs": {
+            "iconPath": "./icons/minimalistic-icons/folder-nodejs.svg"
+        },
+        "folder-nuget.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-nuget.light.svg"
+        },
+        "folder-nuget": {
+            "iconPath": "./icons/minimalistic-icons/folder-nuget.svg"
+        },
+        "folder-paket.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-paket.light.svg"
+        },
+        "folder-paket": {
+            "iconPath": "./icons/minimalistic-icons/folder-paket.svg"
+        },
+        "folder-python.expanded.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-python.expanded.light.svg"
+        },
+        "folder-python.expanded": {
+            "iconPath": "./icons/minimalistic-icons/folder-python.expanded.svg"
+        },
+        "folder-python.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-python.light.svg"
+        },
+        "folder-python": {
+            "iconPath": "./icons/minimalistic-icons/folder-python.svg"
+        },
+        "folder-root.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-root.light.svg"
+        },
+        "folder-root": {
+            "iconPath": "./icons/minimalistic-icons/folder-root.svg"
+        },
+        "folder-source.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-source.light.svg"
+        },
+        "folder-source": {
+            "iconPath": "./icons/minimalistic-icons/folder-source.svg"
+        },
+        "folder-test.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-test.light.svg"
+        },
+        "folder-test": {
+            "iconPath": "./icons/minimalistic-icons/folder-test.svg"
+        },
+        "folder-typescript.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-typescript.light.svg"
+        },
+        "folder-typescript": {
+            "iconPath": "./icons/minimalistic-icons/folder-typescript.svg"
+        },
+        "folder-visual_studio.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-visual_studio.light.svg"
+        },
+        "folder-visual_studio": {
+            "iconPath": "./icons/minimalistic-icons/folder-visual_studio.svg"
+        },
+        "folder-vscode.light": {
+            "iconPath": "./icons/minimalistic-icons/folder-vscode.light.svg"
+        },
+        "folder-vscode": {
+            "iconPath": "./icons/minimalistic-icons/folder-vscode.svg"
+        },
+        "folder.expanded.light": {
+            "iconPath": "./icons/minimalistic-icons/folder.expanded.light.svg"
+        },
+        "folder.expanded": {
+            "iconPath": "./icons/minimalistic-icons/folder.expanded.svg"
+        },
+        "folder.light": {
+            "iconPath": "./icons/minimalistic-icons/folder.light.svg"
+        },
+        "folder": {
+            "iconPath": "./icons/minimalistic-icons/folder.svg"
+        },
+        "font.light": {
+            "iconPath": "./icons/minimalistic-icons/font.light.svg"
+        },
+        "font": {
+            "iconPath": "./icons/minimalistic-icons/font.svg"
+        },
+        "fsharp.light": {
+            "iconPath": "./icons/minimalistic-icons/fsharp.light.svg"
+        },
+        "fsharp": {
+            "iconPath": "./icons/minimalistic-icons/fsharp.svg"
+        },
+        "fusebox.light": {
+            "iconPath": "./icons/minimalistic-icons/fusebox.light.svg"
+        },
+        "fusebox": {
+            "iconPath": "./icons/minimalistic-icons/fusebox.svg"
+        },
+        "gamemaker.light": {
+            "iconPath": "./icons/minimalistic-icons/gamemaker.light.svg"
+        },
+        "gamemaker": {
+            "iconPath": "./icons/minimalistic-icons/gamemaker.svg"
+        },
+        "gamemaker2.light": {
+            "iconPath": "./icons/minimalistic-icons/gamemaker2.light.svg"
+        },
+        "gamemaker2": {
+            "iconPath": "./icons/minimalistic-icons/gamemaker2.svg"
+        },
+        "git.light": {
+            "iconPath": "./icons/minimalistic-icons/git.light.svg"
+        },
+        "git": {
+            "iconPath": "./icons/minimalistic-icons/git.svg"
+        },
+        "gitlab.light": {
+            "iconPath": "./icons/minimalistic-icons/gitlab.light.svg"
+        },
+        "gitlab": {
+            "iconPath": "./icons/minimalistic-icons/gitlab.svg"
+        },
+        "gnome.light": {
+            "iconPath": "./icons/minimalistic-icons/gnome.light.svg"
+        },
+        "gnome": {
+            "iconPath": "./icons/minimalistic-icons/gnome.svg"
+        },
+        "go.light": {
+            "iconPath": "./icons/minimalistic-icons/go.light.svg"
+        },
+        "go": {
+            "iconPath": "./icons/minimalistic-icons/go.svg"
+        },
+        "godot.light": {
+            "iconPath": "./icons/minimalistic-icons/godot.light.svg"
+        },
+        "godot": {
+            "iconPath": "./icons/minimalistic-icons/godot.svg"
+        },
+        "gradle.light": {
+            "iconPath": "./icons/minimalistic-icons/gradle.light.svg"
+        },
+        "gradle": {
+            "iconPath": "./icons/minimalistic-icons/gradle.svg"
+        },
+        "graphql.light": {
+            "iconPath": "./icons/minimalistic-icons/graphql.light.svg"
+        },
+        "graphql": {
+            "iconPath": "./icons/minimalistic-icons/graphql.svg"
+        },
+        "groovy.light": {
+            "iconPath": "./icons/minimalistic-icons/groovy.light.svg"
+        },
+        "groovy": {
+            "iconPath": "./icons/minimalistic-icons/groovy.svg"
+        },
+        "grunt.light": {
+            "iconPath": "./icons/minimalistic-icons/grunt.light.svg"
+        },
+        "grunt": {
+            "iconPath": "./icons/minimalistic-icons/grunt.svg"
+        },
+        "gulp.light": {
+            "iconPath": "./icons/minimalistic-icons/gulp.light.svg"
+        },
+        "gulp": {
+            "iconPath": "./icons/minimalistic-icons/gulp.svg"
+        },
+        "haml.light": {
+            "iconPath": "./icons/minimalistic-icons/haml.light.svg"
+        },
+        "haml": {
+            "iconPath": "./icons/minimalistic-icons/haml.svg"
+        },
+        "handlebars.light": {
+            "iconPath": "./icons/minimalistic-icons/handlebars.light.svg"
+        },
+        "handlebars": {
+            "iconPath": "./icons/minimalistic-icons/handlebars.svg"
+        },
+        "haskell.light": {
+            "iconPath": "./icons/minimalistic-icons/haskell.light.svg"
+        },
+        "haskell": {
+            "iconPath": "./icons/minimalistic-icons/haskell.svg"
+        },
+        "haxe-chevrons.light": {
+            "iconPath": "./icons/minimalistic-icons/haxe-chevrons.light.svg"
+        },
+        "haxe-chevrons": {
+            "iconPath": "./icons/minimalistic-icons/haxe-chevrons.svg"
+        },
+        "haxe.light": {
+            "iconPath": "./icons/minimalistic-icons/haxe.light.svg"
+        },
+        "haxe": {
+            "iconPath": "./icons/minimalistic-icons/haxe.svg"
+        },
+        "haxedevelop.light": {
+            "iconPath": "./icons/minimalistic-icons/haxedevelop.light.svg"
+        },
+        "haxedevelop": {
+            "iconPath": "./icons/minimalistic-icons/haxedevelop.svg"
+        },
+        "html.light": {
+            "iconPath": "./icons/minimalistic-icons/html.light.svg"
+        },
+        "html": {
+            "iconPath": "./icons/minimalistic-icons/html.svg"
+        },
+        "idris.light": {
+            "iconPath": "./icons/minimalistic-icons/idris.light.svg"
+        },
+        "idris": {
+            "iconPath": "./icons/minimalistic-icons/idris.svg"
+        },
+        "image.light": {
+            "iconPath": "./icons/minimalistic-icons/image.light.svg"
+        },
+        "image": {
+            "iconPath": "./icons/minimalistic-icons/image.svg"
+        },
+        "info.light": {
+            "iconPath": "./icons/minimalistic-icons/info.light.svg"
+        },
+        "info": {
+            "iconPath": "./icons/minimalistic-icons/info.svg"
+        },
+        "ionic.light": {
+            "iconPath": "./icons/minimalistic-icons/ionic.light.svg"
+        },
+        "ionic": {
+            "iconPath": "./icons/minimalistic-icons/ionic.svg"
+        },
+        "java.light": {
+            "iconPath": "./icons/minimalistic-icons/java.light.svg"
+        },
+        "java": {
+            "iconPath": "./icons/minimalistic-icons/java.svg"
+        },
+        "javascript-chevrons.light": {
+            "iconPath": "./icons/minimalistic-icons/javascript-chevrons.light.svg"
+        },
+        "javascript-chevrons": {
+            "iconPath": "./icons/minimalistic-icons/javascript-chevrons.svg"
+        },
+        "javascript-lint.light": {
+            "iconPath": "./icons/minimalistic-icons/javascript-lint.light.svg"
+        },
+        "javascript-lint": {
+            "iconPath": "./icons/minimalistic-icons/javascript-lint.svg"
+        },
+        "javascript-test.light": {
+            "iconPath": "./icons/minimalistic-icons/javascript-test.light.svg"
+        },
+        "javascript-test": {
+            "iconPath": "./icons/minimalistic-icons/javascript-test.svg"
+        },
+        "javascript.light": {
+            "iconPath": "./icons/minimalistic-icons/javascript.light.svg"
+        },
+        "javascript": {
+            "iconPath": "./icons/minimalistic-icons/javascript.svg"
+        },
+        "jekyll.light": {
+            "iconPath": "./icons/minimalistic-icons/jekyll.light.svg"
+        },
+        "jekyll": {
+            "iconPath": "./icons/minimalistic-icons/jekyll.svg"
+        },
+        "julia.light": {
+            "iconPath": "./icons/minimalistic-icons/julia.light.svg"
+        },
+        "julia": {
+            "iconPath": "./icons/minimalistic-icons/julia.svg"
+        },
+        "karma.light": {
+            "iconPath": "./icons/minimalistic-icons/karma.light.svg"
+        },
+        "karma": {
+            "iconPath": "./icons/minimalistic-icons/karma.svg"
+        },
+        "kotlin.light": {
+            "iconPath": "./icons/minimalistic-icons/kotlin.light.svg"
+        },
+        "kotlin": {
+            "iconPath": "./icons/minimalistic-icons/kotlin.svg"
+        },
+        "less.light": {
+            "iconPath": "./icons/minimalistic-icons/less.light.svg"
+        },
+        "less": {
+            "iconPath": "./icons/minimalistic-icons/less.svg"
+        },
+        "lib-idris.light": {
+            "iconPath": "./icons/minimalistic-icons/lib-idris.light.svg"
+        },
+        "lib-idris": {
+            "iconPath": "./icons/minimalistic-icons/lib-idris.svg"
+        },
+        "lib-locale.light": {
+            "iconPath": "./icons/minimalistic-icons/lib-locale.light.svg"
+        },
+        "lib-locale": {
+            "iconPath": "./icons/minimalistic-icons/lib-locale.svg"
+        },
+        "lib-python.light": {
+            "iconPath": "./icons/minimalistic-icons/lib-python.light.svg"
+        },
+        "lib-python": {
+            "iconPath": "./icons/minimalistic-icons/lib-python.svg"
+        },
+        "lib-rust.light": {
+            "iconPath": "./icons/minimalistic-icons/lib-rust.light.svg"
+        },
+        "lib-rust": {
+            "iconPath": "./icons/minimalistic-icons/lib-rust.svg"
+        },
+        "lib.light": {
+            "iconPath": "./icons/minimalistic-icons/lib.light.svg"
+        },
+        "lib": {
+            "iconPath": "./icons/minimalistic-icons/lib.svg"
+        },
+        "libreoffice-base.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-base.light.svg"
+        },
+        "libreoffice-base": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-base.svg"
+        },
+        "libreoffice-calc.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-calc.light.svg"
+        },
+        "libreoffice-calc": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-calc.svg"
+        },
+        "libreoffice-draw.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-draw.light.svg"
+        },
+        "libreoffice-draw": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-draw.svg"
+        },
+        "libreoffice-impress.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-impress.light.svg"
+        },
+        "libreoffice-impress": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-impress.svg"
+        },
+        "libreoffice-math.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-math.light.svg"
+        },
+        "libreoffice-math": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-math.svg"
+        },
+        "libreoffice-writer.light": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-writer.light.svg"
+        },
+        "libreoffice-writer": {
+            "iconPath": "./icons/minimalistic-icons/libreoffice-writer.svg"
+        },
+        "licence.light": {
+            "iconPath": "./icons/minimalistic-icons/licence.light.svg"
+        },
+        "licence": {
+            "iconPath": "./icons/minimalistic-icons/licence.svg"
+        },
+        "liquid.light": {
+            "iconPath": "./icons/minimalistic-icons/liquid.light.svg"
+        },
+        "liquid": {
+            "iconPath": "./icons/minimalistic-icons/liquid.svg"
+        },
+        "lisp.light": {
+            "iconPath": "./icons/minimalistic-icons/lisp.light.svg"
+        },
+        "lisp": {
+            "iconPath": "./icons/minimalistic-icons/lisp.svg"
+        },
+        "locale.light": {
+            "iconPath": "./icons/minimalistic-icons/locale.light.svg"
+        },
+        "locale": {
+            "iconPath": "./icons/minimalistic-icons/locale.svg"
+        },
+        "lock.light": {
+            "iconPath": "./icons/minimalistic-icons/lock.light.svg"
+        },
+        "lock": {
+            "iconPath": "./icons/minimalistic-icons/lock.svg"
+        },
+        "lua.light": {
+            "iconPath": "./icons/minimalistic-icons/lua.light.svg"
+        },
+        "lua": {
+            "iconPath": "./icons/minimalistic-icons/lua.svg"
+        },
+        "map-css.light": {
+            "iconPath": "./icons/minimalistic-icons/map-css.light.svg"
+        },
+        "map-css": {
+            "iconPath": "./icons/minimalistic-icons/map-css.svg"
+        },
+        "markdown.light": {
+            "iconPath": "./icons/minimalistic-icons/markdown.light.svg"
+        },
+        "markdown": {
+            "iconPath": "./icons/minimalistic-icons/markdown.svg"
+        },
+        "marko-javascript.light": {
+            "iconPath": "./icons/minimalistic-icons/marko-javascript.light.svg"
+        },
+        "marko-javascript": {
+            "iconPath": "./icons/minimalistic-icons/marko-javascript.svg"
+        },
+        "marko.light": {
+            "iconPath": "./icons/minimalistic-icons/marko.light.svg"
+        },
+        "marko": {
+            "iconPath": "./icons/minimalistic-icons/marko.svg"
+        },
+        "meson.light": {
+            "iconPath": "./icons/minimalistic-icons/meson.light.svg"
+        },
+        "meson": {
+            "iconPath": "./icons/minimalistic-icons/meson.svg"
+        },
+        "mjml.light": {
+            "iconPath": "./icons/minimalistic-icons/mjml.light.svg"
+        },
+        "mjml": {
+            "iconPath": "./icons/minimalistic-icons/mjml.svg"
+        },
+        "msoffice-access.light": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-access.light.svg"
+        },
+        "msoffice-access": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-access.svg"
+        },
+        "msoffice-excel.light": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-excel.light.svg"
+        },
+        "msoffice-excel": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-excel.svg"
+        },
+        "msoffice-onenote.light": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-onenote.light.svg"
+        },
+        "msoffice-onenote": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-onenote.svg"
+        },
+        "msoffice-powerpoint.light": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-powerpoint.light.svg"
+        },
+        "msoffice-powerpoint": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-powerpoint.svg"
+        },
+        "msoffice-word.light": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-word.light.svg"
+        },
+        "msoffice-word": {
+            "iconPath": "./icons/minimalistic-icons/msoffice-word.svg"
+        },
+        "nim.light": {
+            "iconPath": "./icons/minimalistic-icons/nim.light.svg"
+        },
+        "nim": {
+            "iconPath": "./icons/minimalistic-icons/nim.svg"
+        },
+        "nodejs-lock.light": {
+            "iconPath": "./icons/minimalistic-icons/nodejs-lock.light.svg"
+        },
+        "nodejs-lock": {
+            "iconPath": "./icons/minimalistic-icons/nodejs-lock.svg"
+        },
+        "nodejs.light": {
+            "iconPath": "./icons/minimalistic-icons/nodejs.light.svg"
+        },
+        "nodejs": {
+            "iconPath": "./icons/minimalistic-icons/nodejs.svg"
+        },
+        "npm.light": {
+            "iconPath": "./icons/minimalistic-icons/npm.light.svg"
+        },
+        "npm": {
+            "iconPath": "./icons/minimalistic-icons/npm.svg"
+        },
+        "nsis.light": {
+            "iconPath": "./icons/minimalistic-icons/nsis.light.svg"
+        },
+        "nsis": {
+            "iconPath": "./icons/minimalistic-icons/nsis.svg"
+        },
+        "nuget.light": {
+            "iconPath": "./icons/minimalistic-icons/nuget.light.svg"
+        },
+        "nuget": {
+            "iconPath": "./icons/minimalistic-icons/nuget.svg"
+        },
+        "nunjucks.light": {
+            "iconPath": "./icons/minimalistic-icons/nunjucks.light.svg"
+        },
+        "nunjucks": {
+            "iconPath": "./icons/minimalistic-icons/nunjucks.svg"
+        },
+        "objective_c.light": {
+            "iconPath": "./icons/minimalistic-icons/objective_c.light.svg"
+        },
+        "objective_c": {
+            "iconPath": "./icons/minimalistic-icons/objective_c.svg"
+        },
+        "ocaml.light": {
+            "iconPath": "./icons/minimalistic-icons/ocaml.light.svg"
+        },
+        "ocaml": {
+            "iconPath": "./icons/minimalistic-icons/ocaml.svg"
+        },
+        "package-archlinux.light": {
+            "iconPath": "./icons/minimalistic-icons/package-archlinux.light.svg"
+        },
+        "package-archlinux": {
+            "iconPath": "./icons/minimalistic-icons/package-archlinux.svg"
+        },
+        "package-debian.light": {
+            "iconPath": "./icons/minimalistic-icons/package-debian.light.svg"
+        },
+        "package-debian": {
+            "iconPath": "./icons/minimalistic-icons/package-debian.svg"
+        },
+        "package-nuget.light": {
+            "iconPath": "./icons/minimalistic-icons/package-nuget.light.svg"
+        },
+        "package-nuget": {
+            "iconPath": "./icons/minimalistic-icons/package-nuget.svg"
+        },
+        "package-rpm.light": {
+            "iconPath": "./icons/minimalistic-icons/package-rpm.light.svg"
+        },
+        "package-rpm": {
+            "iconPath": "./icons/minimalistic-icons/package-rpm.svg"
+        },
+        "package-vscode.light": {
+            "iconPath": "./icons/minimalistic-icons/package-vscode.light.svg"
+        },
+        "package-vscode": {
+            "iconPath": "./icons/minimalistic-icons/package-vscode.svg"
+        },
+        "package.light": {
+            "iconPath": "./icons/minimalistic-icons/package.light.svg"
+        },
+        "package": {
+            "iconPath": "./icons/minimalistic-icons/package.svg"
+        },
+        "paket.light": {
+            "iconPath": "./icons/minimalistic-icons/paket.light.svg"
+        },
+        "paket": {
+            "iconPath": "./icons/minimalistic-icons/paket.svg"
+        },
+        "php.light": {
+            "iconPath": "./icons/minimalistic-icons/php.light.svg"
+        },
+        "php": {
+            "iconPath": "./icons/minimalistic-icons/php.svg"
+        },
+        "point_cloud_library.light": {
+            "iconPath": "./icons/minimalistic-icons/point_cloud_library.light.svg"
+        },
+        "point_cloud_library": {
+            "iconPath": "./icons/minimalistic-icons/point_cloud_library.svg"
+        },
+        "polymer.light": {
+            "iconPath": "./icons/minimalistic-icons/polymer.light.svg"
+        },
+        "polymer": {
+            "iconPath": "./icons/minimalistic-icons/polymer.svg"
+        },
+        "postcss.light": {
+            "iconPath": "./icons/minimalistic-icons/postcss.light.svg"
+        },
+        "postcss": {
+            "iconPath": "./icons/minimalistic-icons/postcss.svg"
+        },
+        "posthtml.light": {
+            "iconPath": "./icons/minimalistic-icons/posthtml.light.svg"
+        },
+        "posthtml": {
+            "iconPath": "./icons/minimalistic-icons/posthtml.svg"
+        },
+        "powershell.light": {
+            "iconPath": "./icons/minimalistic-icons/powershell.light.svg"
+        },
+        "powershell": {
+            "iconPath": "./icons/minimalistic-icons/powershell.svg"
+        },
+        "protractor.light": {
+            "iconPath": "./icons/minimalistic-icons/protractor.light.svg"
+        },
+        "protractor": {
+            "iconPath": "./icons/minimalistic-icons/protractor.svg"
+        },
+        "pug.light": {
+            "iconPath": "./icons/minimalistic-icons/pug.light.svg"
+        },
+        "pug": {
+            "iconPath": "./icons/minimalistic-icons/pug.svg"
+        },
+        "puppet.light": {
+            "iconPath": "./icons/minimalistic-icons/puppet.light.svg"
+        },
+        "puppet": {
+            "iconPath": "./icons/minimalistic-icons/puppet.svg"
+        },
+        "python.light": {
+            "iconPath": "./icons/minimalistic-icons/python.light.svg"
+        },
+        "python": {
+            "iconPath": "./icons/minimalistic-icons/python.svg"
+        },
+        "r.light": {
+            "iconPath": "./icons/minimalistic-icons/r.light.svg"
+        },
+        "r": {
+            "iconPath": "./icons/minimalistic-icons/r.svg"
+        },
+        "raml.light": {
+            "iconPath": "./icons/minimalistic-icons/raml.light.svg"
+        },
+        "raml": {
+            "iconPath": "./icons/minimalistic-icons/raml.svg"
+        },
+        "razor.light": {
+            "iconPath": "./icons/minimalistic-icons/razor.light.svg"
+        },
+        "razor": {
+            "iconPath": "./icons/minimalistic-icons/razor.svg"
+        },
+        "react.light": {
+            "iconPath": "./icons/minimalistic-icons/react.light.svg"
+        },
+        "react": {
+            "iconPath": "./icons/minimalistic-icons/react.svg"
+        },
+        "reason.light": {
+            "iconPath": "./icons/minimalistic-icons/reason.light.svg"
+        },
+        "reason": {
+            "iconPath": "./icons/minimalistic-icons/reason.svg"
+        },
+        "registry.light": {
+            "iconPath": "./icons/minimalistic-icons/registry.light.svg"
+        },
+        "registry": {
+            "iconPath": "./icons/minimalistic-icons/registry.svg"
+        },
+        "rspec.light": {
+            "iconPath": "./icons/minimalistic-icons/rspec.light.svg"
+        },
+        "rspec": {
+            "iconPath": "./icons/minimalistic-icons/rspec.svg"
+        },
+        "ruby-chevrons.light": {
+            "iconPath": "./icons/minimalistic-icons/ruby-chevrons.light.svg"
+        },
+        "ruby-chevrons": {
+            "iconPath": "./icons/minimalistic-icons/ruby-chevrons.svg"
+        },
+        "ruby.light": {
+            "iconPath": "./icons/minimalistic-icons/ruby.light.svg"
+        },
+        "ruby": {
+            "iconPath": "./icons/minimalistic-icons/ruby.svg"
+        },
+        "rubygem.light": {
+            "iconPath": "./icons/minimalistic-icons/rubygem.light.svg"
+        },
+        "rubygem": {
+            "iconPath": "./icons/minimalistic-icons/rubygem.svg"
+        },
+        "rust.light": {
+            "iconPath": "./icons/minimalistic-icons/rust.light.svg"
+        },
+        "rust": {
+            "iconPath": "./icons/minimalistic-icons/rust.svg"
+        },
+        "salesforce-chevrons.light": {
+            "iconPath": "./icons/minimalistic-icons/salesforce-chevrons.light.svg"
+        },
+        "salesforce-chevrons": {
+            "iconPath": "./icons/minimalistic-icons/salesforce-chevrons.svg"
+        },
+        "salesforce.light": {
+            "iconPath": "./icons/minimalistic-icons/salesforce.light.svg"
+        },
+        "salesforce": {
+            "iconPath": "./icons/minimalistic-icons/salesforce.svg"
+        },
+        "sass.light": {
+            "iconPath": "./icons/minimalistic-icons/sass.light.svg"
+        },
+        "sass": {
+            "iconPath": "./icons/minimalistic-icons/sass.svg"
+        },
+        "save.light": {
+            "iconPath": "./icons/minimalistic-icons/save.light.svg"
+        },
+        "save": {
+            "iconPath": "./icons/minimalistic-icons/save.svg"
+        },
+        "scala.light": {
+            "iconPath": "./icons/minimalistic-icons/scala.light.svg"
+        },
+        "scala": {
+            "iconPath": "./icons/minimalistic-icons/scala.svg"
+        },
+        "scheme.light": {
+            "iconPath": "./icons/minimalistic-icons/scheme.light.svg"
+        },
+        "scheme": {
+            "iconPath": "./icons/minimalistic-icons/scheme.svg"
+        },
+        "sequalize.light": {
+            "iconPath": "./icons/minimalistic-icons/sequalize.light.svg"
+        },
+        "sequalize": {
+            "iconPath": "./icons/minimalistic-icons/sequalize.svg"
+        },
+        "simple_build_tool.light": {
+            "iconPath": "./icons/minimalistic-icons/simple_build_tool.light.svg"
+        },
+        "simple_build_tool": {
+            "iconPath": "./icons/minimalistic-icons/simple_build_tool.svg"
+        },
+        "simple_declarative_language.light": {
+            "iconPath": "./icons/minimalistic-icons/simple_declarative_language.light.svg"
+        },
+        "simple_declarative_language": {
+            "iconPath": "./icons/minimalistic-icons/simple_declarative_language.svg"
+        },
+        "solidity.light": {
+            "iconPath": "./icons/minimalistic-icons/solidity.light.svg"
+        },
+        "solidity": {
+            "iconPath": "./icons/minimalistic-icons/solidity.svg"
+        },
+        "sound.light": {
+            "iconPath": "./icons/minimalistic-icons/sound.light.svg"
+        },
+        "sound": {
+            "iconPath": "./icons/minimalistic-icons/sound.svg"
+        },
+        "stylelint.light": {
+            "iconPath": "./icons/minimalistic-icons/stylelint.light.svg"
+        },
+        "stylelint": {
+            "iconPath": "./icons/minimalistic-icons/stylelint.svg"
+        },
+        "stylus.light": {
+            "iconPath": "./icons/minimalistic-icons/stylus.light.svg"
+        },
+        "stylus": {
+            "iconPath": "./icons/minimalistic-icons/stylus.svg"
+        },
+        "svelte.light": {
+            "iconPath": "./icons/minimalistic-icons/svelte.light.svg"
+        },
+        "svelte": {
+            "iconPath": "./icons/minimalistic-icons/svelte.svg"
+        },
+        "svg.light": {
+            "iconPath": "./icons/minimalistic-icons/svg.light.svg"
+        },
+        "svg": {
+            "iconPath": "./icons/minimalistic-icons/svg.svg"
+        },
+        "swift.light": {
+            "iconPath": "./icons/minimalistic-icons/swift.light.svg"
+        },
+        "swift": {
+            "iconPath": "./icons/minimalistic-icons/swift.svg"
+        },
+        "tailwind.light": {
+            "iconPath": "./icons/minimalistic-icons/tailwind.light.svg"
+        },
+        "tailwind": {
+            "iconPath": "./icons/minimalistic-icons/tailwind.svg"
+        },
+        "terminal.light": {
+            "iconPath": "./icons/minimalistic-icons/terminal.light.svg"
+        },
+        "terminal": {
+            "iconPath": "./icons/minimalistic-icons/terminal.svg"
+        },
+        "terraform.light": {
+            "iconPath": "./icons/minimalistic-icons/terraform.light.svg"
+        },
+        "terraform": {
+            "iconPath": "./icons/minimalistic-icons/terraform.svg"
+        },
+        "trash.light": {
+            "iconPath": "./icons/minimalistic-icons/trash.light.svg"
+        },
+        "trash": {
+            "iconPath": "./icons/minimalistic-icons/trash.svg"
+        },
+        "travis.light": {
+            "iconPath": "./icons/minimalistic-icons/travis.light.svg"
+        },
+        "travis": {
+            "iconPath": "./icons/minimalistic-icons/travis.svg"
+        },
+        "twig.light": {
+            "iconPath": "./icons/minimalistic-icons/twig.light.svg"
+        },
+        "twig": {
+            "iconPath": "./icons/minimalistic-icons/twig.svg"
+        },
+        "typescript-lint.light": {
+            "iconPath": "./icons/minimalistic-icons/typescript-lint.light.svg"
+        },
+        "typescript-lint": {
+            "iconPath": "./icons/minimalistic-icons/typescript-lint.svg"
+        },
+        "typescript.light": {
+            "iconPath": "./icons/minimalistic-icons/typescript.light.svg"
+        },
+        "typescript": {
+            "iconPath": "./icons/minimalistic-icons/typescript.svg"
+        },
+        "unity.light": {
+            "iconPath": "./icons/minimalistic-icons/unity.light.svg"
+        },
+        "unity": {
+            "iconPath": "./icons/minimalistic-icons/unity.svg"
+        },
+        "vagrant.light": {
+            "iconPath": "./icons/minimalistic-icons/vagrant.light.svg"
+        },
+        "vagrant": {
+            "iconPath": "./icons/minimalistic-icons/vagrant.svg"
+        },
+        "vibed.light": {
+            "iconPath": "./icons/minimalistic-icons/vibed.light.svg"
+        },
+        "vibed": {
+            "iconPath": "./icons/minimalistic-icons/vibed.svg"
+        },
+        "video.light": {
+            "iconPath": "./icons/minimalistic-icons/video.light.svg"
+        },
+        "video": {
+            "iconPath": "./icons/minimalistic-icons/video.svg"
+        },
+        "visual_basic.light": {
+            "iconPath": "./icons/minimalistic-icons/visual_basic.light.svg"
+        },
+        "visual_basic": {
+            "iconPath": "./icons/minimalistic-icons/visual_basic.svg"
+        },
+        "visual_studio.light": {
+            "iconPath": "./icons/minimalistic-icons/visual_studio.light.svg"
+        },
+        "visual_studio": {
+            "iconPath": "./icons/minimalistic-icons/visual_studio.svg"
+        },
+        "vscode.light": {
+            "iconPath": "./icons/minimalistic-icons/vscode.light.svg"
+        },
+        "vscode": {
+            "iconPath": "./icons/minimalistic-icons/vscode.svg"
+        },
+        "vue.light": {
+            "iconPath": "./icons/minimalistic-icons/vue.light.svg"
+        },
+        "vue": {
+            "iconPath": "./icons/minimalistic-icons/vue.svg"
+        },
+        "webassembly.light": {
+            "iconPath": "./icons/minimalistic-icons/webassembly.light.svg"
+        },
+        "webassembly": {
+            "iconPath": "./icons/minimalistic-icons/webassembly.svg"
+        },
+        "webpack.light": {
+            "iconPath": "./icons/minimalistic-icons/webpack.light.svg"
+        },
+        "webpack": {
+            "iconPath": "./icons/minimalistic-icons/webpack.svg"
+        },
+        "yarn.light": {
+            "iconPath": "./icons/minimalistic-icons/yarn.light.svg"
+        },
+        "yarn": {
+            "iconPath": "./icons/minimalistic-icons/yarn.svg"
+        }
+    },
+    "rootFolder": "folder-root",
+    "rootFolderExpanded": "folder-root.expanded",
+    "folder": "folder",
+    "folderExpanded": "folder.expanded",
+    "file": "file",
+    "hidesExplorerArrows": true,
+    "folderNames": {
+        ".dub": "folder-d",
+        ".git": "folder-git",
+        ".github": "folder-git",
+        ".haxelib": "folder-haxe",
+        ".nuget": "folder-nuget",
+        ".paket": "folder-paket",
+        ".vs": "folder-visual_studio",
+        ".vscode": "folder-vscode",
+        "__pycache__": "folder-python",
+        "bin": "folder-build",
+        "bower_components": "folder-bower",
+        "build": "folder-build",
+        "ci": "folder-ci",
+        "css": "folder-css",
+        "fonts": "folder-font",
+        "g11n": "folder-locale",
+        "html": "folder-html",
+        "i18n": "folder-locale",
+        "images": "folder-image",
+        "img": "folder-image",
+        "javascript": "folder-javascript",
+        "js": "folder-javascript",
+        "node_modules": "folder-nodejs",
+        "languages": "folder-locale",
+        "locale": "folder-locale",
+        "locales": "folder-locale",
+        "out": "folder-build",
+        "po": "folder-locale",
+        "source": "folder-source",
+        "spec": "folder-test",
+        "specs": "folder-test",
+        "src": "folder-source",
+        "test": "folder-test",
+        "tests": "folder-test",
+        "ts": "folder-typescript",
+        "typescript": "folder-typescript",
+        "typings": "folder-typescript"
+    },
+    "folderNamesExpanded": {
+        "__pycache__": "folder-python.expanded"
+    },
+    "fileNames": {
+        ".angular.json": "angular",
+        ".angular-cli.json": "angular",
+        ".appveyor.yaml": "appveyor",
+        ".appveyor.yml": "appveyor",
+        ".babelrc": "babel",
+        ".bowerrc": "bower",
+        ".codecov.yml": "codecov",
+        ".csscomb.json": "csscomb",
+        ".editorconfig": "editorconfig",
+        ".eslintrc": "eslint",
+        ".eslintrc.js": "eslint",
+        ".eslintrc.json": "eslint",
+        ".eslintrc.yaml": "eslint",
+        ".eslintrc.yml": "eslint",
+        ".eslintignore": "eslint",
+        ".firebaserc": "firebase",
+        ".flowconfig": "flow",
+        ".gitattributes": "git",
+        ".gitconfig": "git",
+        ".gitignore": "git",
+        ".gitlab-ci.yml": "gitlab",
+        ".gitmodules": "git",
+        ".gqlconfig": "config",
+        ".htaccess": "apache",
+        ".jshintignore": "javascript-lint",
+        ".jshintrc": "javascript-lint",
+        ".npmignore": "npm",
+        ".npmrc": "npm",
+        ".postcssrc": "config",
+        ".postcssrc.js": "config",
+        ".postcssrc.json": "config",
+        ".postcssrc.yml": "config",
+        ".posthtmlrc": "posthtml",
+        ".rspec": "rspec",
+        ".sequalizerc": "sequalize",
+        ".stylelintignore": "stylelint",
+        ".stylelintrc": "stylelint",
+        ".stylelintrc.js": "stylelint",
+        ".travis.yml": "travis",
+        ".vscodeignore": "vscode",
+        ".yarn-integrity": "yarn",
+        ".yarn-metadata.json": "yarn",
+        ".yarnclean": "yarn",
+        ".yarnignore": "yarn",
+        ".yarnrc": "yarn",
+        "angular-cli.json": "angular",
+        "appveyor.yaml": "appveyor",
+        "appveyor.yml": "appveyor",
+        "azure-pipelines.yaml": "azure_pipelines",
+        "azure-pipelines.yml": "azure_pipelines",
+        "cakefile": "build-coffeescript",
+        "cargo.lock": "lock",
+        "cargo.toml": "file-toml",
+        "circle.yml": "circleci",
+        "cmakecache.txt": "cmake",
+        "cmakelists.txt": "cmake",
+        "codeclimate.yml": "codeclimate",
+        "codecov.yml": "codecov",
+        "contributing": "contribution",
+        "contributing.md": "contribution",
+        "contributing.txt": "contribution",
+        "docker-cloud.yml": "docker",
+        "docker-compose.yml": "docker",
+        "dub.json": "build-d",
+        "dub.sdl": "build-d",
+        "dune": "dune-build",
+        "dune-project": "dune-build",
+        "dune-workspace": "dune-build",
+        "favicon.bmp": "favicon",
+        "favicon.gif": "favicon",
+        "favicon.ico": "favicon",
+        "favicon.jpg": "favicon",
+        "favicon.jpeg": "favicon",
+        "favicon.png": "favicon",
+        "favicon.svg": "favicon",
+        "favicon.tif": "favicon",
+        "favicon.tiff": "favicon",
+        "favicon.webp": "favicon",
+        "fuse.js": "fusebox",
+        "gemfile": "rubygem",
+        "gruntfile.coffee": "grunt",
+        "gruntfile.js": "grunt",
+        "gruntfile.ts": "grunt",
+        "gulpfile.coffee": "gulp",
+        "gulpfile.js": "gulp",
+        "gulpfile.ts": "gulp",
+        "haxelib.json": "file-json",
+        "ionic.config.json": "ionic",
+        "ionic.project": "ionic",
+        "karma.conf.js": "karma",
+        "licence": "licence",
+        "licence.md": "licence",
+        "licence.txt": "licence",
+        "license": "licence",
+        "license.md": "licence",
+        "license.txt": "licence",
+        "meson.build": "meson",
+        "nim.cfg": "config",
+        "package.json": "nodejs",
+        "package.pins": "file-swift",
+        "package.swift": "build-swift",
+        "package-lock.json": "nodejs-lock",
+        "paket.dependencies": "paket",
+        "paket.local": "paket",
+        "paket.lock": "paket",
+        "paket.references": "paket",
+        "paket.template": "paket",
+        "pkgbuild": "archlinux",
+        "postcss.config.js": "config",
+        "posthtml.config.js": "posthtml",
+        "protractor.conf.js": "protractor",
+        "rakefile": "build-ruby",
+        "readme": "info",
+        "readme.md": "info",
+        "readme.txt": "info",
+        "stylelint.config.js": "stylelint",
+        "tailwind.js": "tailwind",
+        "tailwind.ts": "tailwind",
+        "tsconfig.app.json": "config",
+        "tsconfig.e2e.json": "config",
+        "tsconfig.json": "config",
+        "tsconfig.spec.json": "config",
+        "tslint.json": "typescript-lint",
+        "vagrantfile": "vagrant",
+        "webpack.config.babel.js": "webpack",
+        "webpack.config.base.babel.js": "webpack",
+        "webpack.config.coffee": "webpack",
+        "webpack.config.common.babel.js": "webpack",
+        "webpack.config.common.js": "webpack",
+        "webpack.config.dev.babel.js": "webpack",
+        "webpack.config.dev.js": "webpack",
+        "webpack.config.js": "webpack",
+        "webpack.config.prod.babel.js": "webpack",
+        "webpack.config.prod.js": "webpack",
+        "webpack.config.production.babel.js": "webpack",
+        "webpack.config.production.js": "webpack",
+        "webpack.config.staging.babel.js": "webpack",
+        "webpack.config.staging.js": "webpack",
+        "webpack.config.test.js": "webpack",
+        "webpack.config.ts": "webpack",
+        "yarn.lock": "yarn"
+    },
+    "fileExtensions": {
+        "7z": "package",
+        "a": "lib",
+        "accdb": "msoffice-access",
+        "aepx": "adobe-after_effects",
+        "ai": "adobe-illustrator",
+        "ansible": "ansible",
+        "as": "flash",
+        "avi": "video",
+        "azcli": "azure",
+        "back": "trash",
+        "bak": "trash",
+        "bin": "lib",
+        "blade.php": "blade",
+        "bmp": "image",
+        "bolt": "bolt",
+        "bz2": "package",
+        "bzip2": "package",
+        "cabal": "haskell",
+        "cmake": "cmake",
+        "component.css": "angular",
+        "component.html": "angular",
+        "component.js": "angular",
+        "component.sass": "angular",
+        "component.scss": "angular",
+        "component.spec.js": "angular",
+        "component.spec.ts": "angular",
+        "component.ts": "angular",
+        "config.js": "config",
+        "config.ts": "config",
+        "container.js": "angular",
+        "container.spec.js": "angular",
+        "container.spec.ts": "angular",
+        "container.ts": "angular",
+        "controller.js": "angular",
+        "controller.spec.js": "angular",
+        "controller.spec.ts": "angular",
+        "controller.ts": "angular",
+        "cr": "crystal",
+        "cshtml": "razor",
+        "csproj": "dotnet",
+        "css.map": "map-css",
+        "csv": "file-csv",
+        "d": "d",
+        "d++": "d",
+        "dpp": "d",
+        "dart": "dart",
+        "db": "database",
+        "deb": "package-debian",
+        "diff": "file-diff",
+        "directive.js": "angular",
+        "directive.spec.js": "angular",
+        "directive.spec.ts": "angular",
+        "directive.ts": "angular",
+        "dll": "lib",
+        "dmg": "disc",
+        "doc": "msoffice-word",
+        "dockerfile": "docker",
+        "dockerignore": "docker",
+        "docx": "msoffice-word",
+        "dox": "file-doxygen",
+        "dt": "vibed",
+        "dwt": "adobe-dreamweaver",
+        "ecr": "crystal-chevrons",
+        "ejs": "javascript-chevrons",
+        "elm": "elm",
+        "ensime": "ensime",
+        "env": "config",
+        "eot": "font",
+        "exe": "lib",
+        "feature": "cucumber",
+        "fla": "adobe-animate",
+        "flv": "video",
+        "gd": "godot",
+        "gif": "image",
+        "glade": "file-xml",
+        "gradle": "gradle",
+        "guard.js": "angular",
+        "guard.spec.js": "angular",
+        "guard.spec.ts": "angular",
+        "guard.ts": "angular",
+        "gz": "package",
+        "haml": "haml",
+        "haskell": "haskell",
+        "hx": "haxe",
+        "hxml": "haxe-chevrons",
+        "hxproj": "haxedevelop",
+        "ibc": "lib-idris",
+        "ico": "image",
+        "idr": "idris",
+        "indd": "adobe-indesign",
+        "ipkg": "build-idris",
+        "iso": "disc",
+        "jar": "package",
+        "jekyll": "jekyll",
+        "jl": "julia",
+        "jpeg": "image",
+        "jpg": "image",
+        "js.flow": "flow",
+        "js.map": "map-css",
+        "lib": "lib",
+        "lidr": "idris",
+        "liquid": "liquid",
+        "lock": "lock",
+        "log": "file-text",
+        "lrcat": "adobe-lightroom",
+        "lz": "package",
+        "lzma": "package",
+        "lzo": "package",
+        "mak": "build",
+        "marko": "marko",
+        "marko.js": "marko-javascript",
+        "mdb": "msoffice-access",
+        "mid": "sound",
+        "mjml": "mjml",
+        "mkv": "video",
+        "mo": "lib-locale",
+        "module.js": "angular",
+        "module.spec.js": "angular",
+        "module.spec.ts": "angular",
+        "module.ts": "angular",
+        "mov": "video",
+        "mp3": "sound",
+        "mp4": "video",
+        "muse": "adobe-muse",
+        "n": "lib",
+        "ndjson": "file-json",
+        "ndll": "lib",
+        "nim.cfg": "config",
+        "ninja": "build",
+        "node": "build",
+        "nupkg": "package-nuget",
+        "nuspec": "nuget",
+        "o": "lib",
+        "obj": "lib",
+        "odb": "libreoffice-base",
+        "odf": "libreoffice-math",
+        "odg": "libreoffice-draw",
+        "odp": "libreoffice-impress",
+        "ods": "libreoffice-calc",
+        "odt": "libreoffice-writer",
+        "ogg": "video",
+        "old": "trash",
+        "one": "msoffice-onenote",
+        "otf": "font",
+        "page.js": "angular",
+        "page.spec.js": "angular",
+        "page.spec.ts": "angular",
+        "page.ts": "angular",
+        "patch": "file-diff",
+        "pcd": "point_cloud_library",
+        "pdb": "database",
+        "pdf": "file-pdf",
+        "pipe.js": "angular",
+        "pipe.spec.js": "angular",
+        "pipe.spec.ts": "angular",
+        "pipe.ts": "angular",
+        "pkg": "package",
+        "pkg.tar.xz": "package-archlinux",
+        "png": "image",
+        "po": "locale",
+        "pot": "locale",
+        "ppt": "msoffice-powerpoint",
+        "pptx": "msoffice-powerpoint",
+        "prproj": "adobe-premiere_pro",
+        "psd": "adobe-photoshop",
+        "psmdcp": "nuget",
+        "pyc": "lib-python",
+        "pyd": "lib-python",
+        "pyo": "lib-python",
+        "ra": "sound",
+        "ram": "sound",
+        "raml": "raml",
+        "rar": "package",
+        "reg": "registry",
+        "rkt": "scheme",
+        "rlib": "lib-rust",
+        "rm": "sound",
+        "rpm": "package-rpm",
+        "sav": "save",
+        "save": "save",
+        "sbt": "simple_build_tool",
+        "scssm": "sass",
+        "sdl": "simple_declarative_language",
+        "service.spec.ts": "angular",
+        "service.ts": "angular",
+        "slang": "crystal-chevrons",
+        "sln": "visual_studio",
+        "so": "lib",
+        "sol": "solidity",
+        "spec.js": "javascript-test",
+        "spec.jsx": "javascript-test",
+        "spec.ts": "javascript-test",
+        "spec.tsx": "javascript-test",
+        "svelte": "svelte",
+        "svg": "svg",
+        "swf": "flash",
+        "tar": "package",
+        "test.js": "javascript-test",
+        "test.jsx": "javascript-test",
+        "test.ts": "javascript-test",
+        "test.tsx": "javascript-test",
+        "tif": "image",
+        "tiff": "image",
+        "tmLanguage": "file-xml",
+        "toml": "file-toml",
+        "tsv": "file-csv",
+        "ttc": "font",
+        "ttf": "font",
+        "twig": "twig",
+        "txt": "file-text",
+        "vagrantfile": "vagrant",
+        "vsix": "package-vscode",
+        "vue": "vue",
+        "wasm": "webassembly",
+        "wast": "webassembly",
+        "wat": "webassembly",
+        "wav": "sound",
+        "webp": "image",
+        "wma": "sound",
+        "wmv": "video",
+        "woff": "font",
+        "woff2": "font",
+        "xls": "msoffice-excel",
+        "xlsx": "msoffice-excel",
+        "xz": "package",
+        "zip": "package"
+    },
+    "languageIds": {
+        "ansible": "ansible",
+        "apex": "salesforce",
+        "apiblueprint": "api_blueprint",
+        "arm": "file-binary",
+        "asm": "file-binary",
+        "aspnetcorerazor": "razor",
+        "azcli": "azure",
+        "azure-pipelines": "azure_pipelines",
+        "bat": "console",
+        "blade": "blade",
+        "bolt": "bolt",
+        "c": "c",
+        "cabal": "haskell",
+        "clojure": "clojure",
+        "cmake": "cmake",
+        "coffeescript": "coffeescript",
+        "cpp": "cpp",
+        "crystal": "crystal",
+        "csharp": "csharp",
+        "css": "css",
+        "cuda": "cuda",
+        "d": "d",
+        "dpp": "d",
+        "dart": "dart",
+        "diet": "vibed",
+        "dockerfile": "docker",
+        "doxygen": "file-doxygen",
+        "ecr": "crystal-chevrons",
+        "ejs": "javascript-chevrons",
+        "elixir": "elixir",
+        "elm": "elm",
+        "erb": "ruby-chevrons",
+        "erlang": "erlang",
+        "feature": "cucumber",
+        "fsharp": "fsharp",
+        "gas": "file-binary",
+        "gdscript": "godot",
+        "gherkin": "cucumber",
+        "git-commit": "file-git",
+        "git-rebase": "file-git",
+        "gml-gm81": "gamemaker",
+        "gml-gms": "gamemaker",
+        "gml-gms2": "gamemaker2",
+        "gml-gmx": "config",
+        "gml-yyp": "config",
+        "go": "go",
+        "graphql": "graphql",
+        "groovy": "groovy",
+        "haml": "haml",
+        "handlebars": "handlebars",
+        "haskell": "haskell",
+        "haxe": "haxe",
+        "hlsl": "directx",
+        "html": "html",
+        "hxml": "haxe-chevrons",
+        "ini": "config",
+        "idris": "idris",
+        "ipkg": "build-idris",
+        "jade": "pug",
+        "java": "java",
+        "javascript": "javascript",
+        "javascriptreact": "react",
+        "jekyll": "jekyll",
+        "json": "file-json",
+        "jsonc": "file-json",
+        "julia": "julia",
+        "kotlin": "kotlin",
+        "less": "less",
+        "lidris": "idris",
+        "liquid": "liquid",
+        "lisp": "lisp",
+        "lua": "lua",
+        "makefile": "build",
+        "markdown": "markdown",
+        "marko": "marko",
+        "meson": "meson",
+        "mips": "file-binary",
+        "mjml": "mjml",
+        "ndjson": "file-json",
+        "nim": "nim",
+        "nimble": "nim",
+        "nsis": "nsis",
+        "nunjucks": "nunjucks",
+        "objective-c": "objective_c",
+        "objective-cpp": "objective_c",
+        "ocaml": "ocaml",
+        "pcd": "point_cloud_library",
+        "perl": "camelia",
+        "perl6": "camelia",
+        "php": "php",
+        "plsql": "database",
+        "polymer": "polymer",
+        "postcss": "postcss",
+        "powershell": "powershell",
+        "properties": "config",
+        "puppet": "puppet",
+        "python": "python",
+        "r": "r",
+        "racket": "scheme",
+        "raml": "raml",
+        "razor": "razor",
+        "reason": "reason",
+        "ruby": "ruby",
+        "rust": "rust",
+        "sass": "sass",
+        "sbt": "simple_build_tool",
+        "scala": "scala",
+        "scss": "sass",
+        "scheme": "scheme",
+        "sdl": "simple_declarative_language",
+        "shaderlab": "unity",
+        "shellscript": "terminal",
+        "slang": "crystal-chevrons",
+        "solidity": "solidity",
+        "sql": "database",
+        "stylus": "stylus",
+        "svelte": "svelte",
+        "svg": "svg",
+        "swift": "swift",
+        "terraform": "terraform",
+        "toml": "file-toml",
+        "twig": "twig",
+        "typescript": "typescript",
+        "typescriptreact": "react",
+        "vala": "gnome",
+        "vb": "visual_basic",
+        "visualforce": "salesforce-chevrons",
+        "vue": "vue",
+        "xml": "file-xml",
+        "wasm": "webassembly",
+        "wat": "webassembly",
+        "xsl": "file-xml",
+        "yaml": "file-yaml"
+    },
+    "light": {
+        "rootFolder": "folder-root.light",
+        "rootFolderExpanded": "folder.expanded.light",
+        "folder": "folder.light",
+        "folderExpanded": "folder.expanded.light",
+        "file": "file.light",
+        "hidesExplorerArrows": true,
+        "folderNames": {
+            ".dub": "folder-d.light",
+            ".git": "folder-git.light",
+            ".github": "folder-git.light",
+            ".haxelib": "folder-haxe.light",
+            ".nuget": "folder-nuget.light",
+            ".paket": "folder-paket.light",
+            ".vs": "folder-visual_studio.light",
+            ".vscode": "folder-vscode.light",
+            "__pycache__": "folder-python.light",
+            "bin": "folder-build.light",
+            "bower_components": "folder-bower.light",
+            "build": "folder-build.light",
+            "ci": "folder-ci.light",
+            "css": "folder-css.light",
+            "fonts": "folder-font.light",
+            "g11n": "folder-locale.light",
+            "html": "folder-html.light",
+            "i18n": "folder-locale.light",
+            "images": "folder-image.light",
+            "img": "folder-image.light",
+            "javascript": "folder-javascript.light",
+            "js": "folder-javascript.light",
+            "node_modules": "folder-nodejs.light",
+            "languages": "folder-locale.light",
+            "locale": "folder-locale.light",
+            "locales": "folder-locale.light",
+            "out": "folder-build.light",
+            "po": "folder-locale.light",
+            "source": "folder-source.light",
+            "spec": "folder-test.light",
+            "specs": "folder-test.light",
+            "src": "folder-source.light",
+            "test": "folder-test.light",
+            "tests": "folder-test.light",
+            "ts": "folder-typescript.light",
+            "typescript": "folder-typescript.light",
+            "typings": "folder-typescript.light"
+        },
+        "folderNamesExpanded": {
+            "__pycache__": "folder-python.expanded"
+        },
+        "fileNames": {
+            ".angular.json": "angular.light",
+            ".angular-cli.json": "angular.light",
+            ".appveyor.yaml": "appveyor.light",
+            ".appveyor.yml": "appveyor.light",
+            ".babelrc": "babel.light",
+            ".bowerrc": "bower.light",
+            ".codecov.yml": "codecov.light",
+            ".csscomb.json": "csscomb.light",
+            ".editorconfig": "editorconfig.light",
+            ".eslintrc": "eslint.light",
+            ".eslintrc.js": "eslint.light",
+            ".eslintrc.json": "eslint.light",
+            ".eslintrc.yaml": "eslint.light",
+            ".eslintrc.yml": "eslint.light",
+            ".eslintignore": "eslint.light",
+            ".firebaserc": "firebase.light",
+            ".flowconfig": "flow.light",
+            ".gitattributes": "git.light",
+            ".gitconfig": "git.light",
+            ".gitignore": "git.light",
+            ".gitlab-ci.yml": "gitlab.light",
+            ".gitmodules": "git.light",
+            ".gqlconfig": "config.light",
+            ".htaccess": "apache.light",
+            ".jshintignore": "javascript-lint.light",
+            ".jshintrc": "javascript-lint.light",
+            ".npmignore": "npm.light",
+            ".npmrc": "npm.light",
+            ".postcssrc": "config.light",
+            ".postcssrc.js": "config.light",
+            ".postcssrc.json": "config.light",
+            ".postcssrc.yml": "config.light",
+            ".posthtmlrc": "posthtml.light",
+            ".rspec": "rspec.light",
+            ".sequalizerc": "sequalize.light",
+            ".stylelintignore": "stylelint.light",
+            ".stylelintrc": "stylelint.light",
+            ".stylelintrc.js": "stylelint.light",
+            ".travis.yml": "travis.light",
+            ".vscodeignore": "vscode.light",
+            ".yarn-integrity": "yarn.light",
+            ".yarn-metadata.json": "yarn.light",
+            ".yarnclean": "yarn.light",
+            ".yarnignore": "yarn.light",
+            ".yarnrc": "yarn.light",
+            "angular-cli.json": "angular.light",
+            "appveyor.yaml": "appveyor.light",
+            "appveyor.yml": "appveyor.light",
+            "azure-pipelines.yaml": "azure_pipelines.light",
+            "azure-pipelines.yml": "azure_pipelines.light",
+            "cakefile": "build-coffeescript.light",
+            "cargo.lock": "lock.light",
+            "cargo.toml": "file-toml.light",
+            "circle.yml": "circleci.light",
+            "cmakecache.txt": "cmake.light",
+            "cmakelists.txt": "cmake.light",
+            "codeclimate.yml": "codeclimate.light",
+            "codecov.yml": "codecov.light",
+            "contributing": "contribution.light",
+            "contributing.md": "contribution.light",
+            "contributing.txt": "contribution.light",
+            "docker-cloud.yml": "docker.light",
+            "docker-compose.yml": "docker.light",
+            "dub.json": "build-d.light",
+            "dub.sdl": "build-d.light",
+            "dune": "dune-build.light",
+            "dune-project": "dune-build.light",
+            "dune-workspace": "dune-build.light",
+            "favicon.bmp": "favicon.light",
+            "favicon.gif": "favicon.light",
+            "favicon.ico": "favicon.light",
+            "favicon.jpg": "favicon.light",
+            "favicon.jpeg": "favicon.light",
+            "favicon.png": "favicon.light",
+            "favicon.svg": "favicon.light",
+            "favicon.tif": "favicon.light",
+            "favicon.tiff": "favicon.light",
+            "favicon.webp": "favicon.light",
+            "fuse.js": "fusebox.light",
+            "gemfile": "rubygem.light",
+            "gruntfile.coffee": "grunt.light",
+            "gruntfile.js": "grunt.light",
+            "gruntfile.ts": "grunt.light",
+            "gulpfile.coffee": "gulp.light",
+            "gulpfile.js": "gulp.light",
+            "gulpfile.ts": "gulp.light",
+            "haxelib.json": "file-json.light",
+            "ionic.config.json": "ionic.light",
+            "ionic.project": "ionic.light",
+            "karma.conf.js": "karma.light",
+            "licence": "licence.light",
+            "licence.md": "licence.light",
+            "licence.txt": "licence.light",
+            "license": "licence.light",
+            "license.md": "licence.light",
+            "license.txt": "licence.light",
+            "meson.build": "meson.light",
+            "nim.cfg": "config.light",
+            "package.json": "nodejs.light",
+            "package.pins": "file-swift.light",
+            "package.swift": "build-swift.light",
+            "package-lock.json": "nodejs-lock.light",
+            "paket.dependencies": "paket.light",
+            "paket.local": "paket.light",
+            "paket.lock": "paket.light",
+            "paket.references": "paket.light",
+            "paket.template": "paket.light",
+            "pkgbuild": "archlinux.light",
+            "postcss.config.js": "config.light",
+            "posthtml.config.js": "posthtml.light",
+            "protractor.conf.js": "protractor.light",
+            "rakefile": "build-ruby.light",
+            "readme": "info.light",
+            "readme.md": "info.light",
+            "readme.txt": "info.light",
+            "stylelint.config.js": "stylelint.light",
+            "tailwind.js": "tailwind.light",
+            "tailwind.ts": "tailwind.light",
+            "tsconfig.app.json": "config.light",
+            "tsconfig.e2e.json": "config.light",
+            "tsconfig.json": "config.light",
+            "tsconfig.spec.json": "config.light",
+            "tslint.json": "typescript-lint.light",
+            "vagrantfile": "vagrant.light",
+            "webpack.config.babel.js": "webpack.light",
+            "webpack.config.base.babel.js": "webpack.light",
+            "webpack.config.coffee": "webpack.light",
+            "webpack.config.common.babel.js": "webpack.light",
+            "webpack.config.common.js": "webpack.light",
+            "webpack.config.dev.babel.js": "webpack.light",
+            "webpack.config.dev.js": "webpack.light",
+            "webpack.config.js": "webpack.light",
+            "webpack.config.prod.babel.js": "webpack.light",
+            "webpack.config.prod.js": "webpack.light",
+            "webpack.config.production.babel.js": "webpack.light",
+            "webpack.config.production.js": "webpack.light",
+            "webpack.config.staging.babel.js": "webpack.light",
+            "webpack.config.staging.js": "webpack.light",
+            "webpack.config.test.js": "webpack.light",
+            "webpack.config.ts": "webpack.light",
+            "yarn.lock": "yarn.light"
+        },
+        "fileExtensions": {
+            "7z": "package.light",
+            "a": "lib.light",
+            "accdb": "msoffice-access.light",
+            "aepx": "adobe-after_effects.light",
+            "ai": "adobe-illustrator.light",
+            "ansible": "ansible.light",
+            "as": "flash.light",
+            "avi": "video.light",
+            "azcli": "azure.light",
+            "back": "trash.light",
+            "bak": "trash.light",
+            "bin": "lib.light",
+            "blade.php": "blade.light",
+            "bmp": "image.light",
+            "bolt": "bolt.light",
+            "bz2": "package.light",
+            "bzip2": "package.light",
+            "cabal": "haskell.light",
+            "cmake": "cmake.light",
+            "component.css": "angular.light",
+            "component.html": "angular.light",
+            "component.js": "angular.light",
+            "component.sass": "angular.light",
+            "component.scss": "angular.light",
+            "component.spec.js": "angular.light",
+            "component.spec.ts": "angular.light",
+            "component.ts": "angular.light",
+            "config.js": "config.light",
+            "config.ts": "config.light",
+            "container.js": "angular.light",
+            "container.spec.js": "angular.light",
+            "container.spec.ts": "angular.light",
+            "container.ts": "angular.light",
+            "controller.js": "angular.light",
+            "controller.spec.js": "angular.light",
+            "controller.spec.ts": "angular.light",
+            "controller.ts": "angular.light",
+            "cr": "crystal.light",
+            "cshtml": "razor.light",
+            "csproj": "dotnet.light",
+            "css.map": "map-css.light",
+            "csv": "file-csv.light",
+            "d": "d.light",
+            "d++": "d.light",
+            "dpp": "d.light",
+            "dart": "dart.light",
+            "db": "database.light",
+            "deb": "package-debian.light",
+            "diff": "file-diff.light",
+            "directive.js": "angular.light",
+            "directive.spec.js": "angular.light",
+            "directive.spec.ts": "angular.light",
+            "directive.ts": "angular.light",
+            "dll": "lib.light",
+            "dmg": "disc.light",
+            "doc": "msoffice-word.light",
+            "dockerfile": "docker.light",
+            "dockerignore": "docker.light",
+            "docx": "msoffice-word.light",
+            "dox": "file-doxygen.light",
+            "dt": "vibed.light",
+            "dwt": "adobe-dreamweaver.light",
+            "ecr": "crystal-chevrons.light",
+            "ejs": "javascript-chevrons.light",
+            "elm": "elm.light",
+            "ensime": "ensime.light",
+            "env": "config.light",
+            "eot": "font.light",
+            "exe": "lib.light",
+            "feature": "cucumber.light",
+            "fla": "adobe-animate.light",
+            "flv": "video.light",
+            "gd": "godot.light",
+            "gif": "image.light",
+            "glade": "file-xml.light",
+            "gradle": "gradle.light",
+            "guard.js": "angular.light",
+            "guard.spec.js": "angular.light",
+            "guard.spec.ts": "angular.light",
+            "guard.ts": "angular.light",
+            "gz": "package.light",
+            "haml": "haml.light",
+            "haskell": "haskell.light",
+            "hx": "haxe.light",
+            "hxml": "haxe-chevrons.light",
+            "hxproj": "haxedevelop.light",
+            "ibc": "lib-idris.light",
+            "ico": "image.light",
+            "idr": "idris.light",
+            "indd": "adobe-indesign.light",
+            "ipkg": "build-idris.light",
+            "iso": "disc.light",
+            "jar": "package.light",
+            "jekyll": "jekyll.light",
+            "jl": "julia.light",
+            "jpeg": "image.light",
+            "jpg": "image.light",
+            "js.flow": "flow.light",
+            "js.map": "map-css.light",
+            "lib": "lib.light",
+            "lidr": "idris.light",
+            "liquid": "liquid.light",
+            "lock": "lock.light",
+            "log": "file-text.light",
+            "lrcat": "adobe-lightroom.light",
+            "lz": "package.light",
+            "lzma": "package.light",
+            "lzo": "package.light",
+            "mak": "build.light",
+            "marko": "marko.light",
+            "marko.js": "marko-javascript.light",
+            "mdb": "msoffice-access.light",
+            "mid": "sound.light",
+            "mjml": "mjml.light",
+            "mkv": "video.light",
+            "mo": "lib-locale.light",
+            "module.js": "angular.light",
+            "module.spec.js": "angular.light",
+            "module.spec.ts": "angular.light",
+            "module.ts": "angular.light",
+            "mov": "video.light",
+            "mp3": "sound.light",
+            "mp4": "video.light",
+            "muse": "adobe-muse.light",
+            "n": "lib.light",
+            "ndjson": "file-json.light",
+            "ndll": "lib.light",
+            "nim.cfg": "config.light",
+            "ninja": "build.light",
+            "node": "build.light",
+            "nupkg": "package-nuget.light",
+            "nuspec": "nuget.light",
+            "o": "lib.light",
+            "obj": "lib.light",
+            "odb": "libreoffice-base.light",
+            "odf": "libreoffice-math.light",
+            "odg": "libreoffice-draw.light",
+            "odp": "libreoffice-impress.light",
+            "ods": "libreoffice-calc.light",
+            "odt": "libreoffice-writer.light",
+            "ogg": "video.light",
+            "old": "trash.light",
+            "one": "msoffice-onenote.light",
+            "otf": "font.light",
+            "page.js": "angular.light",
+            "page.spec.js": "angular.light",
+            "page.spec.ts": "angular.light",
+            "page.ts": "angular.light",
+            "patch": "file-diff.light",
+            "pcd": "point_cloud_library.light",
+            "pdb": "database.light",
+            "pdf": "file-pdf.light",
+            "pipe.js": "angular.light",
+            "pipe.spec.js": "angular.light",
+            "pipe.spec.ts": "angular.light",
+            "pipe.ts": "angular.light",
+            "pkg": "package.light",
+            "pkg.tar.xz": "package-archlinux.light",
+            "png": "image.light",
+            "po": "locale.light",
+            "pot": "locale.light",
+            "ppt": "msoffice-powerpoint.light",
+            "pptx": "msoffice-powerpoint.light",
+            "prproj": "adobe-premiere_pro.light",
+            "psd": "adobe-photoshop.light",
+            "psmdcp": "nuget.light",
+            "pyc": "lib-python.light",
+            "pyd": "lib-python.light",
+            "pyo": "lib-python.light",
+            "ra": "sound.light",
+            "ram": "sound.light",
+            "raml": "raml.light",
+            "rar": "package.light",
+            "reg": "registry.light",
+            "rkt": "scheme.light",
+            "rlib": "lib-rust.light",
+            "rm": "sound.light",
+            "rpm": "package-rpm.light",
+            "sav": "save.light",
+            "save": "save.light",
+            "sbt": "simple_build_tool.light",
+            "scssm": "sass.light",
+            "sdl": "simple_declarative_language.light",
+            "service.spec.ts": "angular.light",
+            "service.ts": "angular.light",
+            "slang": "crystal-chevrons.light",
+            "sln": "visual_studio.light",
+            "so": "lib.light",
+            "sol": "solidity.light",
+            "spec.js": "javascript-test.light",
+            "spec.jsx": "javascript-test.light",
+            "spec.ts": "javascript-test.light",
+            "spec.tsx": "javascript-test.light",
+            "svelte": "svelte.light",
+            "svg": "svg.light",
+            "swf": "flash.light",
+            "tar": "package.light",
+            "test.js": "javascript-test.light",
+            "test.jsx": "javascript-test.light",
+            "test.ts": "javascript-test.light",
+            "test.tsx": "javascript-test.light",
+            "tif": "image.light",
+            "tiff": "image.light",
+            "tmLanguage": "file-xml.light",
+            "toml": "file-toml.light",
+            "tsv": "file-csv.light",
+            "ttc": "font.light",
+            "ttf": "font.light",
+            "twig": "twig.light",
+            "txt": "file-text.light",
+            "vagrantfile": "vagrant.light",
+            "vsix": "package-vscode.light",
+            "vue": "vue.light",
+            "wasm": "webassembly.light",
+            "wast": "webassembly.light",
+            "wat": "webassembly.light",
+            "wav": "sound.light",
+            "webp": "image.light",
+            "wma": "sound.light",
+            "wmv": "video.light",
+            "woff": "font.light",
+            "woff2": "font.light",
+            "xls": "msoffice-excel.light",
+            "xlsx": "msoffice-excel.light",
+            "xz": "package.light",
+            "zip": "package.light"
+        },
+        "languageIds": {
+            "ansible": "ansible.light",
+            "apex": "salesforce.light",
+            "apiblueprint": "api_blueprint.light",
+            "arm": "file-binary.light",
+            "asm": "file-binary.light",
+            "aspnetcorerazor": "razor.light",
+            "azcli": "azure.light",
+            "azure-pipelines": "azure_pipelines.light",
+            "bat": "console.light",
+            "blade": "blade.light",
+            "bolt": "bolt.light",
+            "c": "c.light",
+            "cabal": "haskell.light",
+            "clojure": "clojure.light",
+            "cmake": "cmake.light",
+            "coffeescript": "coffeescript.light",
+            "cpp": "cpp.light",
+            "crystal": "crystal.light",
+            "csharp": "csharp.light",
+            "css": "css.light",
+            "cuda": "cuda.light",
+            "d": "d.light",
+            "dpp": "d.light",
+            "dart": "dart.light",
+            "diet": "vibed.light",
+            "dockerfile": "docker.light",
+            "doxygen": "file-doxygen.light",
+            "ecr": "crystal-chevrons.light",
+            "ejs": "javascript-chevrons.light",
+            "elixir": "elixir.light",
+            "elm": "elm.light",
+            "erb": "ruby-chevrons.light",
+            "erlang": "erlang.light",
+            "feature": "cucumber.light",
+            "fsharp": "fsharp.light",
+            "gas": "file-binary.light",
+            "gdscript": "godot.light",
+            "gherkin": "cucumber.light",
+            "git-commit": "file-git.light",
+            "git-rebase": "file-git.light",
+            "gml-gm81": "gamemaker.light",
+            "gml-gms": "gamemaker.light",
+            "gml-gms2": "gamemaker2.light",
+            "gml-gmx": "config.light",
+            "gml-yyp": "config.light",
+            "go": "go.light",
+            "graphql": "graphql.light",
+            "groovy": "groovy.light",
+            "haml": "haml.light",
+            "handlebars": "handlebars.light",
+            "haskell": "haskell.light",
+            "haxe": "haxe.light",
+            "hlsl": "directx.light",
+            "html": "html.light",
+            "hxml": "haxe-chevrons.light",
+            "ini": "config.light",
+            "idris": "idris.light",
+            "ipkg": "build-idris.light",
+            "jade": "pug.light",
+            "java": "java.light",
+            "javascript": "javascript.light",
+            "javascriptreact": "react.light",
+            "jekyll": "jekyll.light",
+            "json": "file-json.light",
+            "jsonc": "file-json.light",
+            "julia": "julia.light",
+            "kotlin": "kotlin.light",
+            "less": "less.light",
+            "lidris": "idris.light",
+            "liquid": "liquid.light",
+            "lisp": "lisp.light",
+            "lua": "lua.light",
+            "makefile": "build.light",
+            "markdown": "markdown.light",
+            "marko": "marko.light",
+            "meson": "meson.light",
+            "mips": "file-binary.light",
+            "mjml": "mjml.light",
+            "ndjson": "file-json.light",
+            "nim": "nim.light",
+            "nimble": "nim.light",
+            "nsis": "nsis.light",
+            "nunjucks": "nunjucks.light",
+            "objective-c": "objective_c.light",
+            "objective-cpp": "objective_c.light",
+            "ocaml": "ocaml.light",
+            "pcd": "point_cloud_library.light",
+            "perl": "camelia.light",
+            "perl6": "camelia.light",
+            "php": "php.light",
+            "plsql": "database.light",
+            "polymer": "polymer.light",
+            "postcss": "postcss.light",
+            "powershell": "powershell.light",
+            "properties": "config.light",
+            "puppet": "puppet.light",
+            "python": "python.light",
+            "r": "r.light",
+            "racket": "scheme.light",
+            "raml": "raml.light",
+            "razor": "razor.light",
+            "reason": "reason.light",
+            "ruby": "ruby.light",
+            "rust": "rust.light",
+            "sass": "sass.light",
+            "sbt": "simple_build_tool.light",
+            "scala": "scala.light",
+            "scss": "sass.light",
+            "scheme": "scheme.light",
+            "sdl": "simple_declarative_language.light",
+            "shaderlab": "unity.light",
+            "shellscript": "terminal.light",
+            "slang": "crystal-chevrons.light",
+            "solidity": "solidity.light",
+            "sql": "database.light",
+            "stylus": "stylus.light",
+            "svelte": "svelte.light",
+            "svg": "svg.light",
+            "swift": "swift.light",
+            "terraform": "terraform.light",
+            "toml": "file-toml.light",
+            "twig": "twig.light",
+            "typescript": "typescript.light",
+            "typescriptreact": "react.light",
+            "vala": "gnome.light",
+            "vb": "visual_basic.light",
+            "visualforce": "salesforce-chevrons.light",
+            "vue": "vue.light",
+            "xml": "file-xml.light",
+            "wasm": "webassembly.light",
+            "wat": "webassembly.light",
+            "xsl": "file-xml.light",
+            "yaml": "file-yaml.light"
+        }
+    }
+}

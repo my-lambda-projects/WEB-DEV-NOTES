@@ -1,0 +1,50 @@
+{
+	"name": "VBScript",
+	"displayName": "VBScript",
+	"description": "VBScript language syntax highlighting support for Visual Studio Code",
+	"version": "0.0.2",
+	"publisher": "luggage66",
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"categories": [
+		"Languages"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/luggage66/vscode-vbscript.git"
+	},
+	"contributes": {
+		"languages": [
+			{
+				"id": "vbscript",
+				"aliases": [
+					"VBScript",
+					"vbscript"
+				],
+				"extensions": [
+					".vbs",
+					".vbe",
+					".wsf",
+					".wsc",
+					".acm",
+					".acr",
+					".acf"
+				],
+				"configuration": "./vbscript.configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "vbscript",
+				"scopeName": "source.vbs",
+				"path": "./syntaxes/vbscript.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "c0c6ddaa-65dd-4f41-9963-7239de402137",
+		"publisherId": "2f6089ec-ec13-4ba7-914e-ca6d813eecc9",
+		"publisherDisplayName": "Donald Mull Jr"
+	}
+}

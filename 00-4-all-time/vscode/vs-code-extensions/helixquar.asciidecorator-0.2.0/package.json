@@ -1,0 +1,95 @@
+{
+	"name": "asciidecorator",
+	"displayName": "ASCIIDecorator",
+	"description": "Figlet font generator",
+	"version": "0.2.0",
+	"publisher": "helixquar",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"icon": "images/icon.png",
+	"bugs": {
+		"url": "https://github.com/helixquar/asciidecorator/issues"
+	},
+	"homepage": "https://github.com/helixquar/asciidecorator/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/helixquar/asciidecorator.git"
+	},
+	"galleryBanner": {
+		"color": "#1e1e1e",
+		"theme": "dark"
+	},
+	"categories": [
+		"Formatters",
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:asciidecorator.generateFontTestWithLorem",
+		"onCommand:asciidecorator.generateFontTestWithSelected",
+		"onCommand:asciidecorator.replaceWithDefaultFont",
+		"onCommand:asciidecorator.replaceWithSelectedFont"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "ASCII Decorator Configuration",
+			"properties": {
+				"asciidecorator.enable": {
+					"type": "boolean",
+					"default": "true",
+					"description": "Enable/disable this extension."
+				},
+				"asciidecorator.defaultFont": {
+					"type": "string",
+					"default": "ANSI Shadow",
+					"description": "Default name of the font file to use."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "asciidecorator.generateFontTestWithLorem",
+				"title": "ASCII Decorator: Generate Font Test (Lorem Ipsum)",
+				"description": "Generated font test with \"Lorem Ipsum\""
+			},
+			{
+				"command": "asciidecorator.generateFontTestWithSelected",
+				"title": "ASCII Decorator: Generate Font Test (Selected Text)",
+				"description": "Generated font test with selected text"
+			},
+			{
+				"command": "asciidecorator.replaceWithDefaultFont",
+				"title": "ASCII Decorator: Default Font",
+				"description": "Replace selected text with default font"
+			},
+			{
+				"command": "asciidecorator.replaceWithSelectedFont",
+				"title": "ASCII Decorator: Font Selector",
+				"description": "Replace selected text with selected font"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"dependencies": {
+		"figlet": "^1.2.0"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"__metadata": {
+		"id": "3c828576-2da9-433e-ac8a-bc7ce2f6a684",
+		"publisherId": "71192a92-8736-40eb-a5a4-18609a7f11a1",
+		"publisherDisplayName": "helixquar"
+	}
+}

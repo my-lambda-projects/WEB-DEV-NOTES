@@ -1,0 +1,65 @@
+{
+	"name": "fix-al-file-names",
+	"displayName": "Fix AL File Names",
+	"description": "Change AL file names as per the best practices",
+	"publisher": "MSNRaju",
+	"version": "1.0.0",
+	"icon": "icon/logo.png",
+	"repository": {
+		"url": "https://github.com/msnraju/fix-al-file-names"
+	},
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:fix-al-file-names.fixAlFileNames"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "fix-al-file-names.fixAlFileNames",
+				"title": "MSN: Fix AL File Names"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.46.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.2",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"@types/n-readlines": "^1.0.1",
+		"n-readlines": "^1.0.0"
+	},
+	"keywords": [
+		"AL",
+		"Naming Conventions",
+		"Business Central",
+		"Dynamics 365"
+	],
+	"__metadata": {
+		"id": "ed006a60-b667-4ce2-bad0-118048fc4656",
+		"publisherId": "0f47ac5e-034b-4e37-a1e0-c47b1153f4a0",
+		"publisherDisplayName": "MSN Raju"
+	}
+}

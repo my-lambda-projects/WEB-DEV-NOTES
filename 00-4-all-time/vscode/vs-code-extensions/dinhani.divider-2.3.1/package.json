@@ -1,0 +1,100 @@
+{
+	"name": "divider",
+	"displayName": "Section Divider",
+	"description": "Inserts horizontal section dividers using language comments.",
+	"publisher": "dinhani",
+	"version": "2.3.1",
+	"license": "MIT",
+	"repository": "https://github.com/dinhani/vscode-section-divider",
+	"bugs": "https://github.com/dinhani/vscode-section-divider/issues",
+	"icon": "images/vscode-divider-icon.png",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"activationEvents": [
+		"onCommand:divider.addDividerLevel1",
+		"onCommand:divider.addDividerLevel2"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "divider.addDividerLevel1",
+				"title": "Divider: Add H1 Divider"
+			},
+			{
+				"command": "divider.addDividerLevel2",
+				"title": "Divider: Add H2 Divider"
+			},
+			{
+				"command": "divider.addDividerLevel1WithOneLine",
+				"title": "Divider: Add H1 Divider - One Line"
+			},
+			{
+				"command": "divider.addDividerLevel2WithOneLine",
+				"title": "Divider: Add H2 Divider - One Line"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "divider.addDividerLevel1",
+				"key": "alt+d",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "divider.addDividerLevel2",
+				"key": "alt+ctrl+d",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Section Divider extension",
+			"properties": {
+				"divider.text.level1": {
+					"type": "string",
+					"default": "=",
+					"description": "Text that will be used to fill the level 1 (H1) section divider lines."
+				},
+				"divider.text.level2": {
+					"type": "string",
+					"default": "-",
+					"description": "Text that will be used to fill the level 2 (H2) section divider lines."
+				},
+				"divider.endColumn": {
+					"type": "number",
+					"default": 80,
+					"description": "Last character column the section divider will reach."
+				},
+				"divider.lines": {
+					"type": "number",
+					"default": 3,
+					"description": "Number of lines the section divider will have."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.18",
+		"mocha": "^5.2.0",
+		"tslint": "^5.12.1",
+		"tslint-microsoft-contrib": "^6.0.0",
+		"typescript": "3.2.4",
+		"vscode": "^1.1.27"
+	},
+	"__metadata": {
+		"id": "84c081d5-110f-47fc-8272-18d80f67c3f9",
+		"publisherId": "0d9d5eea-7657-4466-9833-54ddc6892f58",
+		"publisherDisplayName": "Dinhani"
+	}
+}

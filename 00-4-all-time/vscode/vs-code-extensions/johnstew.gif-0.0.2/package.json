@@ -1,0 +1,185 @@
+{
+	"name": "gif",
+	"displayName": "GIF",
+	"description": "Easily grab a gif from within VS Code to add your to docs, presentations, etc.",
+	"version": "0.0.2",
+	"publisher": "johnstew",
+	"engines": {
+		"vscode": "^1.11.0"
+	},
+	"galleryBanner": {
+		"color": "#5c2d91",
+		"theme": "dark"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:gif.trending",
+		"onCommand:gif.agree",
+		"onCommand:gif.awww",
+		"onCommand:gif.dance",
+		"onCommand:gif.deal",
+		"onCommand:gif.eww",
+		"onCommand:gif.facepalm",
+		"onCommand:gif.fist",
+		"onCommand:gif.gl",
+		"onCommand:gif.bye",
+		"onCommand:gif.hug",
+		"onCommand:gif.idk",
+		"onCommand:gif.no",
+		"onCommand:gif.omg",
+		"onCommand:gif.mic",
+		"onCommand:gif.please",
+		"onCommand:gif.oops",
+		"onCommand:gif.seriously",
+		"onCommand:gif.shocked",
+		"onCommand:gif.shrug",
+		"onCommand:gif.sorry",
+		"onCommand:gif.thanks",
+		"onCommand:gif.yes"
+	],
+	"main": "./out/src/main",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "GIF configuration",
+			"properties": {
+				"gif.rating": {
+					"type": "string",
+					"default": "pg-13",
+					"description": "Specify the rating you would like to use for GIF results."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "gif.trending",
+				"title": "GIF Trending"
+			},
+			{
+				"command": "gif.agree",
+				"title": "GIF Agree"
+			},
+			{
+				"command": "gif.awww",
+				"title": "GIF Aww"
+			},
+			{
+				"command": "gif.dance",
+				"title": "GIF Dance"
+			},
+			{
+				"command": "gif.deal",
+				"title": "GIF Deal"
+			},
+			{
+				"command": "gif.eww",
+				"title": "GIF Eww"
+			},
+			{
+				"command": "gif.facepalm",
+				"title": "GIF Facepalm"
+			},
+			{
+				"command": "gif.fist",
+				"title": "GIF Fist"
+			},
+			{
+				"command": "gif.gl",
+				"title": "GIF Good Luck"
+			},
+			{
+				"command": "gif.bye",
+				"title": "GIF Bye"
+			},
+			{
+				"command": "gif.hug",
+				"title": "GIF Hug"
+			},
+			{
+				"command": "gif.idk",
+				"title": "GIF Idk"
+			},
+			{
+				"command": "gif.no",
+				"title": "GIF No"
+			},
+			{
+				"command": "gif.omg",
+				"title": "GIF Omg"
+			},
+			{
+				"command": "gif.mic",
+				"title": "GIF Mic Drop"
+			},
+			{
+				"command": "gif.please",
+				"title": "GIF Please"
+			},
+			{
+				"command": "gif.oops",
+				"title": "GIF Oops"
+			},
+			{
+				"command": "gif.seriously",
+				"title": "GIF Seriously"
+			},
+			{
+				"command": "gif.shocked",
+				"title": "GIF Shocked"
+			},
+			{
+				"command": "gif.shrug",
+				"title": "GIF Shrug"
+			},
+			{
+				"command": "gif.sorry",
+				"title": "GIF Sorry"
+			},
+			{
+				"command": "gif.thanks",
+				"title": "GIF Thanks"
+			},
+			{
+				"command": "gif.yes",
+				"title": "GIF Yes"
+			}
+		]
+	},
+	"license": "https://github.com/johnstew/vscode-gif/blob/master/LICENSE",
+	"bugs": {
+		"url": "https://github.com/johnstew/vscode-gif/issues"
+	},
+	"homepage": "https://github.com/johnstew/vscode-gif/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/johnstew/vscode-gif.git"
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./ && cp -r src/assets out/src",
+		"compile": "tsc -watch -p ./ && cp -r src/assets out/src",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"dependencies": {
+		"handlebars": "^4.0.6",
+		"mkdirp": "^0.5.1",
+		"request": "^2.81.0",
+		"request-promise": "^4.2.0",
+		"rimraf": "^2.6.1",
+		"uuid": "^3.0.1"
+	},
+	"__metadata": {
+		"id": "b0f08870-451c-48d1-8eb6-c6e5a2d876a9",
+		"publisherId": "55169e8d-4f49-4fde-a168-5f80e29ca865",
+		"publisherDisplayName": "John Stewart"
+	}
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>WASM Sobel Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       html {
+            font-family: sans-serif;
+       }
+
+       h1 {
+            font-size: 1.8rem;
+            text-align: center;
+       }
+
+        video {
+            position: absolute;
+            visibility: hidden;
+        }
+
+        body > div {
+          width: 600px;
+          margin: 0 auto;
+        }
+
+        div > div {
+          position: relative;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+
+        button {
+            color: #fff;
+            background-color: #6496c8;
+            border: none;
+            border-radius: 5px;
+            display: inline-block;
+            min-width: 50px;
+            width: 80px;
+            padding: 5px 10px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="smoothie.js"></script>
+    <script src="sobel.js"></script>
+
+</head>
+
+<body>
+    <div>
+      <h1>Web Assembly JavaScript Sobel Example</h1>
+      <video id="vid"></video>
+      <div>
+        <canvas id="mycanvas" width="600"></canvas>
+        <button id="grey">Toggle JavaScript</button>
+      </div>
+      <p>Frame composition time in ms:
+      <output id="updatetime" name="updatetime"></output></p>
+      <canvas id="chart" width="600" height="100"></canvas>
+      <p>Use Performance Tab in Developer Tools to see Avg FPS</p>
+    </div>
+
+
+    <script type='text/javascript'>
+        var Module = {};
+        fetch('change.wasm')
+            .then(response => response.arrayBuffer())
+            .then(buffer => {
+                Module.wasmBinary = buffer;
+                var script = document.createElement('script');
+                script.src = 'change.js';
+                script.onload = function() {
+                  console.log('Emscripten boilerplate loaded.');
+                }
+                document.body.appendChild(script);
+            });
+    </script>
+
+</body>
+
+</html>

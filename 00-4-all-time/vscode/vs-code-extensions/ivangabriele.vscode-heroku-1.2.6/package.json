@@ -1,0 +1,75 @@
+{
+	"name": "vscode-heroku",
+	"version": "1.2.6",
+	"displayName": "Heroku",
+	"description": "Check your project's Heroku deployment status.",
+	"main": "./out/extension",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.28.2"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.vscode-heroku.linkWorkspace",
+				"title": "Heroku: Link the current workspace to an existing Heroku app"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test",
+		"preversion": "npm run compile",
+		"postversion": "git push origin HEAD & git push --tags",
+		"vscode:prepublish": "npm run compile",
+		"watch": "tsc -watch -p ./"
+	},
+	"dependencies": {
+		"await-to-js": "^2.1.1",
+		"command-exists": "^1.2.8",
+		"moment": "^2.23.0"
+	},
+	"devDependencies": {
+		"@types/fs-extra": "^5.0.4",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.18",
+		"fs-extra": "^7.0.1",
+		"tslint": "^5.12.1",
+		"typescript": "^3.2.2",
+		"vscode": "^1.1.26"
+	},
+	"author": {
+		"name": "Ivan Gabriele",
+		"email": "ivan.gabriele@gmail.com",
+		"url": "https://www.ivangabriele.com"
+	},
+	"publisher": "ivangabriele",
+	"icon": "res/icon.png",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"extension",
+		"heroku",
+		"visual studio code",
+		"vsc",
+		"vscode"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ivangabriele/vscode-heroku.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ivangabriele/vscode-heroku/issues"
+	},
+	"homepage": "https://github.com/ivangabriele/vscode-heroku#readme",
+	"__metadata": {
+		"id": "445dacc3-595d-429d-9f10-8e5d15310e5a",
+		"publisherId": "deed7d07-8b79-4444-a8e5-b9308f8789a9",
+		"publisherDisplayName": "Ivan Gabriele"
+	}
+}

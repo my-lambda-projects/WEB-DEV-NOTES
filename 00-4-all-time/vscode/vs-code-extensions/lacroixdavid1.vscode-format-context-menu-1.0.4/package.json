@@ -1,0 +1,111 @@
+{
+	"name": "vscode-format-context-menu",
+	"displayName": "Format in context menus",
+	"description": "VSCode extension to format multiple files with right click context menu",
+	"version": "1.0.4",
+	"publisher": "lacroixdavid1",
+	"icon": "assets/icon.png",
+	"author": {
+		"name": "David Lacroix",
+		"email": "lacroix.david1@gmail.com"
+	},
+	"license": "MIT",
+	"keywords": [
+		"format multiple files",
+		"format",
+		"context menu"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lacroixdavid1/vscode-format-context-menu.git"
+	},
+	"homepage": "https://github.com/lacroixdavid1/vscode-format-context-menu/blob/master/README.md",
+	"bugs": {
+		"url": "https://github.com/lacroixdavid1/vscode-format-context-menu/issues",
+		"email": "lacroix.david1@gmail.com"
+	},
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"categories": [
+		"Other",
+		"Formatters"
+	],
+	"activationEvents": [
+		"onCommand:extension.formatSelectedFilesFromExplorerContext",
+		"onCommand:extension.formatSelectedFilesFromScmContext",
+		"onCommand:extension.formatSelectedFileFromEditorTileContext"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"configuration": [
+			{
+				"title": "Format From Context Menu",
+				"properties": {
+					"formatContextMenu.saveAfterFormat": {
+						"type": "boolean",
+						"default": true,
+						"description": "Save file after formatting.",
+						"scope": "window"
+					},
+					"formatContextMenu.closeAfterSave": {
+						"type": "boolean",
+						"default": false,
+						"description": "Close file after saving. This does nothing unless you have enabled saving after formatting.",
+						"scope": "window"
+					}
+				}
+			}
+		],
+		"commands": [
+			{
+				"command": "extension.formatSelectedFilesFromExplorerContext",
+				"title": "Format"
+			},
+			{
+				"command": "extension.formatSelectedFilesFromScmContext",
+				"title": "Format"
+			},
+			{
+				"command": "extension.formatSelectedFileFromEditorTileContext",
+				"title": "Format"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "extension.formatSelectedFilesFromExplorerContext"
+				}
+			],
+			"scm/resourceState/context": [
+				{
+					"command": "extension.formatSelectedFilesFromScmContext"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "extension.formatSelectedFileFromEditorTileContext"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && export CODE_TESTS_WORKSPACE=./src/test/workspace && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.6",
+		"tslint": "^5.8.0",
+		"@types/node": "^7.0.43",
+		"@types/mocha": "^2.2.42"
+	},
+	"__metadata": {
+		"id": "003acb4c-bc62-4572-9f02-e8f4cd4faf91",
+		"publisherId": "75b011f7-ec02-4782-a9ea-739e3af7a1dd",
+		"publisherDisplayName": "lacroixdavid1"
+	}
+}

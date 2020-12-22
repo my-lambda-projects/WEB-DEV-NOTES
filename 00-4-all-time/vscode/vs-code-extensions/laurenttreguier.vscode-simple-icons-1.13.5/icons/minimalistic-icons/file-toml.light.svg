@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320"><defs><mask id="a"><path fill="#fff" d="M0 0h320v320H0z"/><path d="M180 40v60h60z"/><path d="M130 150H90v120h40m60-120h40v120h-40" fill="none" stroke="#000" stroke-linecap="square" stroke-width="20"/></mask></defs><path fill="#3f3f3f" mask="url(#a)" d="M40 0v320h240V100L180 0z"/></svg>

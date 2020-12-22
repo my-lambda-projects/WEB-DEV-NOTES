@@ -1,0 +1,73 @@
+{
+	"name": "monokai-dark-vibrant",
+	"displayName": "Monokai Dark Vibrant",
+	"description": "An overly vibrant Monokai dark theme with colorful colors.",
+	"version": "2.0.5",
+	"publisher": "larscom",
+	"icon": "icons/icon.png",
+	"author": "Lars Kniep <larskniep@outlook.com>",
+	"license": "MIT",
+	"galleryBanner": {
+		"color": "#282C34",
+		"theme": "dark"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/larscom/monokai-dark-vibrant/monokai-dark-vibrant.git"
+	},
+	"bugs": {
+		"url": "https://github.com/larscom/monokai-dark-vibrant/issues"
+	},
+	"homepage": "https://github.com/larscom/monokai-dark-vibrant/blob/master/README.md",
+	"engines": {
+		"vscode": "^1.15.0"
+	},
+	"categories": [
+		"Themes"
+	],
+	"keywords": [
+		"Theme",
+		"Vibrant",
+		"Monokai",
+		"Bright",
+		"Colorful",
+		"Dark",
+		"OneDark"
+	],
+	"badges": [
+		{
+			"url": "https://vsmarketplacebadge.apphb.com/version/larscom.monokai-dark-vibrant.svg",
+			"href": "https://marketplace.visualstudio.com/items/larscom.monokai-dark-vibrant",
+			"description": "Extension Version"
+		},
+		{
+			"url": "https://vsmarketplacebadge.apphb.com/installs/larscom.monokai-dark-vibrant.svg",
+			"href": "https://marketplace.visualstudio.com/items/larscom.monokai-dark-vibrant",
+			"description": "Extension Installs"
+		},
+		{
+			"url": "https://vsmarketplacebadge.apphb.com/rating/larscom.monokai-dark-vibrant.svg",
+			"href": "https://marketplace.visualstudio.com/items/larscom.monokai-dark-vibrant",
+			"description": "Extension Rating"
+		},
+		{
+			"url": "https://img.shields.io/github/license/larscom/monokai-dark-vibrant.svg",
+			"href": "https://github.com/larscom/monokai-dark-vibrant/blob/master/LICENSE",
+			"description": "Extension License"
+		}
+	],
+	"contributes": {
+		"themes": [
+			{
+				"label": "Monokai Dark Vibrant",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiDarkVibrant-color-theme.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "01405b96-ae4a-4af6-b5c9-ceb2a8dc8e32",
+		"publisherId": "c2d59b36-9eaf-442c-b1c5-60e8fc8b6619",
+		"publisherDisplayName": "larscom"
+	}
+}

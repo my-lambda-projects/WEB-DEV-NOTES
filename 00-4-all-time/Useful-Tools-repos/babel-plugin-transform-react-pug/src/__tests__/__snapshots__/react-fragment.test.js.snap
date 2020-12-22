@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic JavaScript output: transformed source code 1`] = `
+"module.exports = (
+  <React.Fragment>
+    <div />
+    <div />
+  </React.Fragment>
+);
+"
+`;
+
+exports[`basic html output: generated html 1`] = `
+Array [
+  <div />,
+  <div />,
+]
+`;
+
+exports[`basic static html output: static html 1`] = `"<div></div><div></div>"`;
+
+exports[`with each JavaScript output: transformed source code 1`] = `
+"module.exports = (
+  <React.Fragment>
+    {[1, 2, 3].map(item => {
+      return <div key={item}>{item}</div>;
+    })}
+    <div>Next item</div>
+  </React.Fragment>
+);
+"
+`;
+
+exports[`with each html output: generated html 1`] = `
+Array [
+  <div>
+    1
+  </div>,
+  <div>
+    2
+  </div>,
+  <div>
+    3
+  </div>,
+  <div>
+    Next item
+  </div>,
+]
+`;
+
+exports[`with each static html output: static html 1`] = `"<div>1</div><div>2</div><div>3</div><div>Next item</div>"`;
+
+exports[`with if JavaScript output: transformed source code 1`] = `
+"module.exports = (
+  <React.Fragment>
+    {true ? <div>Truthy</div> : null}
+    <div>Next item</div>
+  </React.Fragment>
+);
+"
+`;
+
+exports[`with if html output: generated html 1`] = `
+Array [
+  <div>
+    Truthy
+  </div>,
+  <div>
+    Next item
+  </div>,
+]
+`;
+
+exports[`with if static html output: static html 1`] = `"<div>Truthy</div><div>Next item</div>"`;
+
+exports[`with inline javascript JavaScript output: transformed source code 1`] = `
+"let _i;
+
+module.exports = (
+  <React.Fragment>
+    {((_i = 100), null)}
+    <div>{_i}</div>
+  </React.Fragment>
+);
+"
+`;
+
+exports[`with inline javascript html output: generated html 1`] = `
+<div>
+  100
+</div>
+`;
+
+exports[`with inline javascript static html output: static html 1`] = `"<div>100</div>"`;

@@ -1,0 +1,65 @@
+{
+	"name": "join-lines",
+	"description": "Use Ctrl+j/Cmd+j to join lines, just like in Atom and similar to Sublime Text.",
+	"icon": "images/join-lines-icon.png",
+	"galleryBanner": {
+		"color": "#1e1e1e",
+		"theme": "dark"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wmaurer/vscode-join-lines.git"
+	},
+	"bugs": {
+		"url": "https://github.com/wmaurer/vscode-join-lines/issues"
+	},
+	"homepage": "https://github.com/wmaurer/vscode-join-lines/blob/master/README.md",
+	"license": "MIT",
+	"version": "0.2.2",
+	"publisher": "wmaurer",
+	"engines": {
+		"vscode": "^1.6.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.join-lines"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.join-lines",
+				"title": "Join Lines"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.join-lines",
+				"key": "ctrl+j"
+			},
+			{
+				"command": "extension.join-lines",
+				"key": "cmd+j"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.33",
+		"@types/node": "^6.0.46",
+		"mocha": "^2.3.3",
+		"typescript": "^2.0.6",
+		"vscode": "^1.0.3"
+	},
+	"__metadata": {
+		"id": "0c2f7bfc-650b-4b67-8844-d699dd6e44f6",
+		"publisherId": "1765455a-0065-41ee-a148-b8fd4226221b",
+		"publisherDisplayName": "wmaurer"
+	}
+}

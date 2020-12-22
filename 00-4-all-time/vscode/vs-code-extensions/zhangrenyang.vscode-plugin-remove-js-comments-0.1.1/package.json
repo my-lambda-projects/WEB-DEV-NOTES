@@ -1,0 +1,92 @@
+{
+	"name": "vscode-plugin-remove-js-comments",
+	"displayName": "remove-js-comments",
+	"description": "remove-js-comments",
+	"keywords": [
+		"vscode",
+		"plugin",
+		"comments"
+	],
+	"version": "0.1.1",
+	"publisher": "zhangrenyang",
+	"icon": "images/icon.png",
+	"repository": "https://github.com/zhangrenyang/vscode-plugin-remove-js-comments",
+	"engines": {
+		"vscode": "^1.49.0"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"activationEvents": [
+		"onCommand:vscode-plugin-remove-js-comments.removeJSComments"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "vscode-plugin-remove-js-comments",
+			"properties": {
+				"vscode-plugin-remove-js-comments.yourName": {
+					"type": "string",
+					"default": "guest",
+					"description": "张仁阳"
+				},
+				"vscode-plugin-remove-js-comments.showTip": {
+					"type": "boolean",
+					"default": true,
+					"description": "remove-js-comments"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "vscode-plugin-remove-js-comments.removeJSComments",
+				"title": "remove-js-comments"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "vscode-plugin-remove-js-comments.removeJSComments",
+				"key": "ctrl+f10",
+				"mac": "cmd+f10",
+				"when": "editorTextFocus"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "vscode-plugin-remove-js-comments.removeJSComments",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^14.0.27",
+		"@types/vscode": "^1.49.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^7.9.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.0.2",
+		"vscode-test": "^1.4.0"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	},
+	"__metadata": {
+		"id": "59013e71-d710-4982-a687-e9e71e5d90f1",
+		"publisherId": "8f33838f-0aa7-4b29-b72a-98373b0205d7",
+		"publisherDisplayName": "zhangrenyang"
+	}
+}

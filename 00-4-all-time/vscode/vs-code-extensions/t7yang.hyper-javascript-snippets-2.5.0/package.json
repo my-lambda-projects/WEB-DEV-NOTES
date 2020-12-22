@@ -1,0 +1,59 @@
+{
+	"name": "hyper-javascript-snippets",
+	"description": "A collection of snippets that cover JavaScript, TypeScript, and NodeJS for Visual Studio Code",
+	"version": "2.5.0",
+	"displayName": "Hyper JavaScript Snippets",
+	"publisher": "t7yang",
+	"icon": "images/hyper-js.png",
+	"galleryBanner": {
+		"color": "#000000",
+		"theme": "dark"
+	},
+	"engines": {
+		"vscode": "^0.10.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"keywords": [
+		"snippet",
+		"snippets",
+		"javascript",
+		"typescript",
+		"point-free"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "javascript",
+				"path": "./snippets/javascript.json"
+			},
+			{
+				"language": "javascriptreact",
+				"path": "./snippets/javascript.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/typescript.json"
+			},
+			{
+				"language": "typescriptreact",
+				"path": "./snippets/typescript.json"
+			}
+		]
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/t7yang/vscode-hyper-javascript-snippets"
+	},
+	"bugs": {
+		"url": "https://github.com/t7yang/vscode-hyper-javascript-snippets/issues"
+	},
+	"homepage": "https://github.com/t7yang/vscode-hyper-javascript-snippets",
+	"__metadata": {
+		"id": "9791aebe-ed7a-4fb8-aead-eee8dd7bc19e",
+		"publisherId": "a3ac03e4-35f9-4473-b391-645ba5945fe1",
+		"publisherDisplayName": "t7yang"
+	}
+}

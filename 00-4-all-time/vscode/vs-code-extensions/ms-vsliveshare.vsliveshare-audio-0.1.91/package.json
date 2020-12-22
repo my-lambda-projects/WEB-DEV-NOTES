@@ -1,0 +1,361 @@
+{
+	"name": "vsliveshare-audio",
+	"displayName": "Live Share Audio",
+	"description": "Adds audio calling capabilities to Visual Studio Live Share",
+	"version": "0.1.91",
+	"publisher": "ms-vsliveshare",
+	"preview": true,
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"icon": "images/icon.png",
+	"homepage": "https://aka.ms/vsls-audio",
+	"bugs": {
+		"url": "https://aka.ms/vsls-issues",
+		"email": "vsls-feedback@microsoft.com"
+	},
+	"engines": {
+		"vscode": "^1.21.0"
+	},
+	"keywords": [
+		"Collaboration",
+		"Voice",
+		"Sharing",
+		"Audio",
+		"Call"
+	],
+	"categories": [
+		"Other"
+	],
+	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+	"activationEvents": [
+		"onFileSystemAccess:vsls",
+		"*"
+	],
+	"repository": {
+		"url": "https://github.com/MicrosoftDocs/live-share"
+	},
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "liveshare.audio.installRecovery",
+				"title": "Repair Audio Installation",
+				"category": "Live Share"
+			},
+			{
+				"command": "liveshare.audio.startOrJoinAudio",
+				"title": "Start or Join Audio Call",
+				"category": "Live Share",
+				"vsls-label": "$(unmute) Start or Join Audio Call",
+				"vsls-detail": "Enable audio for the Live Share session."
+			},
+			{
+				"command": "liveshare.audio",
+				"title": "Call Settings",
+				"category": "Live Share",
+				"vsls-label": "$(unmute) Manage Call Settings",
+				"vsls-detail": "Mute/unmute, select audio devices, or disconnect from the call.",
+				"icon": {
+					"dark": "images/dark/gear.svg",
+					"light": "images/light/gear.svg"
+				}
+			},
+			{
+				"command": "liveshare.audio.muteSelf",
+				"title": "Mute Yourself",
+				"category": "Live Share",
+				"icon": {
+					"dark": "images/dark/speaker-mute.svg",
+					"light": "images/light/speaker-mute.svg"
+				}
+			},
+			{
+				"command": "liveshare.audio.unmuteSelf",
+				"title": "Unmute Yourself",
+				"category": "Live Share",
+				"icon": {
+					"dark": "images/dark/speaker.svg",
+					"light": "images/light/speaker.svg"
+				}
+			},
+			{
+				"command": "liveshare.audio.leaveAudio",
+				"title": "Disconnect Audio Call",
+				"category": "Live Share",
+				"icon": {
+					"dark": "images/stop.svg",
+					"light": "images/stop.svg"
+				}
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Live Share Audio",
+			"properties": {
+				"liveshare.audio.joinCallBehavior": {
+					"type": "string",
+					"default": "prompt",
+					"description": "Controls how to respond when an audio call is started.",
+					"enum": [
+						"accept",
+						"prompt"
+					]
+				},
+				"liveshare.audio.startCallOnShare": {
+					"type": "boolean",
+					"default": false,
+					"description": "Controls whether to automatically start an audio call whenever you share."
+				}
+			}
+		},
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "liveshare.audio.startOrJoinAudio",
+					"when": "liveshare.audio:state == LiveShareWithoutAudio"
+				},
+				{
+					"command": "liveshare.audio",
+					"when": "liveshare.audio:state == LiveShareWithAudio"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "liveshare.audio",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.participants",
+					"group": "inline"
+				},
+				{
+					"command": "liveshare.audio.leaveAudio",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.participants",
+					"group": "inline"
+				},
+				{
+					"command": "liveshare.audio.muteSelf",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.self",
+					"group": "inline"
+				},
+				{
+					"command": "liveshare.audio.unmuteSelf",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.self.muted",
+					"group": "inline"
+				},
+				{
+					"command": "liveshare.audio",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.participants",
+					"group": "navigation"
+				},
+				{
+					"command": "liveshare.audio.leaveAudio",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.participants",
+					"group": "navigation"
+				},
+				{
+					"command": "liveshare.audio.muteSelf",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.self",
+					"group": "navigation"
+				},
+				{
+					"command": "liveshare.audio.unmuteSelf",
+					"when": "view =~ /^liveshare\\.session(\\.explorer)?$/ && viewItem == audio.self.muted",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./ && cpx ./src/calling/externalApp/{package.json,LiveShare.png,styles.css} ./out/calling/externalApp/dist",
+		"watch": "tsc -watch -p ./",
+		"webpack": "node ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js",
+		"package": "node ./node_modules/vsce/out/vsce package",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.109",
+		"@types/mocha": "^2.2.42",
+		"copy-webpack-plugin": "^6.0.3",
+		"cpx": "^1.5.0",
+		"gulp": "^4.0.2",
+		"gulp-decompress": "^3.0.0",
+		"gulp-prompt": "^1.2.0",
+		"gulp-tslint": "^8.1.3",
+		"keytar": "^6.0.1",
+		"minimist": "^1.2.5",
+		"nerdbank-gitversioning": "^2.1.7",
+		"request": "^2.87.0",
+		"ts-loader": "^4.4.2",
+		"tslint": "^6.1.3",
+		"typescript": "^2.6.1",
+		"unzip": "^0.1.11",
+		"vsce": "^1.79.1",
+		"vscode": "^1.1.37",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.5",
+		"yargs": "^12.0.1"
+	},
+	"dependencies": {
+		"electron": "file:external/electron",
+		"dynamicloader": "file:external/dynamicloader",
+		"extract-zip": "^2.0.1",
+		"dateformat": "^3.0.3",
+		"download": "^8.0.0",
+		"fs-extra": "^6.0.1",
+		"glob": "^7.1.2",
+		"lockfile": "^1.0.4",
+		"lodash": "^4.17.20",
+		"semver": "^5.5.0",
+		"tar": "^6.0.5",
+		"tmp": "0.0.33",
+		"uuid": "^3.2.1",
+		"vscode-extension-telemetry": "0.1.0",
+		"vsls": "^0.3.967",
+		"vscode-jsonrpc": "^3.3.1",
+		"skype-calling-electron-embedded": "file:external/skype-calling-electron-embedded",
+		"@skype/skype-calling-electron": "^2019.35.0-0.5-8f105",
+		"@skype/skype-calling-interface": "^2019.35.0-0.5-8f105",
+		"@skype/rt-js-bindings": "^2019.35.0-0.5-8f105",
+		"@types/node": "^11.13.7"
+	},
+	"extensionDependencies": [
+		"ms-vsliveshare.vsliveshare"
+	],
+	"runtimeDependencies": [
+		{
+			"code": "electron-4.2.7",
+			"description": "electron-win-ia32-skype-4.2.7",
+			"url": "https://callingcdndev.blob.core.windows.net/electron/electron-win-ia32-signed/skype-4.2.7/3168415/electron.zip",
+			"platforms": [
+				"win32"
+			],
+			"architectures": [
+				"ia32"
+			],
+			"installPath": "./electron-4.2.7/dist",
+			"unpackPath": "../../temp",
+			"packageRootPath": "",
+			"installTestPath": "./electron-4.2.7/dist/electron.exe",
+			"checksum": "c26692fef51f3a3d0d3c743b85de9c90b9727167"
+		},
+		{
+			"code": "electron-4.2.7",
+			"description": "electron-win-x64-skype-4.2.7",
+			"url": "https://callingcdndev.blob.core.windows.net/electron/electron-win-x64-signed/skype-4.2.7/3168415/electron.zip",
+			"platforms": [
+				"win32"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./electron-4.2.7/dist",
+			"unpackPath": "../../temp",
+			"packageRootPath": "",
+			"installTestPath": "./electron-4.2.7/dist/electron.exe",
+			"checksum": "e92d87e69cb4eb1931bbf1a4a0dcb999979635cb"
+		},
+		{
+			"code": "electron-4.2.7",
+			"description": "electron-lin-x64-skype-4.2.7",
+			"url": "https://callingcdndev.blob.core.windows.net/electron/electron-lin-x64/skype-4.2.7/3168415/electron.zip",
+			"platforms": [
+				"linux"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./electron-4.2.7/dist",
+			"unpackPath": "../../temp",
+			"packageRootPath": "",
+			"installTestPath": "./electron-4.2.7/dist/electron",
+			"chmod": "755",
+			"chmodPaths": [
+				"electron"
+			],
+			"checksum": "d236d1a5f3bf626e6e65ac184a5070b261e5aa10"
+		},
+		{
+			"code": "electron-4.2.12",
+			"description": "electron-electron-mac-x64-skype-4.2.12",
+			"url": "https://callingcdndev.blob.core.windows.net/electron/electron-mac-x64/skype-4.2.12/3664656/electron.zip",
+			"platforms": [
+				"darwin"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./electron-4.2.12/dist",
+			"unpackPath": "../../temp",
+			"packageRootPath": "",
+			"installTestPath": "./electron-4.2.12/dist/Electron.app/Contents/MacOS/Electron",
+			"checksum": "48000e7657bb661500c4df035a166ebd9f58c1a1"
+		},
+		{
+			"code": "slimcore-4.0.2019.37.01.4",
+			"description": "slimcore-electron-2019.37.01.4.tgz",
+			"url": "https://callingcdndev.blob.core.windows.net/slimcore/linux-x64_gcc-skype-4.0-release/2019.37.01.4/slimcore-electron-2019.37.01.4.tgz",
+			"platforms": [
+				"linux"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./slimcore-4.0.2019.37.01.4",
+			"unpackPath": "../temp",
+			"packageRootPath": "package",
+			"installTestPath": "./slimcore-4.0.2019.37.01.4/package.json",
+			"checksum": "0940aa5ff1685a4e1d71197c8ce8f9a0606d66da"
+		},
+		{
+			"code": "slimcore-4.0.2019.23.01.7",
+			"description": "slimcore-electron-signed-2019.23.01.7.zip",
+			"url": "https://callingcdndev.blob.core.windows.net/slimcore/macosx-x64_clang-libcxx-electron-4.0-release/2019.23.01.7/slimcore-electron-signed-2019.23.01.7.zip",
+			"platforms": [
+				"darwin"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./slimcore-4.0.2019.23.01.7",
+			"unpackPath": "../temp",
+			"packageRootPath": "package",
+			"installTestPath": "./slimcore-4.0.2019.23.01.7/package.json",
+			"checksum": "0aa4efe6345c77a0c5a5892177f1bef30209e822"
+		},
+		{
+			"code": "slimcore-4.0.2019.37.01.4",
+			"description": "slimcore-electron-signed-2019.37.01.4.tgz",
+			"url": "https://callingcdndev.blob.core.windows.net/slimcore/win-x64_vs2017-crtdynamic-skype-4.0-release/2019.37.01.4/slimcore-electron-signed-2019.37.01.4.tgz",
+			"platforms": [
+				"win32"
+			],
+			"architectures": [
+				"x64"
+			],
+			"installPath": "./slimcore-4.0.2019.37.01.4",
+			"unpackPath": "../temp",
+			"packageRootPath": "package",
+			"installTestPath": "./slimcore-4.0.2019.37.01.4/package.json",
+			"checksum": "8f8726e42019c594a4c1ef54dfbcb5eb3e6cd509"
+		},
+		{
+			"code": "slimcore-4.0.2019.37.01.4",
+			"description": "slimcore-electron-signed-2019.37.01.4.tgz",
+			"url": "https://callingcdndev.blob.core.windows.net/slimcore/win-x86_vs2017-crtdynamic-skype-4.0-release/2019.37.01.4/slimcore-electron-signed-2019.37.01.4.tgz",
+			"platforms": [
+				"win32"
+			],
+			"architectures": [
+				"ia32"
+			],
+			"installPath": "./slimcore-4.0.2019.37.01.4",
+			"unpackPath": "../temp",
+			"packageRootPath": "package",
+			"installTestPath": "./slimcore-4.0.2019.37.01.4/package.json",
+			"checksum": "bfdb8fb9a2f8440402fc2fb72a65e04e5a6bf486"
+		}
+	],
+	"__metadata": {
+		"id": "f38fdd1c-7ee2-47b1-90b9-77ecc90d4bff",
+		"publisherId": "74365139-d24d-4d0a-8377-c28643f7a216",
+		"publisherDisplayName": "Microsoft"
+	}
+}

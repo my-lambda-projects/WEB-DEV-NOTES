@@ -1,0 +1,51 @@
+{
+	"name": "markdown-math",
+	"displayName": "Markdown Math",
+	"description": "Adds math support to VS Code's built-in markdown preview.",
+	"version": "0.1.0",
+	"publisher": "koehlma",
+	"license": "MIT",
+	"icon": "images/logo128.png",
+	"homepage": "https://github.com/koehlma/vscode-markdown-math/README.md",
+	"repository": {
+		"url": "https://github.com/koehlma/vscode-markdown-math.git"
+	},
+	"bugs": {
+		"url": "https://github.com/koehlma/vscode-markdown-math/issues"
+	},
+	"engines": {
+		"vscode": "^1.15.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./out/src/extension",
+	"contributes": {
+		"markdown.markdownItPlugins": true,
+		"markdown.previewStyles": [
+			"./node_modules/katex/dist/katex.min.css"
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"dependencies": {
+		"markdown-it-katex": "^2.0.3"
+	},
+	"__metadata": {
+		"id": "1195a91f-228c-4460-8345-2b591da98a4a",
+		"publisherId": "227f1247-8fe8-4e13-bf7d-8ad6a8102e05",
+		"publisherDisplayName": "Maximilian Köhl"
+	}
+}

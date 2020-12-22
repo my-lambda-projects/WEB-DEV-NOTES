@@ -1,0 +1,75 @@
+{
+	"name": "pug",
+	"displayName": "pug",
+	"description": "Pug/Jade Snippets for VSCode",
+	"version": "1.0.1",
+	"publisher": "amandeepmittal",
+	"icon": "images/pug.png",
+	"engines": {
+		"vscode": "^1.17.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "jade",
+				"path": "./snippets/html-template.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/syntax.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/head.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/tags.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/others.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/bootstrap-template.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/bootstrap-syntax.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/bootstrap-login-form.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/bootstrap-signup-form.json"
+			},
+			{
+				"language": "jade",
+				"path": "./snippets/bootstrap-navbar.json"
+			}
+		]
+	},
+	"keywords": [
+		"JavaScript",
+		"pug",
+		"jade",
+		"node",
+		"snippet"
+	],
+	"homepage": "https://amandeepmittal.github.io/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amandeepmittal/pug-vscode"
+	},
+	"__metadata": {
+		"id": "93d76817-75fd-47d0-bec0-d5f7ca64caeb",
+		"publisherId": "6a8fe1c3-ed2f-424a-a7dc-16760d766248",
+		"publisherDisplayName": "amandeepmittal"
+	}
+}

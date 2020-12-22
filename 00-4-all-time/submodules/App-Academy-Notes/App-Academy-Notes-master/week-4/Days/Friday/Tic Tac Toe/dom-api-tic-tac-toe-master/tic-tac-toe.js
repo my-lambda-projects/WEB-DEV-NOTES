@@ -69,7 +69,6 @@ function giveUpDisable() {
     if ( gameResult === '' ) {
         //all of the children of type button in the actions class
         giveUpBtn.disabled = false;
-        debugger;
     } else {
         giveUpBtn.disabled = true;
     }

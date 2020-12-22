@@ -1,0 +1,428 @@
+{
+	"name": "vscode-peacock",
+	"displayName": "Peacock",
+	"description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
+	"version": "3.9.1",
+	"publisher": "johnpapa",
+	"license": "SEE LICENSE IN LICENSE.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/johnpapa/vscode-peacock.git"
+	},
+	"homepage": "https://github.com/johnpapa/vscode-peacock/blob/main/README.md",
+	"icon": "resources/peacock-icon.png",
+	"galleryBanner": {
+		"color": "#373436",
+		"theme": "dark"
+	},
+	"engines": {
+		"vscode": "^1.49.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"Theme",
+		"Colors",
+		"Fun"
+	],
+	"preview": false,
+	"activationEvents": [
+		"*"
+	],
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "peacock.docs",
+				"title": "Open the Documentation",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.resetWorkspaceColors",
+				"title": "Reset Workspace Colors",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.removeAllColors",
+				"title": "Remove All Global and Workspace Colors",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.saveColorToFavorites",
+				"title": "Save Current Color to Favorites",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.enterColor",
+				"title": "Enter a Color",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.changeColorToPeacockGreen",
+				"title": "Color to Peacock Green",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.addRecommendedFavorites",
+				"title": "Add the Recommended Favorites",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.changeColorToRandom",
+				"title": "Surprise Me with a Random Color",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.changeColorToFavorite",
+				"title": "Change to a Favorite Color",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.darken",
+				"title": "Darken",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.lighten",
+				"title": "Lighten",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.showAndCopyCurrentColor",
+				"title": "Copy the Current Color to the Clipboard",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.changeColorOfLiveShareHost",
+				"title": "Change Live Share Color (Host)",
+				"category": "Peacock"
+			},
+			{
+				"command": "peacock.changeColorOfLiveShareGuest",
+				"title": "Change Live Share Color (Guest)",
+				"category": "Peacock"
+			}
+		],
+		"keybindings": [
+			{
+				"key": "alt+cmd+-",
+				"command": "peacock.darken"
+			},
+			{
+				"key": "alt+cmd+=",
+				"command": "peacock.lighten"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "peacock.docs"
+				},
+				{
+					"command": "peacock.changeColorOfLiveShareHost",
+					"when": "workspaceFolderCount != 0 && peacock:liveshare == true"
+				},
+				{
+					"command": "peacock.changeColorOfLiveShareGuest",
+					"when": "workspaceFolderCount != 0 && peacock:liveshare == true"
+				},
+				{
+					"command": "peacock.resetWorkspaceColors",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.removeAllColors",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.saveColorToFavorites",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.enterColor",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.changeColorToPeacockGreen",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.addRecommendedFavorites",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.changeColorToRandom",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.changeColorToFavorite",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.darken",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.lighten",
+					"when": "workspaceFolderCount != 0"
+				},
+				{
+					"command": "peacock.showAndCopyCurrentColor",
+					"when": "workspaceFolderCount != 0"
+				}
+			]
+		},
+		"configuration": {
+			"properties": {
+				"peacock.affectAccentBorders": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
+				},
+				"peacock.affectActivityBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether Peacock should affect the activity bar."
+				},
+				"peacock.affectDebuggingStatusBar": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether Peacock should affect the status bar while debugging."
+				},
+				"peacock.affectStatusBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether Peacock should affect the status bar."
+				},
+				"peacock.affectStatusAndTitleBorders": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether Peacock should affect the status or title borders."
+				},
+				"peacock.affectTabActiveBorder": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether Peacock should affect the active tab's border."
+				},
+				"peacock.affectTitleBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether Peacock should affect the title bar."
+				},
+				"peacock.color": {
+					"type": "string",
+					"default": "",
+					"description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
+				},
+				"peacock.elementAdjustments": {
+					"type": "object",
+					"properties": {
+						"titleBar": {
+							"type": "string",
+							"enum": [
+								"none",
+								"lighten",
+								"darken"
+							]
+						},
+						"activityBar": {
+							"type": "string",
+							"enum": [
+								"none",
+								"lighten",
+								"darken"
+							]
+						},
+						"statusBar": {
+							"type": "string",
+							"enum": [
+								"none",
+								"lighten",
+								"darken"
+							]
+						}
+					},
+					"default": {
+						"activityBar": "lighten",
+						"statusBar": "none",
+						"titleBar": "none"
+					},
+					"description": "Adjusts the colorization of affected elements to provide visual contrast"
+				},
+				"peacock.favoriteColors": {
+					"type": "array",
+					"default": [
+						{
+							"name": "Angular Red",
+							"value": "#dd0531"
+						},
+						{
+							"name": "Azure Blue",
+							"value": "#007fff"
+						},
+						{
+							"name": "JavaScript Yellow",
+							"value": "#f9e64f"
+						},
+						{
+							"name": "Mandalorian Blue",
+							"value": "#1857a4"
+						},
+						{
+							"name": "Node Green",
+							"value": "#215732"
+						},
+						{
+							"name": "React Blue",
+							"value": "#61dafb"
+						},
+						{
+							"name": "Something Different",
+							"value": "#832561"
+						},
+						{
+							"name": "Svelte Orange",
+							"value": "#ff3d00"
+						},
+						{
+							"name": "Vue Green",
+							"value": "#42b883"
+						}
+					],
+					"items": {
+						"type": "object"
+					},
+					"description": "Your favorite colors"
+				},
+				"peacock.keepBadgeColor": {
+					"type": "boolean",
+					"default": false,
+					"description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
+				},
+				"peacock.darkenLightenPercentage": {
+					"type": "number",
+					"default": 5,
+					"minimum": 1,
+					"maximum": 10,
+					"description": "Specifies the amount to darken or lighten the color, in percentage"
+				},
+				"peacock.darkForegroundColor": {
+					"type": "string",
+					"default": "#15202b",
+					"description": "Specifies the override value for the dark foreground color"
+				},
+				"peacock.keepForegroundColor": {
+					"type": "boolean",
+					"default": false,
+					"description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
+				},
+				"peacock.lightForegroundColor": {
+					"type": "string",
+					"default": "#e7e7e7",
+					"description": "Specifies the override value for the light foreground color"
+				},
+				"peacock.remoteColor": {
+					"type": "string",
+					"default": "",
+					"description": "The Peacock color that will be applied to remote workspaces."
+				},
+				"peacock.showColorInStatusBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show the Peacock color in the status bar"
+				},
+				"peacock.surpriseMeFromFavoritesOnly": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether Peacock should choose a random color from the favorites list or a purely random color."
+				},
+				"peacock.surpriseMeOnStartup": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies that Peacock should surprise you at the start of every editing session, only when a color isn't already set. "
+				},
+				"peacock.vslsJoinColor": {
+					"type": "string",
+					"default": "",
+					"description": "Peacock color for Live Share Color when acting as a Guest "
+				},
+				"peacock.vslsShareColor": {
+					"type": "string",
+					"default": "",
+					"description": "Peacock color for Live Share Color when acting as a Host "
+				}
+			}
+		}
+	},
+	"scripts": {
+		"docs:dev": "vuepress dev docs",
+		"docs:build": "vuepress build docs",
+		"package": "npx vsce package",
+		"publish": "npx vsce publish",
+		"vscode:prepublish": "webpack --mode production",
+		"lint": "eslint ./src --ext .js,.ts",
+		"lint-fix": "eslint ./src --ext .js,.ts --fix",
+		"webpack": "webpack --mode none",
+		"watch": "webpack --mode none --watch",
+		"pretty": "npx prettier@2 src/. --write",
+		"just-test": "node ./out/test/runTest.js",
+		"just-live-share-test": "node out/live-share/test/runTest.js",
+		"test-compile": "tsc -p ./ && npm run webpack",
+		"test": "npm run test-compile && npm run just-test",
+		"test-all": "npm run test && npm run just-live-share-test",
+		"test:coverage": "npm run just-test -- --coverage"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/istanbul-lib-instrument": "^1.7.4",
+		"@types/istanbul-lib-report": "^1.1.1",
+		"@types/istanbul-lib-source-maps": "^1.2.2",
+		"@types/istanbul-reports": "^1.1.2",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "12.12.16",
+		"@types/sinon": "^7.5.2",
+		"@types/vscode": "^1.49.0",
+		"@typescript-eslint/eslint-plugin": "^2.34.0",
+		"@typescript-eslint/parser": "^2.34.0",
+		"eslint": "^6.8.0",
+		"eslint-config-prettier": "^6.12.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"glob": "^7.1.6",
+		"husky": "^4.3.0",
+		"istanbul-lib-coverage": "^3.0.0",
+		"istanbul-lib-instrument": "^3.3.0",
+		"istanbul-lib-report": "^2.0.8",
+		"istanbul-lib-source-maps": "^3.0.6",
+		"istanbul-reports": "^3.0.2",
+		"mocha": "^7.2.0",
+		"mocha-multi-reporters": "^1.1.7",
+		"prettier": "^2.1.2",
+		"sinon": "^9.1.0",
+		"ts-loader": "^5.3.3",
+		"typescript": "^3.9.7",
+		"vscode-test": "^1.4.0",
+		"vuepress": "^1.6.0",
+		"webpack": "^4.44.2",
+		"webpack-cli": "^3.3.12"
+	},
+	"dependencies": {
+		"@types/tinycolor2": "^1.4.1",
+		"tinycolor2": "^1.4.2",
+		"vsls": "^1.0.2594"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run pretty"
+		}
+	},
+	"__metadata": {
+		"id": "5a7017bf-c571-4d77-b902-6e56b16f539a",
+		"publisherId": "4434843a-4ebf-4f44-84f5-4176380c492d",
+		"publisherDisplayName": "John Papa"
+	}
+}

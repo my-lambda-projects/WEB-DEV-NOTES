@@ -1,0 +1,200 @@
+{
+	"name": "docthis",
+	"displayName": "Document This",
+	"description": "Automatically generates detailed JSDoc comments in TypeScript and JavaScript files.",
+	"version": "0.8.2",
+	"publisher": "oouo-diogo-perdigao",
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#252627",
+		"theme": "dark"
+	},
+	"author": {
+		"name": "Joel Day",
+		"url": "https://github.com/joelday"
+	},
+	"contributors": [
+		{
+			"name": "Diogo Passos Perdigão Britto",
+			"email": "diogopbritto@gmail.com",
+			"url": "https://github.com/oouo-diogo-perdigao"
+		},
+		{
+			"name": "TheOpenDevProject",
+			"url": "https://github.com/TheOpenDevProject"
+		},
+		{
+			"name": "Ed Bishop",
+			"url": "https://github.com/mredbishop"
+		},
+		{
+			"name": "Matej Baric",
+			"url": "https://github.com/mbaric1"
+		},
+		{
+			"name": "Michael Probber",
+			"url": "https://github.com/mprobber"
+		},
+		{
+			"name": "Nicolas Ramz",
+			"url": "https://github.com/warpdesign"
+		},
+		{
+			"name": "Waldir Pimenta",
+			"url": "https://github.com/waldyrious"
+		},
+		{
+			"name": "Vassilis Pitsounis",
+			"url": "https://github.com/vapits"
+		},
+		{
+			"name": "Zhang Haocong",
+			"url": "https://github.com/kakera"
+		},
+		{
+			"name": "James Treworgy",
+			"url": "https://github.com/jamietre"
+		},
+		{
+			"name": "Dominik Schreiber",
+			"url": "https://github.com/dominikschreiber"
+		},
+		{
+			"name": "cudandres",
+			"url": "https://github.com/cudandres"
+		}
+	],
+	"license": "MIT",
+	"licenseUrl": "LICENSE",
+	"engines": {
+		"vscode": "^1.22.0"
+	},
+	"categories": [
+		"Other",
+		"Snippets",
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "docthis.documentThis",
+				"title": "Document This"
+			},
+			{
+				"command": "docthis.traceTypeScriptSyntaxNode",
+				"title": "Trace TypeScript Syntax Node"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "docthis.documentThis"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "docthis.documentThis",
+				"key": "ctrl+alt+d ctrl+alt+d"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Document This configuration",
+			"properties": {
+				"docthis.includeTypes": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, type information is added to comment tags."
+				},
+				"docthis.includeMemberOfOnClassMembers": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, memberOf information is added to comment tags on class members."
+				},
+				"docthis.includeMemberOfOnInterfaceMembers": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, memberOf information is added to comment tags on interface members."
+				},
+				"docthis.includeDescriptionTag": {
+					"type": "boolean",
+					"default": false,
+					"description": "When enabled, JSDoc comments for functions and methods will include @description."
+				},
+				"docthis.enableHungarianNotationEvaluation": {
+					"type": "boolean",
+					"default": false,
+					"description": "When enabled, hungarian notation will be used as a type hint."
+				},
+				"docthis.inferTypesFromNames": {
+					"type": "boolean",
+					"default": false,
+					"description": "When enabled, will use names of params & methods as type hints."
+				},
+				"docthis.includeAuthorTag": {
+					"type": "boolean",
+					"default": false,
+					"description": "When enabled, will add the @author tag."
+				},
+				"docthis.authorName": {
+					"type": "string",
+					"default": "(Set the text for this tag by adding docthis.authorName to your settings file.)",
+					"description": "When docthis.includeAuthorTag is enabled, will add @author tag with this value."
+				},
+				"docthis.includeDateTag": {
+					"type": "boolean",
+					"default": false,
+					"description": "When enabled, will add the @date tag in dd-mm-yyyy"
+				},
+				"docthis.dateTagFormat": {
+					"type": "string",
+					"default": "dd/mm/yyyy",
+					"description": "Select date format. Defaults to dd-mm-yyyy"
+				},
+				"docthis.inlineOneLiners": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, comments that only have one line, will be displayed in one line instead of three."
+				},
+				"docthis.returnsTag": {
+					"type": "boolean",
+					"default": false,
+					"description": "Put @returns in place of @returns"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"lint": "node ./node_modules/tslint/bin/tslint src/**/*.ts",
+		"compile": "npm run lint && tsc -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^10.17.26",
+		"tslint": "^5.20.1",
+		"vscode": "^1.1.37"
+	},
+	"dependencies": {
+		"dateformat": "^3.0.3",
+		"typescript": "^2.9.2"
+	},
+	"bugs": {
+		"url": "https://github.com/oouo-diogo-perdigao/vscode-docthis/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/oouo-diogo-perdigao/vscode-docthis"
+	},
+	"__metadata": {
+		"id": "e4f871bb-b27e-4ee9-b517-998d11af8d18",
+		"publisherId": "ee394858-fdef-4610-99a6-6579ee2a8325",
+		"publisherDisplayName": "oouo-diogo-perdigao"
+	}
+}

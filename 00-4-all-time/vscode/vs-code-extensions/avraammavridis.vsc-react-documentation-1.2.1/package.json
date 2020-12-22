@@ -1,0 +1,54 @@
+{
+	"name": "vsc-react-documentation",
+	"displayName": "React Documentation",
+	"description": "Display popup with documentation for the various React methods/properties",
+	"version": "1.2.1",
+	"publisher": "avraammavridis",
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"icon": "images/icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AvraamMavridis/vsc-react-documentation"
+	},
+	"bugs": "https://github.com/AvraamMavridis/vsc-sort-documentation/issues",
+	"license": "MIT",
+	"keywords": [
+		"React",
+		"Documentation",
+		"Javascript"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:javascript"
+	],
+	"main": "./src/extension",
+	"contributes": {},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"lint": "eslint ./src --fix",
+		"test": "NODE_ENV=test jest --config jest.config.js",
+		"test:watch": "NODE_ENV=test jest --watch --config jest.config.js"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.5.7",
+		"assert": "^1.4.1",
+		"babel-eslint": "^8.2.6",
+		"eslint": "^5.3.0",
+		"eslint-config-airbnb-base": "^13.0.0",
+		"eslint-config-avraam": "^1.0.0",
+		"eslint-plugin-import": "^2.13.0",
+		"jest": "^23.4.2",
+		"typescript": "^3.0.1",
+		"vscode": "^1.1.18"
+	},
+	"__metadata": {
+		"id": "afcf7a40-be08-4774-a1f3-a261ebfbaf7c",
+		"publisherId": "1ad9fa4f-1edf-49a3-a7f6-bd0e19fc4d04",
+		"publisherDisplayName": "avraammavridis"
+	}
+}

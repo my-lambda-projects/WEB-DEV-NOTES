@@ -1,0 +1,59 @@
+{
+	"name": "babel-plugin-react-css-modules-autocomplete",
+	"displayName": "babel-plugin-react-css-modules-autocomplete",
+	"description": "Extension for babel-plugin-react-css-modules",
+	"version": "1.1.1",
+	"publisher": "ryotamannari",
+	"license": "MIT",
+	"icon": "icon/128.png",
+	"galleryBanner": {
+		"color": "#f5da55"
+	},
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"babel",
+		"babel-plugin-react-css-modules",
+		"css-modules",
+		"react-css-modules",
+		"autocomplete"
+	],
+	"activationEvents": [
+		"onLanguage:typescriptreact",
+		"onLanguage:javascriptreact",
+		"onLanguage:javascript"
+	],
+	"main": "./out/extension",
+	"contributes": {},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^7.0.43",
+		"tslint": "^5.8.0",
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.6"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/manse/babel-plugin-react-css-modules-autocomplete.git"
+	},
+	"prettier": {
+		"singleQuote": true,
+		"printWidth": 120
+	},
+	"__metadata": {
+		"id": "c8d89ee8-d36e-4891-8e05-236259248ee2",
+		"publisherId": "acd9ef8d-dda1-48cd-8a63-5eb53662c3bd",
+		"publisherDisplayName": "manse"
+	}
+}

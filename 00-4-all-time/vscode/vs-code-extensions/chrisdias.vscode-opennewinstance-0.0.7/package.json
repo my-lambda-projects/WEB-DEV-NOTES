@@ -1,0 +1,89 @@
+{
+	"name": "vscode-opennewinstance",
+	"displayName": "Open Folder Context Menus for VS Code",
+	"description": "Quickly open a new instance of VS Code from the Explorer",
+	"version": "0.0.7",
+	"author": "Chris Dias",
+	"publisher": "chrisdias",
+	"galleryBanner": {
+		"color": "#37699A",
+		"theme": "dark"
+	},
+	"icon": "images/Open_file.png",
+	"homepage": "https://github.com/chrisdias/vscode-opennewinstance/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/chrisdias/vscode-opennewinstance.git"
+	},
+	"bugs": {
+		"url": "https://github.com/chrisdias/vscode-opennewinstance/issues"
+	},
+	"engines": {
+		"vscode": "^1.42.0"
+	},
+	"license": "SEE LICENSE IN LICENSE.md",
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.openNewInstance",
+		"onCommand:extension.scopeToHere"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.openNewInstance",
+				"title": "Open New Workbench Here"
+			},
+			{
+				"command": "extension.scopeToHere",
+				"title": "Reopen Workbench Here"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "extension.openNewInstance",
+					"group": "navigation@1"
+				},
+				{
+					"command": "extension.scopeToHere",
+					"group": "navigation@1",
+					"when": "explorerResourceIsFolder"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "extension.openNewInstance",
+					"when": "never"
+				},
+				{
+					"command": "extension.scopeToHere",
+					"when": "never"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "webpack --mode production",
+		"compile": "webpack --mode none",
+		"webpack": "webpack --mode development",
+		"watch": "webpack --mode none --watch",
+		"webpack-dev": "webpack --mode development --watch",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/node": "^8.10.25",
+		"ts-loader": "^5.3.3",
+		"typescript": "^3.1.4",
+		"vscode": "^1.1.25",
+		"webpack": "^4.29.6",
+		"webpack-cli": "^3.2.3"
+	},
+	"__metadata": {
+		"id": "d1232d17-9a0f-4fda-9cf0-e4bf18d567ae",
+		"publisherId": "4acb74cf-1017-4a3f-b039-7a38ef504322",
+		"publisherDisplayName": "Chris Dias"
+	}
+}

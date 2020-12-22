@@ -1,0 +1,204 @@
+{
+	"name": "explorer-exclude-vscode-extension",
+	"displayName": "Explorer Exclude",
+	"version": "1.2.0",
+	"description": "Explorer Exclude lets you easily Hide Files & Folders with Dynamic Filter Options.  Add a New 'Hidden Items' Explorer Pane for you to Manage and Quickly Toggle Visibility of Hidden Items.",
+	"license": "MIT",
+	"publisher": "RedVanWorkshop",
+	"categories": [
+		"Other"
+	],
+	"icon": "resources/icon.png",
+	"galleryBanner": {
+		"color": "#1c1c1c",
+		"theme": "dark"
+	},
+	"homepage": "https://redvanworkshop.com",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/redvanworkshop/explorer-exclude-vscode-extension"
+	},
+	"bugs": {
+		"url": "https://github.com/redvanworkshop/explorer-exclude-vscode-extension/issues"
+	},
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"keywords": [
+		"context-menu",
+		"exclude",
+		"explorer",
+		"files",
+		"folders",
+		"hidden",
+		"hide",
+		"ignore",
+		"pane",
+		"show",
+		"toggle",
+		"workspace"
+	],
+	"contributors": [
+		{
+			"name": "Peter Schmalfeldt",
+			"email": "peter@redvanworkshop.com",
+			"url": "https://redvanworkshop.com"
+		}
+	],
+	"activationEvents": [
+		"*",
+		"onView:extension",
+		"onCommand:explorer-exclude.exclude",
+		"onCommand:explorer-exclude.remove",
+		"onCommand:explorer-exclude.toggle",
+		"onCommand:explorer-exclude.toggleAllOn",
+		"onCommand:explorer-exclude.toggleAllOff",
+		"onCommand:explorer-exclude.disableAll",
+		"onCommand:explorer-exclude.enableAll",
+		"onCommand:explorer-exclude.reset"
+	],
+	"main": "./extension",
+	"contributes": {
+		"configuration": [
+			{
+				"title": "%package.pane%",
+				"properties": {
+					"explorerExclude.backup": {
+						"type": "object",
+						"default": {},
+						"description": "Resource configuration: Configure files using glob patterns to have an empty last line always",
+						"scope": "resource"
+					}
+				}
+			}
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "explorerExclude.pane.items",
+					"name": "%package.pane%"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "explorer-exclude.exclude",
+				"title": "%package.exclude%"
+			},
+			{
+				"command": "explorer-exclude.remove",
+				"title": "%package.remove%"
+			},
+			{
+				"command": "explorer-exclude.toggle",
+				"title": "%package.toggle%"
+			},
+			{
+				"command": "explorer-exclude.toggleAllOn",
+				"title": "%package.toggle%",
+				"category": "ExplorerExclude",
+				"icon": {
+					"dark": "resources/dark/toggle-on.svg",
+					"light": "resources/light/toggle-on.svg"
+				}
+			},
+			{
+				"command": "explorer-exclude.toggleAllOff",
+				"title": "%package.toggle%",
+				"category": "ExplorerExclude",
+				"icon": {
+					"dark": "resources/dark/toggle-off.svg",
+					"light": "resources/light/toggle-off.svg"
+				}
+			},
+			{
+				"command": "explorer-exclude.disableAll",
+				"title": "%package.disableAll%",
+				"category": "ExplorerExclude",
+				"icon": {
+					"dark": "resources/dark/unchecked.svg",
+					"light": "resources/light/unchecked.svg"
+				}
+			},
+			{
+				"command": "explorer-exclude.enableAll",
+				"title": "%package.enableAll%",
+				"category": "ExplorerExclude",
+				"icon": {
+					"dark": "resources/dark/checked.svg",
+					"light": "resources/light/checked.svg"
+				}
+			},
+			{
+				"command": "explorer-exclude.reset",
+				"title": "%package.reset%",
+				"category": "ExplorerExclude",
+				"icon": {
+					"dark": "resources/dark/reset.svg",
+					"light": "resources/light/reset.svg"
+				}
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "explorer-exclude.exclude",
+					"group": "explorer-exclude@1",
+					"when": "activeViewlet == 'workbench.view.explorer'"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "explorer-exclude.remove",
+					"group": "explorer-exclude@1",
+					"when": "view == explorerExclude.pane.items && viewItem"
+				}
+			],
+			"view/title": [
+				{
+					"command": "explorer-exclude.toggleAllOn",
+					"group": "navigation@10",
+					"when": "view == explorerExclude.pane.items && !explorerExclude:enabled"
+				},
+				{
+					"command": "explorer-exclude.toggleAllOff",
+					"group": "navigation@10",
+					"when": "view == explorerExclude.pane.items && explorerExclude:enabled"
+				},
+				{
+					"command": "explorer-exclude.disableAll",
+					"group": "navigation@10",
+					"when": "view == explorerExclude.pane.items"
+				},
+				{
+					"command": "explorer-exclude.enableAll",
+					"group": "navigation@10",
+					"when": "view == explorerExclude.pane.items"
+				},
+				{
+					"command": "explorer-exclude.reset",
+					"group": "navigation@10",
+					"when": "view == explorerExclude.pane.items"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"publish": "vsce package && vsce publish"
+	},
+	"dependencies": {
+		"jsonc-parser": "^2.1.0",
+		"marked": "^0.6.2",
+		"subdir": "0.0.3",
+		"vscode-nls-i18n": "^0.1.1"
+	},
+	"devDependencies": {
+		"vscode": "^1.1.34"
+	},
+	"__metadata": {
+		"id": "f04f9779-99bf-4904-bd2b-3e7609a0f954",
+		"publisherId": "3bb4d740-619b-481e-a587-efd3a189d9ed",
+		"publisherDisplayName": "Red Van Workshop"
+	}
+}

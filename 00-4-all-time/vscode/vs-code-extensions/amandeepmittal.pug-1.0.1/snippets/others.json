@@ -1,0 +1,20 @@
+{
+  "lorem lipsum text": {
+    "prefix": "lorem",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "description": "insert dummy text"
+  },
+  "require pug": {
+    "prefix": "cpug",
+    "body": "const pug = require('pug');"
+  },
+  "import pug": {
+    "prefix": "ipug",
+    "body": "import pug from 'pug';"
+  },
+  "font-awesome icon": {
+    "prefix": "fa",
+    "body": "i.fa.fa-${1:value}(aria-hidden='true') &nbsp;",
+    "description": "add a font-awesome icon"
+  }
+}

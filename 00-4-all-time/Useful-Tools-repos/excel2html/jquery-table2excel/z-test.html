@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+</head>
+<body>
+
+
+
+<script>
+$("#yourHtmTable").table2excel({
+exclude: ".excludeThisClass",
+name: "download",
+filename: "download.xls", // do include extension
+preserveColors: false // set to true if you want background colors and font colors preserved
+});
+</script>
+
+		<script>
+			$( function () {
+				$( ".download" ).click( function ( e ) {
+					var table = $( this ).prev( '.download' );
+					if ( table && table.length ) {
+						var preserveColors = ( table.hasClass( 'table2excel_with_colors' ) ? true : false );
+						$( table ).download( {
+							exclude: ".noExl",
+							name: "download",
+							filename: "myFileName" + new Date().toISOString().replace( /[\-\:\.]/g, "" ) + ".xls",
+							fileext: ".xls",
+							exclude_img: true,
+							exclude_links: true,
+							exclude_inputs: true,
+							preserveColors: preserveColors
+						} );
+					}
+				} );
+
+			} );
+		</script>
+
+
+</body>
+</html>

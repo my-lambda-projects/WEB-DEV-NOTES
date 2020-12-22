@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>WASM customSections() test</title>
+</head>
+
+<body>
+    <script>
+        WebAssembly.compileStreaming(fetch('simple-name-section.wasm'))
+        .then(function(mod) {
+          var nameSections = WebAssembly.Module.customSections(mod, "name");
+          if (nameSections.length != 0) {
+            console.log("Module contains a name section");
+            console.log(nameSections[0]);
+          };
+        });
+    </script>
+</body>
+
+</html>

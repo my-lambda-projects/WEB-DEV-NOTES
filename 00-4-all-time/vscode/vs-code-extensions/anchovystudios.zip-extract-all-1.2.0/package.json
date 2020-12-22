@@ -1,0 +1,66 @@
+{
+	"name": "zip-extract-all",
+	"displayName": "zip-extract-all",
+	"description": "Extract all zip files inside a folder",
+	"version": "1.2.0",
+	"publisher": "AnchovyStudios",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Anchovy-Studios/zip-extract-all.git"
+	},
+	"author": {
+		"name": "Joshua Lauwrich Nandy",
+		"email": "joshua.lauwrich.98@gmail.com"
+	},
+	"icon": "ico.png",
+	"engines": {
+		"vscode": "^1.44.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "zip-extract-all.extract",
+				"title": "Extract All Zip"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "zip-extract-all.extract",
+				"key": "ctrl+shift+alt+x",
+				"mac": "ctrl+shift+alt+x"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.44.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"@anchovy_studios/extract-all-zip": "^2.0.0"
+	},
+	"__metadata": {
+		"id": "60791adf-b1c4-4b95-b4d5-cc199b75ec0b",
+		"publisherId": "7e7b8026-b906-48a8-98cb-114158b5ed90",
+		"publisherDisplayName": "Anchovy Studios"
+	}
+}

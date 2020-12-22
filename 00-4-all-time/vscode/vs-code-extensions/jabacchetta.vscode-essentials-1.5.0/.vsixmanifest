@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Language="en-US" Id="vscode-essentials" Version="1.5.0" Publisher="jabacchetta"/>
+    <DisplayName>VSCode Essentials</DisplayName>
+    <Description xml:space="preserve">Turn VSCode into a supercharged IDE.</Description>
+    <Tags>code runner,run code,code spell checker,spell checker,spelling,share code,review code,code discussion,collaboration,snippets,control snippets,disable snippets,customize ui,customize vscode stylesheets,dotenv,environment variables,env,easy snippet,snippet manager,snippet generator,format in context menus,format multiple files,git,gists,github gists,interactive playground,notes,git graph,git diff,gitignore,gitlens,git blame annotations,git history,git commits,git compare,git search,gremlins,invisible characters,whitespace characters,zero-width spaces,no-break spaces,non-printing character,hungry delete,delete whitespace,delete indentation,live share,live share audio,live share chat,live share whiteboard,remote sharing,chat,call,macros,metago,acejump,jumpy,cursor navigation,go to character,monkey patch,multple clipboards,clipboard ring,polacode,screenshot,code screenshots,project manager,switch projects,rewrap,comment wrapping,wrap comments,settings cycler,toggle settings,settings sync,synchronize settings,share settings,text pastry,increment selection,multi-line increment,todo tree,highlight comments,highlight todo,todo manager,todo,fixme,note,tasklist,visual studio intellicode,ai-assisted development,vscode pdf,display pdf,github pull requests,indent guides,scope line,scope guide,bookmarks,ide,vscode ide,integrated development environment,vscode essentials,vscode must-have extensions,codestream,peacock,slack,window colors,workspace colors,random theme generator,unique theme,highlight code block,dim code,dim text,output Colorizer,log file syntax highlighting,log,explorer exclude,toggle excluded files,toggle hidden files,list hidden files,manage hidden files,explorer hidden files,all autocomplete,open files intellisense,project-wide intellisense,intellisense from all files</Tags>
+    <Categories>Extension Packs</Categories>
+    <GalleryFlags>Public</GalleryFlags>
+    <Badges></Badges>
+    <Properties>
+      <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.38.0" />
+      <Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="" />
+      <Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="alefragnani.project-manager,codezombiech.gitignore,vsls-contrib.gistfs,ctf0.macros,eamodio.gitlens,formulahendry.code-runner,Gruntfuggly.todo-tree,hoovercj.vscode-settings-cycler,inu1255.easy-snippet,iocave.customize-ui,iocave.monkey-patch,jasonlhy.hungry-delete,jkjustjoshing.vscode-text-pastry,karigari.chat,lacroixdavid1.vscode-format-context-menu,metaseed.metago,mhutchie.git-graph,mikestead.dotenv,ms-vsliveshare.vsliveshare,ms-vsliveshare.vsliveshare-audio,lostintangent.vsls-whiteboard,nhoizey.gremlins,pnp.polacode,Shan.code-settings-sync,slevesque.vscode-multiclip,stkb.rewrap,streetsidesoftware.code-spell-checker,svipas.control-snippets,tomoki1207.pdf,VisualStudioExptTeam.vscodeintellicode,micnil.vscode-checkpoints,xyz.local-history,alefragnani.Bookmarks,GitHub.vscode-pull-request-github,johnpapa.vscode-peacock,CodeStream.codestream,IBM.output-colorizer,jakearl.search-editor-apply-changes,RedVanWorkshop.explorer-exclude-vscode-extension,Atishay-Jain.All-Autocomplete" />
+      <Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+      
+        <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/jabacchetta/vscode-essentials" />
+        <Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/jabacchetta/vscode-essentials" />
+        
+          <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/jabacchetta/vscode-essentials" />
+        
+      
+      
+      
+      <Property Id="Microsoft.VisualStudio.Services.Branding.Color" Value="#2e2e2e" />
+      <Property Id="Microsoft.VisualStudio.Services.Branding.Theme" Value="dark" />
+      <Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+      
+      
+    </Properties>
+    <License>extension/LICENSE.txt</License>
+    <Icon>extension/images/icon.png</Icon>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+  </Installation>
+  <Dependencies/>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/icon.png" Addressable="true" />
+  </Assets>
+</PackageManifest>

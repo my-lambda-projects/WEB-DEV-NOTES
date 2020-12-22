@@ -1,0 +1,214 @@
+{
+	"name": "vscode-javascript-booster",
+	"displayName": "JavaScript Booster",
+	"description": "Boost your productivity with advanced JavaScript/TypeScript refactorings and commands",
+	"icon": "resources/icon.png",
+	"version": "14.0.1",
+	"publisher": "sburg",
+	"author": "Stepan Burguchev <me@sburg.net>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/xsburg/vscode-javascript-booster.git"
+	},
+	"bugs": {
+		"url": "https://github.com/xsburg/vscode-javascript-booster/issues"
+	},
+	"engines": {
+		"vscode": "^1.40.0",
+		"node": ">=12.0.0",
+		"npm": ">=6.0.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"javascript",
+		"typescript",
+		"refactoring",
+		"code actions"
+	],
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"clean": "rimraf dist",
+		"compile:dev": "webpack --mode none",
+		"compile:test": "webpack --mode none && cpx ./tests/__simple-workspace__/**/* ./dist/test-workspaces/__simple-workspace__",
+		"compile:prod": "webpack --mode production",
+		"test": "yarn run compile:test && TEST_WORKSPACES_DIR=${PWD}/dist/test-workspaces CODE_TESTS_PATH=${PWD}/tests/runtime CODE_EXTENSIONS_PATH=${PWD} node ./node_modules/vscode/bin/test"
+	},
+	"main": "./dist/extension",
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescript",
+		"onLanguage:typescriptreact",
+		"onCommand:javascriptBooster.executeCodeMod",
+		"onCommand:javascriptBooster.reloadCodeMods",
+		"onCommand:javascriptBooster.extendSelection",
+		"onCommand:javascriptBooster.shrinkSelection"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "javascriptBooster.executeCodeMod",
+				"title": "Run Global Code Action",
+				"category": "JS Booster"
+			},
+			{
+				"command": "javascriptBooster.reloadCodeMods",
+				"title": "Reload Code Actions",
+				"category": "JS Booster"
+			},
+			{
+				"command": "javascriptBooster.extendSelection",
+				"title": "Extend selection",
+				"category": "JS Booster"
+			},
+			{
+				"command": "javascriptBooster.shrinkSelection",
+				"title": "Shrink selection",
+				"category": "JS Booster"
+			}
+		],
+		"configuration": [
+			{
+				"title": "JavaScript Booster",
+				"properties": {
+					"javascriptBooster.codemodDir": {
+						"type": "string",
+						"default": "codemods",
+						"description": "Specifies the directory containing workspace related code actions."
+					},
+					"javascriptBooster.logLevel": {
+						"enum": [
+							"error",
+							"info",
+							"verbose"
+						],
+						"default": "info",
+						"description": "Controls the amount of information in the output log. Switching to verbose will also show performance metrics."
+					},
+					"javascriptBooster.smartExtendFallbackCommand": {
+						"type": "string",
+						"default": "editor.action.smartSelect.grow",
+						"description": "Specifies the fallback command that should be executed if the file is not supported by smart selection."
+					},
+					"javascriptBooster.smartShrinkFallbackCommand": {
+						"type": "string",
+						"default": "editor.action.smartSelect.shrink",
+						"description": "Specifies the fallback command that should be executed if the file is not supported by smart selection."
+					},
+					"javascriptBooster.formattingOptions": {
+						"type": "object",
+						"properties": {
+							"tabWidth": {
+								"type": "number",
+								"default": "4",
+								"description": "Number of spaces the pretty-printer should use per tab for indentation. If you do not pass this option explicitly, it will be inferred from the original code."
+							},
+							"useTabs": {
+								"type": "boolean",
+								"default": "false",
+								"description": "If you want the pretty-printer to use tabs instead of spaces, make this option true."
+							},
+							"wrapColumn": {
+								"type": "number",
+								"default": "74",
+								"description": "Some of the pretty-printer code (such as that for printing function parameter lists) makes a valiant attempt to prevent really long lines. You can adjust the limit by changing this option; however, there is no guarantee that line length will fit inside this limit."
+							},
+							"quote": {
+								"enum": [
+									"single",
+									"double"
+								],
+								"default": "single",
+								"description": "If you have preferences for what type of quotes should be used in newly created string literals, specify this option."
+							},
+							"trailingComma": {
+								"anyOf": [
+									{
+										"type": "object",
+										"properties": {
+											"objects": {
+												"type": "boolean",
+												"default": "false"
+											},
+											"arrays": {
+												"type": "boolean",
+												"default": "false"
+											},
+											"parameters": {
+												"type": "boolean",
+												"default": "false"
+											}
+										},
+										"additionalProperties": false,
+										"required": [
+											"objects",
+											"arrays",
+											"parameters"
+										]
+									},
+									{
+										"type": "boolean"
+									}
+								],
+								"default": "false",
+								"description": "Controls the printing of trailing commas in object literals, array expressions and function parameters. You can provide an object to specify settings for individual contexts."
+							},
+							"arrowParensAlways": {
+								"type": "boolean",
+								"default": "false",
+								"description": "If you want parenthesis to wrap single-argument arrow function parameter lists, pass true for this option."
+							},
+							"objectCurlySpacing": {
+								"type": "boolean",
+								"default": "true",
+								"description": "Controls the printing of spaces inside object literals, destructuring assignments, and import/export specifiers."
+							},
+							"arrayBracketSpacing": {
+								"type": "boolean",
+								"default": "true",
+								"description": "Controls the printing of spaces inside array brackets."
+							}
+						},
+						"additionalProperties": false,
+						"description": "Specifies formatting options that will be used for newly generated code. Only the code fragment affected by a chosen code action is reformatted."
+					}
+				}
+			}
+		]
+	},
+	"devDependencies": {
+		"@types/fs-extra": "9.0.0",
+		"@types/glob": "7.1.1",
+		"@types/lodash": "4.14.151",
+		"@types/mocha": "7.0.2",
+		"@types/node": "14.0.1",
+		"coveralls": "3.1.0",
+		"cpx": "1.5.0",
+		"decache": "4.6.0",
+		"glob": "7.1.6",
+		"istanbul": "0.4.5",
+		"prettier": "2.0.5",
+		"react": "16.13.1",
+		"remap-istanbul": "0.13.0",
+		"rimraf": "3.0.2",
+		"ts-loader": "^7.0.4",
+		"typescript": "3.9.2",
+		"vscode": "1.1.37",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.11"
+	},
+	"dependencies": {
+		"fs-extra": "9.0.0",
+		"lodash": "4.17.15",
+		"vscode-languageclient": "6.1.3"
+	},
+	"__metadata": {
+		"id": "3a1fe682-5a7a-4953-9ba9-77529a973d04",
+		"publisherId": "5e9ad6b5-1efd-4127-bd3c-d850373e4a88",
+		"publisherDisplayName": "Stephan Burguchev"
+	}
+}

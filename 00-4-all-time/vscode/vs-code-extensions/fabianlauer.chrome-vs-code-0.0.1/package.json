@@ -1,0 +1,92 @@
+{
+	"name": "chrome-vs-code",
+	"description": "Browse the web in VS Code.",
+	"version": "0.0.1",
+	"publisher": "fabianlauer",
+	"preview": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/FabianLauer/chrome-vs-code"
+	},
+	"engines": {
+		"vscode": "^0.10.7"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"displayName": "Chrome VS Code",
+	"galleryBanner": {
+		"color": "#ffffff",
+		"theme": "dark"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.openWebBrowser",
+				"title": "Open Web Browser"
+			},
+			{
+				"command": "extension.openWebBrowserSplitView",
+				"title": "Open Web Browser (Split View)"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Chrome VS Code",
+			"properties": {
+				"chromevscode.home": {
+					"type": "string",
+					"default": "https://code.visualstudio.com",
+					"description": "The URL of the browser's home page, including protocol and hostname.",
+					"minLength": 3,
+					"format": "uri"
+				},
+				"chromevscode.autoToggleAddressBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to automatically hide and show the address bar. When active, the address bar will be hidden when the page is scrolled down and shown when the page is scrolled up."
+				},
+				"chromevscode.showWelcomePage": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to show the welcome page instead of the home page when starting the browser."
+				},
+				"chromevscode.disclaimerReadAndAccepted": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether the user (you) has read the disclaimer and terms of use and accepts them. Those terms can be found at any time by browsing to 'about://disclaimer'."
+				},
+				"chromevscode.webSearchURL": {
+					"type": "string",
+					"minLength": 7,
+					"default": "http://www.google.com/search?q=${searchTerm}",
+					"description": "A URL to search the web with. The search term is made available as `${searchTerm}`."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "make clean && node ./node_modules/vscode/bin/compile && make all",
+		"compile": "make clean && node ./node_modules/vscode/bin/compile -p ./ && make all",
+		"postinstall": "make clean && node ./node_modules/vscode/bin/install && make all"
+	},
+	"devDependencies": {
+		"browserify": "^16.1.1",
+		"coffeescript": "^2.2.3",
+		"less": "^2.7.1",
+		"less-plugin-clean-css": "^1.5.1",
+		"prefix-css": "0.0.6",
+		"typescript": "^2.0.3",
+		"vscode": "^0.11.0"
+	},
+	"dependencies": {
+		"follow-redirects": "^1.1.0",
+		"mimetype": "0.0.8",
+		"normalize-url": "^1.7.0"
+	},
+	"__metadata": {}
+}

@@ -1,0 +1,36 @@
+{
+	"name": "sequelize-vscode-association-snippet",
+	"displayName": "Sequelize VSCode Association Snippet",
+	"description": "Snippets for creating interface mixins in VS Code",
+	"version": "0.0.2",
+	"publisher": "louisyuenll",
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "typescript",
+				"path": "./snippets/snippets.json"
+			}
+		]
+	},
+	"keywords": [
+		"Sequelize",
+		"Snippets",
+		"TypeScript"
+	],
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/louisyuenll/sequelize-vscode-association-snippet"
+	},
+	"__metadata": {
+		"id": "5e23c71a-9b33-4883-88e1-cee6117ea640",
+		"publisherId": "62e73d72-7c77-487d-9231-107b9e92c5f9",
+		"publisherDisplayName": "Louis Yuen"
+	}
+}

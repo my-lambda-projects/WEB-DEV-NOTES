@@ -1,0 +1,54 @@
+{
+	"name": "addDocComments",
+	"displayName": "Add jsdoc comments",
+	"description": "Adds jsdoc @param and @return tags for selected function signatures in JS and TS",
+	"icon": "images/comment_logo.svg",
+	"galleryBanner": {
+		"color": "#5c2d91",
+		"theme": "dark"
+	},
+	"license": "SEE LICENSE IN LICENSE.md",
+	"bugs": {
+		"url": "https://github.com/Microsoft/vscode-comment/issues"
+	},
+	"homepage": "https://github.com/Microsoft/vscode-comment/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-comment.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"version": "0.0.8",
+	"publisher": "stevencl",
+	"engines": {
+		"vscode": "0.10.x"
+	},
+	"main": "./out/extension",
+	"activationEvents": [
+		"onCommand:extension.addDocComments"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.addDocComments",
+				"title": "Add Doc Comments"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+	},
+	"devDependencies": {
+		"vscode": "0.10.0"
+	},
+	"dependencies": {
+		"indent-string": "^2.1.0"
+	},
+	"__metadata": {
+		"id": "2e9fe0cb-4e63-42fc-a809-fb056aad49c3",
+		"publisherId": "013ff321-59ed-41d2-b884-eba2818695f9",
+		"publisherDisplayName": "stevencl"
+	}
+}

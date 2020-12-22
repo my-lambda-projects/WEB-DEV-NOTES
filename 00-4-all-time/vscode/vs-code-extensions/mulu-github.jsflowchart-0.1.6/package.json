@@ -1,0 +1,59 @@
+{
+	"name": "jsflowchart",
+	"description": "JS Flowchart in Real-time",
+	"version": "0.1.6",
+	"publisher": "MULU-github",
+	"engines": {
+		"vscode": "^1.38.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "images/icon.png",
+	"activationEvents": [
+		"onCommand:ShowJSFlowchart.start"
+	],
+	"repository": {
+		"type": "git",
+		"url": "TBD"
+	},
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "ShowJSFlowchart.start",
+				"title": "Show Flowchart",
+				"category": "Flowchart JS"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "ShowJSFlowchart.start",
+					"group": "YourGroup@1"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "tslint -p ./",
+		"watch": "tsc -w -p ./"
+	},
+	"dependencies": {
+		"js2flowchart": "^1.1.3"
+	},
+	"devDependencies": {
+		"tslint": "^5.16.0",
+		"typescript": "^2.6.1",
+		"@types/vscode": "^1.38.0",
+		"@types/node": "^7.0.43",
+		"@types/mocha": "^2.2.42"
+	},
+	"__metadata": {
+		"id": "06b91dd0-c1bc-4d50-9404-dc26d6967ba1",
+		"publisherId": "a9b4b7fd-8a9e-47dd-8e42-c44872aff120",
+		"publisherDisplayName": "MULU-github"
+	}
+}

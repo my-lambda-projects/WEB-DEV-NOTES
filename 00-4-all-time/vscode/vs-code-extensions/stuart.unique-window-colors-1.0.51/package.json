@@ -1,0 +1,94 @@
+{
+	"name": "unique-window-colors",
+	"displayName": "Window Colors",
+	"description": "Automatically adds a unique color to each window's activityBar and titleBar.",
+	"icon": "img/icon_602.png",
+	"version": "1.0.51",
+	"publisher": "stuart",
+	"author": {
+		"name": "Stuart Robinson"
+	},
+	"engines": {
+		"vscode": "^1.20.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/stuartcrobinson/unique-window-colors"
+	},
+	"categories": [
+		"Other",
+		"Themes"
+	],
+	"keywords": [
+		"color",
+		"theme",
+		"workspace",
+		"folder",
+		"customization"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.sayHello",
+				"title": "Hello World"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Window Colors Configuration",
+			"properties": {
+				"windowColors.🌈 Theme": {
+					"type": "string",
+					"default": "dark",
+					"enum": [
+						"dark",
+						"light",
+						"remove"
+					],
+					"enumDescriptions": [
+						"Applies a dark-themed color to the activityBar and titleBar.  First 'remove' and reload VSCode for changes to take effect. ",
+						"Applies a light-themed color to the activityBar and titleBar.  First 'remove' and reload VSCode for changes to take effect. ",
+						"Removes the modified color settings from .vscode/settings.json"
+					],
+					"description": "Controls the color shades to blend with dark or light themes.  To switch betwen light and dark, you must first select 'remove' and reload VSCode to remove the settings, because they are not automatically overwritten.  This lets you modify the selected colors if you don't like what the extension picks.  \n\nReload the window for this to take effect (cmd-⇧-P, 'Reload Window')"
+				},
+				"windowColors.🌈 DeleteSettingsFileUponExit": {
+					"type": "boolean",
+					"default": false,
+					"description": "Delete .vscode/settings.json each time you close the workspace/window.  This prevents this file from being saved even when you haven't manually edited it.  This setting is necessary in situations where VSCode needelessly copies global settings to this workspace settings file. \n\n🚨 This will delete any workspace customizations you might have saved, including a Base Color.\n\nThis should be set in 'User Settings' instead of 'Workspace Settings' or else it will just delete itself."
+				},
+				"windowColors.🌈 BaseColor": {
+					"type": "string",
+					"description": "Html color name or hex color value (eg 'whitesmoke' or '#ffffff').\n\nhttps://www.w3schools.com/colors/colors_names.asp\n\nReload the window for this to take effect (cmd-shift-p, 'Reload Window')\n\nTo remove a Base Color, you'll have to delete the relevant settings in .vscode/settings.json either manually or by selecting 'Delete Settings File Upon Exit'."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.22",
+		"tslint": "^5.8.0",
+		"@types/node": "^8.10.25",
+		"@types/mocha": "^2.2.42"
+	},
+	"dependencies": {
+		"@types/color": "^3.0.0",
+		"color": "^3.1.0"
+	},
+	"__metadata": {
+		"id": "85e93d09-9c05-4473-867f-8daaf1bc9e75",
+		"publisherId": "dcf78464-2807-41b3-a304-672ab89e19b2",
+		"publisherDisplayName": "Stuart Robinson"
+	}
+}

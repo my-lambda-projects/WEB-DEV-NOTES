@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ESNext",
+    "outDir": "build",
+    "lib": ["es6", "dom", "esnext"],
+    "sourceMap": true,
+    "rootDir": ".",
+    "strict": true
+  },
+  "include": ["ext-src"],
+  "exclude": ["node_modules", ".vscode-test"]
+}

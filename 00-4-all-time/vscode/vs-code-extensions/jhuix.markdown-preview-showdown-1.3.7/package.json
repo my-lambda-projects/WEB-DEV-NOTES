@@ -1,0 +1,228 @@
+{
+	"name": "markdown-preview-showdown",
+	"displayName": "%mdps.displayname%",
+	"description": "%mdps.description%",
+	"version": "1.3.7",
+	"publisher": "jhuix",
+	"author": {
+		"name": "jhuix"
+	},
+	"engines": {
+		"vscode": "^1.47.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"markdown",
+		"preview",
+		"showdown",
+		"showdowns",
+		"html",
+		"vscode",
+		"MDPS"
+	],
+	"icon": "media/logo.png",
+	"activationEvents": [
+		"onLanguage:markdown",
+		"onCommand:markdown-preview-showdown.openPreview"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "markdown-preview-showdown.openPreview",
+				"title": "%mdps.openPreview%",
+				"category": "Markdown",
+				"icon": {
+					"light": "./media/rightpane-16-light.png",
+					"dark": "./media/rightpane-16-dark.png"
+				}
+			}
+		],
+		"keybindings": [
+			{
+				"command": "markdown-preview-showdown.openPreview",
+				"key": "ctrl+shift+v ctrl+shift+v",
+				"mac": "cmd+shift+v cmd+shift+v",
+				"when": "editorLangId == markdown"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "markdown-preview-showdown.openPreview",
+					"when": "editorLangId == markdown",
+					"group": "markdown-preview-showdown"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "markdown-preview-showdown.openPreview",
+					"when": "editorLangId == markdown",
+					"group": "navigation"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "%mdps.title%",
+			"properties": {
+				"markdown-preview-showdown.autoPreview": {
+					"description": "%mdps.autoPreview%",
+					"default": false,
+					"type": "boolean"
+				},
+				"markdown-preview-showdown.fontSize": {
+					"description": "%mdps.fontSize%",
+					"default": 14,
+					"type": "number"
+				},
+				"markdown-preview-showdown.scrollSync": {
+					"description": "%mdps.scrollSync%",
+					"default": true,
+					"type": "boolean"
+				},
+				"markdown-preview-showdown.flavor": {
+					"description": "%mdps.flavor%",
+					"default": "github",
+					"type": "string",
+					"enum": [
+						"github",
+						"ghost",
+						"vanilla",
+						"original"
+					]
+				},
+				"markdown-preview-showdown.katex.mathDelimiters": {
+					"type": "object",
+					"default": {
+						"latexInline": " { \"left\": \"$\", \"right\": \"$\" },{ \"left\": \"\\\\(\", \"right\": \"\\\\)\" }",
+						"latexDisplay": "{ \"left\": \"$$\", \"right\": \"$$\" },{ \"left\": \"\\\\[\", \"right\": \"\\\\]\" }",
+						"asciiInline": "{ \"left\": \"@ \", \"right\": \" @\" },{ \"left\": \"~ \", \"right\": \" ~\" }",
+						"asciiDisplay": "{ \"left\": \"@@\", \"right\": \"@@\" }"
+					},
+					"properties": {
+						"latexInline": {
+							"type": "string",
+							"description": "%mdps.latexmath.inline.delimiters%"
+						},
+						"latexDisplay": {
+							"type": "string",
+							"description": "%mdps.latexmath.display.delimiters%"
+						},
+						"asciiInline": {
+							"type": "string",
+							"description": "%mdps.asciimath.inline.delimiters%"
+						},
+						"asciiDisplay": {
+							"type": "string",
+							"description": "%mdps.asciimath.display.delimiters%"
+						}
+					},
+					"description": "%mdps.katex.mathDelimiters%"
+				},
+				"markdown-preview-showdown.mermaid.theme": {
+					"description": "%mdps.mermaid.theme%",
+					"default": "default",
+					"type": "string",
+					"enum": [
+						"default",
+						"dark",
+						"forest",
+						"neutral"
+					]
+				},
+				"markdown-preview-showdown.vega.theme": {
+					"description": "%mdps.vega.theme%",
+					"default": "vox",
+					"type": "string",
+					"enum": [
+						"excel",
+						"ggplot2",
+						"quartz",
+						"vox",
+						"dark"
+					]
+				},
+				"markdown-preview-showdown.plantuml.theme": {
+					"description": "%mdps.plantuml.theme%",
+					"default": "default",
+					"type": "string",
+					"enum": [
+						"default",
+						"nature",
+						"c4",
+						"c4-handwrite"
+					]
+				},
+				"markdown-preview-showdown.plantuml.renderMode": {
+					"description": "%mdps.plantuml.renderMode%",
+					"default": "local",
+					"type": "string",
+					"enum": [
+						"local",
+						"remote"
+					]
+				},
+				"markdown-preview-showdown.plantuml.website": {
+					"description": "%mdps.plantuml.website%",
+					"default": "www.plantuml.com/plantuml",
+					"type": "string"
+				},
+				"markdown-preview-showdown.puppeteer.useCore": {
+					"description": "%mdps.puppeteer.useCore%",
+					"default": true,
+					"type": "boolean"
+				},
+				"markdown-preview-showdown.puppeteer.waitForTimeout": {
+					"description": "%mdps.puppeteer.waitForTimeout%",
+					"default": 0,
+					"type": "number"
+				},
+				"markdown-preview-showdown.puppeteer.chromePath": {
+					"description": "%mdps.puppeteer.chromePath%",
+					"default": "",
+					"type": "string",
+					"scope": "machine"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mkdirp": "^1.0.1",
+		"@types/node": "^12.12.58",
+		"@types/vscode": "^1.47.0",
+		"eslint": "^7.11.0",
+		"glob": "^7.1.4",
+		"semver": "^7.3.2",
+		"tslint": "^6.1.3",
+		"tslint-config-alloy": "^0.2.1",
+		"tslint-config-prettier": "^1.18.0",
+		"typescript": "^4.0.2"
+	},
+	"dependencies": {
+		"@jhuix/showdowns": "^0.5.6",
+		"mkdirp": "^1.0.4",
+		"plantuml-style-c4": "^1.1.3",
+		"puppeteer-core": "^5.3.0",
+		"throttle-debounce": "^2.3.0"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jhuix/vscode-markdown-preview-showdown"
+	},
+	"homepage": "https://github.com/jhuix/vscode-markdown-preview-showdown/blob/master/README.md",
+	"__metadata": {
+		"id": "e7655355-7ebb-4c0b-b3d4-86f92c2ee446",
+		"publisherId": "427bccb4-6b8c-43bc-8c30-8365cdacfc10",
+		"publisherDisplayName": "jhuix"
+	}
+}

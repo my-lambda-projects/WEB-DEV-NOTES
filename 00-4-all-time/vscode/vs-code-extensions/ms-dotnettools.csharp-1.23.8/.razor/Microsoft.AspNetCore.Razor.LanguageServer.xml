@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.AspNetCore.Razor.LanguageServer</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.AddUsingsCodeActionProviderFactory.TryExtractNamespace(System.String,System.String@)">
+            <summary>
+            Extracts the namespace from a C# add using statement provided by Visual Studio
+            </summary>
+            <param name="csharpAddUsing">Add using statement of the form `using System.X;`</param>
+            <param name="namespace">Extract namespace `System.X`</param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.AddUsingsCSharpCodeActionResolver">
+            <summary>
+            Resolves the C# Add Using Code Action by requesting edits from Roslyn
+            and converting them to be Razor compatible.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.ExtractToCodeBehindCodeActionResolver.GenerateCodeBehindPath(System.String)">
+            <summary>
+            Generate a file path with adjacent to our input path that has the
+            correct codebehind extension, using numbers to differentiate from
+            any collisions.
+            </summary>
+            <param name="path">The origin file path.</param>
+            <returns>A non-existent file path with the same base name and a codebehind extension.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.ExtractToCodeBehindCodeActionResolver.FindUsings(Microsoft.AspNetCore.Razor.Language.RazorCodeDocument)">
+            <summary>
+            Determine all explicit and implicit using statements in the code
+            document using the intermediate node.
+            </summary>
+            <param name="razorCodeDocument">The code document to analyze.</param>
+            <returns>An enumerable of the qualified namespaces.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.ExtractToCodeBehindCodeActionResolver.GenerateCodeBehindClass(System.String,System.String,Microsoft.AspNetCore.Razor.Language.RazorCodeDocument)">
+            <summary>
+            Generate a complete C# compilation unit containing a partial class
+            with the given name, body contents, and the namespace and all
+            usings from the existing code document.
+            </summary>
+            <param name="className">Name of the resultant partial class.</param>
+            <param name="contents">Class body contents.</param>
+            <param name="razorCodeDocument">Existing code document we're extracting from.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.DefaultClientNotifierService.OnStarted(OmniSharp.Extensions.LanguageServer.Protocol.Server.ILanguageServer,System.Threading.CancellationToken)">
+            <summary>
+            Fires when the language server is set to "Started".
+            </summary>
+            <param name="server"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.DefaultRazorComponentSearchEngine.TryLocateComponentAsync(Microsoft.AspNetCore.Razor.Language.TagHelperDescriptor)">
+            <summary>Search for a component in a project based on its tag name and fully qualified name.</summary>
+            <remarks>
+            This method makes several assumptions about the nature of components. First, it assumes that a component
+            a given name `Name` will be located in a file `Name.razor`. Second, it assumes that the namespace the
+            component is present in has the same name as the assembly its corresponding tag helper is loaded from.
+            Implicitly, this method inherits any assumptions made by TrySplitNamespaceAndType.
+            </remarks>
+            <param name="tagHelper">A TagHelperDescriptor to find the corresponding Razor component for.</param>
+            <returns>The corresponding DocumentSnapshot if found, null otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.Formatting.FormattingContext.GetIndentationLevelString(System.Int32)">
+            <summary>
+            Generates a string of indentation based on a specific indentation level. For instance, inside of a C# method represents 1 indentation level. A method within a class would have indentaiton level of 2 by default etc.
+            </summary>
+            <param name="indentationLevel">The indentation level to represent</param>
+            <returns>A whitespace string representing the indentation level based on the configuration.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.Formatting.FormattingContext.GetIndentationString(System.Int32)">
+            <summary>
+            Given a <paramref name="indentation"/> amount of characters, generate a string representing the configured indentation.
+            </summary>
+            <param name="indentation">An amount of characters to represent the indentation</param>
+            <returns>A whitespace string representation indentation.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.Formatting.FormattingContext.GetIndentationLevelForOffset(System.Int32)">
+            <summary>
+            Given an offset return the corresponding indent level.
+            </summary>
+            <param name="offset">A value represents the number of spaces/tabs at the start of a line.</param>
+            <returns>The corresponding indent level.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.Formatting.FormattingContext.GetIndentationOffsetForLevel(System.Int32)">
+            <summary>
+            Given a level, returns the corresponding offset.
+            </summary>
+            <param name="level">A value representing the indentation level.</param>
+            <returns></returns>
+        </member>
+        <member name="F:Microsoft.AspNetCore.Razor.LanguageServer.MappingBehavior.Inclusive">
+             <summary>
+             Inclusive mapping behavior will attempt to map overlapping or intersecting generated ranges with a provided projection range.
+            
+             Behavior:
+                 - Overlaps > 1 generated range = No mapping
+                 - Intersects > 1 generated range = No mapping
+                 - Overlaps 1 generated range = Will reduce the provided range down to the generated range.
+                 - Intersects 1 generated range = Will use the generated range mappings
+             </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.Semantic.DefaultRazorSemanticTokensInfoService.GetData(Microsoft.AspNetCore.Razor.LanguageServer.Semantic.SemanticRange,Microsoft.AspNetCore.Razor.LanguageServer.Semantic.SemanticRange,Microsoft.AspNetCore.Razor.Language.RazorCodeDocument)">
+                     * In short, each token takes 5 integers to represent, so a specific token `i` in the file consists of the following array indices:
+                     *  - at index `5*i`   - `deltaLine`: token line number, relative to the previous token
+                     *  - at index `5*i+1` - `deltaStart`: token start character, relative to the previous token (relative to 0 or the previous token's start if they are on the same line)
+                     *  - at index `5*i+2` - `length`: the length of the token. A token cannot be multiline.
+                     *  - at index `5*i+3` - `tokenType`: will be looked up in `SemanticTokensLegend.tokenTypes`
+                     *  - at index `5*i+4` - `tokenModifiers`: each set bit will be looked up in `SemanticTokensLegend.tokenModifiers`
+                    *
+        </member>
+        <member name="M:Microsoft.AspNetCore.Razor.LanguageServer.SourceTextExtensions.GetEncompassingTextChangeRange(Microsoft.CodeAnalysis.Text.SourceText,Microsoft.CodeAnalysis.Text.SourceText)">
+            <summary>
+            Gets the minimal range of text that changed between the two versions.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "inho",
-    "password": "inho",
-    "database": "inho",
+    "username": "express_practice_b_app",
+    "password": "password",
+    "database": "express_practice_b_app_development",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "seederStorage": "sequelize"

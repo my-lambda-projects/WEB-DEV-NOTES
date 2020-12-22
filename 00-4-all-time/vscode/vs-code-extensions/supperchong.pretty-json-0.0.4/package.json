@@ -1,0 +1,76 @@
+{
+	"name": "pretty-json",
+	"displayName": "Pretty js/json",
+	"description": "format js/json to beautiful json",
+	"version": "0.0.4",
+	"publisher": "supperchong",
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/supperchong/pretty-json.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.prettyJson"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.prettyJson",
+				"title": "prettyJson"
+			}
+		],
+		"configuration": [
+			{
+				"title": "Pretty-Json",
+				"properties": {
+					"Pretty.Json.detectIndentation": {
+						"type": "boolean",
+						"default": true,
+						"description": "Auto indent lines according to config in editor.InsertSpaces and editor.TabSize.",
+						"scope": "window"
+					},
+					"Pretty.Json.useTabs": {
+						"type": "boolean",
+						"default": false,
+						"description": "Indent lines with tabs, if false will use space. This config is effective only when Detect Indentation is false.",
+						"scope": "window"
+					},
+					"Pretty.Json.indentWidth": {
+						"type": "number",
+						"default": null,
+						"description": "The number of space when use space as indent. Default use editor.tabSize.",
+						"scope": "window"
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.21",
+		"tslint": "^5.8.0",
+		"@types/node": "^8.10.25",
+		"@types/mocha": "^2.2.42"
+	},
+	"dependencies": {
+		"pretty-object-string": "^1.1.1"
+	},
+	"__metadata": {
+		"id": "644bae28-ab96-40a1-a231-d9672069c02d",
+		"publisherId": "36274d3f-78b4-41c7-8502-2eed5a2b85ad",
+		"publisherDisplayName": "supperchong"
+	}
+}

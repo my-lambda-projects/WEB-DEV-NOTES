@@ -1,0 +1,32 @@
+{
+	"name": "30-seconds-of-code",
+	"displayName": "30 seconds of code",
+	"description": "JavaScript snippets you can understand in 30 seconds or less.",
+	"version": "1.0.0",
+	"publisher": "30-seconds",
+	"icon": "images/logo.png",
+	"license": "CC0-1.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/30-seconds/30-seconds-of-code.git"
+	},
+	"engines": {
+		"vscode": "^1.29.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "javascript",
+				"path": "./snippets/snippets.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "d5eaaf07-9893-4918-a908-1fe2a7a57d48",
+		"publisherId": "cc8e7f02-915f-4c75-a6ea-7af3f56861fd",
+		"publisherDisplayName": "30 seconds"
+	}
+}

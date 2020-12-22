@@ -1,0 +1,185 @@
+{
+	"name": "seito-openfile",
+	"displayName": "Open file",
+	"description": "Extract a filepath from the current cursor position and open the file",
+	"version": "1.8.4",
+	"publisher": "Fr43nk",
+	"engines": {
+		"vscode": "^1.15.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "programicon-2x.png",
+	"galleryBanner": {
+		"theme": "dark",
+		"color": "#782121"
+	},
+	"homepage": "https://github.com/fr43nk/seito-openfile/blob/master/README.md",
+	"bugs": {
+		"url": "https://github.com/fr43nk/seito-openfile/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fr43nk/seito-openfile.git"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "seito-openfile.openFileFromText",
+				"category": "File",
+				"title": "Open file under cursor"
+			},
+			{
+				"command": "seito-openfile.openFileLikeThisFile",
+				"category": "File",
+				"title": "Open file like this file"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "seito-openfile.openFileFromText",
+				"key": "alt+p",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "seito-openfile.openFileLikeThisFile",
+				"key": "alt+q"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "seito-openfile.openFileFromText",
+					"when": "seito-openfile:enabled"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "seito-openfile.openFileFromText",
+					"when": "editorTextFocus && !inOutput && seito-openfile:enabled",
+					"group": "file"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Open file configurations",
+			"properties": {
+				"seito-openfile.wordbound": {
+					"type": "string",
+					"default": "[\\s\\\"\\'\\>\\<#;?{}]",
+					"description": "The RegExp to define the bound of the path string"
+				},
+				"seito-openfile.lookupTildePathAlsoFromWorkspace": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to lookup path string which start with '~' relative to workspace if not found at user's home."
+				},
+				"seito-openfile.extensions": {
+					"type": "array",
+					"default": [],
+					"description": "Known suffixes to look for when file string has no suffix (Deprecated. Default to search with current document's suffix if path in text has no extension)"
+				},
+				"seito-openfile.extraExtensionsForTypes": {
+					"type": "object",
+					"default": {
+						"js": [
+							"jsx"
+						],
+						"jsx": [
+							"js"
+						],
+						"ts": [
+							"js",
+							"jsx"
+						],
+						"vue": [
+							"js",
+							"jsx"
+						],
+						"c": [
+							"h"
+						],
+						"cpp": [
+							"h",
+							"hpp"
+						],
+						"m": [
+							"h"
+						],
+						"mm": [
+							"h",
+							"hpp"
+						]
+					},
+					"description": "Known suffixes to look for when file string has no suffix, according to current document's type. (suffix match is relative to current document's parent folders only)"
+				},
+				"seito-openfile.searchSubFoldersOfWorkspaceFolders": {
+					"type": "array",
+					"default": [
+						"lib*/",
+						"lib*/*/",
+						"src/",
+						"src/*/",
+						"app/",
+						"app/*/",
+						"class?(es)/",
+						"class?(es)/*/",
+						"module?(s)/",
+						"inc*/",
+						"vendor?(s)/",
+						"vendor?(s)/*/",
+						"public/"
+					],
+					"description": "Patterns of sub-folders under workspace folder(s) to be searched at second last, for relative paths.  For syntax reference glob-all/minimatch"
+				},
+				"seito-openfile.searchPaths": {
+					"type": "array",
+					"default": [],
+					"description": "Paths to be added to search at last, for relative paths"
+				},
+				"seito-openfile.leadingPathMapping": {
+					"type": "object",
+					"default": {},
+					"description": "Rewrite leading path segments to another path, like {\"source/path\": \"target/path\"}.  Both source and target paths must be full match of single or multiple folder levels.  E.g. if want '@/' to mean relative to workspace, you may write {\"@\": \"\"} to remove the '@' folder level.  Also support ending wildcard '*', like {\"@*\": \"*\"}.  Later value has higher precedence.  Be care any mistake of this setting can cause unexpected file open failures."
+				},
+				"seito-openfile.notFoundTriggerQuickOpen": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, if (a sole) file is not found by the normal logic, trigger VS Code's Quick Open input box for further search."
+				},
+				"seito-openfile.openNewTab": {
+					"type": "boolean",
+					"default": false,
+					"description": "Open a file in a new tab. Keeps the unmodified file open."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"dependencies": {
+		"glob-all": "^3.1.0",
+		"true-case-path": "^1.0.0",
+		"vscode": "^1.1.22"
+	},
+	"__metadata": {
+		"id": "531cc46e-a673-425f-9f5a-60ce75187e35",
+		"publisherDisplayName": "Frank Stuetzer",
+		"publisherId": "0753eb60-c19f-4d2d-ac1d-6af87224c40a"
+	}
+}

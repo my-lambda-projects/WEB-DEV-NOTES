@@ -1,0 +1,130 @@
+{
+	"name": "javascript-docstrings",
+	"displayName": "JavaScript Docstrings",
+	"description": "Adds docstrings like, @param to your functions, classes and more.",
+	"version": "1.1.1",
+	"publisher": "Massi",
+	"icon": "icon.png",
+	"license": "SEE LICENSE IN LICENSE",
+	"engines": {
+		"vscode": "^1.41.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/faqima01/JavaScript-Docstrings-VSCode-Extension.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.class",
+		"onCommand:extension.function",
+		"onCommand:extension.author",
+		"onCommand:extension.constantVariable",
+		"onCommand:extension.header",
+		"onCommand:extension.deprecated",
+		"onCommand:extension.generator",
+		"onCommand:extension.globalVariable",
+		"onCommand:extension.readOnly",
+		"onCommand:extension.thisKeyword",
+		"onCommand:extension.toDo",
+		"onCommand:extension.dataTypes",
+		"onCommand:extension.object",
+		"onCommand:extension.version",
+		"onCommand:extension.link"
+	],
+	"main": "./src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.class",
+				"title": "JSDocs: Class"
+			},
+			{
+				"command": "extension.function",
+				"title": "JSDocs: Function"
+			},
+			{
+				"command": "extension.author",
+				"title": "JSDocs: Author"
+			},
+			{
+				"command": "extension.constantVariable",
+				"title": "JSDocs: Constant variable"
+			},
+			{
+				"command": "extension.header",
+				"title": "JSDocs: Header"
+			},
+			{
+				"command": "extension.deprecated",
+				"title": "JSDocs: Deprecated item"
+			},
+			{
+				"command": "extension.generator",
+				"title": "JSDocs: Generator function"
+			},
+			{
+				"command": "extension.globalVariable",
+				"title": "JSDocs: Global variable"
+			},
+			{
+				"command": "extension.readOnly",
+				"title": "JSDocs: Read-Only item"
+			},
+			{
+				"command": "extension.thisKeyword",
+				"title": "JSDocs: this Keyword"
+			},
+			{
+				"command": "extension.toDo",
+				"title": "JSDocs: To-Do"
+			},
+			{
+				"command": "extension.dataTypes",
+				"title": "JSDocs: Data types notations"
+			},
+			{
+				"command": "extension.object",
+				"title": "JSDocs: Object"
+			},
+			{
+				"command": "extension.version",
+				"title": "JSDocs: Version"
+			},
+			{
+				"command": "extension.link",
+				"title": "JSDocs: Link"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.1",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.41.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.0.1",
+		"typescript": "^3.7.5",
+		"vscode-test": "^1.3.0"
+	},
+	"keywords": [
+		"docstrings",
+		"jsdoc",
+		"documentation",
+		"javascript",
+		"commenting"
+	],
+	"homepage": "https://github.com/faqima01/JavaScript-Docstrings-VSCode-Extension",
+	"__metadata": {
+		"id": "b72a5e51-3286-4e89-b840-6f1ea5f4af62",
+		"publisherId": "93df9e81-2c28-4457-9930-ad169f74d6e6",
+		"publisherDisplayName": "Massi Faqiri"
+	}
+}

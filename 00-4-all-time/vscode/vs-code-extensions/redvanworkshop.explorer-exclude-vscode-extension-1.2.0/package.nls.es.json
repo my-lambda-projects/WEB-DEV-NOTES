@@ -1,0 +1,16 @@
+{
+    "config.removedKey": "Se eliminó {0} de los elementos ocultos",
+    "error.ifExists": "{0} no existe",
+    "error.parseFilePath": "{0} no está disponible",
+    "package.exclude": "Añadir a objetos ocultos ...",
+    "package.pane": "Objetos ocultos",
+    "package.remove": "Eliminar de los elementos ocultos",
+    "package.toggle": "Alternar la visibilidad",
+    "package.disableAll": "Desactivar todo",
+    "package.enableAll": "Activar todo",
+    "package.reset": "Restablecer elementos ocultos",
+    "picker.placeholder": "¿Qué te gustaría esconder? Seleccione todas las que correspondan.",
+    "tooltip.hide": "Ocultar {0}",
+    "tooltip.show": "Show {0}",
+    "reset.prompt": "¿Desea restablecer los elementos ocultos? Esto no se puede deshacer."
+}

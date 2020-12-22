@@ -1,0 +1,16 @@
+{
+    "config.removedKey": "{0} aus ausgeblendeten Objekten entfernt",
+    "error.ifExists": "{0} existiert nicht",
+    "error.parseFilePath": "{0} ist nicht verfügbar",
+    "package.exclude": "Zu ausgeblendeten Objekten hinzufügen ...",
+    "package.pane": "Versteckte Gegenstände",
+    "package.remove": "Aus ausgeblendeten Objekten entfernen",
+    "package.toggle": "Sichtbarkeit umschalten",
+    "package.disableAll": "Alle deaktivieren",
+    "package.enableAll": "Alles aktivieren",
+    "package.reset": "Versteckte Objekte zurücksetzen",
+    "picker.placeholder": "Was möchtest du verstecken? Wählen Sie alle zutreffenden.",
+    "tooltip.hide": "{0} ausblenden",
+    "tooltip.show": "{0} anzeigen",
+    "reset.prompt": "Versteckte Objekte zurücksetzen? Das kann nicht rückgängig gemacht werden."
+}

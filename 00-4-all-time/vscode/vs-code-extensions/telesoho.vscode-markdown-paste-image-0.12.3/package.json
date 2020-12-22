@@ -1,0 +1,161 @@
+{
+	"name": "vscode-markdown-paste-image",
+	"displayName": "Markdown Paste",
+	"description": "A smartly paste for markdown.",
+	"version": "0.12.3",
+	"publisher": "telesoho",
+	"author": {
+		"name": "telesoho",
+		"email": "telesoho@gmail.com"
+	},
+	"license": "(MIT)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/telesoho/vscode-markdown-paste-image.git"
+	},
+	"homepage": "https://github.com/telesoho/vscode-markdown-paste-image",
+	"bugs": {
+		"url": "https://github.com/telesoho/vscode-markdown-paste-image/issues"
+	},
+	"icon": "res/icon.png",
+	"galleryBanner": {
+		"color": "#252526",
+		"theme": "dark"
+	},
+	"keywords": [
+		"paste",
+		"image",
+		"markdown",
+		"paste image",
+		"paste url"
+	],
+	"engines": {
+		"vscode": "^1.12.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:telesoho.MarkdownDownload",
+		"onCommand:telesoho.MarkdownPaste",
+		"onCommand:telesoho.MarkdownRuby",
+		"onCommand:telesoho.insertMathSymbol"
+	],
+	"main": "./out/extension",
+	"scripts": {
+		"publish": "vsce publish",
+		"clear": "tsc scripts/clear.ts & node scripts/clear.js",
+		"vscode:prepublish": "npm run clear & tsc -p ./",
+		"compile": "npm run clear & tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"ctest": "tsc -p ts-test.json"
+	},
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Markdown Paste Configuration",
+			"properties": {
+				"MarkdownPaste.path": {
+					"type": "string",
+					"default": "./",
+					"description": "The destination to save image file."
+				},
+				"MarkdownPaste.silence": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable/disable showing confirm box while paste image."
+				},
+				"MarkdownPaste.enableImgTag": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/Disable using img tag with width and height for pasting image."
+				},
+				"MarkdownPaste.rules": {
+					"type": "array",
+					"default": [
+						{
+							"regex": "^(?:https?://)?(?:(?:(?:www\\.?)?youtube\\.com(?:/(?:(?:watch\\?.*?v=([^&\\s]+).*)|))?))",
+							"options": "g",
+							"replace": "[![](https://img.youtube.com/vi/$1/0.jpg)](https://www.youtube.com/watch?v=$1)"
+						},
+						{
+							"regex": "^(https?://.*)",
+							"options": "ig",
+							"replace": "[]($1)"
+						}
+					],
+					"description": "Rules for markdown paste."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "telesoho.MarkdownDownload",
+				"title": "Markdown Download"
+			},
+			{
+				"command": "telesoho.MarkdownPaste",
+				"title": "Markdown Paste"
+			},
+			{
+				"command": "telesoho.MarkdownRuby",
+				"title": "Markdown Ruby"
+			},
+			{
+				"command": "telesoho.insertMathSymbol",
+				"title": "Insert latex math symbol"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "telesoho.MarkdownDownload",
+				"key": "ctrl+alt+d",
+				"mac": "cmd+alt+d",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "telesoho.MarkdownPaste",
+				"key": "ctrl+alt+v",
+				"mac": "cmd+alt+v",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "telesoho.MarkdownRuby",
+				"key": "ctrl+alt+t",
+				"mac": "cmd+alt+t",
+				"when": "editorTextFocus"
+			},
+			{
+				"key": "ctrl+alt+\\",
+				"mac": "cmd+alt+\\",
+				"command": "telesoho.insertMathSymbol",
+				"when": "editorTextFocus"
+			}
+		],
+		"snippets": [
+			{
+				"language": "markdown",
+				"path": "./snippets/snippets.json"
+			}
+		]
+	},
+	"dependencies": {
+		"clipboardy": "^1.1.4",
+		"moment": "^2.22.1",
+		"shelljs": "^0.7.7",
+		"to-markdown": "^3.1.1"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.48",
+		"@types/node": "^6.0.106",
+		"mocha": "^5.2.0",
+		"typescript": "^2.8.3",
+		"vscode": "^1.1.36"
+	},
+	"__metadata": {
+		"id": "387abb54-fd2b-402d-a101-7376ccb784d3",
+		"publisherId": "4ba8b3fb-ec88-4e64-8bc5-236e3fa152be",
+		"publisherDisplayName": "telesoho"
+	}
+}

@@ -1,0 +1,71 @@
+{
+	"name": "simple-react-snippets",
+	"displayName": "Simple React Snippets",
+	"description": "Dead simple React snippets you will actually use",
+	"version": "1.2.3",
+	"publisher": "burkeholland",
+	"icon": "images/react-logo.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/burkeholland/simple-react-snippets.git"
+	},
+	"keywords": [
+		"React",
+		"React JS",
+		"React Snippets"
+	],
+	"engines": {
+		"vscode": "^1.13.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"activationEvents": [
+		"onCommand:extension.stayClassy"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"snippets": [
+			{
+				"language": "javascriptreact",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "javascript",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "typescriptreact",
+				"path": "./snippets/snippets-ts.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/snippets-ts.json"
+			}
+		],
+		"commands": [
+			{
+				"command": "extension.stayClassy",
+				"title": "React: class to className"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"__metadata": {
+		"id": "a84825e8-5f04-4988-b85a-4942e795bcbe",
+		"publisherId": "9571ced8-1740-4abf-b33f-36df3eb7736b",
+		"publisherDisplayName": "Burke Holland"
+	}
+}

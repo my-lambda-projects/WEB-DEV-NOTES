@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JavaScript output: transformed source code 1`] = `
+"let _x;
+
+module.exports = (
+  <div>
+    {((_x = 1), null)}
+    {((_x = _x + 40), null)}
+    {(_x++, null)}
+    <div>{_x}</div>
+  </div>
+);
+"
+`;
+
+exports[`html output: generated html 1`] = `
+<div>
+  <div>
+    42
+  </div>
+</div>
+`;
+
+exports[`static html output: static html 1`] = `"<div><div>42</div></div>"`;

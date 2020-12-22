@@ -1,0 +1,110 @@
+{
+	"name": "markdown-auto-toc",
+	"displayName": "Markdown AutoTOC",
+	"description": "Adds support for inserting an auto-generated table of contents to VS Code's built-in markdown preview using the [[TOC]] syntax.",
+	"version": "0.3.0",
+	"publisher": "wibblemonkey",
+	"keywords": [
+		"markdown",
+		"contents",
+		"table of contents",
+		"toc"
+	],
+	"icon": "logo/logo.png",
+	"license": "MIT",
+	"homepage": "https://github.com/wibblemonkey/vscode-markdown-auto-toc/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wibblemonkey/vscode-markdown-auto-toc.git"
+	},
+	"bugs": {
+		"url": "https://github.com/wibblemonkey/vscode-markdown-auto-toc/issues"
+	},
+	"engines": {
+		"vscode": "^1.28.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Markdown AutoTOC",
+			"properties": {
+				"markdownAutoTOC.maximumHeadingLevel": {
+					"type": "integer",
+					"enum": [
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					],
+					"enumDescriptions": [
+						"Heading 1",
+						"Heading 2",
+						"Heading 3",
+						"Heading 4",
+						"Heading 5",
+						"Heading 6"
+					],
+					"minimum": 1,
+					"maximum": 6,
+					"default": 2,
+					"description": "The maximum heading level to include in the generated table of contents."
+				},
+				"markdownAutoTOC.containerClass": {
+					"type": "string",
+					"default": "toc-container",
+					"markdownDescription": "The HTML class to apply to the generated `<div/>` for the table of contents."
+				},
+				"markdownAutoTOC.header": {
+					"type": "boolean",
+					"default": true,
+					"description": "Include a heading above the generated table of contents."
+				},
+				"markdownAutoTOC.headerClass": {
+					"type": "string",
+					"default": "toc-container-header",
+					"markdownDescription": "The HTML class to apply to the generated `<div/>` for the table of contents header."
+				},
+				"markdownAutoTOC.headerContent": {
+					"type": "string",
+					"default": "Contents",
+					"description": "The header text to display above the table of contents."
+				},
+				"markdownAutoTOC.enableAzureDevOpsWikiCompatibility": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Allow `[[_TOC_]]` as the token to generate the table of contents."
+				}
+			}
+		},
+		"markdown.markdownItPlugins": true
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^8.10.38",
+		"eslint": "^4.11.0",
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.22"
+	},
+	"dependencies": {
+		"js-htmlencode": "^0.3.0",
+		"markdown-it-table-of-contents": "^0.4.3",
+		"remove-markdown": "^0.3.0",
+		"striptags": "^3.1.1"
+	},
+	"__metadata": {
+		"id": "f154cf38-02ea-4253-b9c8-0e89def0b10f",
+		"publisherId": "48f0a75a-0ee2-45fc-92ec-5d46bd0e380c",
+		"publisherDisplayName": "Jim Paton"
+	}
+}

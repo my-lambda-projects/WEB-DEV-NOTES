@@ -1,0 +1,63 @@
+On the test: (Best Guesses)
+2 hrs total
+-------------Multiple Choice------------------(No extended response)---------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
+~ 45 min
+Mostly HTTP
+2-3 Broad concept promise or testing questions
+
+
+1)	Matching HTTP verbs (GET, PUT, PATCH, POST, DELETE) to their common uses.
+
+2)	Match the header fields of HTTP with a bank of definitions.
+
+3)	Match common HTTP status codes (201, 301, 302, 400, 401, 402, 403, 404, 500) to their meanings.
+
+4)	HTTP Status Code Ranges( 100 - 199: Informational; 200 - 299: Successful; 300 - 399: Redirection;  400 - 499: Client Error; 500 - 599: Server Error)
+
+5)	What does the promise in code above return? / what happens ?
+
+6)	Match error type to deffinition (TypeError, ReferenceError, SyntaxError)
+
+7)	Predict if and what type of error certain code will throw
+
+8)	Something to do with chaning catch onto the end of a series of chained then statments
+
+9)	Know beforeEach and afterEach hooks do in a describe block
+
+10)	know content type is and how it is used in HTML body.
+
+11)	Know send HTTP request to google manually: (nc -v google.com 80   .... GET / HTTP/1.1) capitalize! 
+
+12)	What kind of HTTP requests have a body? (Any HTTP Request;(when the data doesn't fit into the header &|| is too complex for the URI we can use the body)
+		 ()It has a body when HTTP verb is POST, PUT, Patch
+
+13)	Know that HTTP stands for HyperText Transfer Protocol
+
+14)	Three Stages of TDD (red,green,refactor) and what they mean 
+
+15)	What are the states that a promise can be in (pending, fufilled (rejected), rejected)
+
+16)	Parts of an HTTP Request(3 parts: Request line & HTTP Verbs-method,URI,HTTPVersion; Headers-metadata as key value pairs; Body-update something on the backend)
+
+17)	What is a promise? describe it in terms of syncronus and async (js as a language is syncronus/blocking).. I will eventually get some response from this promise
+
+---------------Coding----------------------------------------------------------------------------------------------------------------------------------------------------
+~1.25 hrs
+
+18)	Write a promise (3-4 lines of code) (__ don't need a .then().catch or console.error() __) ...or anything you're not explicitely asked to do
+
+19)	Async await (3-4 lines of code)
+
+20)	Unit Test (you are given 3 functions any you have to edit unit tests (remove a line ) and write your expect/assert 
+
+--> don't run tests with mocha! (run npm test).... in your package.json mocha will be the specified test (if you run mocha you will be testing your tests not the js functions)
+
+---->pull down from git repo and run npm install....
+
+------> make sure to call in variables you need for test
+
+--------> don't need chai spy or chai spy on
+
+----------> need to require (whatever was exported in the not-test file) and your assertion library
+

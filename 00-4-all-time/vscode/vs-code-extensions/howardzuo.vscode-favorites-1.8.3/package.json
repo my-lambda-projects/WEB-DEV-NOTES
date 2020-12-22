@@ -1,0 +1,281 @@
+{
+	"name": "vscode-favorites",
+	"displayName": "favorites",
+	"description": "Mark resources (files or folders, local and remote) as favorites, so they can be easily accessed.",
+	"version": "1.8.3",
+	"publisher": "howardzuo",
+	"engines": {
+		"vscode": "^1.45.0"
+	},
+	"scripts": {
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"build": "gulp build",
+		"pub": "gulp publish",
+		"pk": "gulp package"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "images/favorites.png",
+	"bugs": {
+		"url": "https://github.com/leftstick/vscode-favorites/issues",
+		"email": "leftstick@qq.com"
+	},
+	"homepage": "https://github.com/leftstick/vscode-favorites/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/leftstick/vscode-favorites.git"
+	},
+	"activationEvents": [
+		"onCommand:favorites.addToFavorites",
+		"onView:favorites"
+	],
+	"license": "GPL-3.0",
+	"main": "./out/",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Favorites",
+			"properties": {
+				"favorites.resources": {
+					"type": "array",
+					"default": [],
+					"description": "Resources marked as favorites"
+				},
+				"favorites.sortOrder": {
+					"type": "string",
+					"enum": [
+						"ASC",
+						"DESC",
+						"MANUAL"
+					],
+					"default": "ASC",
+					"description": "Specify an order for all favorites"
+				},
+				"favorites.saveSeparated": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to save marked resources in separate .vscfavoriterc"
+				}
+			}
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "favorites",
+					"name": "%view.favorites.title%"
+				}
+			]
+		},
+		"menus": {
+			"editor/context": [
+				{
+					"command": "favorites.addToFavorites",
+					"group": "favorites"
+				},
+				{
+					"command": "favorites.deleteFavorite",
+					"group": "favorites"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "favorites.addToFavorites",
+					"group": "favorites"
+				}
+			],
+			"view/title": [
+				{
+					"command": "favorites.nav.refresh",
+					"when": "view == favorites",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.nav.sort",
+					"when": "view == favorites",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "favorites.revealInOS.mac",
+					"when": "isMac && view == favorites && viewItem =~ /^resource/",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.revealInOS.windows",
+					"when": "isWindows && view == favorites && viewItem =~ /^resource/",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.revealInOS.other",
+					"when": "!isMac && !isWindows && view == favorites && viewItem =~ /^resource/",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.revealInSideBar",
+					"when": "view == favorites",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.openToSide",
+					"when": "view == favorites && viewItem =~ /^resource(Child)?$|^uri\\.resource(Child)?$/",
+					"group": "navigation"
+				},
+				{
+					"command": "favorites.deleteFavorite",
+					"when": "view == favorites && viewItem =~ /resource(\\.dir)?$/",
+					"group": "operation"
+				},
+				{
+					"command": "favorites.moveToTop",
+					"when": "view == favorites && viewItem =~ /resource(\\.dir)?$/",
+					"group": "sort@1"
+				},
+				{
+					"command": "favorites.moveUp",
+					"when": "view == favorites && viewItem =~ /resource(\\.dir)?$/",
+					"group": "sort@2"
+				},
+				{
+					"command": "favorites.moveDown",
+					"when": "view == favorites && viewItem =~ /resource(\\.dir)?$/",
+					"group": "sort@3"
+				},
+				{
+					"command": "favorites.moveToBottom",
+					"when": "view == favorites && viewItem =~ /resource(\\.dir)?$/",
+					"group": "sort@4"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "favorites.nav.refresh",
+					"when": "false"
+				},
+				{
+					"command": "favorites.nav.sort",
+					"when": "false"
+				},
+				{
+					"command": "favorites.revealInOS.mac",
+					"when": "false"
+				},
+				{
+					"command": "favorites.revealInOS.windows",
+					"when": "false"
+				},
+				{
+					"command": "favorites.revealInOS.other",
+					"when": "false"
+				},
+				{
+					"command": "favorites.revealInSideBar",
+					"when": "false"
+				},
+				{
+					"command": "favorites.openToSide",
+					"when": "false"
+				},
+				{
+					"command": "favorites.moveToTop",
+					"when": "false"
+				},
+				{
+					"command": "favorites.moveUp",
+					"when": "false"
+				},
+				{
+					"command": "favorites.moveDown",
+					"when": "false"
+				},
+				{
+					"command": "favorites.moveToBottom",
+					"when": "false"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "favorites.nav.refresh",
+				"title": "%command.favorites.refresh%",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "favorites.nav.sort",
+				"title": "%command.favorites.sort%",
+				"icon": {
+					"dark": "images/sort_black.svg",
+					"light": "images/sort_light.svg"
+				}
+			},
+			{
+				"command": "favorites.addToFavorites",
+				"title": "%command.favorites.addtofavorites%"
+			},
+			{
+				"command": "favorites.deleteFavorite",
+				"title": "%command.favorites.deletefavorite%"
+			},
+			{
+				"command": "favorites.moveUp",
+				"title": "%command.favorites.moveup%"
+			},
+			{
+				"command": "favorites.moveDown",
+				"title": "%command.favorites.movedown%"
+			},
+			{
+				"command": "favorites.moveToTop",
+				"title": "%command.favorites.movetotop%"
+			},
+			{
+				"command": "favorites.moveToBottom",
+				"title": "%command.favorites.movetobottom%"
+			},
+			{
+				"command": "favorites.revealInOS.mac",
+				"title": "%command.favorites.revealInOS.mac%"
+			},
+			{
+				"command": "favorites.revealInOS.windows",
+				"title": "%command.favorites.revealInOS.windows%"
+			},
+			{
+				"command": "favorites.revealInOS.other",
+				"title": "%command.favorites.revealInOS.other%"
+			},
+			{
+				"command": "favorites.revealInSideBar",
+				"title": "%command.favorites.revealInSideBar%"
+			},
+			{
+				"command": "favorites.openToSide",
+				"title": "%command.favorites.openToSide%"
+			}
+		]
+	},
+	"devDependencies": {
+		"@types/node": "^14.0.24",
+		"del": "^5.1.0",
+		"event-stream": "^4.0.1",
+		"gulp": "^4.0.2",
+		"gulp-rename": "^2.0.0",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-typescript": "^6.0.0-alpha.1",
+		"run-sequence": "^2.2.1",
+		"typescript": "^3.9.7",
+		"vsce": "^1.77.0",
+		"vscode": "^1.1.37",
+		"vscode-nls-dev": "^3.3.2"
+	},
+	"dependencies": {
+		"nconf": "^0.10.0"
+	},
+	"__metadata": {
+		"id": "dd7c983e-6359-4955-94eb-c83b94edd844",
+		"publisherId": "bfea5e1e-3e1e-4aa9-9f56-c4e67c6476cb",
+		"publisherDisplayName": "Howard.Zuo"
+	}
+}

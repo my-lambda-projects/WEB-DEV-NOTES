@@ -1,0 +1,132 @@
+{
+	"name": "css-auto-prefix",
+	"displayName": "css-auto-prefix",
+	"description": "Autoprefixes certain attributes in CSS",
+	"version": "0.1.7",
+	"publisher": "sporiley",
+	"engines": {
+		"vscode": "^1.24.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"repository": {
+		"type": "github",
+		"url": "https://github.com/stevengeeky/css-auto-prefix"
+	},
+	"icon": "thumbnail.png",
+	"main": "./extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "CSS Auto Prefixer Config",
+			"properties": {
+				"css-auto-prefix.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether or not auto prefix css files"
+				},
+				"css-auto-prefix.prefixes": {
+					"type": "object",
+					"default": {
+						"transform": [
+							"webkit",
+							"moz",
+							"ms",
+							"o"
+						],
+						"transition": [
+							"webkit",
+							"moz",
+							"ms",
+							"o"
+						],
+						"border-radius": [
+							"webkit",
+							"moz",
+							"ms",
+							"o"
+						],
+						"animation": [
+							"webkit"
+						],
+						"box-reflect": [
+							"webkit"
+						],
+						"filter": [
+							"webkit"
+						],
+						"font-feature-settings": [
+							"webkit",
+							"moz"
+						],
+						"backface-visibility": [
+							"webkit"
+						],
+						"box-decoration-break": [
+							"webkit"
+						],
+						"hyphens": [
+							"webkit",
+							"moz",
+							"ms"
+						],
+						"marquee-direction": [
+							"webkit"
+						],
+						"marquee-play-count": [
+							"webkit"
+						],
+						"marquee-speed": [
+							"webkit"
+						],
+						"marquee-style": [
+							"webkit"
+						],
+						"text-combine-upright": [
+							"webkit",
+							"moz",
+							"ms"
+						],
+						"text-decoration-color": [
+							"moz"
+						],
+						"text-decoration-line": [
+							"moz"
+						],
+						"text-decoration-style": [
+							"moz"
+						],
+						"text-orientation": [
+							"webkit"
+						],
+						"writing-mode": [
+							"webkit",
+							"ms"
+						]
+					},
+					"description": "The list of attributes to add support for, and what prefixes each one should receive."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.6",
+		"eslint": "^4.11.0",
+		"@types/node": "^7.0.43",
+		"@types/mocha": "^2.2.42"
+	},
+	"__metadata": {
+		"id": "9d4df0af-1098-4de3-bb2b-daf98fd735e7",
+		"publisherId": "1d4d720f-e07c-4a53-bbdf-5ad7f499673a",
+		"publisherDisplayName": "sporiley"
+	}
+}

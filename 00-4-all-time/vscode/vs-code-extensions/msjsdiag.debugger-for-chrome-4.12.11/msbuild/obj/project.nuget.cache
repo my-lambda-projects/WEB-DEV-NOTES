@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "Q58tQhNmTlTtZsFCe1OooS3vP49jZizlap4dir6qn1bQeWO41Y/EL/sLmZZza9c51r7wZ36MqmgqnH/gV9l7uw==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\bryan\\.vscode\\extensions\\msjsdiag.debugger-for-chrome-4.12.11\\msbuild\\ChromeDebugAdapter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bryan\\.nuget\\packages\\microbuild.core\\0.2.0\\microbuild.core.0.2.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\microsoft.netcore.app\\2.0.0\\microsoft.netcore.app.2.0.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\microsoft.netcore.dotnetapphost\\2.0.0\\microsoft.netcore.dotnetapphost.2.0.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\microsoft.netcore.dotnethostpolicy\\2.0.0\\microsoft.netcore.dotnethostpolicy.2.0.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\microsoft.netcore.dotnethostresolver\\2.0.0\\microsoft.netcore.dotnethostresolver.2.0.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
+    "C:\\Users\\bryan\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

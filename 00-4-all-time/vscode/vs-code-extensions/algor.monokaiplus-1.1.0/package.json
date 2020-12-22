@@ -1,0 +1,86 @@
+{
+	"name": "monokaiplus",
+	"displayName": "MonokaiPlus",
+	"description": "A high-contrast Monokai with focus on visibility and clean colors!",
+	"version": "1.1.0",
+	"publisher": "algor",
+	"engines": {
+		"vscode": "^1.31.0"
+	},
+	"license": "MIT",
+	"categories": [
+		"Themes"
+	],
+	"icon": "icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hsakas/MonokaiPlus.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hsakas/MonokaiPlus/issues",
+		"email": "algortroy@gmail.com"
+	},
+	"keywords": [
+		"monokai",
+		"high-contrast",
+		"theme",
+		"color-theme"
+	],
+	"maintainers": [
+		"Akash S <algortroy@gmail.com>"
+	],
+	"contributes": {
+		"themes": [
+			{
+				"label": "Monokai Plus - Light Teal",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-light-teal.json"
+			},
+			{
+				"label": "Monokai Plus - Dark Teal",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-dark-teal.json"
+			},
+			{
+				"label": "Monokai Plus - Disney Pink",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-disney-pink.json"
+			},
+			{
+				"label": "Monokai Plus - Black Forest",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-black-forest.json"
+			},
+			{
+				"label": "Monokai Plus - Sunny Side",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-sunny-side.json"
+			},
+			{
+				"label": "Monokai Plus - Cyber Yellow",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-cyber-yellow.json"
+			},
+			{
+				"label": "Monokai Plus - Slate",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-slate.json"
+			},
+			{
+				"label": "Monokai Plus - Angry Red",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-angry-red.json"
+			},
+			{
+				"label": "Monokai Plus - Chalk White",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiPlus-color-theme-chalk-white.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "c1efa8e8-8b52-4a4d-9bc6-efffc4f8313c",
+		"publisherId": "5f1c49bd-1925-4f9a-b29d-f24757c88a1a",
+		"publisherDisplayName": "algor"
+	}
+}

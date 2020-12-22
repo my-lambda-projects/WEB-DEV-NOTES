@@ -1,0 +1,70 @@
+{
+	"name": "macros",
+	"displayName": "macros",
+	"description": "automate repetitive actions with custom macros",
+	"version": "0.0.4",
+	"publisher": "ctf0",
+	"repository": "https://github.com/ctf0/macros",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"icon": "images/icon.png",
+	"main": "./extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Macros configuration",
+			"properties": {
+				"macros.list": {
+					"type": "object"
+				},
+				"macros.qp-ignore": {
+					"type": "array",
+					"default": [],
+					"items": {
+						"type": "string"
+					},
+					"uniqueItems": true,
+					"description": "exclude commands from the quick-pick"
+				},
+				"macros.qp-allow": {
+					"type": "array",
+					"default": [],
+					"items": {
+						"type": "string"
+					},
+					"uniqueItems": true,
+					"description": "include commands to the quick-pick"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "macros.execute",
+				"title": "Macros: Execute"
+			}
+		]
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"eslint": "^3.6.0",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"__metadata": {
+		"id": "4ca3cec6-e447-4853-8df3-75dc96a46481",
+		"publisherId": "83d4da56-3e02-4029-b926-a215a8fd071b",
+		"publisherDisplayName": "ctf0"
+	}
+}

@@ -1,0 +1,226 @@
+{
+	"name": "vscode-fileutils",
+	"displayName": "File Utils",
+	"description": "A convenient way of creating, duplicating, moving, renaming and deleting files and directories.",
+	"version": "3.4.2",
+	"private": true,
+	"license": "MIT",
+	"publisher": "sleistner",
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"utils",
+		"files",
+		"move",
+		"duplicate",
+		"rename"
+	],
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#1c2237",
+		"theme": "dark"
+	},
+	"bugs": {
+		"url": "https://github.com/sleistner/vscode-fileutils/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sleistner/vscode-fileutils.git"
+	},
+	"homepage": "https://github.com/sleistner/vscode-fileutils/blob/master/README.md",
+	"activationEvents": [
+		"onCommand:fileutils.renameFile",
+		"onCommand:fileutils.moveFile",
+		"onCommand:fileutils.duplicateFile",
+		"onCommand:fileutils.removeFile",
+		"onCommand:fileutils.newFile",
+		"onCommand:fileutils.newFileAtRoot",
+		"onCommand:fileutils.newFolder",
+		"onCommand:fileutils.newFolderAtRoot",
+		"onCommand:fileutils.copyFileName"
+	],
+	"main": "./out/main",
+	"contributes": {
+		"commands": [
+			{
+				"command": "fileutils.renameFile",
+				"category": "File Utils",
+				"title": "Rename"
+			},
+			{
+				"command": "fileutils.moveFile",
+				"category": "File Utils",
+				"title": "Move"
+			},
+			{
+				"command": "fileutils.duplicateFile",
+				"category": "File Utils",
+				"title": "Duplicate"
+			},
+			{
+				"command": "fileutils.removeFile",
+				"category": "File Utils",
+				"title": "Delete"
+			},
+			{
+				"command": "fileutils.newFile",
+				"category": "File Utils",
+				"title": "New File Relative to Current View"
+			},
+			{
+				"command": "fileutils.newFileAtRoot",
+				"category": "File Utils",
+				"title": "New File Relative to Project Root"
+			},
+			{
+				"command": "fileutils.newFolder",
+				"category": "File Utils",
+				"title": "New Folder Relative to Current View"
+			},
+			{
+				"command": "fileutils.newFolderAtRoot",
+				"category": "File Utils",
+				"title": "New Folder Relative to Project Root"
+			},
+			{
+				"command": "fileutils.copyFileName",
+				"category": "File Utils",
+				"title": "Copy Name"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "fileutils.moveFile",
+					"group": "7_modification"
+				},
+				{
+					"command": "fileutils.duplicateFile",
+					"group": "7_modification"
+				},
+				{
+					"command": "fileutils.newFileAtRoot",
+					"group": "2_workspace"
+				},
+				{
+					"command": "fileutils.newFolderAtRoot",
+					"group": "2_workspace"
+				},
+				{
+					"command": "fileutils.copyFileName",
+					"group": "6_copypath"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "fileutils.copyFileName",
+					"group": "1_copypath"
+				},
+				{
+					"command": "fileutils.renameFile",
+					"group": "1_modification@1"
+				},
+				{
+					"command": "fileutils.moveFile",
+					"group": "1_modification@2"
+				},
+				{
+					"command": "fileutils.duplicateFile",
+					"group": "1_modification@3"
+				},
+				{
+					"command": "fileutils.removeFile",
+					"group": "1_modification@4"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "fileutils.copyFileName",
+					"group": "1_copypath"
+				},
+				{
+					"command": "fileutils.renameFile",
+					"group": "1_modification@1"
+				},
+				{
+					"command": "fileutils.moveFile",
+					"group": "1_modification@2"
+				},
+				{
+					"command": "fileutils.duplicateFile",
+					"group": "1_modification@3"
+				},
+				{
+					"command": "fileutils.removeFile",
+					"group": "1_modification@4"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "Fileutils configuration",
+			"properties": {
+				"fileutils.typeahead.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Controls if directory selector should be shown."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run build:compile:prod",
+		"build:compile:prod": "tsc -p tsconfig.build.json",
+		"build:compile:dev": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run build:compile:dev",
+		"test": "node ./out/test/runTest.js",
+		"lint": "eslint './{src,test}/**/*.ts'",
+		"semantic-release": "semantic-release"
+	},
+	"devDependencies": {
+		"@enter-at/eslint-config-typescript-prettier": "1.1.0",
+		"@semantic-release/changelog": "5.0.1",
+		"@semantic-release/git": "9.0.0",
+		"@semantic-release/npm": "7.0.8",
+		"@types/bluebird": "3.5.33",
+		"@types/bluebird-retry": "0.11.4",
+		"@types/brace-expansion": "1.1.0",
+		"@types/chai": "4.2.14",
+		"@types/mocha": "8.0.4",
+		"@types/node": "12.19.3",
+		"@types/sinon": "9.0.8",
+		"@types/sinon-chai": "3.2.5",
+		"@types/vscode": "1.51.0",
+		"bluebird": "3.7.2",
+		"bluebird-retry": "0.11.0",
+		"chai": "4.2.0",
+		"eslint": "7.13.0",
+		"husky": "4.3.0",
+		"mocha": "8.2.1",
+		"prettier": "2.1.2",
+		"semantic-release": "17.2.3",
+		"semantic-release-vsce": "3.0.1",
+		"sinon": "9.2.1",
+		"sinon-chai": "3.5.0",
+		"typescript": "4.0.5",
+		"vscode-test": "1.4.1"
+	},
+	"dependencies": {
+		"brace-expansion": "2.0.0"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "yarn run lint && yarm run test"
+		}
+	},
+	"__metadata": {
+		"id": "d637104e-1fd7-4063-98fc-8afe46012c9b",
+		"publisherId": "99ce6203-6065-4d93-983f-c3a097ebbfe2",
+		"publisherDisplayName": "Steffen Leistner"
+	}
+}

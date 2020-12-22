@@ -1,0 +1,30 @@
+{
+  "title": "TableExport",
+  "plugins": [
+    "-search",
+    "-lunr",
+    "edit-link",
+    "github",
+    "anchorjs",
+    "gtm"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/clarketm/TableExport/tree/master/docs",
+      "label": "Edit This Page"
+    },
+    "github": {
+      "url": "https://github.com/clarketm/TableExport/"
+    },
+    "theme-default": {
+      "styles": {
+        "website": "gitbook.css"
+      }
+    },
+    "gtm": {
+      "token": "GTM-TL44T9",
+      "virtualPageViews": true
+    }
+  }
+}
+  
