@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localStorage vs sessionStorage fun Form</title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Dosis|Inconsolata|Noto+Sans|PT+Sans|Quicksand&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/css/main.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1 class="title">Storage Fun With Forms</h1>
+        <p class="font-color font-style">Write a note about your experience here and save it to local storage. All
+            the
+            other selections you make here are also being saved to local storage so that you may be reminded of them
+            when you return!</p>
+        <form id="fun-form">
+            <div class="storage-buttons">
+                <a class="clear">Clear Storage</a>
+                <a class="empty">Empty Storage</a>
+            </div>
+            <div id="storage-quota-msg"></div>
+            <div>
+                <label for="bgcolor">Choose Background Color:</label>
+                <div class="inputs">
+                    <input name="color" id="bgcolor" value="FF0000" class="jscolor" />
+                </div>
+            </div>
+            <div>
+                <label for="fontcolor">Choose Font Color:</label>
+                <div class="inputs">
+                    <input name="color" id="fontcolor" class="jscolor" value="000000" />
+                </div>
+            </div>
+            <div class="select-font">
+                <label for="font">Choose Font Style:</label>
+                <select id="font" name="font">
+                    <option value="'Noto Sans', sans-serif">Noto Sans Sans-Serif</option>
+                    <option value="'Inconsolata', monospace">Inconsolata Monospace</option>
+                    <option value="'Arvo', serif">Arvo Serif</option>
+                    <option value="'Dosis', sans-serif"> Dosis Sans-Serif</option>
+                    <option value="'Quicksand', sans-serif">Quicksand Sans-Serif</option>
+                    <option value="'Bitter', serif">Bitter Serif</option>
+                    <option value="'PT Sans', sans-serif">PT Sans Sans-Serif</option>
+                </select>
+            </div>
+            <div class="select-image">
+                <label for="image">Select Image:</label>
+                <select id="image" name="image">
+                    <option value="images/pinpng.com-boba-png-1646192.png">Boba</option>
+                    <option value="images/pinpng.com-cupcake-png-581578.png">
+                        Cupcake 1
+                    </option>
+                    <option value="images/pinpng.com-cupcake-png-582129.png">
+                        Cupcake 2
+                    </option>
+                    <option value="images/pinpng.com-joker-face-png-2302664.png">
+                        Joker Face
+                    </option>
+                    <option value="images/pinpng.com-koi-fish-png-13801.png">
+                        Koi Fish 1
+                    </option>
+                    <option value="images/pinpng.com-palm-tree-leaf-png-28132.png">
+                        Palm Tree Leaf
+                    </option>
+                    <option value="images/pinpng.com-palm-tree-leaf-png-30916.png">Maple Leaf</option>
+                    <option value="images/pinpng.com-push-pin-png-104159.png">
+                        Push Pin
+                    </option>
+                    <option value="images/pinpng.com-salt-clipart-png-3375830.png">
+                        Koi Fish 2
+                    </option>
+                    <option value="images/pinpng.com-snowman-clipart-png-652627.png">
+                        Snowman
+                    </option>
+                    <option value="images/pinpng.com-spider-web-png-transparent-61850.png">
+                        Spider Web 1
+                    </option>
+                    <option value="images/pinpng.com-spider-web-png-transparent-370544.png">
+                        Spider Web 2
+                    </option>
+                    <option value="images/pinpng.com-supergirl-png-423021.png">
+                        Super Girl
+                    </option>
+                    <option value="images/pinpng.com-superhero-clipart-png-6134782.png">Super Hero</option>
+                    <option value="images/pinpng.com-transparent-rose-png-3604806.png">Roses</option>
+                    <option value="images/pinpng.com-spongebob-png-591707.png">Sponge Bob Birthday</option>
+                    <option value="images/pinpng.com-pink-roses-png-84631.png">Pink Roses</option>
+                    <option value="images/pinpng.com-spongebob-boi-png-5936134.png">Sponge Bob Boi</option>
+                    <option value="images/pinpng.com-stacks-of-money-png-6687.png">Stacks of Money</option>
+                    <option value="images/pinpng.com-spongebob-house-png-6400047.png">Sponge Bob House</option>
+                    <option value="images/pinpng.com-picsart-clipart-png-6120662.png">Bart Simpson</option>
+                    <option value="images/pinpng.com-el-principito-png-3895598.png">Little Prince 1</option>
+                    <option value="images/pinpng.com-zorro-png-3794942.png">Little Prince 2</option>
+                    <option value="images/pinpng.com-lol-png-833532.png">Lol</option>
+                    <option value="images/pinpng.com-lol-surprise-png-1961089.png">Lol Surprise</option>
+                </select>
+            </div>
+            <div class="note">
+                <label for="textArea">Type Note:</label>
+                <textarea type="text" id="textArea" name="textArea">Write a note!</textarea>
+            </div>
+            <div class="note-btn-wrapper">
+                <button type="button" id="note-btn">Submit Note</button>
+                <button type="button" id="get-note-btn">Get Note</button>
+            </div>
+            <img class="image" alt="" />
+        </form>
+    </div>
+    <div class="footer-wrapper">
+        <footer class="site-footer">
+            <script>
+                const theDate = new Date();
+                const footer = document.querySelector(".site-footer");
+                footer.style.fontWeight = "600";
+                footer.style.letterSpacing = "0.07rem";
+                footer.style.fontFamily = "Arimo, sans-serif";
+                footer.innerHTML =
+                    `&#10013; © ${theDate.getFullYear()} Maria D. Campbell &#10013;`;
+            </script>
+        </footer>
+    </div>
+    <script src="jscolor/jscolor.js"></script>
+    <script src="scripts/js/main.js"></script>
+</body>
+
+</html>

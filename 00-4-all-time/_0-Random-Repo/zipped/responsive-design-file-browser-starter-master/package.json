@@ -1,0 +1,28 @@
+{
+  "name": "file-browser",
+  "version": "1.0.0",
+  "description": "The responsive design project teaching how to integrate asynchronous communication into an application.",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "nodemon --watch server server/index.js",
+    "start": "node server/index.js",
+    "test": "npm mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appacademy-starters/responsive-design-file-browser-starter.git"
+  },
+  "author": "App Academy Academics <academics@appacademy.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appacademy-starters/responsive-design-file-browser-starter/issues"
+  },
+  "homepage": "https://github.com/appacademy-starters/responsive-design-file-browser-starter#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.2",
+    "pug": "^2.0.4"
+  }
+}

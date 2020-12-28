@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Map /> snapshot: Map 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="col-sm-10 col-sm-offset-1 col-xs-12"
+    >
+      <div
+        class="map-ui"
+        data-test-label="learn-curriculum-map"
+      >
+        <ul>
+          <li
+            class="superblock "
+            id="super-block-one"
+          >
+            <button
+              aria-expanded="false"
+              class="map-title"
+            >
+              <svg
+                viewBox="0 0 100 100"
+                width="25px"
+              >
+                <polygon
+                  points="-6.04047,17.1511 81.8903,58.1985 -3.90024,104.196"
+                  style="stroke: var(--primary-color); fill: var(--primary-color); stroke-width: 1px;"
+                  transform="matrix(0.999729, 0.023281, -0.023281, 0.999729, 7.39321, -10.0425)"
+                />
+              </svg>
+              <h4>
+                Super Block One Certification (300 hours)
+              </h4>
+            </button>
+          </li>
+          <li
+            class="superblock "
+            id="super-block-two"
+          >
+            <button
+              aria-expanded="false"
+              class="map-title"
+            >
+              <svg
+                viewBox="0 0 100 100"
+                width="25px"
+              >
+                <polygon
+                  points="-6.04047,17.1511 81.8903,58.1985 -3.90024,104.196"
+                  style="stroke: var(--primary-color); fill: var(--primary-color); stroke-width: 1px;"
+                  transform="matrix(0.999729, 0.023281, -0.023281, 0.999729, 7.39321, -10.0425)"
+                />
+              </svg>
+              <h4>
+                Super Block Two Certification (300 hours)
+              </h4>
+            </button>
+          </li>
+          <li
+            class="superblock "
+            id="super-block-three"
+          >
+            <button
+              aria-expanded="false"
+              class="map-title"
+            >
+              <svg
+                viewBox="0 0 100 100"
+                width="25px"
+              >
+                <polygon
+                  points="-6.04047,17.1511 81.8903,58.1985 -3.90024,104.196"
+                  style="stroke: var(--primary-color); fill: var(--primary-color); stroke-width: 1px;"
+                  transform="matrix(0.999729, 0.023281, -0.023281, 0.999729, 7.39321, -10.0425)"
+                />
+              </svg>
+              <h4>
+                Super Block Three Certification (300 hours)
+              </h4>
+            </button>
+          </li>
+          <div
+            class="spacer"
+            style="padding: 15px 0px; height: 1px;"
+          />
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

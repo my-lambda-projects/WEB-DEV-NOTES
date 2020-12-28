@@ -1,0 +1,262 @@
+/* media query variables */
+
+$min-901: '(min-width: 901px)';
+
+/* color variables */
+
+$mainDkOliveGreen1: #caff70;
+$mainDkOliveGreen4: #6e8b3d;
+$mainMedVioletRed: #c71585;
+$mainLightSalmon1: #ffa07a;
+$mainFloralwhite: #fffaf0;
+$mainDarkViolet: #9400d3;
+$mainOrchid4: #8b4789;
+$mainMediumPurple1: #9370db;
+
+/* end color variables */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: $mainFloralwhite;
+}
+
+
+/* Header Styling */
+
+// Make sure that nav links are not reversed in mobile
+nav li a {
+    display: block;
+    display: inline-block;
+    text-decoration: none;
+}
+
+nav li {
+    display: block;
+    display: inline-block;
+}
+
+nav ul {
+    display: inline-block;
+    float: right;
+}
+
+
+/* End Make sure that nav links are not reversed in mobile */
+
+ul {
+    display: block;
+    text-align: center;
+    background: $mainDkOliveGreen1;
+    width: 100%;
+    padding: 20px;
+}
+
+li {
+    display: inline-block;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: $mainOrchid4;
+}
+
+
+/* End header styling */
+
+h1 {
+    margin: 60px 0 40px;
+    color: $mainMedVioletRed;
+    text-align: center;
+}
+
+
+/* table styling */
+
+table {
+    table-layout: fixed;
+    display: table;
+    border-collapse: collapse;
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+}
+
+thead th:nth-child(1) {
+    width: 30%;
+}
+
+thead th:nth-child(2) {
+    width: 40%;
+}
+
+thead th:nth-child(3) {
+    width: 20%;
+}
+
+thead th:nth-child(4) {
+    width: 10%;
+}
+
+
+/* table row styling */
+
+td {
+    padding: 5px;
+}
+
+
+/* table header styling */
+
+th {
+    color: $mainLightSalmon1;
+    padding-left: 12px;
+    text-align: left;
+}
+
+td {
+    border-bottom: none;
+    color: $mainMediumPurple1;
+    padding-left: 12px;
+    white-space: word-wrap;
+}
+
+
+/*  id column styling */
+
+#id {
+    display: none;
+}
+
+
+/* end id column styling */
+
+
+/* end table styling */
+
+
+/*  (body) container styling */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.edit-container,
+.add-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+/* end (body) container styling */
+
+
+/* fieldset, input, and textarea styling */
+
+fieldset {
+    padding: 5px 0;
+    border: none;
+    input,
+    textarea {
+        background: $mainFloralwhite;
+        outline: none;
+        margin: -20px auto 0;
+        display: block;
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+input {
+    height: 25px;
+}
+
+textarea {
+    resize: none;
+    height: 50px;
+}
+
+
+/* label styling */
+
+label {
+    padding-left: 15px;
+}
+
+
+/* delete button styling */
+
+#btn-delete {
+    border: none;
+    background: transparent;
+    color: $mainMedVioletRed;
+}
+
+#btn-edit,
+#btn-add {
+    border: none;
+    background: transparent;
+    color: $mainDkOliveGreen4;
+    margin: 0 auto;
+    display: block;
+}
+
+.material-icons {
+    font-size: 2rem;
+}
+
+
+/* footer basic styling */
+
+footer {
+    width: 100%;
+    height: 70px;
+    margin-top: 20px;
+    padding-top: 40px;
+    padding-bottom: 0;
+}
+
+footer p {
+    text-align: center;
+    color: $mainMedVioletRed;
+}
+
+
+/* Sticky Footer styling */
+
+:root {
+    --space: 1.5em 0;
+    --space: 2em 0;
+}
+
+.Site {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.Site-content {
+    flex: 1 0 auto;
+    padding: var(--space) var(--space) 0;
+    width: 100%;
+}
+
+.Site-content:after {
+    content: '\00a0';
+    display: block;
+    margin-top: var(--space);
+    height: 0;
+    visibility: hidden;
+}

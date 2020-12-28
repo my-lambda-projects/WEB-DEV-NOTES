@@ -1,0 +1,21 @@
+.inputBox {
+  padding: 10px;
+  border: 1px solid black;
+  width: 40%;
+  margin-top: 20px;
+}
+
+form {
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  width: 90%;
+}
+
+input {
+  margin-bottom: 20px;
+}
+
+textarea {
+  margin-bottom: 20px;
+}

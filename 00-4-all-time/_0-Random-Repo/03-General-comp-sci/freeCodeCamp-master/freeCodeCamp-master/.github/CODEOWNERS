@@ -1,0 +1,29 @@
+# -------------------------------------------------
+# CODEOWNERS - For automated review request for 
+# high impact files.
+#
+# Important: The order in this file cascades.
+#
+# https://help.github.com/articles/about-codeowners
+# -------------------------------------------------
+
+# -------------------------------------------------
+# All files except a few here are owned by dev team
+# -------------------------------------------------
+
+* @freecodecamp/dev-team
+*.md
+package.json
+package-lock.json
+
+# -------------------------------------------------
+# All files in the root are owned by dev team
+# -------------------------------------------------
+
+/* @freecodecamp/dev-team
+
+# -------------------------------------------------
+# Critical files that need attention from Staff
+# -------------------------------------------------
+/README.md @freeCodeCamp/Staff
+/config/motivational-quotes.json @freeCodeCamp/Staff

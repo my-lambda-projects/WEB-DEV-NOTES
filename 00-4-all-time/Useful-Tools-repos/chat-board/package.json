@@ -1,0 +1,22 @@
+{
+    "name": "bulletin-board-app",
+    "version": "0.0.1",
+    "description": "Bulletin Board Application Goal Develop a website which can efficiently store and retrieve user submitted messages from a PostgreSQL database.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "serve": "nodemon app.js"
+    },
+    "author": "Maria D. Campbell",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "dotenv": "^5.0.1",
+        "ejs": "^2.5.8",
+        "express": "^4.16.3",
+        "pg": "^7.4.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.1"
+    }
+}

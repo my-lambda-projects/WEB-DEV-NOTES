@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class='Site'>
+    <div class='Site-content'>
+        <div class='container'>
+            <header>
+                <% include ../partials/header %>
+            </header>
+            <h1>Chat Board</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i in result.rows) { %>
+                        <tr>
+                            <td id='id'>
+                                <%= result.rows[i].id %>
+                            </td>
+                            <td name='title' value=''>
+                                <%= result.rows[i].title %>
+                            </td>
+                            <td name='body' value=''>
+                                <%= result.rows[i].body %>
+                            </td>
+                            <form method='GET' action='/edit/message/<%= result.rows[i].id %>'>
+                                <td>
+                                    <button id='btn-edit'>
+                                        <i class="material-icons">mode_edit</i>
+                                    </button>
+                                </td>
+                            </form>
+                            <form method='POST' action='/delete/message/<%= result.rows[i].id %>'>
+                                <td>
+                                    <button id='btn-delete'>
+                                        <i class="material-icons">delete_forever</i>
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+</body>
+
+</html>

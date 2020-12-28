@@ -1,0 +1,189 @@
+frontmatter:
+
+  markdown/Prefaces/title.md
+
+  markdown/Prefaces/fogus.md
+
+  markdown/Prefaces/matthewknox.md
+
+  markdown/Prefaces/why.md
+
+  markdown/Prefaces/recipes.md
+
+  markdown/Prefaces/legend.md
+
+  markdown/prelude.md
+
+mainmatter:
+
+    markdown/carmack.md
+
+    markdown/0.Functions/title.md
+
+      markdown/0.Functions/little.md
+
+      markdown/0.Functions/args.md
+
+      markdown/0.Functions/closures.md
+
+      markdown/0.Functions/letvar.md
+
+      markdown/0.Functions/names.md
+
+      markdown/0.Functions/combinators.md
+
+      markdown/0.Functions/buildingblocks.md
+
+      markdown/0.Functions/args-again.md
+
+      markdown/0.Functions/summary.md
+
+      markdown/cheat-sheet.md
+
+      markdown/0.Functions/recipes/title.md
+
+        markdown/0.Functions/recipes/partial.md
+
+        markdown/0.Functions/recipes/ellipses.md
+
+        markdown/0.Functions/recipes/unary.md
+
+        markdown/0.Functions/recipes/tap.md
+
+        markdown/0.Functions/recipes/maybe.md
+
+    markdown/References and Rebinding/title.md
+
+      markdown/References and Rebinding/references.md
+
+      markdown/References and Rebinding/arrays.md
+
+      markdown/References and Rebinding/objects.md
+
+      markdown/References and Rebinding/reassignment.md
+
+      markdown/References and Rebinding/var.md
+
+      markdown/References and Rebinding/recursion.md
+
+      markdown/References and Rebinding/modules.md
+
+      markdown/References and Rebinding/summary.md
+
+      markdown/References and Rebinding/recipes/title.md
+
+        markdown/References and Rebinding/recipes/once.md
+
+        markdown/References and Rebinding/recipes/map-with.md
+
+        markdown/References and Rebinding/recipes/flip.md
+
+        markdown/References and Rebinding/recipes/extend.md
+
+        markdown/References and Rebinding/recipes/y.md
+
+    markdown/2.Objects and State/title.md
+
+      markdown/2.Objects and State/encapsulation.md
+
+      markdown/2.Objects and State/composition-and-extension.md
+
+      markdown/2.Objects and State/this.md
+
+      markdown/2.Objects and State/context.md
+
+      markdown/2.Objects and State/method-decorators.md
+
+      markdown/2.Objects and State/summary.md
+
+      markdown/2.Objects and State/recipes/title.md
+
+        markdown/2.Objects and State/recipes/memoize.md
+
+        markdown/2.Objects and State/recipes/get-with.md
+
+        markdown/2.Objects and State/recipes/pluck.md
+
+        markdown/2.Objects and State/recipes/deep-map-with.md
+
+    markdown/5.Instances and Classes/title.md
+
+      markdown/5.Instances and Classes/simple.md
+
+      markdown/5.Instances and Classes/binding.md
+
+      markdown/5.Instances and Classes/revisiting-partial.md
+
+      markdown/5.Instances and Classes/class.md
+
+      markdown/5.Instances and Classes/object-methods.md
+
+      markdown/5.Instances and Classes/extends.md
+
+      markdown/5.Instances and Classes/summary.md
+
+      markdown/5.Instances and Classes/recipes/title.md
+
+        markdown/5.Instances and Classes/recipes/curry.md
+
+        markdown/5.Instances and Classes/recipes/bound.md
+
+        markdown/5.Instances and Classes/recipes/unbind.md
+
+        markdown/5.Instances and Classes/recipes/send.md
+
+        markdown/5.Instances and Classes/recipes/invoke.md
+
+        markdown/5.Instances and Classes/recipes/fluent.md
+
+        markdown/5.Instances and Classes/recipes/named-once.md
+
+    markdown/Sequence/title.md
+
+      markdown/Sequence/compose-and-pipeline.md
+
+    markdown/6.Ideas/title.md
+
+      markdown/6.Ideas/prototype.md
+
+      markdown/6.Ideas/agnostic.md
+
+      markdown/6.Ideas/functional-mixins.md
+
+      markdown/6.Ideas/class-decorators.md
+
+      markdown/6.Ideas/turtles.md
+
+      markdown/6.Ideas/iterators.md
+
+      markdown/6.Ideas/drunken.md
+
+      markdown/6.Ideas/trampolining.md
+
+      markdown/6.Ideas/recipes/title.md
+
+        markdown/6.Ideas/recipes/before.md
+
+        markdown/6.Ideas/recipes/after.md
+
+        markdown/6.Ideas/recipes/provided.md
+
+        markdown/6.Ideas/recipes/functional-mixin.md
+
+        markdown/6.Ideas/recipes/class-decorator.md
+
+        markdown/6.Ideas/recipes/iterator-recipes.md
+
+backmatter:
+
+  markdown/Appendices/title.md
+
+    markdown/Appendices/examples.md
+
+    markdown/Appendices/thanks.md
+
+    markdown/Appendices/copyright.md
+
+    markdown/Appendices/image_copyrights.md
+
+    markdown/Appendices/reg.md

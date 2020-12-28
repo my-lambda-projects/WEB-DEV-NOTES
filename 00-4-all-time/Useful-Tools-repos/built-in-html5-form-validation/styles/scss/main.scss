@@ -1,0 +1,163 @@
+// color variables
+$ForrestGreen: #228b22;
+$wBYellow: #ffc600;
+$BodyBackGround: #fdf6e3;
+$DarkOliveGreen1: #caff70;
+
+// end variables
+body {
+  font-family: "Anonymous Pro", monospace;
+  background: $BodyBackGround;
+}
+
+.wrapper {
+  display: block;
+  margin: 40px auto;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  color: $ForrestGreen;
+}
+
+form {
+  margin: 40px auto;
+  background: $wBYellow;
+  width: 75%;
+  padding: 20px;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  width: 200px;
+  height: 20px;
+  color: $ForrestGreen;
+  // needed in order for placeholder styling to work.
+  // gets rid of shadow dom and user agent stylesheet
+  -webkit-appearance: none;
+  font-size: 0.9rem;
+}
+
+// Beginning all input placeholder styling with prefixes
+// username input
+input[name="username"]::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: $ForrestGreen;
+}
+
+input[name="username"]::-moz-placeholder {
+  /* Firefox 19+ */
+  color: $ForrestGreen;
+}
+
+input[name="username"]:-ms-input-placeholder {
+  /* IE 10+ */
+  color: $ForrestGreen;
+}
+
+input[name="username"]:-moz-placeholder {
+  /* Firefox 18- */
+  color: $ForrestGreen;
+}
+
+// email input
+input[name="mail"]::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: $ForrestGreen;
+}
+
+input[name="mail"]::-moz-placeholder {
+  /* Firefox 19+ */
+  color: $ForrestGreen;
+}
+
+input[name="mail"]:-ms-input-placeholder {
+  /* IE 10+ */
+  color: $ForrestGreen;
+}
+
+input[name="mail"]:-moz-placeholder {
+  /* Firefox 18- */
+  color: $ForrestGreen;
+}
+
+// password input
+input[name="password"]::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: $ForrestGreen;
+}
+
+input[name="password"]::-moz-placeholder {
+  /* Firefox 19+ */
+  color: $ForrestGreen;
+}
+
+input[name="password"]:-ms-input-placeholder {
+  /* IE 10+ */
+  color: $ForrestGreen;
+}
+
+input[name="password"]:-moz-placeholder {
+  /* Firefox 18- */
+  color: $ForrestGreen;
+}
+
+input:invalid {
+  color: #c60000;
+  background: lightpink;
+}
+
+.center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// end all input placeholder styling with prefixes
+button,
+#btn {
+  margin: 20px auto;
+  color: $ForrestGreen;
+  background: $DarkOliveGreen1;
+  letter-spacing: 0.1em;
+  border: 2px dashed $ForrestGreen;
+  font-size: 1rem;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px #333;
+}
+
+.site-footer p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: $ForrestGreen;
+}
+
+// Sticky Footer Styling
+:root {
+  --space: 1.5em 0;
+  --space: 2em 0;
+}
+
+.Site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.Site-content {
+  flex: 1 0 auto;
+  padding: var(--space) var(--space) 0;
+  width: 100%;
+}
+
+.Site-content:after {
+  content: "\00a0";
+  display: block;
+  margin-top: var(--space);
+  height: 0;
+  visibility: hidden;
+}
