@@ -1,0 +1,21 @@
+{
+  "name": "recursion-prompts-master",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "jquery": "^3.5.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
