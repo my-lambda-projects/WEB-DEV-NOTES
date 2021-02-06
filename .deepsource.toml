@@ -1,0 +1,44 @@
+version = 1
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+[[analyzers]]
+name = "ruby"
+enabled = true
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  environment = [
+    "nodejs",
+    "browser",
+    "jquery",
+    "mocha",
+    "mongo"
+  ]
+  plugins = [
+    "react",
+    "ember",
+    "angularjs"
+  ]
+  style_guide = "google"
+  dialect = "flow"
+
+[[analyzers]]
+name = "shell"
+enabled = true
+
+[[transformers]]
+name = "standardjs"
+enabled = true
