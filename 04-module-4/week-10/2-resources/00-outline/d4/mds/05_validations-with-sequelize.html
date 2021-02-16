@@ -1,0 +1,410 @@
+<h1 id="model-validations-with-sequelize">Model Validations With Sequelize</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#validating-that-an-attribute-is-not-null">Validating That An Attribute Is Not <code>NULL</code></a></li>
+<li><a href="#the-notempty-validation">The <code>notEmpty</code> Validation</a></li>
+<li><a href="#forbidding-long-string-values">Forbidding Long String Values</a></li>
+<li><a href="#validating-that-a-numeric-value-is-within-a-specified-range">Validating That A Numeric Value Is Within A Specified Range</a></li>
+<li><a href="#validating-that-an-attribute-is-among-a-finite-set-of-values">Validating That An Attribute Is Among A Finite Set Of Values</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>It’s important to make sure that data stored to a database is not erroneous or incomplete. Imagine the following forms of “garbage data:”</p>
+<ul>
+<li>A <code>Cats</code> record with <code>firstName</code> set to <code>NULL</code>. All <code>Cats</code> ought to have a name.</li>
+<li>A <code>Cats</code> record with <code>firstName</code> set to the empty string: <code>""</code>.</li>
+<li>A <code>Cats</code> record with an <code>age</code> less than <code>0</code>. <code>age</code> must always be non-negative.</li>
+<li>Perhaps the <code>specialSkill</code> should come from a pre-defined limited list of <code>["jumping", "sleeping", "purring"]</code>. A <code>Cats</code> record with a <code>specialSkill</code> of <code>"pearl diving"</code> would thus be invalid.</li>
+</ul>
+<p>Sequelize lets us write JavaScript code that will check that these data requirements are satisfied before saving a record to the database. The JavaScript code that does this is called a <em>validation</em>. A validation is code that makes sure that data is valid.</p>
+<p>In this reading you will learn how to:</p>
+<ol type="1">
+<li>Validate that an attribute is not set to <code>NULL</code>.</li>
+<li>Validate that a string attribute is not set to the empty string <code>""</code>.</li>
+<li>Validate that a string attribute is not too long (has too many characters).</li>
+<li>Validate that a numeric attribute meets minimum or maximum thresholds.</li>
+<li>Validate that an attribute is within a limited set of options.</li>
+</ol>
+<h2 id="validating-that-an-attribute-is-not-null">Validating That An Attribute Is Not <code>NULL</code></h2>
+<p>We should not allow a <code>Cat</code> to be saved to the database if it lacks</p>
+<ol type="1">
+<li>a <code>firstName</code>,</li>
+<li>an <code>age</code>, or</li>
+<li>a <code>specialSkill</code>.</li>
+</ol>
+<p>None of these should be set to <code>NULL</code>.</p>
+<p>Before adding validations to check these requirements, let’s review what our <code>Cat</code> model code currently looks like:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">age</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="op">};</span></a></code></pre></div>
+<p>We will modify our model definition to give more specific instructions to Sequelize about the <code>firstName</code>, <code>specialSkill</code>, and <code>age</code> attributes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-11" title="11">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-18" title="18">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-19" title="19">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-20" title="20">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-21" title="21">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-22" title="22">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-23" title="23">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-24" title="24">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-25" title="25">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-26" title="26">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-27" title="27">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-28" title="28">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;age must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-29" title="29">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-30" title="30">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-31" title="31">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-32" title="32">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-33" title="33">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-34" title="34">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb2-35" title="35">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb2-36" title="36">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-37" title="37"><span class="op">};</span></a></code></pre></div>
+<p>What has changed? We now map each attribute name (<code>firstName</code>, <code>specialSkill</code>, <code>age</code>) to a POJO that tells Sequelize how to configure that attribute. Here is the POJO for <code>firstName</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="op">}</span></a></code></pre></div>
+<p>The <code>type</code> attribute is of course vital: this used to be the only thing we specified. We’ve added two new attributes. The first is <code>allowNull: false</code>. This tells Sequelize not to let us set the <code>firstName</code> attribute to <code>NULL</code>.</p>
+<p>The second attribute is <code>validate</code>. We will spend a lot of time examining this attribute in this reading. Validation logic for <code>firstName</code> is configured inside the <code>validate</code> attribute. Our <code>validate</code> configuration is:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="op">}</span></a></code></pre></div>
+<p>This configuration tells Sequelize what error message to give if we try to set the <code>firstName</code> attribute to <code>NULL</code>. It’s odd that we have to set both <code>allowNull: false</code> and <code>notNull: { msg:  ... }</code>. This feels like unnecessary duplication. Regardless, that’s what Sequelize wants us to do. On the other hand, we do get a chance to specify the error message to print if the validation fails (<code>"firstName must not be null"</code>).</p>
+<p>Let’s see how the validation logic helps us avoid saving junk data to our database:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// index.js</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="va">Cat</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="co">// Empty cat. All fields set to `null`.</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="co">// Try to save cat to the database.</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-12" title="12"></a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save success!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cat<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-15" title="15">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-16" title="16">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save failed!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-17" title="17"></a>
+<a class="sourceLine" id="cb5-18" title="18">    <span class="co">// Print list of errors.</span></a>
+<a class="sourceLine" id="cb5-19" title="19">    <span class="cf">for</span> (<span class="kw">const</span> validationError <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-20" title="20">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;*&quot;</span><span class="op">,</span> <span class="va">validationError</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-21" title="21">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-22" title="22">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-23" title="23"></a>
+<a class="sourceLine" id="cb5-24" title="24">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-26" title="26"></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="at">main</span>()</a></code></pre></div>
+<p>Running this code prints:</p>
+<pre><code>Save failed!
+* firstName must not be null
+* specialSkill must not be null
+* age must not be null</code></pre>
+<p>What happened? When we call the <code>save</code> method on a <code>Cat</code>, Sequelize will check that all the specified validations are satisfied. In this case none of them are! The <code>save</code> method will throw an exception, which we handle using <code>try { ... } catch (err) { ... }</code>.</p>
+<p>What kind of exception? The thrown error is a <a href="https://sequelize.org/v5/class/lib/errors/validation-error.js~ValidationError.html"><code>ValidationError</code></a>. This has an <code>errors</code> attribute, which stores an array of <a href="https://sequelize.org/v5/class/lib/errors/validation-error.js~ValidationErrorItem.html"><code>ValidationErrorItem</code>s</a>. We print out the message for each item error.</p>
+<p>Because there were validation failures, Sequelize <strong>will not save</strong> the invalid <code>Cats</code> record to the database. Sequelize thus keeps us from inserting junk data into the database.</p>
+<p>If we want to save our <code>Cat</code> object, we would have to change its attributes to meet the validations (i.e., set them to something other than <code>NULL</code>) and call <code>save</code> a second time. For example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// index.js</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="va">Cat</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="co">// Empty cat. All fields set to `null`.</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-11" title="11">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="co">// The save will not succeed!</span></a>
+<a class="sourceLine" id="cb7-13" title="13">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;We will fix and try again!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-15" title="15"></a>
+<a class="sourceLine" id="cb7-16" title="16">  <span class="co">// Fix the various validation problems.</span></a>
+<a class="sourceLine" id="cb7-17" title="17">  <span class="va">cat</span>.<span class="at">firstName</span> <span class="op">=</span> <span class="st">&quot;Markov&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-18" title="18">  <span class="va">cat</span>.<span class="at">specialSkill</span> <span class="op">=</span> <span class="st">&quot;sleeping&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-19" title="19">  <span class="va">cat</span>.<span class="at">age</span> <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-20" title="20"></a>
+<a class="sourceLine" id="cb7-21" title="21">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-22" title="22">    <span class="co">// Trying to save a second time!</span></a>
+<a class="sourceLine" id="cb7-23" title="23">    <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-24" title="24"></a>
+<a class="sourceLine" id="cb7-25" title="25">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Success!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-26" title="26">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-27" title="27">    <span class="co">// The save *should* succeed!</span></a>
+<a class="sourceLine" id="cb7-28" title="28">    <span class="va">console</span>.<span class="at">log</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-29" title="29">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-30" title="30"></a>
+<a class="sourceLine" id="cb7-31" title="31">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-32" title="32"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-33" title="33"></a>
+<a class="sourceLine" id="cb7-34" title="34"><span class="at">main</span>()</a></code></pre></div>
+<h2 id="the-notempty-validation">The <code>notEmpty</code> Validation</h2>
+<p>Even though we are not allowed to set <code>firstName</code> and <code>specialSkill</code> to <code>NULL</code>, we could still set them to the empty string <code>""</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="co">// index.js</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="va">Cat</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="dt">age</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-10" title="10"></a>
+<a class="sourceLine" id="cb8-11" title="11">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="co">// Try to save cat to the database.</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-14" title="14"></a>
+<a class="sourceLine" id="cb8-15" title="15">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save success!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-16" title="16">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cat<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-17" title="17">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-18" title="18">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save failed!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-19" title="19"></a>
+<a class="sourceLine" id="cb8-20" title="20">    <span class="co">// Print list of errors.</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="cf">for</span> (<span class="kw">const</span> validationError <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-22" title="22">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;*&quot;</span><span class="op">,</span> <span class="va">validationError</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-23" title="23">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-24" title="24">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-25" title="25"></a>
+<a class="sourceLine" id="cb8-26" title="26">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-27" title="27"><span class="op">}</span></a>
+<a class="sourceLine" id="cb8-28" title="28"></a>
+<a class="sourceLine" id="cb8-29" title="29"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<pre><code>Executing (default): INSERT INTO &quot;Cats&quot; (&quot;id&quot;,&quot;firstName&quot;,&quot;specialSkill&quot;,&quot;age&quot;,&quot;createdAt&quot;,&quot;updatedAt&quot;) VALUES (DEFAULT,$1,$2,$3,$4,$5) RETURNING *;
+Save success!
+{
+  &quot;id&quot;: 8,
+  &quot;firstName&quot;: &quot;&quot;,
+  &quot;specialSkill&quot;: &quot;&quot;,
+  &quot;age&quot;: 5,
+  &quot;updatedAt&quot;: &quot;2020-02-12T21:34:49.250Z&quot;,
+  &quot;createdAt&quot;: &quot;2020-02-12T21:34:49.250Z&quot;
+}</code></pre>
+<p>This is bogus: <code>Cats</code> records should have a non-empty <code>firstName</code> and <code>specialSkill</code>. We will therefore add a second validation for both <code>firstName</code> and <code>specialSkill</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-6" title="6">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-7" title="7">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-8" title="8">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-9" title="9">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-10" title="10">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-11" title="11">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-12" title="12">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-13" title="13">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-14" title="14">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-15" title="15">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-16" title="16">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-17" title="17">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-18" title="18">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-19" title="19">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-20" title="20">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-21" title="21">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-22" title="22">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-23" title="23">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-24" title="24">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-25" title="25">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-26" title="26">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-27" title="27">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-28" title="28">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-29" title="29">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb10-30" title="30">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-31" title="31">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-32" title="32">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb10-33" title="33">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb10-34" title="34">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-35" title="35"><span class="op">};</span></a></code></pre></div>
+<p>When we run the same <code>index.js</code> that tries to save the <code>Cats</code> record with the empty <code>firstName</code> and <code>specialSkill</code>, we now print:</p>
+<pre><code>Save failed!
+* firstName must not be empty
+* specialSkill must not be empty</code></pre>
+<p>Excellent! We’ve added the new validation by adding a <code>notEmpty</code> key to the <code>validate</code> POJO. Just like with <code>notNull</code>, we specify a message to print.</p>
+<p>This is the typical story: we add new validations by adding new key/value pairs to the <code>validate</code> POJO. Sequelize provides many different kinds of validations for us, but we configure all of them in the same general manner.</p>
+<h2 id="forbidding-long-string-values">Forbidding Long String Values</h2>
+<p>We don’t want our cats to have names that are too long. We add a <code>len</code> validation like so:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-6" title="6">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-7" title="7">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-8" title="8">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-9" title="9">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-10" title="10">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-11" title="11">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-12" title="12">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-13" title="13">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-14" title="14">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-15" title="15">        <span class="dt">len</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-16" title="16">          <span class="dt">args</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">8</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb12-17" title="17">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;firstName must not be more than eight letters long&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-18" title="18">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-19" title="19">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-20" title="20">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-21" title="21">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb12-22" title="22">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-23" title="23">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-24" title="24">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb12-25" title="25">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb12-26" title="26">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-27" title="27"><span class="op">};</span></a></code></pre></div>
+<p>If we try to run:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="co">// index.js</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="va">Cat</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Markov The Magnificent&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-7" title="7">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="st">&quot;sleeping&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-8" title="8">    <span class="dt">age</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-10" title="10"></a>
+<a class="sourceLine" id="cb13-11" title="11">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-12" title="12">    <span class="co">// Try to save cat to the database.</span></a>
+<a class="sourceLine" id="cb13-13" title="13">    <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-14" title="14"></a>
+<a class="sourceLine" id="cb13-15" title="15">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save success!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-16" title="16">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cat<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-17" title="17">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-18" title="18">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Save failed!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-19" title="19"></a>
+<a class="sourceLine" id="cb13-20" title="20">    <span class="co">// Print list of errors.</span></a>
+<a class="sourceLine" id="cb13-21" title="21">    <span class="cf">for</span> (<span class="kw">const</span> validationError <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-22" title="22">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;*&quot;</span><span class="op">,</span> <span class="va">validationError</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-23" title="23">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-24" title="24">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-25" title="25"></a>
+<a class="sourceLine" id="cb13-26" title="26">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-27" title="27"><span class="op">}</span></a>
+<a class="sourceLine" id="cb13-28" title="28"></a>
+<a class="sourceLine" id="cb13-29" title="29"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>We will be told:</p>
+<pre><code>Save failed!
+* firstName must not be more than eight letters long</code></pre>
+<p>The <code>len</code> validation gets a <code>msg</code> attribute as usual. We also configure <code>args: [0, 8]</code>. These are the “arguments” to the <code>len</code> validation. We are telling Sequelize to trigger a validation error if the <code>firstName</code> property has a length less than zero (impossible) or greater than eight.</p>
+<p>Note that even though the <code>len</code> validation is not triggered for a length of zero, the <code>notEmpty</code> validation still will be.</p>
+<p>If desired, we could use the <code>len</code> validation to set a true minimum length for a string. If we wanted a minimum length of two letters, we would just change <code>args: [2, 8]</code>. (We ought also update the <code>msg</code> appropriately.)</p>
+<h2 id="validating-that-a-numeric-value-is-within-a-specified-range">Validating That A Numeric Value Is Within A Specified Range</h2>
+<p>A <code>Cat</code> should never have a negative age. Perhaps, also, a <code>Cat</code> should have a theoretical maximum age of 99 years. We can add validations to enforce these requirements:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-5" title="5">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb15-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-7" title="7">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-8" title="8">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-9" title="9">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-10" title="10">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-11" title="11">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;age must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-12" title="12">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-13" title="13">        <span class="dt">min</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-14" title="14">          <span class="dt">args</span><span class="op">:</span> [<span class="dv">0</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-15" title="15">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;age must not be less than zero&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-16" title="16">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-17" title="17">        <span class="dt">max</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-18" title="18">          <span class="dt">args</span><span class="op">:</span> [<span class="dv">99</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-19" title="19">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;age must not be greater than 99&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-20" title="20">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-21" title="21">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-22" title="22">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-23" title="23">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-24" title="24">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-25" title="25">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb15-26" title="26">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb15-27" title="27">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-28" title="28"><span class="op">};</span></a></code></pre></div>
+<p>You can see that the <code>min</code> and <code>max</code> validations are configured in the same sort of way that the <code>len</code> validation is.</p>
+<p>If we try to save a <code>Cat</code> with an <code>age</code> of <code>-1</code>, we are printed:</p>
+<pre><code>Save failed!
+* age must not be less than zero</code></pre>
+<p>Likewise, if we try to save a <code>Cat</code> with an <code>age</code> of <code>123</code> we are printed:</p>
+<pre><code>Save failed!
+* age must not be greater than 99</code></pre>
+<p><em>(Note: I’ve stopped repeating our <code>index.js</code> file, since there are only trivial modifications to a <code>Cat</code>’s attributes each time.)</em></p>
+<h2 id="validating-that-an-attribute-is-among-a-finite-set-of-values">Validating That An Attribute Is Among A Finite Set Of Values</h2>
+<p>Let’s say that a <code>Cat</code>’s <code>specialSkill</code> should be restricted to a pre-defined list of <code>["jumping", "sleeping", "purring"]</code>. That is: a <code>Cat</code> should not be allowed to have just any <code>specialSkill</code>. The <code>specialSkill</code> must be on the list.</p>
+<p>We can enforce this requirement like so:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="co">// ./models/cat.js</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-4" title="4">  <span class="kw">const</span> Cat <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-5" title="5">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb18-6" title="6">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-7" title="7">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-8" title="8">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-9" title="9">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-10" title="10">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-11" title="11">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must not be null&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-12" title="12">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-13" title="13">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-14" title="14">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-15" title="15">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-16" title="16">        <span class="dt">isIn</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-17" title="17">          <span class="dt">args</span><span class="op">:</span> [[<span class="st">&quot;jumping&quot;</span><span class="op">,</span> <span class="st">&quot;sleeping&quot;</span><span class="op">,</span> <span class="st">&quot;purring&quot;</span>]]<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-18" title="18">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;specialSkill must be either jumping, sleeping, or purring&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-19" title="19">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-20" title="20">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-21" title="21">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-22" title="22">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb18-23" title="23">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-24" title="24">  <span class="va">Cat</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-25" title="25">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb18-26" title="26">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb18-27" title="27">  <span class="cf">return</span> Cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-28" title="28"><span class="op">};</span></a></code></pre></div>
+<p>Notice how we <strong>doubly-nest</strong> the list of special skills (<code>["jumping, "sleeping", "purring"]</code>) when specifying the <code>args</code> for the <code>isIn</code> validation. This is because we want to pass <strong>one</strong> argument: an array of three possible special skills.</p>
+<p>Now when we try to save a <code>Cat</code> with <code>specialSkill</code> set to <code>"pearl diving"</code>, our code will print:</p>
+<pre><code>Save failed!
+* specialSkill must be either jumping, sleeping, or purring</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>There is a very large variety of validations that are provided by Sequelize. You can find many more in the Sequelize <a href="https://sequelize.org/v5/manual/models-definition.html#validations">documentation for validations</a>.</p>
+<p>Having completed this reading, you now know how to:</p>
+<ol type="1">
+<li>Validate that an attribute is not set to <code>NULL</code>.</li>
+<li>Validate that a string attribute is not set to the empty string <code>""</code>.</li>
+<li>Validate that a string attribute is not too long (has too many characters).</li>
+<li>Validate that a numeric attribute meets minimum or maximum thresholds.</li>
+<li>Validate that an attribute is within a limited set of options.</li>
+</ol>

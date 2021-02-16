@@ -1,0 +1,36 @@
+<p>Instance and class methods are common ways to add functionality to your Sequelize.js models.</p>
+<h1 id="instance-methods">Instance Methods</h1>
+<p>The code example below demonstrates an instance method. Instance methods are methods that are available on <em>instances</em> of the model. We often write these to get information or do something related <em>to that instance</em>.</p>
+<h2 id="definition">Definition:</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span><span class="co">/* etc*/</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">// instance methods are defined on the model&#39;s .prototype</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="va">Pug</span>.<span class="va">prototype</span>.<span class="at">celebrateBirthday</span> <span class="op">=</span> <span class="kw">function</span> () <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="co">// &#39;this&#39; in an instance method refers to the instance itself</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">const</span> birthday <span class="op">=</span> <span class="kw">new</span> <span class="at">Date</span>(<span class="kw">this</span>.<span class="at">birthday</span>)</a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="kw">const</span> today <span class="op">=</span> <span class="kw">new</span> <span class="at">Date</span>()</a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="cf">if</span> (<span class="va">birthday</span>.<span class="at">getMonth</span>() <span class="op">===</span> <span class="va">today</span>.<span class="at">getMonth</span>() <span class="op">&amp;&amp;</span> <span class="va">today</span>.<span class="at">getDate</span>() <span class="op">===</span> <span class="va">birthday</span>.<span class="at">getDate</span>()) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Happy birthday!&#39;</span>)</a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="op">}</span></a></code></pre></div>
+<h2 id="usage">Usage:</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> createdPug <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">create</span>(<span class="op">{</span><span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Cody&#39;</span><span class="op">}</span>) <span class="co">// let&#39;s say `birthday` defaults to today</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">// the instance method is invoked *on the instance*</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">createdPug</span>.<span class="at">celebrateBirthday</span>() <span class="co">// Happy birthday!</span></a></code></pre></div>
+<h3 id="class-methods">Class Methods</h3>
+<p>The code example below demonstrates a class method. Class methods are methods that are available on the <em>model itself</em> (aka the <em>class</em>). We often write these to get instances, or do something to more than one instance</p>
+<h5 id="definition-1">Definition</h5>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span><span class="co">/* etc*/</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">// class methods are defined right on the model</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="va">Pug</span>.<span class="at">findPuppies</span> <span class="op">=</span> <span class="kw">function</span> () <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="co">// &#39;this&#39; refers directly back to the model (the capital &quot;P&quot; Pug)</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="cf">return</span> <span class="kw">this</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="co">// could also be Pug.findAll</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="dt">age</span><span class="op">:</span> <span class="op">{</span><span class="dt">$lte</span><span class="op">:</span> <span class="dv">1</span><span class="op">}</span> <span class="co">// find all pugs where age is less than or equal to 1</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="op">}</span></a></code></pre></div>
+<h5 id="usage-1">Usage</h5>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> foundPuppies <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findPuppies</span>()</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Here are the pups: &#39;</span><span class="op">,</span> foundPuppies)</a></code></pre></div>

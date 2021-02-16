@@ -1,0 +1,354 @@
+<h1 id="transactions-with-sequelize">Transactions With Sequelize</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</a></li>
+<li><a href="#the-solution-database-transactions">The Solution: Database Transactions</a></li>
+<li><a href="#the-bankaccounts-schema">The <code>BankAccounts</code> Schema</a></li>
+<li><a href="#example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</a></li>
+<li><a href="#incorrect-solutions">Incorrect Solutions</a></li>
+<li><a href="#using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</a></li>
+<li><a href="#aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</a></li>
+<li><a href="#transactions-prevent-_race-conditions_">Transactions Prevent <em>Race Conditions</em></a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>In this reading, we will learn about database <em>transactions</em> and how we use them via Sequelize. We will learn how to group multiple update operations into a single atomic, indivisible unit.</p>
+<p>At the end of the reading, you should know:</p>
+<ol type="1">
+<li>How to write code that is resilient to SQL operation failures,</li>
+<li>How to group multiple operations into a database transaction using Sequelize (the <code>sequelize.transaction</code> method),</li>
+<li>How to prevent “race conditions” using transactions.</li>
+</ol>
+<h2 id="the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</h2>
+<p>Imagine a scenario with a banking database. Markov wants to transfer $7,500 to Curie. To perform the transfer, we will perform two database update operations:</p>
+<ol type="1">
+<li>Reduce Markov’s account balance by $7,500,</li>
+<li>Increase Curie’s account balance by $7,500.</li>
+</ol>
+<p>When transferring money, it’s very important that <em>both</em> operations be performed. If we reduce Markov’s balance but fail to increase Curie’s balance, the bank effectively steals money from Markov. If we increase Curie’s balance without reducing Markov’s balance, the bank effectively gives away free money to Curie. Neither is acceptable.</p>
+<p>We must keep in mind that any attempt to perform a database update can sometimes <em>fail</em>. It can fail for a number of reasons:</p>
+<ol type="1">
+<li>The command is sent, but the database has previously been shut down by the database administrator. Because the database is not running, the database is not listening for our update, won’t receive it, and thus won’t process it.</li>
+<li>A bug in the database or operating system software has caused the database or operating system to crash. Again, the database is not running, so it can neither receive nor process our update.</li>
+<li>Power has been lost to the machine running the database. The database is not running.</li>
+<li>The internet connection that connects us to the database machine is disrupted. The database may be running and listening for SQL requests to process. However, our update request cannot get through to the database machine. Because the database cannot receive our request, the database cannot process it.</li>
+<li>The update asks the database to violate a pre-defined constraint. For example: the database may have a constraint that an account balance must never be less than zero. Any update that asks the database to reduce an account balance to less than zero will be rejected and therefore fail.</li>
+</ol>
+<p>Only this last scenario is “our fault.” The fact is that database updates can fail <strong>through no fault of our own</strong>. With regard to our example: our first SQL request to reduce Markov’s account balance may succeed, but the database may then crash before we have sent the request to increase Curie’s balance. Through no fault of our own, the bank has stolen money from Markov without giving it to Curie.</p>
+<p>How can we write code that avoids this fundamental problem?</p>
+<h2 id="the-solution-database-transactions">The Solution: Database Transactions</h2>
+<p>One way to solve the problem is to “group” or “pair” the two update operations somehow. We want to tell the database “Reduce Markov’s balance AND increment Curie’s balance.” We want to tell the database: “If for any reason you cannot perform <strong>both</strong> operations, make sure not to perform <strong>either</strong>.” We want to tell the database: “If you crash after reducing Markov’s balance, make sure to either (a) increase Curie’s balance when you restart, or (b) undo the increase to Markov’s balance when you restart.”</p>
+<p>We want to ask the database to treat the pair of updates as one <em>atomic</em> (meaning <strong>indivisible</strong>) unit. SQL lets you do this using a feature called <em>transactions</em>.</p>
+<p>You’ve previously seen how to use SQL transactions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">START</span> <span class="kw">TRANSACTION</span>;</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">-- Reduce Markov&#39;s balance by $7500</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">UPDATE</span> <span class="ot">&quot;BankAccounts&quot;</span> <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="dv">7500</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">-- Increment Curie&#39;s balance by $7500</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">UPDATE</span> <span class="ot">&quot;BankAccounts&quot;</span> <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="dv">7500</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">2</span>;</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">COMMIT</span> <span class="kw">TRANSACTION</span>;</a></code></pre></div>
+<p>SQL guarantees to you that everything between <code>START TRANSACTION</code> and <code>COMMIT TRANSACTION</code> will be processed <em>atomically</em>. If any update operation fails, none of the updates will be performed. The transaction is “all-or-nothing.”</p>
+<p>In this reading you will learn how to use SQL transactions with the Sequelize ORM.</p>
+<h2 id="the-bankaccounts-schema">The <code>BankAccounts</code> Schema</h2>
+<p>For our example in this reading, I will use a single table with two accounts.</p>
+<pre><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   10000 | ...
+(2 rows)</code></pre>
+<p>I have generated a Sequelize model corresponding to the <code>BankAccounts</code> table:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// ./models/bank_account.js</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="co">// Define BankAccount model.</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">const</span> BankAccount <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;BankAccount&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="co">// Define clientName attribute.</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="dt">clientName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-9" title="9">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-10" title="10">      <span class="co">// Define validations on clientName.</span></a>
+<a class="sourceLine" id="cb3-11" title="11">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">        <span class="co">// clientName must not be null.</span></a>
+<a class="sourceLine" id="cb3-13" title="13">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-14" title="14">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;clientName must not be NULL&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-15" title="15">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-16" title="16">        <span class="co">// clientName must not be empty.</span></a>
+<a class="sourceLine" id="cb3-17" title="17">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-18" title="18">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;clientName must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-19" title="19">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-20" title="20">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-21" title="21">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-22" title="22"></a>
+<a class="sourceLine" id="cb3-23" title="23">    <span class="co">// Define balance attribute.</span></a>
+<a class="sourceLine" id="cb3-24" title="24">    <span class="dt">balance</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-25" title="25">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-26" title="26">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-27" title="27">      <span class="co">// Define validations on balance.</span></a>
+<a class="sourceLine" id="cb3-28" title="28">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-29" title="29">        <span class="co">// balance must not be less than zero.</span></a>
+<a class="sourceLine" id="cb3-30" title="30">        <span class="dt">min</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-31" title="31">          <span class="dt">args</span><span class="op">:</span> [<span class="dv">0</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-32" title="32">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;balance must not be less than zero&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-33" title="33">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-34" title="34">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-35" title="35">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-36" title="36">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-37" title="37"></a>
+<a class="sourceLine" id="cb3-38" title="38">  <span class="cf">return</span> BankAccount<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-39" title="39"><span class="op">};</span></a></code></pre></div>
+<p>Notice that the <code>min</code> validation on <code>balance</code> will not allow us to save an account balance that is below zero.</p>
+<h2 id="example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</h2>
+<p>Let’s imagine that Markov wants to transfer $7,500 to Curie. Unfortunately, Markov has only $5,000 in his account! Decrementing Markov’s account balance by $7,500 would put it in the negative, which our validation will not allow. Thus the transfer must fail.</p>
+<p>Imagine that Markov is unaware that his account balance cannot cover the transfer. He tries to perform the transfer anyway:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize <span class="op">,</span> BankAccount <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// This code will try to transfer $7,500 from Markov to Curie.</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-9" title="9"></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-14" title="14"></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-18" title="18">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-19" title="19">    <span class="co">// Report if anything goes wrong.</span></a>
+<a class="sourceLine" id="cb4-20" title="20">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Error!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-21" title="21"></a>
+<a class="sourceLine" id="cb4-22" title="22">    <span class="cf">for</span> (<span class="kw">const</span> e <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-23" title="23">      <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb4-24" title="24">        <span class="vs">`</span><span class="sc">${</span><span class="va">e</span>.<span class="va">instance</span>.<span class="at">clientName</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">e</span>.<span class="at">message</span><span class="sc">}</span><span class="vs">`</span></a>
+<a class="sourceLine" id="cb4-25" title="25">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-26" title="26">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-27" title="27">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-28" title="28"></a>
+<a class="sourceLine" id="cb4-29" title="29">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-30" title="30"><span class="op">}</span></a>
+<a class="sourceLine" id="cb4-31" title="31"></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints the following:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (default): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Error!
+Markov: balance must not be less than zero</code></pre>
+<p>Everything starts out fine. We fetch Markov and Curie’s accounts. We increase Curie’s balance. But then we hit a snag: when we call <code>markovAccount.save()</code>, Sequelize detects that we are trying to set Markov’s balance below zero. Sequelize therefore <strong>does not</strong> send a SQL request to update Markov’s account balance. Instead, <code>markovAccount.save()</code> throws an exception. We print the error: Markov’s balance must not be less than zero.</p>
+<p>We thus avoid saving a negative balance for Markov. But other damage has already been done. If we now check account balances, we will see:</p>
+<pre><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   17500 | ...
+(2 rows)</code></pre>
+<p>The bank has given free money to Curie! We should have “rolledback” the increase of Curie’s balance. We will learn how to do that!</p>
+<h2 id="incorrect-solutions">Incorrect Solutions</h2>
+<p>One may suggest a fix: make sure to decrement Markov’s account balance before incrementing Curie’s balance! If Markov’s balance is insufficient, we can stop the transfer before giving Curie any money.</p>
+<p>We <em>could</em> swap the order of the updates, and it would indeed fix this specific problem. But imagine if Markov tries to transfer $2,500 (an amount he can afford). We first decrement Markov’s account balance and then – the operating system crashes before the second update can be submitted. Curie’s balance is not incremented. The bank has stolen Markov’s money!</p>
+<p>The problem is fundamental: no matter what order we perform the two updates in, the database can always fail <em>after</em> processing the first, but <em>before</em> processing the second. For our code to be resilient to unavoidable failures, there is no other choice but to use a database transaction.</p>
+<h2 id="using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</h2>
+<p>Let’s return to our previous example of trying to transfer $7,500 from Markov to Curie. Specifically, we will rewrite this key part:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>()<span class="op">;</span></a></code></pre></div>
+<p>To ask Sequelize to perform the two updates in a SQL database transaction, we use the <code>sequelize.transaction</code> method. We will write this like so, instead:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Let’s go through the transaction code and explain each part:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="co">// Start a transaction. Queries run inside the callback can be part of</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">// the transaction.</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="co">// Pass the `tx` transaction object so that Sequelize knows to</span></a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="co">// update Curie&#39;s account as part of this transaction (rather than</span></a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="co">// &quot;on its own&quot; per usual).</span></a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-10" title="10"></a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb9-12" title="12">  <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-13" title="13">  <span class="co">// Again, pass the `tx` transaction object. Thus both updates are part</span></a>
+<a class="sourceLine" id="cb9-14" title="14">  <span class="co">// of the same transaction.</span></a>
+<a class="sourceLine" id="cb9-15" title="15">  <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-16" title="16"></a>
+<a class="sourceLine" id="cb9-17" title="17">  <span class="co">// If no exceptions have been thrown, `sequelize.transaction` will</span></a>
+<a class="sourceLine" id="cb9-18" title="18">  <span class="co">// `COMMIT` the transaction after the end of the callback.</span></a>
+<a class="sourceLine" id="cb9-19" title="19">  <span class="co">//</span></a>
+<a class="sourceLine" id="cb9-20" title="20">  <span class="co">// If any error gets thrown, `sequelize.transaction` will abort</span></a>
+<a class="sourceLine" id="cb9-21" title="21">  <span class="co">// the transaction by issuing a `ROLLBACK`. This will cancel all</span></a>
+<a class="sourceLine" id="cb9-22" title="22">  <span class="co">// updates.</span></a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Let’s put the transaction code back into our original program:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> BankAccount <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-8" title="8"></a>
+<a class="sourceLine" id="cb10-9" title="9">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-11" title="11">      <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb10-12" title="12">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-13" title="13">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-14" title="14"></a>
+<a class="sourceLine" id="cb10-15" title="15">      <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb10-16" title="16">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-17" title="17">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-18" title="18">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-19" title="19">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-20" title="20">    <span class="co">// Report if anything goes wrong.</span></a>
+<a class="sourceLine" id="cb10-21" title="21">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Error!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-22" title="22"></a>
+<a class="sourceLine" id="cb10-23" title="23">    <span class="cf">for</span> (<span class="kw">const</span> e <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-24" title="24">      <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb10-25" title="25">        <span class="vs">`</span><span class="sc">${</span><span class="va">e</span>.<span class="va">instance</span>.<span class="at">clientName</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">e</span>.<span class="at">message</span><span class="sc">}</span><span class="vs">`</span></a>
+<a class="sourceLine" id="cb10-26" title="26">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-27" title="27">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-28" title="28">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-29" title="29"></a>
+<a class="sourceLine" id="cb10-30" title="30">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-31" title="31"><span class="op">}</span></a>
+<a class="sourceLine" id="cb10-32" title="32"></a>
+<a class="sourceLine" id="cb10-33" title="33"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): START TRANSACTION;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): ROLLBACK;
+Error!
+Markov: balance must not be less than zero</code></pre>
+<p>Let’s review what happened. We again start by fetching both <code>BankAccount</code>s. We next <code>START TRANSACTION</code>. We issue the update to Curie’s account.</p>
+<p>Then Sequelize detects the validation failure when trying to run <code>markovAccount.save({ transaction: tx })</code>. Markov doesn’t have enough money in his account! Sequelize throws an exception. The <code>sequelize.transaction</code> method <em>catches the exception</em> and issues a <code>ROLLBACK</code> for the transaction. This tells the database to undo the prior increment of Curie’s account balance.</p>
+<p>Having rolled back the transaction, the <code>sequelize.transaction</code> method <em>rethrows</em> the error, so that our logging code gets a chance to learn about the error and print its details.</p>
+<h2 id="aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</h2>
+<p><em>This is bonus information in case you are troubled by what the <code>tx</code> parameter to <code>sequelize.transaction</code> is for. You can use transactions correctly without knowing this bonus information.</em></p>
+<p>What is the mysterious <code>tx</code> that is passed by <code>sequelize.transaction</code> to our callback? It is basically just a unique ID. In this case, the ID is: <code>208b3951-9ab9-489b-97f0-afb49aaff807</code>. You can see this ID in the logs above.</p>
+<p>When we say <code>curieAccount.save({ transaction: tx })</code>, we are telling Sequelize: “update Curie’s account as part of transaction number <code>208b3951-9ab9-489b-97f0-afb49aaff807</code>.”</p>
+<p>Sequelize needs transaction IDs because it can be running many SQL transactions <em>concurrently</em> (loosely speaking: “in parallel”). One part of the application could be transferring money from Markov to Curie at the same time another part of the application is transferring money from Kate to Ned.</p>
+<p>If Sequelize did not keep track of transaction IDs, it would not know that <code>curieAccount.save()</code> should be a part of the Markov/Curie transaction rather than the Kate/Ned transaction.</p>
+<h2 id="transactions-prevent-race-conditions">Transactions Prevent <em>Race Conditions</em></h2>
+<p>There is still a subtle mistake in my bank transfer code. There is a potential problem if someone modifies Markov’s or Curie’s account in between (1) the initial fetch of their accounts, and (2) the transaction to update the accounts.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="co">// I will transfer only $5,000 so that Markov&#39;s balance can cover the</span></a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="co">// amount. Markov starts out with $5,000.</span></a>
+<a class="sourceLine" id="cb12-5" title="5"></a>
+<a class="sourceLine" id="cb12-6" title="6">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb12-7" title="7">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-8" title="8">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-9" title="9"></a>
+<a class="sourceLine" id="cb12-10" title="10">  <span class="co">// ***</span></a>
+<a class="sourceLine" id="cb12-11" title="11">  <span class="co">// Imagine that right now some other program transfers the $5,000 out</span></a>
+<a class="sourceLine" id="cb12-12" title="12">  <span class="co">// of Markov&#39;s account. Markov&#39;s true account **in the database** now</span></a>
+<a class="sourceLine" id="cb12-13" title="13">  <span class="co">// has a balance of $0. But `markovAccount.balance` is still $5,000,</span></a>
+<a class="sourceLine" id="cb12-14" title="14">  <span class="co">// because we fetched Markov&#39;s `BankAccount` **before** the transfer</span></a>
+<a class="sourceLine" id="cb12-15" title="15">  <span class="co">// was made!</span></a>
+<a class="sourceLine" id="cb12-16" title="16">  <span class="co">// ***</span></a>
+<a class="sourceLine" id="cb12-17" title="17"></a>
+<a class="sourceLine" id="cb12-18" title="18">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-19" title="19">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-20" title="20">      <span class="co">// Increment Curie&#39;s balance by $5,000 (to $15,000).</span></a>
+<a class="sourceLine" id="cb12-21" title="21">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-22" title="22">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-23" title="23"></a>
+<a class="sourceLine" id="cb12-24" title="24">      <span class="co">// Decrement `markovAccount.balance` by $5,000.</span></a>
+<a class="sourceLine" id="cb12-25" title="25">      <span class="co">// `markovAccount.balance` is set to zero.</span></a>
+<a class="sourceLine" id="cb12-26" title="26">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-27" title="27">      <span class="co">// Save and set Markov&#39;s balance to zero.</span></a>
+<a class="sourceLine" id="cb12-28" title="28">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-29" title="29"></a>
+<a class="sourceLine" id="cb12-30" title="30">      <span class="co">// Problem: Markov&#39;s balance in the database was *already* zero.</span></a>
+<a class="sourceLine" id="cb12-31" title="31">      <span class="co">// Markov had no money to transfer. He should not have been able</span></a>
+<a class="sourceLine" id="cb12-32" title="32">      <span class="co">// to transfer the $5,000.</span></a>
+<a class="sourceLine" id="cb12-33" title="33">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-34" title="34">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-35" title="35">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb12-36" title="36">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-37" title="37"></a>
+<a class="sourceLine" id="cb12-38" title="38">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-39" title="39"><span class="op">}</span></a>
+<a class="sourceLine" id="cb12-40" title="40"></a>
+<a class="sourceLine" id="cb12-41" title="41"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Because another program can “race in between” (1) the reading of the account balances and (2) the updating of the balances, we call this potential problem a <em>race condition</em>. The easiest way to fix the race condition is to prohibit anyone else from modifying Markov’s account balance in between (1) and (2).</p>
+<p>Luckily, the solution is simple. Any data used in a transaction will be <em>locked</em> until the transaction completes. Data that is locked can be neither read nor written by other transactions. If our transaction reads (or writes) data, no one else can read or write that data until our transaction completes. When we <code>COMMIT</code> (or <code>ROLLBACK</code>) all the locked data is freed (the locks are <em>released</em>).</p>
+<p>We don’t have to lock the data ourselves. Simply by doing all our queries inside the same transaction, the database will lock the data for us. Therefore, to fix the problem, we should move the initial account fetching by <code>findByPk</code> into the transaction (i.e., pass it <code>{ transaction: tx }</code>):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="co">// Do all database access within the transaction.</span></a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-5" title="5">      <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb13-6" title="6">      <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(</a>
+<a class="sourceLine" id="cb13-7" title="7">        <span class="dv">1</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-8" title="8">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-9" title="9">      <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(</a>
+<a class="sourceLine" id="cb13-10" title="10">        <span class="dv">2</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-11" title="11">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-12" title="12"></a>
+<a class="sourceLine" id="cb13-13" title="13">      <span class="co">// No one can mess with Markov or Curie&#39;s accounts until the</span></a>
+<a class="sourceLine" id="cb13-14" title="14">      <span class="co">// transaction completes! The account data has been locked!</span></a>
+<a class="sourceLine" id="cb13-15" title="15"></a>
+<a class="sourceLine" id="cb13-16" title="16">      <span class="co">// Increment Curie&#39;s balance by $5,000.</span></a>
+<a class="sourceLine" id="cb13-17" title="17">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb13-18" title="18">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-19" title="19"></a>
+<a class="sourceLine" id="cb13-20" title="20">      <span class="co">// Decrement Markov&#39;s balance by $5,000.</span></a>
+<a class="sourceLine" id="cb13-21" title="21">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb13-22" title="22">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-23" title="23">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-24" title="24">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-25" title="25">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb13-26" title="26">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-27" title="27"></a>
+<a class="sourceLine" id="cb13-28" title="28">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-29" title="29"><span class="op">}</span></a>
+<a class="sourceLine" id="cb13-30" title="30"></a>
+<a class="sourceLine" id="cb13-31" title="31"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): START TRANSACTION;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): COMMIT;</code></pre>
+<p>Notice that now <em>everything</em> is done in the transaction <code>76321a03-93c5-47c0-861a-cf24c3e6f3bf</code>. This includes the initial fetching of the accounts. Because the fetching is done within the transaction, other users are not allowed to modify the accounts until the transaction is finished.</p>
+<p>Moving our read operations into the transaction has solved our race condition problem. Every Sequelize operation - whether reading or writing - can take a <code>transaction: tx</code> option. This includes:</p>
+<ol type="1">
+<li><code>findByPk</code></li>
+<li><code>findAll</code></li>
+<li><code>save</code></li>
+<li><code>create</code></li>
+<li><code>destroy</code></li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Having completed this reading, here are the important things to take away:</p>
+<ol type="1">
+<li>You should know that any SQL update operation may fail, often through no fault of your own.</li>
+<li>You should know that you must write code resilient to SQL failures.</li>
+<li>You should know that when performing multiple update operations as part of a group, you must use a transaction.</li>
+<li>You should know how to use <code>sequelize.transaction</code> to run commands within a SQL transaction.</li>
+<li>You should know how to pass a transaction object as the <code>{ transaction: tx }</code> parameter to a Sequelize command (such as <code>save</code>).</li>
+<li>You should know what a <em>race condition</em> is: the possibility that someone else modifies previously fetched data before you are finished using/updating it.</li>
+<li>You should know how to use transactions to guard against race conditions. That is: you should know that both reading and writing operations should be put in the same transaction.</li>
+</ol>

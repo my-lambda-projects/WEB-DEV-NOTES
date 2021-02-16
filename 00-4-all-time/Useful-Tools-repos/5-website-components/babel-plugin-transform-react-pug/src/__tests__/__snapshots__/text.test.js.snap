@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JavaScript output: transformed source code 1`] = `
+"module.exports = (
+  <div>
+    Hello World{\\"\\\\n\\"}What a great world it is
+    {10 < 15 ? \\" The world is great\\" : null}
+    <div>Longer passages of text work{\\"\\\\n\\"}exactly the same.</div>
+  </div>
+);
+"
+`;
+
+exports[`html output: generated html 1`] = `
+<div>
+  Hello World
+  
+
+  What a great world it is
+   The world is great
+  <div>
+    Longer passages of text work
+    
+
+    exactly the same.
+  </div>
+</div>
+`;
+
+exports[`static html output: static html 1`] = `
+"<div>Hello World
+What a great world it is The world is great<div>Longer passages of text work
+exactly the same.</div></div>"
+`;

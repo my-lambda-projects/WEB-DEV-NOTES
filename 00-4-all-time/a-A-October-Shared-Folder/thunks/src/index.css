@@ -1,0 +1,47 @@
+/* TODO Add site wide styles */
+* {
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: green;
+}
+h2 {
+    color: white;
+    margin: 0;
+}
+img {
+    width: 250px;
+    height: 250px;
+    object-fit: contain;
+}
+
+button {
+    margin: 0;
+    padding: 5px;
+    background: white;
+    border: none;
+}
+
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+.main {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 50vw;
+    min-height: 400px;
+    height: 60vh;
+    background-color: darkgreen;
+    border: black 5px solid;
+    border-radius: 5px;
+}

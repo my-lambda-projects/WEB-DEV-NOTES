@@ -1,0 +1,86 @@
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/hooks.html">Official Docs</a></p>
+<p>When we perform various operations in sequelize (like updating, creating, or destroying an instance), that’s not <em>all</em> that happens. There are various stages that an instance goes through as it’s being updated/created/destroyed. These are called <em>lifecycle events</em>. Hooks give us the ability to “hook” into these lifecycle events and execute arbitrary functions related to that instance.</p>
+<p>This can be useful in several ways. For example:</p>
+<ul>
+<li>Before creating an instance of a User, we could hash that user’s plaintext password, so that what gets saved is the hashed version</li>
+<li>Before destroying an instance of a TodoList, we could also destroy all Todos that are associated with that TodoList.</li>
+</ul>
+<p>We define hooks on the model, but they are executed against instances when those instances pass through those lifecycle events.</p>
+<p>All hooks are defined using a function that takes two arguments. The first argument is the instance passing through the lifecycle hook. The second argument is an options object (rarely used - you can often ignore it or exclude it).</p>
+<p>Here’s what the above two examples might look like. Note that there are several different ways that hooks can be defined (but they are mostly equivalent).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// given the following User model:</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> User <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;users&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">password</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">// we want to hook into the &quot;beforeCreate&quot; lifecycle event</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">// this lifecycle event happens before an instance is created and saved to the database,</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">// so we can use this to change something about the instance before it gets saved.</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="va">User</span>.<span class="at">beforeCreate</span>((userInstance<span class="op">,</span> optionsObject) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="va">userInstance</span>.<span class="at">password</span> <span class="op">=</span> <span class="at">hash</span>(<span class="va">userInstance</span>.<span class="at">password</span>)</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">// This lifecycle hook would get called after calling something like:</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co">// User.create({name: &#39;Cody&#39;, password: &#39;123&#39;})</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co">// and it would run before the new user is saved in the database.</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="co">// If we were to inspect the newly created user, we would see that</span></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="co">// the user.password wouldn&#39;t be &#39;123&#39;, but it would be another string</span></a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="co">// representing the hashed &#39;123&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// given the following TodoList and Todo models:</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> TodoList <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;todolists&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">const</span> Todo <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;todo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="dt">completedStatus</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">BOOLEAN</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="va">Todo</span>.<span class="at">belongsTo</span>(TodoList<span class="op">,</span> <span class="op">{</span><span class="dt">as</span><span class="op">:</span> <span class="st">&#39;list&#39;</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-12" title="12"></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">// we want to hook into the &quot;beforeDestroy&quot; lifecycle event</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">// this lifecycle event happens before an instance is removed from the database,</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">// so we can use this to &quot;clean up&quot; other rows that are also no longer needed</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="va">TodoList</span>.<span class="at">beforeDestroy</span>((todoListInstance) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="co">// make sure to return any promises inside hooks! This way Sequelize will be sure to</span></a>
+<a class="sourceLine" id="cb2-18" title="18">  <span class="co">// wait for the promise to resolve before advancing to the next lifecycle stage!</span></a>
+<a class="sourceLine" id="cb2-19" title="19">    <span class="cf">return</span> <span class="va">Todo</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-20" title="20">      <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-21" title="21">        <span class="dt">listId</span><span class="op">:</span> <span class="va">todoListInstance</span>.<span class="at">id</span></a>
+<a class="sourceLine" id="cb2-22" title="22">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-23" title="23">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="available-hooks-in-order-of-operation">Available Hooks (in Order of Operation)</h2>
+<pre><code>(1)
+  beforeBulkCreate(instances, options)
+  beforeBulkDestroy(options)
+  beforeBulkUpdate(options)
+(2)
+  beforeValidate(instance, options)
+(-)
+  validate
+(3)
+  afterValidate(instance, options)
+  - or -
+  validationFailed(instance, options, error)
+(4)
+  beforeCreate(instance, options)
+  beforeDestroy(instance, options)
+  beforeUpdate(instance, options)
+  beforeSave(instance, options)
+  beforeUpsert(values, options)
+(-)
+  create
+  destroy
+  update
+(5)
+  afterCreate(instance, options)
+  afterDestroy(instance, options)
+  afterUpdate(instance, options)
+  afterSave(instance, options)
+  afterUpsert(created, options)
+(6)
+  afterBulkCreate(instances, options)
+  afterBulkDestroy(options)
+  afterBulkUpdate(options)</code></pre>

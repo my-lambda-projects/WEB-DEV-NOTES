@@ -1,0 +1,83 @@
+{
+	"name": "vscode-dimmer-block",
+	"displayName": "VSCode Dimmer Block",
+	"description": "Highlights the block containing the cursor, dims other text.",
+	"version": "2.2.0",
+	"publisher": "imagio",
+	"engines": {
+		"vscode": "^1.6.0"
+	},
+	"icon": "images/icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AndrewMorsillo/vscode-dimmer.git"
+	},
+	"bugs": {
+		"url": "https://github.com/AndrewMorsillo/vscode-dimmer/issues"
+	},
+	"author": {
+		"name": "original: Cody Hoover",
+		"url": "https://github.com/hoovercj"
+	},
+	"license": "MIT",
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "dimmer.ToggleDimmer",
+				"title": "Toggle Dimmer"
+			}
+		],
+		"configuration": {
+			"properties": {
+				"dimmer.enabled": {
+					"default": false,
+					"type": "boolean",
+					"description": "When set to true, the extension will dim non-selected text."
+				},
+				"dimmer.toggleDimmerCommandScope": {
+					"defualt": "user",
+					"type": "string",
+					"enum": [
+						"user",
+						"workspace"
+					],
+					"description": "Decides whether the `ToggleDimmer` command will affect the user (global) or workspace (local) settings."
+				},
+				"dimmer.opacity": {
+					"default": 50,
+					"type": "number",
+					"description": "An integer between 0 and 100 used for the opacity percentage for the dimmed (non-selected) text."
+				},
+				"dimmer.delay": {
+					"default": 0,
+					"type": "number",
+					"description": "Delay in milliseconds for dimming the non-selected text to reduce number of API calls in the event of rapid selection changes. Defaults to 0, but set higher if it feels like it is causing problems."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.3",
+		"mocha": "^2.3.3",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
+	},
+	"__metadata": {
+		"id": "eb23060d-48ee-4ed1-b5af-e4a402697dbb",
+		"publisherId": "99dbfb09-587a-4a90-a359-a6a67252590d",
+		"publisherDisplayName": "imagio"
+	}
+}

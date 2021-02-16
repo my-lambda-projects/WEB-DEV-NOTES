@@ -1,0 +1,206 @@
+<h1 id="crud-operations-using-sequelize">CRUD Operations Using Sequelize</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#creating-a-new-record">Creating A New Record</a></li>
+<li><a href="#reading-a-record-by-primary-key">Reading A Record By Primary Key</a></li>
+<li><a href="#updating-a-record">Updating A Record</a></li>
+<li><a href="#destroying-a-record">Destroying A Record</a></li>
+<li><a href="#class-methods-for-crud">Class Methods For CRUD</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>There are four general ways to interact with a database. To illustrate these, recall our <code>Cats</code> table. We can:</p>
+<ol type="1">
+<li>Save a new cat to the database by <em>creating</em> a new row in the <code>Cats</code> table,</li>
+<li>We can <em>read</em> previously stored cat data by fetching a row (or multiple rows) out of the <code>Cats</code> table,</li>
+<li>We can <em>update</em> some of the column values for a pre-existing cat by modifying a row in the <code>Cats</code> table,</li>
+<li>We can delete (<em>destroy</em>) the data for a cat by removing a row in the <code>Cats</code> table.</li>
+</ol>
+<p>These four actions are sometimes abbreviated as <em>CRUD</em>. After this reading, you will be able to:</p>
+<ul>
+<li>Use Sequelize to create new records in a table,</li>
+<li>Use Sequelize to read/fetch existing records by primary key,</li>
+<li>Use Sequelize to update existing records with new attribute values,</li>
+<li>Use Sequelize to delete records from a table.</li>
+</ul>
+<h2 id="creating-a-new-record">Creating A New Record</h2>
+<p>To save a new cat’s data as a row in the <code>Cats</code> table, we do a two step process:</p>
+<ol type="1">
+<li>We call the static <code>build</code> method on the <code>Cat</code> class with the desired values.</li>
+<li>We call the <code>save</code> method on the <code>cat</code> instance.</li>
+</ol>
+<p>Let’s see an example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="co">// Constructs an instance of the JavaScript `Cat` class. **Does not</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="co">// save anything to the database yet**. Attributes are passed in as a</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co">// POJO.</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="kw">const</span> cat <span class="op">=</span> <span class="va">Cat</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Markov&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="st">&quot;sleeping&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="dt">age</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="co">// This actually creates a new `Cats` record in the database. We must</span></a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="co">// wait for this asynchronous operation to succeed.</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-16" title="16"></a>
+<a class="sourceLine" id="cb1-17" title="17">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">cat</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-18" title="18"></a>
+<a class="sourceLine" id="cb1-19" title="19">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-20" title="20"><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-21" title="21"></a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running the code:</p>
+<pre><code>Executing (default): INSERT INTO &quot;Cats&quot; (&quot;id&quot;,&quot;firstName&quot;,&quot;specialSkill&quot;,&quot;age&quot;,&quot;createdAt&quot;,&quot;updatedAt&quot;) VALUES (DEFAULT,$1,$2,$3,$4,$5) RETURNING *;
+{
+  id: 1,
+  firstName: &#39;Markov&#39;,
+  specialSkill: &#39;sleeping&#39;,
+  age: 5,
+  updatedAt: 2020-02-11T19:04:23.116Z,
+  createdAt: 2020-02-11T19:04:23.116Z
+}</code></pre>
+<p>A new row has been inserted into the <code>Cats</code> table. We see that <code>id</code>, <code>updatedAt</code>, and <code>createdAt</code> were each autogenerated for us.</p>
+<h2 id="reading-a-record-by-primary-key">Reading A Record By Primary Key</h2>
+<p>Let’s read an existing record from the database:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="co">// Fetch the cat with id #1.</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">cat</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;id&quot; = 1;
+{
+  id: 1,
+  firstName: &#39;Markov&#39;,
+  specialSkill: &#39;sleeping&#39;,
+  age: 5,
+  createdAt: 2020-02-11T19:04:23.116Z,
+  updatedAt: 2020-02-11T19:04:23.116Z
+}</code></pre>
+<p>Fetching a record by primary key is the most common form of read operation from a database. In another reading we will learn other ways to fetch data. For instance: we will learn how to fetch all cats named “Markov” (there may be many).</p>
+<h2 id="updating-a-record">Updating A Record</h2>
+<p>Let’s tweak our reading code to change (<em>update</em>) an attribute of Markov:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span>  <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Old Markov: &quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">cat</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="co">// The Cat object is modified, but the corresponding record in the</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="co">// database is *not* yet changed at all.</span></a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="va">cat</span>.<span class="at">specialSkill</span> <span class="op">=</span> <span class="st">&quot;super deep sleeping&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="co">// Only by calling `save` will the data be saved.</span></a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="cf">await</span> <span class="va">cat</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-14" title="14"></a>
+<a class="sourceLine" id="cb5-15" title="15">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;New Markov: &quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-16" title="16">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">cat</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-17" title="17"></a>
+<a class="sourceLine" id="cb5-18" title="18">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-20" title="20"></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;id&quot; = 1;
+Old Markov:
+{
+  id: 1,
+  firstName: &#39;Markov&#39;,
+  specialSkill: &#39;sleeping&#39;,
+  age: 5,
+  createdAt: 2020-02-11T19:04:23.116Z,
+  updatedAt: 2020-02-11T19:04:23.116Z
+}
+Executing (default): UPDATE &quot;Cats&quot; SET &quot;specialSkill&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+New Markov:
+{
+  id: 1,
+  firstName: &#39;Markov&#39;,
+  specialSkill: &#39;super deep sleeping&#39;,
+  age: 5,
+  createdAt: 2020-02-11T19:04:23.116Z,
+  updatedAt: 2020-02-11T19:15:08.668Z
+}</code></pre>
+<p><strong>Important note</strong>: changing an attribute of a <code>Cat</code> object does not immediately change any data in the <code>Cats</code> table. To change data in the <code>Cats</code> table, you must also call <code>save</code>. If you forget to call <code>save</code>, no data will be changed. <code>save</code> is asynchronous, so you must also <code>await</code> for it to complete.</p>
+<p>If you look carefully, you can see that the <code>updatedAt</code> attribute was changed for us when we updated Markov!</p>
+<h2 id="destroying-a-record">Destroying A Record</h2>
+<p>We can also destroy records and remove them from the database:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> process <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;process&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">const</span> <span class="op">{</span> sequelize <span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="co">// Remove the Markov record.</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="cf">await</span> <span class="va">cat</span>.<span class="at">destroy</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-12" title="12"></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;id&quot; = 1;
+Executing (default): DELETE FROM &quot;Cats&quot; WHERE &quot;id&quot; = 1</code></pre>
+<h2 id="class-methods-for-crud">Class Methods For CRUD</h2>
+<p>When creating a record, you can avoid the two step process of (1) creating a <code>Cat</code> instance and (2) calling the <code>save</code> instance method. You can do a one step process of calling the <code>create</code> <strong>class method</strong>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Curie&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="dt">specialSkill</span><span class="op">:</span> <span class="st">&quot;jumping&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="dt">age</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-9" title="9"></a>
+<a class="sourceLine" id="cb9-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">cat</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-11" title="11"></a>
+<a class="sourceLine" id="cb9-12" title="12">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="op">}</span></a>
+<a class="sourceLine" id="cb9-14" title="14"></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>The <code>create</code> class method does both steps in one. It is just a convenience. Similar to before, this code prints:</p>
+<pre><code>Executing (default): INSERT INTO &quot;Cats&quot; (&quot;id&quot;,&quot;firstName&quot;,&quot;specialSkill&quot;,&quot;age&quot;,&quot;createdAt&quot;,&quot;updatedAt&quot;) VALUES (DEFAULT,$1,$2,$3,$4,$5) RETURNING *;
+{
+  id: 3,
+  firstName: &#39;Curie&#39;,
+  specialSkill: &#39;jumping&#39;,
+  age: 4,
+  updatedAt: 2020-02-11T19:36:03.858Z,
+  createdAt: 2020-02-11T19:36:03.858Z
+}</code></pre>
+<p>When destroying, we also did a two step process: (1) fetch the record, (2) call the <code>destroy</code> instance method. Instead, we could just call the <code>destroy</code> <strong>class method</strong> directly:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="co">// Destroy the Cat record with id #3.</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">destroy</span>(<span class="op">{</span> <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">id</span><span class="op">:</span> <span class="dv">3</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): DELETE FROM &quot;Cats&quot; WHERE &quot;id&quot; = 3</code></pre>
+<p>An advantage to the class method form of destroying is that we avoid an unnecessary fetch of <code>Cat.findByPk(3)</code>. Database queries can sometimes be slow, though typically a few extra queries won’t make a big difference. Choosing between the instance and class methods of destroying usually comes down to which you consider easier to read/understand.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>As ever, the best resource for learning about Sequelize model methods is the <a href="https://sequelize.org/master/class/lib/model.js~Model.html">documentation</a>. The documentation explains the <code>create</code>, <code>destroy</code>, <code>findByPk</code>, and <code>save</code> methods in depth.</p>
+<p>Having completed this reading, you now know how to:</p>
+<ul>
+<li>Use Sequelize to create new records in a table (using both instance and class methods),</li>
+<li>Use Sequelize to read/fetch existing records by primary key,</li>
+<li>Use Sequelize to update existing records with new attribute values,</li>
+<li>Use Sequelize to delete records from a table (using both instance and class methods).</li>
+</ul>

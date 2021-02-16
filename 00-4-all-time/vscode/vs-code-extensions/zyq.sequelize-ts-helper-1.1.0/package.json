@@ -1,0 +1,61 @@
+{
+	"name": "sequelize-ts-helper",
+	"displayName": "sequelize-ts-helper",
+	"description": "a helper to generate sequelize model association field",
+	"publisher": "zyq",
+	"version": "1.1.0",
+	"engines": {
+		"vscode": "^1.41.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ZyqGitHub1/sequelize-ts-helper.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.generate-mixin-field"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.generate-mixin-field",
+				"title": "Generate mixin field"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorLangId == typescript && editorHasSelection",
+					"command": "extension.generate-mixin-field",
+					"group": "1_modification"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^14.14.10",
+		"@types/vscode": "^1.41.0",
+		"eslint": "^7.14.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.2.1",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1"
+	},
+	"dependencies": {
+		"inflection": "^1.12.0",
+		"lodash.upperfirst": "^4.3.1"
+	},
+	"__metadata": {
+		"id": "d5b5b13a-936b-449b-bb5f-2ffd4ee90303",
+		"publisherId": "12f4e095-68f9-4cfc-850e-e28056799092",
+		"publisherDisplayName": "zyq"
+	}
+}

@@ -1,0 +1,790 @@
+<!DOCTYPE html><html><head>
+      <title>06_transactions-with-sequalize</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/mira/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.5.13/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="transactions-with-sequelize">Transactions With Sequelize</h1>
+
+<hr>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="toc"><div class="input-div"><div class="btn-group"><div class="run-btn btn"><span>&#x25B6;&#xFE0E;</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><ul>
+<li><a href="#the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</a></li>
+<li><a href="#the-solution-database-transactions">The Solution: Database Transactions</a></li>
+<li><a href="#the-bankaccounts-schema">The <code>BankAccounts</code> Schema</a></li>
+<li><a href="#example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</a></li>
+<li><a href="#incorrect-solutions">Incorrect Solutions</a></li>
+<li><a href="#using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</a></li>
+<li><a href="#aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</a></li>
+<li><a href="#transactions-prevent-_race-conditions_">Transactions Prevent <em>Race Conditions</em></a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<hr>
+<p>In this reading, we will learn about database <em>transactions</em> and how we<br>
+use them via Sequelize. We will learn how to group multiple update<br>
+operations into a single atomic, indivisible unit.</p>
+<p>At the end of the reading, you should know:</p>
+<ol>
+<li>How to write code that is resilient to SQL operation failures,</li>
+<li>How to group multiple operations into a database transaction using<br>
+Sequelize (the <code>sequelize.transaction</code> method),</li>
+<li>How to prevent &quot;race conditions&quot; using transactions.</li>
+</ol>
+<h2 class="mume-header" id="the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</h2>
+
+<p>Imagine a scenario with a banking database. Markov wants to transfer<br>
+$7,500 to Curie. To perform the transfer, we will perform two database<br>
+update operations:</p>
+<ol>
+<li>Reduce Markov&apos;s account balance by $7,500,</li>
+<li>Increase Curie&apos;s account balance by $7,500.</li>
+</ol>
+<p>When transferring money, it&apos;s very important that <em>both</em> operations be<br>
+performed. If we reduce Markov&apos;s balance but fail to increase Curie&apos;s<br>
+balance, the bank effectively steals money from Markov. If we increase<br>
+Curie&apos;s balance without reducing Markov&apos;s balance, the bank effectively<br>
+gives away free money to Curie. Neither is acceptable.</p>
+<p>We must keep in mind that any attempt to perform a database update can<br>
+sometimes <em>fail</em>. It can fail for a number of reasons:</p>
+<ol>
+<li>The command is sent, but the database has previously been shut down<br>
+by the database administrator. Because the database is not running,<br>
+the database is not listening for our update, won&apos;t receive it, and<br>
+thus won&apos;t process it.</li>
+<li>A bug in the database or operating system software has caused the<br>
+database or operating system to crash. Again, the database is not<br>
+running, so it can neither receive nor process our update.</li>
+<li>Power has been lost to the machine running the database. The database<br>
+is not running.</li>
+<li>The internet connection that connects us to the database machine is<br>
+disrupted. The database may be running and listening for SQL requests<br>
+to process. However, our update request cannot get through to the<br>
+database machine. Because the database cannot receive our request,<br>
+the database cannot process it.</li>
+<li>The update asks the database to violate a pre-defined constraint. For<br>
+example: the database may have a constraint that an account balance<br>
+must never be less than zero. Any update that asks the database to<br>
+reduce an account balance to less than zero will be rejected and<br>
+therefore fail.</li>
+</ol>
+<p>Only this last scenario is &quot;our fault.&quot; The fact is that database<br>
+updates can fail <strong>through no fault of our own</strong>. With regard to our<br>
+example: our first SQL request to reduce Markov&apos;s account balance may<br>
+succeed, but the database may then crash before we have sent the request<br>
+to increase Curie&apos;s balance. Through no fault of our own, the bank has<br>
+stolen money from Markov without giving it to Curie.</p>
+<p>How can we write code that avoids this fundamental problem?</p>
+<h2 class="mume-header" id="the-solution-database-transactions">The Solution: Database Transactions</h2>
+
+<p>One way to solve the problem is to &quot;group&quot; or &quot;pair&quot; the two update<br>
+operations somehow. We want to tell the database &quot;Reduce Markov&apos;s<br>
+balance AND increment Curie&apos;s balance.&quot; We want to tell the database:<br>
+&quot;If for any reason you cannot perform <strong>both</strong> operations, make sure not<br>
+to perform <strong>either</strong>.&quot; We want to tell the database: &quot;If you crash<br>
+after reducing Markov&apos;s balance, make sure to either (a) increase<br>
+Curie&apos;s balance when you restart, or (b) undo the increase to Markov&apos;s<br>
+balance when you restart.&quot;</p>
+<p>We want to ask the database to treat the pair of updates as one <em>atomic</em><br>
+(meaning <strong>indivisible</strong>) unit. SQL lets you do this using a feature<br>
+called <em>transactions</em>.</p>
+<p>You&apos;ve previously seen how to use SQL transactions:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">START</span> <span class="token keyword">TRANSACTION</span><span class="token punctuation">;</span>
+<span class="token comment">-- Reduce Markov&apos;s balance by $7500</span>
+<span class="token keyword">UPDATE</span> <span class="token string">&quot;BankAccounts&quot;</span> <span class="token keyword">SET</span> balance <span class="token operator">=</span> balance <span class="token operator">-</span> <span class="token number">7500</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token comment">-- Increment Curie&apos;s balance by $7500</span>
+<span class="token keyword">UPDATE</span> <span class="token string">&quot;BankAccounts&quot;</span> <span class="token keyword">SET</span> balance <span class="token operator">=</span> balance <span class="token operator">+</span> <span class="token number">7500</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">COMMIT</span> <span class="token keyword">TRANSACTION</span><span class="token punctuation">;</span>
+</pre><p>SQL guarantees to you that everything between <code>START TRANSACTION</code> and<br>
+<code>COMMIT TRANSACTION</code> will be processed <em>atomically</em>. If any update<br>
+operation fails, none of the updates will be performed. The transaction<br>
+is &quot;all-or-nothing.&quot;</p>
+<p>In this reading you will learn how to use SQL transactions with the<br>
+Sequelize ORM.</p>
+<h2 class="mume-header" id="the-bankaccounts-schema">The <code>BankAccounts</code> Schema</h2>
+
+<p>For our example in this reading, I will use a single table with two<br>
+accounts.</p>
+<pre data-role="codeBlock" data-info class="language-"><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   10000 | ...
+(2 rows)
+</code></pre><p>I have generated a Sequelize model corresponding to the <code>BankAccounts</code><br>
+table:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// ./models/bank_account.js</span>
+<span class="token string">&apos;use strict&apos;</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">sequelize<span class="token punctuation">,</span> DataTypes</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Define BankAccount model.</span>
+  <span class="token keyword">const</span> BankAccount <span class="token operator">=</span> sequelize<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">&apos;BankAccount&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Define clientName attribute.</span>
+    clientName<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      type<span class="token punctuation">:</span> DataTypes<span class="token punctuation">.</span><span class="token constant">STRING</span><span class="token punctuation">,</span>
+      allowNull<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token comment">// Define validations on clientName.</span>
+      validate<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token comment">// clientName must not be null.</span>
+        notNull<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+          msg<span class="token punctuation">:</span> <span class="token string">&quot;clientName must not be NULL&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token comment">// clientName must not be empty.</span>
+        notEmpty<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+          msg<span class="token punctuation">:</span> <span class="token string">&quot;clientName must not be empty&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// Define balance attribute.</span>
+    balance<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      type<span class="token punctuation">:</span> DataTypes<span class="token punctuation">.</span><span class="token constant">INTEGER</span><span class="token punctuation">,</span>
+      allowNull<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token comment">// Define validations on balance.</span>
+      validate<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token comment">// balance must not be less than zero.</span>
+        min<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+          args<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          msg<span class="token punctuation">:</span> <span class="token string">&quot;balance must not be less than zero&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> BankAccount<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</pre><p>Notice that the <code>min</code> validation on <code>balance</code> will not allow us to save<br>
+an account balance that is below zero.</p>
+<h2 class="mume-header" id="example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</h2>
+
+<p>Let&apos;s imagine that Markov wants to transfer <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn><mo separator="true">,</mo><mn>500</mn><mi>t</mi><mi>o</mi><mi>C</mi><mi>u</mi><mi>r</mi><mi>i</mi><mi>e</mi><mi mathvariant="normal">.</mi><mi>U</mi><mi>n</mi><mi>f</mi><mi>o</mi><mi>r</mi><mi>t</mi><mi>u</mi><mi>n</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>l</mi><mi>y</mi><mo separator="true">,</mo><mi>M</mi><mi>a</mi><mi>r</mi><mi>k</mi><mi>o</mi><mi>v</mi><mi>h</mi><mi>a</mi><mi>s</mi><mi>o</mi><mi>n</mi><mi>l</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">7,500 to Curie.
+Unfortunately, Markov has only</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">5</span><span class="mord">0</span><span class="mord">0</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault">u</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault">e</span><span class="mord">.</span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">t</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">h</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span>5,000 in his account! Decrementing<br>
+Markov&apos;s account balance by $7,500 would put it in the negative, which<br>
+our validation will not allow. Thus the transfer must fail.</p>
+<p>Imagine that Markov is unaware that his account balance cannot cover the<br>
+transfer. He tries to perform the transfer anyway:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// ./index.js</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> sequelize <span class="token punctuation">,</span> BankAccount <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;./models&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// This code will try to transfer $7,500 from Markov to Curie.</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Fetch Markov and Curie&apos;s accounts.</span>
+  <span class="token keyword">const</span> markovAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> curieAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Increment Curie&apos;s balance by $7,500.</span>
+    curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Decrement Markov&apos;s balance by $7,500.</span>
+    markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Report if anything goes wrong.</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;Error!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> e <span class="token keyword">of</span> err<span class="token punctuation">.</span>errors<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+        <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>instance<span class="token punctuation">.</span>clientName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>message<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Running this code prints the following:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (default): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Error!
+Markov: balance must not be less than zero
+</code></pre><p>Everything starts out fine. We fetch Markov and Curie&apos;s accounts. We<br>
+increase Curie&apos;s balance. But then we hit a snag: when we call<br>
+<code>markovAccount.save()</code>, Sequelize detects that we are trying to set<br>
+Markov&apos;s balance below zero. Sequelize therefore <strong>does not</strong> send a SQL<br>
+request to update Markov&apos;s account balance. Instead,<br>
+<code>markovAccount.save()</code> throws an exception. We print the error: Markov&apos;s<br>
+balance must not be less than zero.</p>
+<p>We thus avoid saving a negative balance for Markov. But other damage has<br>
+already been done. If we now check account balances, we will see:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   17500 | ...
+(2 rows)
+</code></pre><p>The bank has given free money to Curie! We should have &quot;rolledback&quot; the<br>
+increase of Curie&apos;s balance. We will learn how to do that!</p>
+<h2 class="mume-header" id="incorrect-solutions">Incorrect Solutions</h2>
+
+<p>One may suggest a fix: make sure to decrement Markov&apos;s account balance<br>
+before incrementing Curie&apos;s balance! If Markov&apos;s balance is<br>
+insufficient, we can stop the transfer before giving Curie any money.</p>
+<p>We <em>could</em> swap the order of the updates, and it would indeed fix this<br>
+specific problem. But imagine if Markov tries to transfer $2,500 (an<br>
+amount he can afford). We first decrement Markov&apos;s account balance and<br>
+then -- the operating system crashes before the second update can be<br>
+submitted. Curie&apos;s balance is not incremented. The bank has stolen<br>
+Markov&apos;s money!</p>
+<p>The problem is fundamental: no matter what order we perform the two<br>
+updates in, the database can always fail <em>after</em> processing the first,<br>
+but <em>before</em> processing the second. For our code to be resilient to<br>
+unavoidable failures, there is no other choice but to use a database<br>
+transaction.</p>
+<h2 class="mume-header" id="using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</h2>
+
+<p>Let&apos;s return to our previous example of trying to transfer $7,500 from<br>
+Markov to Curie. Specifically, we will rewrite this key part:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// Increment Curie&apos;s balance by $7,500.</span>
+curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Decrement Markov&apos;s balance by $7,500.</span>
+markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>To ask Sequelize to perform the two updates in a SQL database<br>
+transaction, we use the <code>sequelize.transaction</code> method. We will write<br>
+this like so, instead:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">tx</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Increment Curie&apos;s balance by $7,500.</span>
+  curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+  <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Decrement Markov&apos;s balance by $7,500.</span>
+  markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+  <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Let&apos;s go through the transaction code and explain each part:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// Start a transaction. Queries run inside the callback can be part of</span>
+<span class="token comment">// the transaction.</span>
+<span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">tx</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Increment Curie&apos;s balance by $7,500.</span>
+  curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+  <span class="token comment">// Pass the `tx` transaction object so that Sequelize knows to</span>
+  <span class="token comment">// update Curie&apos;s account as part of this transaction (rather than</span>
+  <span class="token comment">// &quot;on its own&quot; per usual).</span>
+  <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Decrement Markov&apos;s balance by $7,500.</span>
+  markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+  <span class="token comment">// Again, pass the `tx` transaction object. Thus both updates are part</span>
+  <span class="token comment">// of the same transaction.</span>
+  <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// If no exceptions have been thrown, `sequelize.transaction` will</span>
+  <span class="token comment">// `COMMIT` the transaction after the end of the callback.</span>
+  <span class="token comment">//</span>
+  <span class="token comment">// If any error gets thrown, `sequelize.transaction` will abort</span>
+  <span class="token comment">// the transaction by issuing a `ROLLBACK`. This will cancel all</span>
+  <span class="token comment">// updates.</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Let&apos;s put the transaction code back into our original program:</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// ./index.js</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> sequelize<span class="token punctuation">,</span> BankAccount <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;./models&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Fetch Markov and Curie&apos;s accounts.</span>
+  <span class="token keyword">const</span> markovAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> curieAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">tx</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token comment">// Increment Curie&apos;s balance by $7,500.</span>
+      curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// Decrement Markov&apos;s balance by $7,500.</span>
+      markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">7500</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Report if anything goes wrong.</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;Error!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> e <span class="token keyword">of</span> err<span class="token punctuation">.</span>errors<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+        <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>instance<span class="token punctuation">.</span>clientName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>message<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Running this code prints:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): START TRANSACTION;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): ROLLBACK;
+Error!
+Markov: balance must not be less than zero
+</code></pre><p>Let&apos;s review what happened. We again start by fetching both<br>
+<code>BankAccount</code>s. We next <code>START TRANSACTION</code>. We issue the update to<br>
+Curie&apos;s account.</p>
+<p>Then Sequelize detects the validation failure when trying to run<br>
+<code>markovAccount.save({ transaction: tx })</code>. Markov doesn&apos;t have enough<br>
+money in his account! Sequelize throws an exception. The<br>
+<code>sequelize.transaction</code> method <em>catches the exception</em> and issues a<br>
+<code>ROLLBACK</code> for the transaction. This tells the database to undo the<br>
+prior increment of Curie&apos;s account balance.</p>
+<p>Having rolled back the transaction, the <code>sequelize.transaction</code><br>
+method <em>rethrows</em> the error, so that our logging code gets a chance to<br>
+learn about the error and print its details.</p>
+<h2 class="mume-header" id="aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</h2>
+
+<p><em>This is bonus information in case you are troubled by what the <code>tx</code><br>
+parameter to <code>sequelize.transaction</code> is for. You can use transactions<br>
+correctly without knowing this bonus information.</em></p>
+<p>What is the mysterious <code>tx</code> that is passed by <code>sequelize.transaction</code><br>
+to our callback? It is basically just a unique ID. In this case, the ID<br>
+is: <code>208b3951-9ab9-489b-97f0-afb49aaff807</code>. You can see this ID in the<br>
+logs above.</p>
+<p>When we say <code>curieAccount.save({ transaction: tx })</code>, we are telling<br>
+Sequelize: &quot;update Curie&apos;s account as part of transaction number<br>
+<code>208b3951-9ab9-489b-97f0-afb49aaff807</code>.&quot;</p>
+<p>Sequelize needs transaction IDs because it can be running many SQL<br>
+transactions <em>concurrently</em> (loosely speaking: &quot;in parallel&quot;). One part<br>
+of the application could be transferring money from Markov to Curie at<br>
+the same time another part of the application is transferring money from<br>
+Kate to Ned.</p>
+<p>If Sequelize did not keep track of transaction IDs, it would not know<br>
+that <code>curieAccount.save()</code> should be a part of the Markov/Curie<br>
+transaction rather than the Kate/Ned transaction.</p>
+<h2 class="mume-header" id="transactions-prevent-_race-conditions_">Transactions Prevent <em>Race Conditions</em></h2>
+
+<p>There is still a subtle mistake in my bank transfer code. There is a<br>
+potential problem if someone modifies Markov&apos;s or Curie&apos;s account in<br>
+between (1) the initial fetch of their accounts, and (2) the transaction<br>
+to update the accounts.</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">// ./index.js</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// I will transfer only $5,000 so that Markov&apos;s balance can cover the</span>
+  <span class="token comment">// amount. Markov starts out with $5,000.</span>
+
+  <span class="token comment">// Fetch Markov and Curie&apos;s accounts.</span>
+  <span class="token keyword">const</span> markovAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> curieAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// ***</span>
+  <span class="token comment">// Imagine that right now some other program transfers the $5,000 out</span>
+  <span class="token comment">// of Markov&apos;s account. Markov&apos;s true account **in the database** now</span>
+  <span class="token comment">// has a balance of $0. But `markovAccount.balance` is still $5,000,</span>
+  <span class="token comment">// because we fetched Markov&apos;s `BankAccount` **before** the transfer</span>
+  <span class="token comment">// was made!</span>
+  <span class="token comment">// ***</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">tx</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token comment">// Increment Curie&apos;s balance by $5,000 (to $15,000).</span>
+      curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">5000</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// Decrement `markovAccount.balance` by $5,000.</span>
+      <span class="token comment">// `markovAccount.balance` is set to zero.</span>
+      markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">5000</span><span class="token punctuation">;</span>
+      <span class="token comment">// Save and set Markov&apos;s balance to zero.</span>
+      <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// Problem: Markov&apos;s balance in the database was *already* zero.</span>
+      <span class="token comment">// Markov had no money to transfer. He should not have been able</span>
+      <span class="token comment">// to transfer the $5,000.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Because another program can &quot;race in between&quot; (1) the reading of the<br>
+account balances and (2) the updating of the balances, we call this<br>
+potential problem a <em>race condition</em>. The easiest way to fix the race<br>
+condition is to prohibit anyone else from modifying Markov&apos;s account<br>
+balance in between (1) and (2).</p>
+<p>Luckily, the solution is simple. Any data used in a transaction will be<br>
+<em>locked</em> until the transaction completes. Data that is locked can be<br>
+neither read nor written by other transactions. If our transaction reads<br>
+(or writes) data, no one else can read or write that data until our<br>
+transaction completes. When we <code>COMMIT</code> (or <code>ROLLBACK</code>) all the locked<br>
+data is freed (the locks are <em>released</em>).</p>
+<p>We don&apos;t have to lock the data ourselves. Simply by doing all our<br>
+queries inside the same transaction, the database will lock the data for<br>
+us. Therefore, to fix the problem, we should move the initial account<br>
+fetching by <code>findByPk</code> into the transaction (i.e., pass it <code>{ transaction: tx }</code>):</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Do all database access within the transaction.</span>
+    <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">tx</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token comment">// Fetch Markov and Curie&apos;s accounts.</span>
+      <span class="token keyword">const</span> markovAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span>
+        <span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> curieAccount <span class="token operator">=</span> <span class="token keyword">await</span> BankAccount<span class="token punctuation">.</span><span class="token function">findByPk</span><span class="token punctuation">(</span>
+        <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// No one can mess with Markov or Curie&apos;s accounts until the</span>
+      <span class="token comment">// transaction completes! The account data has been locked!</span>
+
+      <span class="token comment">// Increment Curie&apos;s balance by $5,000.</span>
+      curieAccount<span class="token punctuation">.</span>balance <span class="token operator">+=</span> <span class="token number">5000</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> curieAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// Decrement Markov&apos;s balance by $5,000.</span>
+      markovAccount<span class="token punctuation">.</span>balance <span class="token operator">-=</span> <span class="token number">5000</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> markovAccount<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">{</span> transaction<span class="token punctuation">:</span> tx <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">await</span> sequelize<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>This prints:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): START TRANSACTION;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): COMMIT;
+</code></pre><p>Notice that now <em>everything</em> is done in the transaction<br>
+<code>76321a03-93c5-47c0-861a-cf24c3e6f3bf</code>. This includes the initial<br>
+fetching of the accounts. Because the fetching is done within the<br>
+transaction, other users are not allowed to modify the accounts until<br>
+the transaction is finished.</p>
+<p>Moving our read operations into the transaction has solved our race<br>
+condition problem. Every Sequelize operation - whether reading or<br>
+writing - can take a <code>transaction: tx</code> option. This includes:</p>
+<ol>
+<li><code>findByPk</code></li>
+<li><code>findAll</code></li>
+<li><code>save</code></li>
+<li><code>create</code></li>
+<li><code>destroy</code></li>
+</ol>
+<h2 class="mume-header" id="conclusion">Conclusion</h2>
+
+<p>Having completed this reading, here are the important things to take<br>
+away:</p>
+<ol>
+<li>You should know that any SQL update operation may fail, often through<br>
+no fault of your own.</li>
+<li>You should know that you must write code resilient to SQL failures.</li>
+<li>You should know that when performing multiple update operations as<br>
+part of a group, you must use a transaction.</li>
+<li>You should know how to use <code>sequelize.transaction</code> to run commands<br>
+within a SQL transaction.</li>
+<li>You should know how to pass a transaction object as the<br>
+<code>{ transaction: tx }</code> parameter to a Sequelize command (such as<br>
+<code>save</code>).</li>
+<li>You should know what a <em>race condition</em> is: the possibility that<br>
+someone else modifies previously fetched data before you are finished<br>
+using/updating it.</li>
+<li>You should know how to use transactions to guard against race<br>
+conditions. That is: you should know that both reading and writing<br>
+operations should be put in the same transaction.</li>
+</ol>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#transactions-with-sequelize">Transactions With Sequelize</a>
+<ul>
+<li><a href="#the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</a></li>
+<li><a href="#the-solution-database-transactions">The Solution: Database Transactions</a></li>
+<li><a href="#the-bankaccounts-schema">The <code>BankAccounts</code> Schema</a></li>
+<li><a href="#example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</a></li>
+<li><a href="#incorrect-solutions">Incorrect Solutions</a></li>
+<li><a href="#using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</a></li>
+<li><a href="#aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</a></li>
+<li><a href="#transactions-prevent-_race-conditions_">Transactions Prevent <em>Race Conditions</em></a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">&#x2261;</a>
+    
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  
+    </body></html>

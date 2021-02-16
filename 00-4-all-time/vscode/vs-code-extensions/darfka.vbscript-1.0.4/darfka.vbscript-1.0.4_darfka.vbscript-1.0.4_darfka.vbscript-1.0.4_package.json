@@ -1,0 +1,55 @@
+{
+	"name": "vbscript",
+	"displayName": "VBScript",
+	"description": "VBScript Language Support",
+	"version": "1.0.4",
+	"publisher": "Darfka",
+	"engines": {
+		"vscode": "^1.14.0"
+	},
+	"categories": [
+		"Languages",
+		"Snippets"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "vbs",
+				"aliases": [
+					"VBScript",
+					"vbs"
+				],
+				"extensions": [
+					".vbs",
+					".vba",
+					".bas",
+					".vbe",
+					".wsf",
+					".wsc",
+					".acm",
+					".acr",
+					".acf"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "vbs",
+				"scopeName": "source.vbs",
+				"path": "./syntaxes/vbs.tmLanguage.json"
+			}
+		],
+		"snippets": [
+			{
+				"language": "vbs",
+				"path": "./snippets/vbs.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "9deb2d0c-76ec-4e76-864e-0cd131ed2b6e",
+		"publisherId": "f00871ef-007d-4c6d-9e80-0a3f7f2f76c6",
+		"publisherDisplayName": "Darfka"
+	}
+}

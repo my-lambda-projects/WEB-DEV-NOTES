@@ -1,0 +1,14 @@
+{
+  "presets": [
+    ["@babel/env", {
+      "targets": {
+        "node": "10.0"
+      },
+      "shippedProposals": true,
+
+    }]
+  ],
+  "ignore": [
+    "src/assets"
+  ]
+}

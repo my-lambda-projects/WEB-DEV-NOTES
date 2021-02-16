@@ -1,0 +1,83 @@
+<h1 id="solving-the-sql-menagerie">Solving The SQL Menagerie</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#solving-the-sql-menagerie">Solving The SQL Menagerie</a>
+<ul>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#project-overview">Project overview</a></li>
+<li><a href="#phase-1-pipe-in-a-seed-file-to-create-new-database-tables">Phase 1: Pipe in a seed file to create new database tables</a></li>
+<li><a href="#phase-2-write-basic-select-statements">Phase 2: Write basic SELECT statements</a></li>
+<li><a href="#phase-3-add-where-clauses">Phase 3: Add WHERE clauses</a></li>
+<li><a href="#phase-4-use-a-join-operation">Phase 4: Use a JOIN operation</a></li>
+<li><a href="#bonuses">Bonuses</a></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>In our SQL readings, we learned how to write basic SQL queries and incorporate <code>WHERE</code> clauses to filter for more specific results. We also learned how to use a <code>JOIN</code> operation to get information from multiple tables.</p>
+<p>In this project, put your SQL knowledge to the test and show off your querying skills.</p>
+<p>We’ve put together a collection (let’s call it a <em>menagerie</em>) of SQL problems for you to solve below. Solve them all, and you’ll be the master of the menagerie!</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Clone the starter repository from https://github.com/appacademy-starters/sql-select-exercises-starter.</p>
+<h2 id="project-overview">Project overview</h2>
+<ol type="1">
+<li>In Phase 1, pipe the seed file into a new database.</li>
+<li>In Phase 2, query the seed tables with basic <code>SELECT</code> statements.</li>
+<li>In Phase 3, query the seed tables using <code>WHERE</code> clauses to get more specific rows back.</li>
+<li>In Phase 4, use a <code>JOIN</code> operation to get data from both seed tables.</li>
+<li>Bonuses! Go beyond what we learned in the readings to deepen your SQL query knowledge.</li>
+</ol>
+<h2 id="phase-1-pipe-in-a-seed-file-to-create-new-database-tables">Phase 1: Pipe in a seed file to create new database tables</h2>
+<p>We’ve set up a seed file for you to use in this project called _<strong>cities_and_airports.sql_</strong> that will create two tables: a “cities” table and an “airports” table. These tables show the top 25 most populous U.S. cities and their airports, respectively. Pipe this file into your database, and use these tables for the rest of the project phases.</p>
+<p>Go through the following steps:</p>
+<ol type="1">
+<li>Log into <code>psql</code>.</li>
+<li>Create a new database called “travel”.</li>
+<li>Pipe the <em>cities_and_airports.sql</em> seed file into the “travel” database.</li>
+<li>Check that there’s data in both the “cities” and “airports” tables.</li>
+</ol>
+<h2 id="phase-2-write-basic-select-statements">Phase 2: Write basic SELECT statements</h2>
+<p>Retrieve rows from a table using <code>SELECT</code> FROM SQL statements.</p>
+<ol type="1">
+<li><p>Write a SQL query that returns the city, state, and estimated population in 2018 from the “cities” table.</p></li>
+<li><p>Write a SQL query that returns all of the airport names contained in the “airports” table.</p></li>
+</ol>
+<h2 id="phase-3-add-where-clauses">Phase 3: Add WHERE clauses</h2>
+<p>Select specific rows from a table using WHERE and common operators.</p>
+<ol type="1">
+<li>Write a SQL query that uses a <code>WHERE</code> clause to get the estimated population in 2018 of the city of San Diego.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to get the city, state, and estimated population in 2018 of cities in this list: Phoenix, Jacksonville, Charlotte, Nashville.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to get the cities with an estimated 2018 population between 800,000 and 900,000 people. Show the city, state, and estimated population in 2018 columns.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to get the names of the cities that had an estimated population in 2018 of at least 1 million people (or 1,000,000 people).</li>
+<li>Write a SQL query to get the city and estimated population in 2018 in number of millions (<em>i.e. without zeroes at the end: 1 million</em>), and that uses a <code>WHERE</code> clause to return only the cities in Texas.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to get the city, state, and estimated population in 2018 of cities that are NOT in the following states: New York, California, Texas.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause with the <code>LIKE</code> operator to get the city, state, and estimated population in 2018 of cities that start with the letter “S”. (<em>Note: See the PostgreSQL doc on <a href="https://www.postgresql.org/docs/9.6/functions-matching.html">Pattern Matching</a> for more information.</em>)</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to find the cities with either a land area of over 400 square miles OR a population over 2 million people (or 2,000,000 people). Show the city name, the land area, and the estimated population in 2018.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to find the cities with either a land area of over 400 square miles OR a population over 2 million people (or 2,000,000 people) – but not the cities that have both. Show the city name, the land area, and the estimated population in 2018.</li>
+<li>Write a SQL query that uses a <code>WHERE</code> clause to find the cities where the population has increased by over 200,000 people from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010.</li>
+</ol>
+<h2 id="phase-4-use-a-join-operation">Phase 4: Use a JOIN operation</h2>
+<p>Retrieve rows from multiple tables joining on a foreign key.</p>
+<p>The “airports” table has a foreign key called <code>city_id</code> that references the <code>id</code> column in the “cities” table.</p>
+<ol type="1">
+<li>Write a SQL query using an INNER JOIN to join data from the “cities” table with data from the “airports” table using the <code>city_id</code> foreign key. Show the airport names and city names only.</li>
+<li>Write a SQL query using an INNER JOIN to join data from the “cities” table with data from the “airports” table to find out how many airports are in New York City using the city name. (<em>Note: Use the <a href="https://www.postgresql.org/docs/9.6/functions-aggregate.html">aggregate function</a> COUNT() to count the number of matching rows.</em>)</li>
+</ol>
+<h2 id="bonuses">Bonuses</h2>
+<ol type="1">
+<li><strong>Apostrophe:</strong> Write a SQL query to get all three ID codes (<em>the Federal Aviation Administration (FAA) ID, the International Air Transport Association (IATA) ID, and the International Civil Aviation Organization (ICAO) ID</em>) from the “airports” table for Chicago O’Hare International Airport. (<em>Note: You’ll need to escape the quotation mark in O’Hare. See <a href="https://www.essentialsql.com/include-single-quote-sql-query/">How to include a single quote in a SQL query</a>.</em>)</li>
+<li><p><strong>Formatting Commas:</strong> Refactor Phase 2, Query #1 to turn the INT for estimated population in 2018 into a character string with commas. (<em>Note: See <a href="https://www.postgresql.org/docs/9.6/functions-formatting.html">Data Type Formatting Functions</a></em>)</p>
+<ul>
+<li>Phase 2, Query #1: Write a SQL query that returns the city, state, and estimated population in 2018 from the “cities” table.</li>
+</ul></li>
+<li><p><strong>Decimals and Rounding:</strong> Refactor Phase 3, Query #5 to turn number of millions from an integer into a decimal rounded to a precision of two decimal places. (<em>Note: See <a href="https://www.postgresql.org/docs/9.6/datatype-numeric.html">Numeric Types</a> and the <a href="https://www.postgresqltutorial.com/postgresql-round/">ROUND function</a>.</em>)</p>
+<ul>
+<li>Phase 3, Query #5: Write a SQL query to get the city and estimated population in 2018 in number of millions (<em>i.e. without zeroes at the end: 1 million</em>), and that uses a <code>WHERE</code> clause to return only the cities in Texas.</li>
+</ul></li>
+<li><strong>ORDER BY and LIMIT Clauses:</strong> Refactor Phase 3, Query #10 to return only one city with the biggest population increase from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010 for that city. (_Note: You’ll do the same calculation as before, but instead of comparing it to 200,000, use the <a href="https://www.postgresql.org/docs/9.6/sql-select.html#SQL-ORDERBY">ORDER BY Clause</a> with the <a href="https://www.postgresql.org/docs/9.6/sql-select.html#SQL-LIMIT">LIMIT</a> Clause to sort the results and grab only the top result.)
+<ul>
+<li>Phase 3, Query #10: Write a SQL query that uses a <code>WHERE</code> clause to find the cities where the population has increased by over 200,000 people from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010.</li>
+</ul></li>
+</ol>

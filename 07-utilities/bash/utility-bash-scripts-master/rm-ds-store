@@ -1,0 +1,3 @@
+#!/bin/bash
+
+find . -name .DS_Store | xargs rm

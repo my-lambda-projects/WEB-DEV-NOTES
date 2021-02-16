@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+<body class='Site'>
+    <div class=' Site-content'>
+        <div class='add-container'>
+            <header>
+                <% include ../partials/header %>
+            </header>
+            <form method='POST' action='/add'>
+                <h1>Add Message</h1>
+                <fieldset>
+                    <label>Subject:</label>
+                    <input type='text' name='title' value=''>
+                </fieldset>
+                <fieldset>
+                    <label>Message:</label>
+                    <textarea type="text" wrap="off" cols="30" rows="5" name="body" type='text' name='body' value='' autofocus></textarea>
+                </fieldset>
+                <fieldset>
+                    <button id='btn-add' type='submit'>
+                        <i class="material-icons">note_add</i>
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+</body>
+
+</html>

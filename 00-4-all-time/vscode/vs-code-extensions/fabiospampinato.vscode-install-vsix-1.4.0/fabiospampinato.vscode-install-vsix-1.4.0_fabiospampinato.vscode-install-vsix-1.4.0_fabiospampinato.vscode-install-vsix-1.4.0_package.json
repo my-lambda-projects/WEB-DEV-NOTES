@@ -1,0 +1,114 @@
+{
+	"name": "vscode-install-vsix",
+	"displayName": "Install .VSIX",
+	"description": "Install .vsix extensions right from the explorer, with a right click.",
+	"icon": "resources/logo-128x128.png",
+	"version": "1.4.0",
+	"license": "MIT",
+	"main": "out/extension.js",
+	"publisher": "fabiospampinato",
+	"activationEvents": [
+		"onCommand:installVSIX.install"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "vsix",
+				"aliases": [
+					"VSIX"
+				],
+				"extensions": [
+					".vsix"
+				]
+			}
+		],
+		"commands": [
+			{
+				"command": "installVSIX.install",
+				"title": "Install Extension"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "installVSIX.install",
+					"when": "false"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "installVSIX.install",
+					"group": "installation",
+					"when": "resourceLangId == vsix"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "installVSIX.install",
+					"group": "installation",
+					"when": "resourceLangId == vsix"
+				}
+			]
+		},
+		"configuration": [
+			{
+				"title": "Install .VSIX",
+				"properties": {
+					"installVSIX.force": {
+						"type": "boolean",
+						"default": false,
+						"description": "Always use the '--force' option to force installation"
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "rm -rf out && webpack --mode production",
+		"publish": "vsce publish && npm publish",
+		"compile": "webpack --mode development",
+		"compile:watch": "webpack --mode development --watch",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"bugs": {
+		"url": "https://github.com/fabiospampinato/vscode-install-vsix/issues"
+	},
+	"author": {
+		"name": "Fabio Spampinato",
+		"email": "spampinabio@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fabiospampinato/vscode-install-vsix.git"
+	},
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"keywords": [
+		"vscode",
+		"vsc",
+		"extension",
+		"install",
+		"vsix"
+	],
+	"categories": [
+		"Other"
+	],
+	"dependencies": {
+		"@types/node": "^10.12.8",
+		"lodash": "^4.17.4"
+	},
+	"devDependencies": {
+		"ts-loader": "^5.2.1",
+		"typescript": "~2.4.1",
+		"vscode": "^1.1.22",
+		"webpack": "^4.20.2",
+		"webpack-cli": "^3.1.2"
+	},
+	"__metadata": {
+		"id": "b9fdbc8a-8465-4ea4-9730-797b9470fd89",
+		"publisherId": "4288bdb9-145e-438b-ab6b-4a6839ee9c6f",
+		"publisherDisplayName": "Fabio Spampinato"
+	}
+}

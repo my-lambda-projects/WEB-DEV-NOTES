@@ -1,0 +1,503 @@
+<h1 id="advanced-mn-associations">Advanced M:N Associations</h1>
+<p>Make sure you have read the <a href="assocs.html">associations guide</a> before reading this guide.</p>
+<p>Let’s start with an example of a Many-to-Many relationship between <code>User</code> and <code>Profile</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;user&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">points</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">const</span> Profile <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;profile&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The simplest way to define the Many-to-Many relationship is:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;User_Profiles&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;User_Profiles&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>By passing a string to <code>through</code> above, we are asking Sequelize to automatically generate a model named <code>User_Profiles</code> as the <em>through table</em> (also known as junction table), with only two columns: <code>userId</code> and <code>profileId</code>. A composite unique key will be established on these two columns.</p>
+<p>We can also define ourselves a model to be used as the through table.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> User_Profile <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;User_Profile&#39;</span><span class="op">,</span> <span class="op">{},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The above has the exact same effect. Note that we didn’t define any attributes on the <code>User_Profile</code> model. The fact that we passed it into a <code>belongsToMany</code> call tells sequelize to create the two attributes <code>userId</code> and <code>profileId</code> automatically, just like other associations also cause Sequelize to automatically add a column to one of the involved models.</p>
+<p>However, defining the model by ourselves has several advantages. We can, for example, define more columns on our through table:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> User_Profile <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;User_Profile&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">selfGranted</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">BOOLEAN</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>With this, we can now track an extra information at the through table, namely the <code>selfGranted</code> boolean. For example, when calling the <code>user.addProfile()</code> we can pass values for the extra columns using the <code>through</code> option.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> amidala <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;p4dm3&#39;</span><span class="op">,</span> <span class="dt">points</span><span class="op">:</span> <span class="dv">1000</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> queen <span class="op">=</span> <span class="cf">await</span> <span class="va">Profile</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Queen&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="cf">await</span> <span class="va">amidala</span>.<span class="at">addProfile</span>(queen<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="op">{</span> <span class="dt">selfGranted</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">const</span> result <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;p4dm3&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="dt">include</span><span class="op">:</span> Profile</a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="va">console</span>.<span class="at">log</span>(result)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;p4dm3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">&quot;points&quot;</span><span class="fu">:</span> <span class="dv">1000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-8" title="8">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;queen&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-9" title="9">      <span class="dt">&quot;User_Profile&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-10" title="10">        <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-11" title="11">        <span class="dt">&quot;profileId&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-12" title="12">        <span class="dt">&quot;selfGranted&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb6-13" title="13">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb6-15" title="15">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="fu">}</span></a></code></pre></div>
+<p>You can create all relationship in single <code>create</code> call too.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> amidala <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;p4dm3&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">points</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">profiles</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Queen&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">User_Profile</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="dt">selfGranted</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-9" title="9">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-11" title="11">  <span class="dt">include</span><span class="op">:</span> Profile</a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-13" title="13"></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="kw">const</span> result <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-15" title="15">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;p4dm3&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-16" title="16">  <span class="dt">include</span><span class="op">:</span> Profile</a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-18" title="18"></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="va">console</span>.<span class="at">log</span>(result)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;p4dm3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">&quot;points&quot;</span><span class="fu">:</span> <span class="dv">1000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-7" title="7">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Queen&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">      <span class="dt">&quot;User_Profile&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="dt">&quot;selfGranted&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-12" title="12">        <span class="dt">&quot;profileId&quot;</span><span class="fu">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-13" title="13">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-15" title="15">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="fu">}</span></a></code></pre></div>
+<p>You probably noticed that the <code>User_Profiles</code> table does not have an <code>id</code> field. As mentioned above, it has a composite unique key instead. The name of this composite unique key is chosen automatically by Sequelize but can be customized with the <code>uniqueKey</code> option:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profiles<span class="op">,</span> <span class="dt">uniqueKey</span><span class="op">:</span> <span class="st">&#39;my_custom_unique&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Another possibility, if desired, is to force the through table to have a primary key just like other standard tables. To do this, simply define the primary key in the model:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> User_Profile <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;User_Profile&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="dt">selfGranted</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">BOOLEAN</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> User_Profile <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The above will still create two columns <code>userId</code> and <code>profileId</code>, of course, but instead of setting up a composite unique key on them, the model will use its <code>id</code> column as primary key. Everything else will still work just fine.</p>
+<h2 id="through-tables-versus-normal-tables-and-the-super-many-to-many-association">Through tables versus normal tables and the “Super Many-to-Many association”</h2>
+<p>Now we will compare the usage of the last Many-to-Many setup shown above with the usual One-to-Many relationships, so that in the end we conclude with the concept of a <em>“Super Many-to-Many relationship”</em>.</p>
+<h3 id="models-recap-with-minor-rename">Models recap (with minor rename)</h3>
+<p>To make things easier to follow, let’s rename our <code>User_Profile</code> model to <code>grant</code>. Note that everything works in the same way as before. Our models are:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;user&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="dt">points</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw">const</span> Profile <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;profile&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="kw">const</span> Grant <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;grant&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-11" title="11">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-12" title="12">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-13" title="13">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-14" title="14">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-15" title="15">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-16" title="16">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-17" title="17">  <span class="dt">selfGranted</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">BOOLEAN</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>We established a Many-to-Many relationship between <code>User</code> and <code>Profile</code> using the <code>Grant</code> model as the through table:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This automatically added the columns <code>userId</code> and <code>profileId</code> to the <code>Grant</code> model.</p>
+<p><strong>Note:</strong> As shown above, we have chosen to force the <code>grant</code> model to have a single primary key (called <code>id</code>, as usual). This is necessary for the <em>Super Many-to-Many relationship</em> that will be defined soon.</p>
+<h3 id="using-one-to-many-relationships-instead">Using One-to-Many relationships instead</h3>
+<p>Instead of setting up the Many-to-Many relationship defined above, what if we did the following instead?</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="co">// Setup a One-to-Many relationship between User and Grant</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="va">User</span>.<span class="at">hasMany</span>(Grant)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="va">Grant</span>.<span class="at">belongsTo</span>(User)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-4" title="4"></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">// Also setup a One-to-Many relationship between Profile and Grant</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="va">Profile</span>.<span class="at">hasMany</span>(Grant)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="va">Grant</span>.<span class="at">belongsTo</span>(Profile)<span class="op">;</span></a></code></pre></div>
+<p>The result is essentially the same! This is because <code>User.hasMany(Grant)</code> and <code>Profile.hasMany(Grant)</code> will automatically add the <code>userId</code> and <code>profileId</code> columns to <code>Grant</code>, respectively.</p>
+<p>This shows that one Many-to-Many relationship isn’t very different from two One-to-Many relationships. The tables in the database look the same.</p>
+<p>The only difference is when you try to perform an eager load with Sequelize.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="co">// With the Many-to-Many approach, you can do:</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">// However, you can&#39;t do:</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-9" title="9"></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="co">// On the other hand, with the double One-to-Many approach, you can do:</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="co">// However, you can&#39;t do:</span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="co">// Although you can emulate those with nested includes, as follows:</span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-20" title="20">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-21" title="21">    <span class="dt">model</span><span class="op">:</span> Grant<span class="op">,</span></a>
+<a class="sourceLine" id="cb14-22" title="22">    <span class="dt">include</span><span class="op">:</span> Profile</a>
+<a class="sourceLine" id="cb14-23" title="23">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-24" title="24"><span class="op">}</span>)<span class="op">;</span> <span class="co">// This emulates the `User.findAll({ include: Profile })`, however</span></a>
+<a class="sourceLine" id="cb14-25" title="25">    <span class="co">// the resulting object structure is a bit different. The original</span></a>
+<a class="sourceLine" id="cb14-26" title="26">    <span class="co">// structure has the form `user.profiles[].grant`, while the emulated</span></a>
+<a class="sourceLine" id="cb14-27" title="27">    <span class="co">// structure has the form `user.grants[].profiles[]`.</span></a></code></pre></div>
+<h3 id="the-best-of-both-worlds-the-super-many-to-many-relationship">The best of both worlds: the Super Many-to-Many relationship</h3>
+<p>We can simply combine both approaches shown above!</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="co">// The Super Many-to-Many relationship</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="va">User</span>.<span class="at">belongsToMany</span>(Profile<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="va">Profile</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="va">User</span>.<span class="at">hasMany</span>(Grant)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="va">Grant</span>.<span class="at">belongsTo</span>(User)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="va">Profile</span>.<span class="at">hasMany</span>(Grant)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="va">Grant</span>.<span class="at">belongsTo</span>(Profile)<span class="op">;</span></a></code></pre></div>
+<p>This way, we can do all kinds of eager loading:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="co">// All these work:</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="va">Profile</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Grant <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="va">Grant</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Profile <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>We can even perform all kinds of deeply nested includes:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">include</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-4" title="4">      <span class="dt">model</span><span class="op">:</span> Grant<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-5" title="5">      <span class="dt">include</span><span class="op">:</span> [User<span class="op">,</span> Profile]</a>
+<a class="sourceLine" id="cb17-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-7" title="7">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-8" title="8">      <span class="dt">model</span><span class="op">:</span> Profile<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-9" title="9">      <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-10" title="10">        <span class="dt">model</span><span class="op">:</span> User<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-11" title="11">        <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-12" title="12">          <span class="dt">model</span><span class="op">:</span> Grant<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-13" title="13">          <span class="dt">include</span><span class="op">:</span> [User<span class="op">,</span> Profile]</a>
+<a class="sourceLine" id="cb17-14" title="14">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-15" title="15">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-17" title="17">  ]</a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="aliases-and-custom-key-names">Aliases and custom key names</h2>
+<p>Similarly to the other relationships, aliases can be defined for Many-to-Many relationships.</p>
+<p>Before proceeding, please recall <a href="assocs.html#defining-an-alias">the aliasing example for <code>belongsTo</code></a> on the <a href="assocs.html">associations guide</a>. Note that, in that case, defining an association impacts both the way includes are done (i.e. passing the association name) and the name Sequelize chooses for the foreign key (in that example, <code>leaderId</code> was created on the <code>Ship</code> model).</p>
+<p>Defining an alias for a <code>belongsToMany</code> association also impacts the way includes are performed:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">Product</span>.<span class="at">belongsToMany</span>(Category<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;groups&#39;</span><span class="op">,</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;product_categories&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="va">Category</span>.<span class="at">belongsToMany</span>(Product<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;items&#39;</span><span class="op">,</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;product_categories&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="co">// [...]</span></a>
+<a class="sourceLine" id="cb18-5" title="5"></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="cf">await</span> <span class="va">Product</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Category <span class="op">}</span>)<span class="op">;</span> <span class="co">// This doesn&#39;t work</span></a>
+<a class="sourceLine" id="cb18-7" title="7"></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="cf">await</span> <span class="va">Product</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="co">// This works, passing the alias</span></a>
+<a class="sourceLine" id="cb18-9" title="9">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-10" title="10">    <span class="dt">model</span><span class="op">:</span> Category<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-11" title="11">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;groups&#39;</span></a>
+<a class="sourceLine" id="cb18-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-14" title="14"></a>
+<a class="sourceLine" id="cb18-15" title="15"><span class="cf">await</span> <span class="va">Product</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;groups&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// This also works</span></a></code></pre></div>
+<p>However, defining an alias here has nothing to do with the foreign key names. The names of both foreign keys created in the through table are still constructed by Sequelize based on the name of the models being associated. This can readily be seen by inspecting the generated SQL for the through table in the example above:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> `product_categories` (</a>
+<a class="sourceLine" id="cb19-2" title="2">  `createdAt` DATETIME <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb19-3" title="3">  `updatedAt` DATETIME <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb19-4" title="4">  `productId` <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> `products` (`id`) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb19-5" title="5">  `categoryId` <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> `categories` (`id`) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb19-6" title="6">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (`productId`, `categoryId`)</a>
+<a class="sourceLine" id="cb19-7" title="7">);</a></code></pre></div>
+<p>We can see that the foreign keys are <code>productId</code> and <code>categoryId</code>. To change these names, Sequelize accepts the options <code>foreignKey</code> and <code>otherKey</code> respectively (i.e., the <code>foreignKey</code> defines the key for the source model in the through relation, and <code>otherKey</code> defines it for the target model):</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="va">Product</span>.<span class="at">belongsToMany</span>(Category<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;product_categories&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;objectId&#39;</span><span class="op">,</span> <span class="co">// replaces `productId`</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;typeId&#39;</span> <span class="co">// replaces `categoryId`</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="va">Category</span>.<span class="at">belongsToMany</span>(Product<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-7" title="7">  <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;product_categories&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-8" title="8">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;typeId&#39;</span><span class="op">,</span> <span class="co">// replaces `categoryId`</span></a>
+<a class="sourceLine" id="cb20-9" title="9">  <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;objectId&#39;</span> <span class="co">// replaces `productId`</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> `product_categories` (</a>
+<a class="sourceLine" id="cb21-2" title="2">  `createdAt` DATETIME <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb21-3" title="3">  `updatedAt` DATETIME <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb21-4" title="4">  `objectId` <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> `products` (`id`) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb21-5" title="5">  `typeId` <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> `categories` (`id`) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (`objectId`, `typeId`)</a>
+<a class="sourceLine" id="cb21-7" title="7">);</a></code></pre></div>
+<p>As shown above, when you define a Many-to-Many relationship with two <code>belongsToMany</code> calls (which is the standard way), you should provide the <code>foreignKey</code> and <code>otherKey</code> options appropriately in both calls. If you pass these options in only one of the calls, the Sequelize behavior will be unreliable.</p>
+<h2 id="self-references">Self-references</h2>
+<p>Sequelize supports self-referential Many-to-Many relationships, intuitively:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">Person</span>.<span class="at">belongsToMany</span>(Person<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Children&#39;</span><span class="op">,</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;PersonChildren&#39;</span> <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="co">// This will create the table PersonChildren which stores the ids of the objects.</span></a></code></pre></div>
+<h2 id="specifying-attributes-from-the-through-table">Specifying attributes from the through table</h2>
+<p>By default, when eager loading a many-to-many relationship, Sequelize will return data in the following structure (based on the first example in this guide):</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb23-1" title="1"><span class="er">//</span> <span class="er">User.findOne(</span><span class="fu">{</span> <span class="er">include</span><span class="fu">:</span> <span class="er">Profile</span> <span class="fu">}</span><span class="er">)</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;p4dm3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-5" title="5">  <span class="dt">&quot;points&quot;</span><span class="fu">:</span> <span class="dv">1000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-6" title="6">  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb23-7" title="7">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-8" title="8">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-9" title="9">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;queen&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-10" title="10">      <span class="dt">&quot;grant&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-11" title="11">        <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-12" title="12">        <span class="dt">&quot;profileId&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-13" title="13">        <span class="dt">&quot;selfGranted&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb23-14" title="14">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb23-15" title="15">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb23-16" title="16">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb23-17" title="17"><span class="fu">}</span></a></code></pre></div>
+<p>Notice that the outer object is an <code>User</code>, which has a field called <code>profiles</code>, which is a <code>Profile</code> array, such that each <code>Profile</code> comes with an extra field called <code>grant</code> which is a <code>Grant</code> instance. This is the default structure created by Sequelize when eager loading from a Many-to-Many relationship.</p>
+<p>However, if you want only some of the attributes of the through table, you can provide an array with the attributes you want in the <code>attributes</code> option. For example, if you only want the <code>selfGranted</code> attribute from the through table:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="va">User</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-3" title="3">    <span class="dt">model</span><span class="op">:</span> Profile<span class="op">,</span></a>
+<a class="sourceLine" id="cb24-4" title="4">    <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-5" title="5">      <span class="dt">attributes</span><span class="op">:</span> [<span class="st">&#39;selfGranted&#39;</span>]</a>
+<a class="sourceLine" id="cb24-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb24-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb24-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb25-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb25-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb25-3" title="3">  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;p4dm3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb25-4" title="4">  <span class="dt">&quot;points&quot;</span><span class="fu">:</span> <span class="dv">1000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb25-5" title="5">  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb25-6" title="6">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb25-7" title="7">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb25-8" title="8">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;queen&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb25-9" title="9">      <span class="dt">&quot;grant&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb25-10" title="10">        <span class="dt">&quot;selfGranted&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb25-11" title="11">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb25-12" title="12">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb25-13" title="13">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb25-14" title="14"><span class="fu">}</span></a></code></pre></div>
+<p>If you don’t want the nested <code>grant</code> field at all, use <code>attributes: []</code>:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="va">User</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb26-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-3" title="3">    <span class="dt">model</span><span class="op">:</span> Profile<span class="op">,</span></a>
+<a class="sourceLine" id="cb26-4" title="4">    <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-5" title="5">      <span class="dt">attributes</span><span class="op">:</span> []</a>
+<a class="sourceLine" id="cb26-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb26-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb26-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-3" title="3">  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;p4dm3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-4" title="4">  <span class="dt">&quot;points&quot;</span><span class="fu">:</span> <span class="dv">1000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-5" title="5">  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb27-6" title="6">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-7" title="7">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-8" title="8">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;queen&quot;</span></a>
+<a class="sourceLine" id="cb27-9" title="9">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb27-10" title="10">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb27-11" title="11"><span class="fu">}</span></a></code></pre></div>
+<p>If you are using mixins (such as <code>user.getProfiles()</code>) instead of finder methods (such as <code>User.findAll()</code>), you have to use the <code>joinTableAttributes</code> option instead:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="va">someUser</span>.<span class="at">getProfiles</span>(<span class="op">{</span> <span class="dt">joinTableAttributes</span><span class="op">:</span> [<span class="st">&#39;selfGranted&#39;</span>] <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb29-1" title="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb29-2" title="2">  <span class="fu">{</span></a>
+<a class="sourceLine" id="cb29-3" title="3">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb29-4" title="4">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;queen&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb29-5" title="5">    <span class="dt">&quot;grant&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb29-6" title="6">      <span class="dt">&quot;selfGranted&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb29-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb29-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb29-9" title="9"><span class="ot">]</span></a></code></pre></div>
+<h2 id="many-to-many-to-many-relationships-and-beyond">Many-to-many-to-many relationships and beyond</h2>
+<p>Consider you are trying to model a game championship. There are players and teams. Teams play games. However, players can change teams in the middle of the championship (but not in the middle of a game). So, given one specific game, there are certain teams participating in that game, and each of these teams has a set of players (for that game).</p>
+<p>So we start by defining the three relevant models:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">const</span> Player <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Player&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="kw">const</span> Team <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Team&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="kw">const</span> Game <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Game&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Now, the question is: how to associate them?</p>
+<p>First, we note that:</p>
+<ul>
+<li>One game has many teams associated to it (the ones that are playing that game);</li>
+<li>One team may have participated in many games.</li>
+</ul>
+<p>The above observations show that we need a Many-to-Many relationship between Game and Team. Let’s use the Super Many-to-Many relationship as explained earlier in this guide:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="co">// Super Many-to-Many relationship between Game and Team</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="kw">const</span> GameTeam <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;GameTeam&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-3" title="3">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-5" title="5">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-6" title="6">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb31-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb31-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-10" title="10"><span class="va">Team</span>.<span class="at">belongsToMany</span>(Game<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> GameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="va">Game</span>.<span class="at">belongsToMany</span>(Team<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> GameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-12" title="12"><span class="va">GameTeam</span>.<span class="at">belongsTo</span>(Game)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-13" title="13"><span class="va">GameTeam</span>.<span class="at">belongsTo</span>(Team)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-14" title="14"><span class="va">Game</span>.<span class="at">hasMany</span>(GameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-15" title="15"><span class="va">Team</span>.<span class="at">hasMany</span>(GameTeam)<span class="op">;</span></a></code></pre></div>
+<p>The part about players is trickier. We note that the set of players that form a team depends not only on the team (obviously), but also on which game is being considered. Therefore, we don’t want a Many-to-Many relationship between Player and Team. We also don’t want a Many-to-Many relationship between Player and Game. Instead of associating a Player to any of those models, what we need is an association between a Player and something like a <em>“team-game pair constraint”</em>, since it is the pair (team plus game) that defines which players belong there. So what we are looking for turns out to be precisely the junction model, GameTeam, itself! And, we note that, since a given <em>game-team pair</em> specifies many players, and on the other hand that the same player can participate of many <em>game-team pairs</em>, we need a Many-to-Many relationship between Player and GameTeam!</p>
+<p>To provide the greatest flexibility, let’s use the Super Many-to-Many relationship construction here again:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="co">// Super Many-to-Many relationship between Player and GameTeam</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="kw">const</span> PlayerGameTeam <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;PlayerGameTeam&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb32-3" title="3">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb32-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb32-5" title="5">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb32-6" title="6">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb32-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb32-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb32-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-10" title="10"><span class="va">Player</span>.<span class="at">belongsToMany</span>(GameTeam<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> PlayerGameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-11" title="11"><span class="va">GameTeam</span>.<span class="at">belongsToMany</span>(Player<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> PlayerGameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-12" title="12"><span class="va">PlayerGameTeam</span>.<span class="at">belongsTo</span>(Player)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-13" title="13"><span class="va">PlayerGameTeam</span>.<span class="at">belongsTo</span>(GameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-14" title="14"><span class="va">Player</span>.<span class="at">hasMany</span>(PlayerGameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-15" title="15"><span class="va">GameTeam</span>.<span class="at">hasMany</span>(PlayerGameTeam)<span class="op">;</span></a></code></pre></div>
+<p>The above associations achieve precisely what we want. Here is a full runnable example of this:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> Op<span class="op">,</span> Model<span class="op">,</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;sqlite::memory:&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-3" title="3">  <span class="dt">define</span><span class="op">:</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span> <span class="co">// Just for less clutter in this example</span></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-5" title="5"><span class="kw">const</span> Player <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Player&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="kw">const</span> Team <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Team&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="kw">const</span> Game <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Game&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-8" title="8"></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="co">// We apply a Super Many-to-Many relationship between Game and Team</span></a>
+<a class="sourceLine" id="cb33-10" title="10"><span class="kw">const</span> GameTeam <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;GameTeam&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-11" title="11">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-12" title="12">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-13" title="13">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-14" title="14">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-15" title="15">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb33-16" title="16">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-17" title="17"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-18" title="18"><span class="va">Team</span>.<span class="at">belongsToMany</span>(Game<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> GameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-19" title="19"><span class="va">Game</span>.<span class="at">belongsToMany</span>(Team<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> GameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-20" title="20"><span class="va">GameTeam</span>.<span class="at">belongsTo</span>(Game)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-21" title="21"><span class="va">GameTeam</span>.<span class="at">belongsTo</span>(Team)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-22" title="22"><span class="va">Game</span>.<span class="at">hasMany</span>(GameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-23" title="23"><span class="va">Team</span>.<span class="at">hasMany</span>(GameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-24" title="24"></a>
+<a class="sourceLine" id="cb33-25" title="25"><span class="co">// We apply a Super Many-to-Many relationship between Player and GameTeam</span></a>
+<a class="sourceLine" id="cb33-26" title="26"><span class="kw">const</span> PlayerGameTeam <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;PlayerGameTeam&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-27" title="27">  <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-28" title="28">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-29" title="29">    <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-30" title="30">    <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-31" title="31">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb33-32" title="32">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-33" title="33"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-34" title="34"><span class="va">Player</span>.<span class="at">belongsToMany</span>(GameTeam<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> PlayerGameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-35" title="35"><span class="va">GameTeam</span>.<span class="at">belongsToMany</span>(Player<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> PlayerGameTeam <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-36" title="36"><span class="va">PlayerGameTeam</span>.<span class="at">belongsTo</span>(Player)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-37" title="37"><span class="va">PlayerGameTeam</span>.<span class="at">belongsTo</span>(GameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-38" title="38"><span class="va">Player</span>.<span class="at">hasMany</span>(PlayerGameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-39" title="39"><span class="va">GameTeam</span>.<span class="at">hasMany</span>(PlayerGameTeam)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-40" title="40"></a>
+<a class="sourceLine" id="cb33-41" title="41">(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-42" title="42"></a>
+<a class="sourceLine" id="cb33-43" title="43">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">sync</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-44" title="44">  <span class="cf">await</span> <span class="va">Player</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb33-45" title="45">    <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;s0me0ne&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-46" title="46">    <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;empty&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-47" title="47">    <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;greenhead&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-48" title="48">    <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;not_spock&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-49" title="49">    <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;bowl_of_petunias&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-50" title="50">  ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-51" title="51">  <span class="cf">await</span> <span class="va">Game</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb33-52" title="52">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;The Big Clash&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-53" title="53">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Winter Showdown&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-54" title="54">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Summer Beatdown&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-55" title="55">  ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-56" title="56">  <span class="cf">await</span> <span class="va">Team</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb33-57" title="57">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;The Martians&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-58" title="58">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;The Earthlings&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-59" title="59">    <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;The Plutonians&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-60" title="60">  ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-61" title="61"></a>
+<a class="sourceLine" id="cb33-62" title="62">  <span class="co">// Let&#39;s start defining which teams were in which games. This can be done</span></a>
+<a class="sourceLine" id="cb33-63" title="63">  <span class="co">// in several ways, such as calling `.setTeams` on each game. However, for</span></a>
+<a class="sourceLine" id="cb33-64" title="64">  <span class="co">// brevity, we will use direct `create` calls instead, referring directly</span></a>
+<a class="sourceLine" id="cb33-65" title="65">  <span class="co">// to the IDs we want. We know that IDs are given in order starting from 1.</span></a>
+<a class="sourceLine" id="cb33-66" title="66">  <span class="cf">await</span> <span class="va">GameTeam</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb33-67" title="67">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">1</span> <span class="op">},</span>   <span class="co">// this GameTeam will get id 1</span></a>
+<a class="sourceLine" id="cb33-68" title="68">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">2</span> <span class="op">},</span>   <span class="co">// this GameTeam will get id 2</span></a>
+<a class="sourceLine" id="cb33-69" title="69">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">1</span> <span class="op">},</span>   <span class="co">// this GameTeam will get id 3</span></a>
+<a class="sourceLine" id="cb33-70" title="70">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">3</span> <span class="op">},</span>   <span class="co">// this GameTeam will get id 4</span></a>
+<a class="sourceLine" id="cb33-71" title="71">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">2</span> <span class="op">},</span>   <span class="co">// this GameTeam will get id 5</span></a>
+<a class="sourceLine" id="cb33-72" title="72">    <span class="op">{</span> <span class="dt">GameId</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">TeamId</span><span class="op">:</span> <span class="dv">3</span> <span class="op">}</span>    <span class="co">// this GameTeam will get id 6</span></a>
+<a class="sourceLine" id="cb33-73" title="73">  ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-74" title="74"></a>
+<a class="sourceLine" id="cb33-75" title="75">  <span class="co">// Now let&#39;s specify players.</span></a>
+<a class="sourceLine" id="cb33-76" title="76">  <span class="co">// For brevity, let&#39;s do it only for the second game (Winter Showdown).</span></a>
+<a class="sourceLine" id="cb33-77" title="77">  <span class="co">// Let&#39;s say that that s0me0ne and greenhead played for The Martians, while</span></a>
+<a class="sourceLine" id="cb33-78" title="78">  <span class="co">// not_spock and bowl_of_petunias played for The Plutonians:</span></a>
+<a class="sourceLine" id="cb33-79" title="79">  <span class="cf">await</span> <span class="va">PlayerGameTeam</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb33-80" title="80">    <span class="co">// In &#39;Winter Showdown&#39; (i.e. GameTeamIds 3 and 4):</span></a>
+<a class="sourceLine" id="cb33-81" title="81">    <span class="op">{</span> <span class="dt">PlayerId</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">GameTeamId</span><span class="op">:</span> <span class="dv">3</span> <span class="op">},</span>   <span class="co">// s0me0ne played for The Martians</span></a>
+<a class="sourceLine" id="cb33-82" title="82">    <span class="op">{</span> <span class="dt">PlayerId</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">GameTeamId</span><span class="op">:</span> <span class="dv">3</span> <span class="op">},</span>   <span class="co">// greenhead played for The Martians</span></a>
+<a class="sourceLine" id="cb33-83" title="83">    <span class="op">{</span> <span class="dt">PlayerId</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">GameTeamId</span><span class="op">:</span> <span class="dv">4</span> <span class="op">},</span>   <span class="co">// not_spock played for The Plutonians</span></a>
+<a class="sourceLine" id="cb33-84" title="84">    <span class="op">{</span> <span class="dt">PlayerId</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">GameTeamId</span><span class="op">:</span> <span class="dv">4</span> <span class="op">}</span>    <span class="co">// bowl_of_petunias played for The Plutonians</span></a>
+<a class="sourceLine" id="cb33-85" title="85">  ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-86" title="86"></a>
+<a class="sourceLine" id="cb33-87" title="87">  <span class="co">// Now we can make queries!</span></a>
+<a class="sourceLine" id="cb33-88" title="88">  <span class="kw">const</span> game <span class="op">=</span> <span class="cf">await</span> <span class="va">Game</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb33-89" title="89">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-90" title="90">      <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Winter Showdown&quot;</span></a>
+<a class="sourceLine" id="cb33-91" title="91">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-92" title="92">    <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-93" title="93">      <span class="dt">model</span><span class="op">:</span> GameTeam<span class="op">,</span></a>
+<a class="sourceLine" id="cb33-94" title="94">      <span class="dt">include</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb33-95" title="95">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-96" title="96">          <span class="dt">model</span><span class="op">:</span> Player<span class="op">,</span></a>
+<a class="sourceLine" id="cb33-97" title="97">          <span class="dt">through</span><span class="op">:</span> <span class="op">{</span> <span class="dt">attributes</span><span class="op">:</span> [] <span class="op">}</span> <span class="co">// Hide unwanted `PlayerGameTeam` nested object from results</span></a>
+<a class="sourceLine" id="cb33-98" title="98">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-99" title="99">        Team</a>
+<a class="sourceLine" id="cb33-100" title="100">      ]</a>
+<a class="sourceLine" id="cb33-101" title="101">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-102" title="102">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-103" title="103"></a>
+<a class="sourceLine" id="cb33-104" title="104">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Found game: &quot;</span><span class="sc">${</span><span class="va">game</span>.<span class="at">name</span><span class="sc">}</span><span class="vs">&quot;`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-105" title="105">  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">game</span>.<span class="va">GameTeams</span>.<span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-106" title="106">    <span class="kw">const</span> team <span class="op">=</span> <span class="va">game</span>.<span class="at">GameTeams</span>[i].<span class="at">Team</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb33-107" title="107">    <span class="kw">const</span> players <span class="op">=</span> <span class="va">game</span>.<span class="at">GameTeams</span>[i].<span class="at">Players</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb33-108" title="108">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`- Team &quot;</span><span class="sc">${</span><span class="va">team</span>.<span class="at">name</span><span class="sc">}</span><span class="vs">&quot; played game &quot;</span><span class="sc">${</span><span class="va">game</span>.<span class="at">name</span><span class="sc">}</span><span class="vs">&quot; with the following players:`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-109" title="109">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">players</span>.<span class="at">map</span>(p <span class="kw">=&gt;</span> <span class="vs">`--- </span><span class="sc">${</span><span class="va">p</span>.<span class="at">username</span><span class="sc">}</span><span class="vs">`</span>).<span class="at">join</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-110" title="110">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-111" title="111"></a>
+<a class="sourceLine" id="cb33-112" title="112"><span class="op">}</span>)()<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<pre class="text"><code>Found game: &quot;Winter Showdown&quot;
+- Team &quot;The Martians&quot; played game &quot;Winter Showdown&quot; with the following players:
+--- s0me0ne
+--- greenhead
+- Team &quot;The Plutonians&quot; played game &quot;Winter Showdown&quot; with the following players:
+--- not_spock
+--- bowl_of_petunias</code></pre>
+<p>So this is how we can achieve a <em>many-to-many-to-many</em> relationship between three models in Sequelize, by taking advantage of the Super Many-to-Many relationship technique!</p>
+<p>This idea can be applied recursively for even more complex, <em>many-to-many-to-…-to-many</em> relationships (although at some point queries might become slow).</p>

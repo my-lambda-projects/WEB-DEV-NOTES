@@ -1,0 +1,24 @@
+[submodule "Week-8-Notes"]
+	path = Week-8-Notes
+	url = https://github.com/bgoonz/Week-8-Notes.git
+[submodule "github-reference-repo"]
+	path = github-reference-repo
+	url = https://github.com/bgoonz/github-reference-repo.git
+[submodule "week-10-take-2"]
+	path = week-10-take-2
+	url = https://github.com/bgoonz/week-10-take-2.git
+[submodule "week-7-notes"]
+	path = week-7-notes
+	url = https://github.com/bgoonz/week-7-notes.git
+[submodule "Week-9-notes"]
+	path = Week-9-notes
+	url = https://github.com/bgoonz/Week-9-notes.git
+[submodule "Useful-Snippets-js"]
+	path = Useful-Snippets-js
+	url = https://github.com/bgoonz/Useful-Snippets-js.git
+[submodule "Ubuntu-basrc-profile-and-aliases"]
+	path = Ubuntu-basrc-profile-and-aliases
+	url = https://github.com/bgoonz/Ubuntu-basrc-profile-and-aliases.git
+[submodule "w10-d2-projects"]
+	path = w10-d2-projects
+	url = https://github.com/bgoonz/w10-d2-projects.git

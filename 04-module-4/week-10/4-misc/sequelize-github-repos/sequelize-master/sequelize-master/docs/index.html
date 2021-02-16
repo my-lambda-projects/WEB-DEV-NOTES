@@ -1,0 +1,31 @@
+<div>
+<div class="center logo">
+<pre><code>![logo](manual/asset/logo-small.png)</code></pre>
+</div>
+<div class="center sequelize">
+Sequelize
+</div>
+</div>
+<p><a href="https://www.npmjs.com/package/sequelize"><img src="https://badgen.net/npm/v/sequelize" alt="npm version" /></a> <a href="https://travis-ci.org/sequelize/sequelize"><img src="https://badgen.net/travis/sequelize/sequelize?icon=travis" alt="Travis Build Status" /></a> <a href="https://ci.appveyor.com/project/sushantdhiman/sequelize/branch/master"><img src="https://ci.appveyor.com/api/projects/status/9l1ypgwsp5ij46m3/branch/master?svg=true" alt="Appveyor Build Status" /></a> <a href="https://www.npmjs.com/package/sequelize"><img src="https://badgen.net/npm/dm/sequelize" alt="npm downloads" /></a> <a href="https://codecov.io/gh/sequelize/sequelize"><img src="https://badgen.net/codecov/c/github/sequelize/sequelize?icon=codecov" alt="codecov" /></a> <a href="https://github.com/sequelize/sequelize"><img src="https://badgen.net/github/last-commit/sequelize/sequelize" alt="Last commit" /></a> <a href="https://github.com/sequelize/sequelize"><img src="https://badgen.net/github/merged-prs/sequelize/sequelize" alt="Merged PRs" /></a> <a href="https://github.com/sequelize/sequelize"><img src="https://badgen.net/github/stars/sequelize/sequelize" alt="GitHub stars" /></a> <a href="http://sequelize-slack.herokuapp.com/"><img src="http://sequelize-slack.herokuapp.com/badge.svg" alt="Slack Status" /></a> <a href="https://www.npmjs.com/package/sequelize"><img src="https://badgen.net/npm/node/sequelize" alt="node" /></a> <a href="https://github.com/sequelize/sequelize/blob/master/LICENSE"><img src="https://badgen.net/github/license/sequelize/sequelize" alt="License" /></a> <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release" /></a></p>
+<p>Sequelize is a promise-based Node.js <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a> for <a href="https://en.wikipedia.org/wiki/PostgreSQL">Postgres</a>, <a href="https://en.wikipedia.org/wiki/MySQL">MySQL</a>, <a href="https://en.wikipedia.org/wiki/MariaDB">MariaDB</a>, <a href="https://en.wikipedia.org/wiki/SQLite">SQLite</a> and <a href="https://en.wikipedia.org/wiki/Microsoft_SQL_Server">Microsoft SQL Server</a>. It features solid transaction support, relations, eager and lazy loading, read replication and more.</p>
+<p>Sequelize follows <a href="http://semver.org">Semantic Versioning</a> and supports Node v10 and above.</p>
+<p>You are currently looking at the <strong>Tutorials and Guides</strong> for Sequelize. You might also be interested in the <a href="identifiers.html">API Reference</a>.</p>
+<h2 id="quick-example">Quick example</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> Model<span class="op">,</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;sqlite::memory:&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">class</span> User <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="va">User</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="dt">birthday</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;user&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10">(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">sync</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="kw">const</span> jane <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;janedoe&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="dt">birthday</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>(<span class="dv">1980</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb2-15" title="15">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-16" title="16">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">jane</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="op">}</span>)()<span class="op">;</span></a></code></pre></div>
+<p>To learn more about how to use Sequelize, read the tutorials available in the left menu. Begin with <a href="manual/getting-started.html">Getting Started</a>.</p>

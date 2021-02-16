@@ -1,0 +1,76 @@
+/* What you can select by:
+    tag name - <div></div> - tag name is least specific - tag name: 1 specific */
+
+div {
+    padding: 0;
+}
+
+/* id - <div id="top-container"></div> - most specific 3 specific points */
+
+#top-container {
+    font-size: 2.5rem;
+}
+
+/* class - <div class="container width-50-percent"></div> - class is 2 specific points*/
+    
+.container { 
+  display: none;
+}
+
+.width-50-percent {
+      width: 50%;
+}
+
+/* Combinators
+    /* No white-space ~ 
+    e.g.: */
+
+.container
+.width-50-percent { 
+    width: 50%;
+}
+
+/* "I'm looking for elements that have BOTH the class container AND width-50-percent"  */
+div.container {
+     width: 50%;
+}
+
+"ILFE that are divs (tag name) that also have the class container" Space~<body><div class="width-50-percent"></div><div class="container"><h1>My website</h1><div class="width-50-percent"><button class="butt-on">Press me!</button></div></div></body>body .width-50-percent>button.butt-on, h1 {
+    color: green;
+}
+
+e.g. : .container .width-50-percent {
+    background: red;
+}
+
+"I'm looking for elements with the class width-50-percent but only ones that are
+ inside of elements with the class .container"
+ .container .width-50-percent button {
+    background: green;
+}
+
+.container button {
+    background: blue;
+}
+
+Spaces with a right angle bracket~e.g. : .container>button {
+    background: blancedalmond;
+}
+
+"I'm looking for elements with the tag name button that are DIRECT CHILDREN
+ of elements with the class container"
+ Commas~e.g. : h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.container, button, #hi-mom, .width-50-percent {
+    background: green;
+}
+
+"I'm looking for elements that are class container, OR button tag name, OR id hi-mom
+ OR class width-50-percent"
+ Plus~e.g. : <div><button>Press me!</button><div class="container"></div></div>
+ button+
+ .container {
+    background: red;
+}

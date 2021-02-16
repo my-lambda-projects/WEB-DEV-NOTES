@@ -1,0 +1,57 @@
+<p>A one-one association is established by pairing a <code>belongsTo</code> and a <code>hasOne</code> association (though the <code>hasOne</code> is often omitted).</p>
+<p>Say we have two model tables, <code>Pug</code> and an <code>Owner</code>. We might associate them like so:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">Pug</span>.<span class="at">belongsTo</span>(Owner)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">Owner</span>.<span class="at">hasOne</span>(Pug)</a></code></pre></div>
+<p>This means that a pug belongs to an owner, and an owner has one (and only one) pug.</p>
+<p>By doing this, the following three things will happen/be available to use:</p>
+<ol type="1">
+<li>The Pug table will have a foreign key column, “ownerId”, corresponding to a primary key in the Owner table.</li>
+</ol>
+<p><em>Pugs</em> - includes an ownerId!</p>
+<pre><code>id | name | createdAt | updatedAt | ownerId</code></pre>
+<p><em>Owner</em> - no changes!</p>
+<pre><code>id | name | createdAt | updatedAt</code></pre>
+<ol start="2" type="1">
+<li>Sequelize automatically creates two instance methods for pugs, “getOwner” and “setOwner”. This is because we defined <code>Pug.belongsTo(Owner)</code>. Likewise, owners get two instance methods, “getPug” and “setPug” (because we defined <code>Owner.hasOne(Pug)</code>).</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">pug</span>.<span class="at">getOwner</span>() <span class="co">// returns a promise for the pug&#39;s owner</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="va">pug</span>.<span class="at">setOwner</span>(ownerInstanceOrID) <span class="co">// updates the pug&#39;s ownerId to be the id of the passed-in owner, and returns a promise for the updated pug</span></a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">owner</span>.<span class="at">getPug</span>() <span class="co">// returns a promise for the owner&#39;s pug</span></a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="va">owner</span>.<span class="at">setPug</span>(pugInstanceOrID) <span class="co">// updates the passed-in pug&#39;s ownerId to be the id of the owner, and returns a promise for the updated pug</span></a></code></pre></div>
+<ol start="3" type="1">
+<li>Sequelize will allow us to “include” the pug’s owner, or the owner’s pug in queries.</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> pugsWithTheirOwners <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span><span class="dt">model</span><span class="op">:</span> Owner<span class="op">}</span>]</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="va">console</span>.<span class="at">log</span>(pugsWithTheirOwners[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">// looks like this:</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">// {</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">//   id: 1,</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">//   name: &#39;Cody&#39;,</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">//   ownerId: 1,</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">//   owner: {</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">//     id: 1,</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">//     name: &#39;Tom&#39;</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">//   }</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">// }</span></a></code></pre></div>
+<p>Likewise (but note that if we do omit the <code>Owner.hasOne(Pug)</code>, this is not possible):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> ownersWithTheirPug <span class="op">=</span> <span class="cf">await</span> <span class="va">Owner</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span><span class="dt">model</span><span class="op">:</span> <span class="st">&#39;Pug&#39;</span><span class="op">}</span>]</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">console</span>.<span class="at">log</span>(ownersWithTheirPug[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">// looks like this:</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">// {</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">//   id: 1,</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">//   name: &#39;Tom&#39;,</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">//   pug: {</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">//     id: 1,</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">//     name: &#39;Cody&#39;,</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">//     ownerId: 1</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">//   }</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">// }</span></a></code></pre></div>

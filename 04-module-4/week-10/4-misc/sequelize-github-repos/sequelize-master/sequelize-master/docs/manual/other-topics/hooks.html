@@ -1,0 +1,314 @@
+<h1 id="hooks">Hooks</h1>
+<p>Hooks (also known as lifecycle events), are functions which are called before and after calls in sequelize are executed. For example, if you want to always set a value on a model before saving it, you can add a <code>beforeUpdate</code> hook.</p>
+<p><strong>Note:</strong> <em>You can’t use hooks with instances. Hooks are used with models.</em></p>
+<h2 id="available-hooks">Available hooks</h2>
+<p>Sequelize provides a lot of hooks. The full list can be found in directly in the <a href="https://github.com/sequelize/sequelize/blob/master/lib/hooks.js#L7">source code - lib/hooks.js</a>.</p>
+<h2 id="hooks-firing-order">Hooks firing order</h2>
+<p>The diagram below shows the firing order for the most common hooks.</p>
+<p><em><strong>Note:</strong> this list is not exhaustive.</em></p>
+<pre class="text"><code>(1)
+  beforeBulkCreate(instances, options)
+  beforeBulkDestroy(options)
+  beforeBulkUpdate(options)
+(2)
+  beforeValidate(instance, options)
+
+[... validation happens ...]
+
+(3)
+  afterValidate(instance, options)
+  validationFailed(instance, options, error)
+(4)
+  beforeCreate(instance, options)
+  beforeDestroy(instance, options)
+  beforeUpdate(instance, options)
+  beforeSave(instance, options)
+  beforeUpsert(values, options)
+
+[... creation/update/destruction happens ...]
+
+(5)
+  afterCreate(instance, options)
+  afterDestroy(instance, options)
+  afterUpdate(instance, options)
+  afterSave(instance, options)
+  afterUpsert(created, options)
+(6)
+  afterBulkCreate(instances, options)
+  afterBulkDestroy(options)
+  afterBulkUpdate(options)</code></pre>
+<h2 id="declaring-hooks">Declaring Hooks</h2>
+<p>Arguments to hooks are passed by reference. This means, that you can change the values, and this will be reflected in the insert / update statement. A hook may contain async actions - in this case the hook function should return a promise.</p>
+<p>There are currently three ways to programmatically add hooks:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// Method 1 via the .init() method</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">class</span> User <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">User</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="dt">username</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">mood</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">ENUM</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="dt">values</span><span class="op">:</span> [<span class="st">&#39;happy&#39;</span><span class="op">,</span> <span class="st">&#39;sad&#39;</span><span class="op">,</span> <span class="st">&#39;neutral&#39;</span>]</a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="dt">hooks</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="dt">beforeValidate</span><span class="op">:</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="va">user</span>.<span class="at">mood</span> <span class="op">=</span> <span class="st">&#39;happy&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="dt">afterValidate</span><span class="op">:</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="va">user</span>.<span class="at">username</span> <span class="op">=</span> <span class="st">&#39;Toni&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-18" title="18">  sequelize</a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-20" title="20"></a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="co">// Method 2 via the .addHook() method</span></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="va">User</span>.<span class="at">addHook</span>(<span class="st">&#39;beforeValidate&#39;</span><span class="op">,</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-23" title="23">  <span class="va">user</span>.<span class="at">mood</span> <span class="op">=</span> <span class="st">&#39;happy&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-25" title="25"></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="va">User</span>.<span class="at">addHook</span>(<span class="st">&#39;afterValidate&#39;</span><span class="op">,</span> <span class="st">&#39;someCustomName&#39;</span><span class="op">,</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-27" title="27">  <span class="cf">return</span> <span class="va">Promise</span>.<span class="at">reject</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&quot;I&#39;m afraid I can&#39;t let you do that!&quot;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-28" title="28"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-29" title="29"></a>
+<a class="sourceLine" id="cb2-30" title="30"><span class="co">// Method 3 via the direct method</span></a>
+<a class="sourceLine" id="cb2-31" title="31"><span class="va">User</span>.<span class="at">beforeCreate</span>(<span class="kw">async</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-32" title="32">  <span class="kw">const</span> hashedPassword <span class="op">=</span> <span class="cf">await</span> <span class="at">hashPassword</span>(<span class="va">user</span>.<span class="at">password</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-33" title="33">  <span class="va">user</span>.<span class="at">password</span> <span class="op">=</span> hashedPassword<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-34" title="34"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-35" title="35"></a>
+<a class="sourceLine" id="cb2-36" title="36"><span class="va">User</span>.<span class="at">afterValidate</span>(<span class="st">&#39;myHookAfter&#39;</span><span class="op">,</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-37" title="37">  <span class="va">user</span>.<span class="at">username</span> <span class="op">=</span> <span class="st">&#39;Toni&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-38" title="38"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="removing-hooks">Removing hooks</h2>
+<p>Only a hook with name param can be removed.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">class</span> Book <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="va">Book</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="va">Book</span>.<span class="at">addHook</span>(<span class="st">&#39;afterCreate&#39;</span><span class="op">,</span> <span class="st">&#39;notifyUsers&#39;</span><span class="op">,</span> (book<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="va">Book</span>.<span class="at">removeHook</span>(<span class="st">&#39;afterCreate&#39;</span><span class="op">,</span> <span class="st">&#39;notifyUsers&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>You can have many hooks with same name. Calling <code>.removeHook()</code> will remove all of them.</p>
+<h2 id="global-universal-hooks">Global / universal hooks</h2>
+<p>Global hooks are hooks which are run for all models. They can define behaviours that you want for all your models, and are especially useful for plugins. They can be defined in two ways, which have slightly different semantics:</p>
+<h3 id="default-hooks-on-sequelize-constructor-options">Default Hooks (on Sequelize constructor options)</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(...<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">define</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">hooks</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      <span class="at">beforeCreate</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">        <span class="co">// Do stuff</span></a>
+<a class="sourceLine" id="cb4-6" title="6">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This adds a default hook to all models, which is run if the model does not define its own <code>beforeCreate</code> hook:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;User&#39;</span><span class="op">,</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> Project <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Project&#39;</span><span class="op">,</span> <span class="op">{},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">hooks</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="at">beforeCreate</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="co">// Do other stuff</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{}</span>)<span class="op">;</span>    <span class="co">// Runs the global hook</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="cf">await</span> <span class="va">Project</span>.<span class="at">create</span>(<span class="op">{}</span>)<span class="op">;</span> <span class="co">// Runs its own hook (because the global hook is overwritten)</span></a></code></pre></div>
+<h3 id="permanent-hooks-with-sequelize.addhook">Permanent Hooks (with <code>sequelize.addHook</code>)</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">sequelize</span>.<span class="at">addHook</span>(<span class="st">&#39;beforeCreate&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="co">// Do stuff</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This hook is always run, whether or not the model specifies its own <code>beforeCreate</code> hook. Local hooks are always run before global hooks:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;User&#39;</span><span class="op">,</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">const</span> Project <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Project&#39;</span><span class="op">,</span> <span class="op">{},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">hooks</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="at">beforeCreate</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">      <span class="co">// Do other stuff</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{}</span>)<span class="op">;</span>    <span class="co">// Runs the global hook</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="cf">await</span> <span class="va">Project</span>.<span class="at">create</span>(<span class="op">{}</span>)<span class="op">;</span> <span class="co">// Runs its own hook, followed by the global hook</span></a></code></pre></div>
+<p>Permanent hooks may also be defined in the options passed to the Sequelize constructor:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">new</span> <span class="at">Sequelize</span>(...<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">hooks</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="at">beforeCreate</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">      <span class="co">// do stuff</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Note that the above is not the same as the <em>Default Hooks</em> mentioned above. That one uses the <code>define</code> option of the constructor. This one does not.</p>
+<h3 id="connection-hooks">Connection Hooks</h3>
+<p>Sequelize provides four hooks that are executed immediately before and after a database connection is obtained or released:</p>
+<ul>
+<li><code>sequelize.beforeConnect(callback)</code>
+<ul>
+<li>The callback has the form <code>async (config) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>sequelize.afterConnect(callback)</code>
+<ul>
+<li>The callback has the form <code>async (connection, config) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>sequelize.beforeDisconnect(callback)</code>
+<ul>
+<li>The callback has the form <code>async (connection) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>sequelize.afterDisconnect(callback)</code>
+<ul>
+<li>The callback has the form <code>async (connection) =&gt; /* ... */</code></li>
+</ul></li>
+</ul>
+<p>These hooks can be useful if you need to asynchronously obtain database credentials, or need to directly access the low-level database connection after it has been created.</p>
+<p>For example, we can asynchronously obtain a database password from a rotating token store, and mutate Sequelize’s configuration object with the new credentials:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">sequelize</span>.<span class="at">beforeConnect</span>(<span class="kw">async</span> (config) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="va">config</span>.<span class="at">password</span> <span class="op">=</span> <span class="cf">await</span> <span class="at">getAuthToken</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>These hooks may <em>only</em> be declared as a permanent global hook, as the connection pool is shared by all models.</p>
+<h2 id="instance-hooks">Instance hooks</h2>
+<p>The following hooks will emit whenever you’re editing a single object:</p>
+<ul>
+<li><code>beforeValidate</code></li>
+<li><code>afterValidate</code> / <code>validationFailed</code></li>
+<li><code>beforeCreate</code> / <code>beforeUpdate</code> / <code>beforeSave</code> / <code>beforeDestroy</code></li>
+<li><code>afterCreate</code> / <code>afterUpdate</code> / <code>afterSave</code> / <code>afterDestroy</code></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="va">User</span>.<span class="at">beforeCreate</span>(user <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="cf">if</span> (<span class="va">user</span>.<span class="at">accessLevel</span> <span class="op">&gt;</span> <span class="dv">10</span> <span class="op">&amp;&amp;</span> <span class="va">user</span>.<span class="at">username</span> <span class="op">!==</span> <span class="st">&quot;Boss&quot;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&quot;You can&#39;t grant this user an access level above 10!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The following example will throw an error:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;Not a Boss&#39;</span><span class="op">,</span> <span class="dt">accessLevel</span><span class="op">:</span> <span class="dv">20</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(error)<span class="op">;</span> <span class="co">// You can&#39;t grant this user an access level above 10!</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="op">};</span></a></code></pre></div>
+<p>The following example will be successful:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> user <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;Boss&#39;</span><span class="op">,</span> <span class="dt">accessLevel</span><span class="op">:</span> <span class="dv">20</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="va">console</span>.<span class="at">log</span>(user)<span class="op">;</span> <span class="co">// user object with username &#39;Boss&#39; and accessLevel of 20</span></a></code></pre></div>
+<h3 id="model-hooks">Model hooks</h3>
+<p>Sometimes you’ll be editing more than one record at a time by using methods like <code>bulkCreate</code>, <code>update</code> and <code>destroy</code>. The following hooks will emit whenever you’re using one of those methods:</p>
+<ul>
+<li><code>YourModel.beforeBulkCreate(callback)</code>
+<ul>
+<li>The callback has the form <code>(instances, options) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>YourModel.beforeBulkUpdate(callback)</code>
+<ul>
+<li>The callback has the form <code>(options) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>YourModel.beforeBulkDestroy(callback)</code>
+<ul>
+<li>The callback has the form <code>(options) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>YourModel.afterBulkCreate(callback)</code>
+<ul>
+<li>The callback has the form <code>(instances, options) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>YourModel.afterBulkUpdate(callback)</code>
+<ul>
+<li>The callback has the form <code>(options) =&gt; /* ... */</code></li>
+</ul></li>
+<li><code>YourModel.afterBulkDestroy(callback)</code>
+<ul>
+<li>The callback has the form <code>(options) =&gt; /* ... */</code></li>
+</ul></li>
+</ul>
+<p>Note: methods like <code>bulkCreate</code> do not emit individual hooks by default - only the bulk hooks. However, if you want individual hooks to be emitted as well, you can pass the <code>{ individualHooks: true }</code> option to the query call. However, this can drastically impact performance, depending on the number of records involved (since, among other things, all instances will be loaded into memory). Examples:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="cf">await</span> <span class="va">Model</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">accessLevel</span><span class="op">:</span> <span class="dv">0</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-3" title="3">  <span class="dt">individualHooks</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">// This will select all records that are about to be deleted and emit `beforeDestroy` and `afterDestroy` on each instance.</span></a>
+<a class="sourceLine" id="cb13-6" title="6"></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="cf">await</span> <span class="va">Model</span>.<span class="at">update</span>(<span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;Tony&#39;</span> <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-8" title="8">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">accessLevel</span><span class="op">:</span> <span class="dv">0</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-9" title="9">  <span class="dt">individualHooks</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="co">// This will select all records that are about to be updated and emit `beforeUpdate` and `afterUpdate` on each instance.</span></a></code></pre></div>
+<p>If you use <code>Model.bulkCreate(...)</code> with the <code>updateOnDuplicate</code> option, changes made in the hook to fields that aren’t given in the <code>updateOnDuplicate</code> array will not be persisted to the database. However it is possible to change the <code>updateOnDuplicate</code> option inside the hook if this is what you want.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">User</span>.<span class="at">beforeBulkCreate</span>((users<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="cf">for</span> (<span class="kw">const</span> user <span class="kw">of</span> users) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="cf">if</span> (<span class="va">user</span>.<span class="at">isMember</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">      <span class="va">user</span>.<span class="at">memberSince</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-7" title="7"></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="co">// Add `memberSince` to updateOnDuplicate otherwise it won&#39;t be persisted</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="cf">if</span> (<span class="va">options</span>.<span class="at">updateOnDuplicate</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="va">options</span>.<span class="va">updateOnDuplicate</span>.<span class="at">includes</span>(<span class="st">&#39;memberSince&#39;</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-10" title="10">    <span class="va">options</span>.<span class="va">updateOnDuplicate</span>.<span class="at">push</span>(<span class="st">&#39;memberSince&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-13" title="13"></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="co">// Bulk updating existing users with updateOnDuplicate option</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="cf">await</span> <span class="va">Users</span>.<span class="at">bulkCreate</span>([</a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="op">{</span> <span class="dt">id</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">isMember</span><span class="op">:</span> <span class="kw">true</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="op">{</span> <span class="dt">id</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">isMember</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-18" title="18">]<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-19" title="19">  <span class="dt">updateOnDuplicate</span><span class="op">:</span> [<span class="st">&#39;isMember&#39;</span>]</a>
+<a class="sourceLine" id="cb14-20" title="20"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="associations">Associations</h2>
+<p>For the most part hooks will work the same for instances when being associated.</p>
+<h3 id="one-to-one-and-one-to-many-associations">One-to-One and One-to-Many associations</h3>
+<ul>
+<li><p>When using <code>add</code>/<code>set</code> mixin methods the <code>beforeUpdate</code> and <code>afterUpdate</code> hooks will run.</p></li>
+<li><p>The <code>beforeDestroy</code> and <code>afterDestroy</code> hooks will only be called on associations that have <code>onDelete: 'CASCADE'</code> and <code>hooks: true</code>. For example:</p></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">class</span> Projects <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="va">Projects</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="kw">class</span> Tasks <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="va">Tasks</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-8" title="8">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-10" title="10"></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="va">Projects</span>.<span class="at">hasMany</span>(Tasks<span class="op">,</span> <span class="op">{</span> <span class="dt">onDelete</span><span class="op">:</span> <span class="st">&#39;CASCADE&#39;</span><span class="op">,</span> <span class="dt">hooks</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="va">Tasks</span>.<span class="at">belongsTo</span>(Projects)<span class="op">;</span></a></code></pre></div>
+<p>This code will run <code>beforeDestroy</code> and <code>afterDestroy</code> hooks on the Tasks model.</p>
+<p>Sequelize, by default, will try to optimize your queries as much as possible. When calling cascade on delete, Sequelize will simply execute:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">DELETE</span> <span class="kw">FROM</span> `table` <span class="kw">WHERE</span> associatedIdentifier <span class="op">=</span> associatedIdentifier.primaryKey</a></code></pre></div>
+<p>However, adding <code>hooks: true</code> explicitly tells Sequelize that optimization is not of your concern. Then, Sequelize will first perform a <code>SELECT</code> on the associated objects and destroy each instance, one by one, in order to be able to properly call the hooks (with the right parameters).</p>
+<h3 id="many-to-many-associations">Many-to-Many associations</h3>
+<ul>
+<li>When using <code>add</code> mixin methods for <code>belongsToMany</code> relationships (that will add one or more records to the junction table) the <code>beforeBulkCreate</code> and <code>afterBulkCreate</code> hooks in the junction model will run.
+<ul>
+<li>If <code>{ individualHooks: true }</code> was passed to the call, then each individual hook will also run.</li>
+</ul></li>
+<li>When using <code>remove</code> mixin methods for <code>belongsToMany</code> relationships (that will remove one or more records to the junction table) the <code>beforeBulkDestroy</code> and <code>afterBulkDestroy</code> hooks in the junction model will run.
+<ul>
+<li>If <code>{ individualHooks: true }</code> was passed to the call, then each individual hook will also run.</li>
+</ul></li>
+</ul>
+<p>If your association is Many-to-Many, you may be interested in firing hooks on the through model when using the <code>remove</code> call. Internally, sequelize is using <code>Model.destroy</code> resulting in calling the <code>bulkDestroy</code> instead of the <code>before/afterDestroy</code> hooks on each through instance.</p>
+<h2 id="hooks-and-transactions">Hooks and Transactions</h2>
+<p>Many model operations in Sequelize allow you to specify a transaction in the options parameter of the method. If a transaction <em>is</em> specified in the original call, it will be present in the options parameter passed to the hook function. For example, consider the following snippet:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">User</span>.<span class="at">addHook</span>(<span class="st">&#39;afterCreate&#39;</span><span class="op">,</span> <span class="kw">async</span> (user<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="co">// We can use `options.transaction` to perform some other call</span></a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="co">// using the same transaction of the call that triggered this hook</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="cf">await</span> <span class="va">User</span>.<span class="at">update</span>(<span class="op">{</span> <span class="dt">mood</span><span class="op">:</span> <span class="st">&#39;sad&#39;</span> <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-5" title="5">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-6" title="6">      <span class="dt">id</span><span class="op">:</span> <span class="va">user</span>.<span class="at">id</span></a>
+<a class="sourceLine" id="cb17-7" title="7">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-8" title="8">    <span class="dt">transaction</span><span class="op">:</span> <span class="va">options</span>.<span class="at">transaction</span></a>
+<a class="sourceLine" id="cb17-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-11" title="11"></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> t <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-13" title="13">  <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-14" title="14">    <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;someguy&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-15" title="15">    <span class="dt">mood</span><span class="op">:</span> <span class="st">&#39;happy&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-16" title="16">    <span class="dt">transaction</span><span class="op">:</span> t</a>
+<a class="sourceLine" id="cb17-17" title="17">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>If we had not included the transaction option in our call to <code>User.update</code> in the preceding code, no change would have occurred, since our newly created user does not exist in the database until the pending transaction has been committed.</p>
+<h3 id="internal-transactions">Internal Transactions</h3>
+<p>It is very important to recognize that sequelize may make use of transactions internally for certain operations such as <code>Model.findOrCreate</code>. If your hook functions execute read or write operations that rely on the object’s presence in the database, or modify the object’s stored values like the example in the preceding section, you should always specify <code>{ transaction: options.transaction }</code>:</p>
+<ul>
+<li>If a transaction was used, then <code>{ transaction: options.transaction }</code> will ensure it is used again;</li>
+<li>Otherwise, <code>{ transaction: options.transaction }</code> will be equivalent to <code>{ transaction: undefined }</code>, which won’t use a transaction (which is ok).</li>
+</ul>
+<p>This way your hooks will always behave correctly.</p>

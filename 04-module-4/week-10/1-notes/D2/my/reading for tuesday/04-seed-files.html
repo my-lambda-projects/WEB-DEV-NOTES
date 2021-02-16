@@ -1,0 +1,102 @@
+<p>After a database is created, we need to populate it, or <em>seed</em> it, with data. Until now, we’ve used the command-line psql interface to create tables and insert rows into those tables. While that’s fine for small datasets, it would be cumbersome to add a large dataset using the command line.</p>
+<p>In this reading, we’ll learn how to create and run a seed file, which makes the process of populating a database with test data much easier.</p>
+<h2 id="creating-a-seed-file">Creating a seed file</h2>
+<p>You can create a seed file by opening up VSCode or any text editor and saving a file with the <code>.sql</code> extension.</p>
+<p>Let’s create a seed file called <code>seed-data.sql</code> that’s going to create a new table called <code>pies</code> and insert 50 pie rows into the table. Use the code below to create the seed file, and make sure to save your seed file on your machine.</p>
+<p><em><strong>seed-data.sql</strong></em></p>
+<pre><code>CREATE TABLE pies (
+  flavor VARCHAR(255) PRIMARY KEY,
+  price FLOAT
+);
+
+INSERT INTO pies VALUES(&#39;Apple&#39;, 19.95);
+INSERT INTO pies VALUES(&#39;Caramel Apple Crumble&#39;, 20.53);
+INSERT INTO pies VALUES(&#39;Blueberry&#39;, 19.31);
+INSERT INTO pies VALUES(&#39;Blackberry&#39;, 22.86);
+INSERT INTO pies VALUES(&#39;Cherry&#39;, 22.32);
+INSERT INTO pies VALUES(&#39;Peach&#39;, 20.45);
+INSERT INTO pies VALUES(&#39;Raspberry&#39;, 20.99);
+INSERT INTO pies VALUES(&#39;Mixed Berry&#39;, 21.45);
+INSERT INTO pies VALUES(&#39;Strawberry Rhubarb&#39;, 24.81);
+INSERT INTO pies VALUES(&#39;Banana Cream&#39;, 18.66);
+INSERT INTO pies VALUES(&#39;Boston Toffee&#39;, 25.00);
+INSERT INTO pies VALUES(&#39;Banana Nutella&#39;, 22.12);
+INSERT INTO pies VALUES(&#39;Bananas Foster&#39;, 24.99);
+INSERT INTO pies VALUES(&#39;Boston Cream&#39;, 23.75);
+INSERT INTO pies VALUES(&#39;Cookies and Cream&#39;, 18.27);
+INSERT INTO pies VALUES(&#39;Coconut Cream&#39;, 22.89);
+INSERT INTO pies VALUES(&#39;Chess&#39;, 25.00);
+INSERT INTO pies VALUES(&#39;Lemon Chess&#39;, 25.00);
+INSERT INTO pies VALUES(&#39;Key Lime&#39;, 19.34);
+INSERT INTO pies VALUES(&#39;Lemon Meringue&#39;, 19.58);
+INSERT INTO pies VALUES(&#39;Guava&#39;, 18.92);
+INSERT INTO pies VALUES(&#39;Mango&#39;, 19.55);
+INSERT INTO pies VALUES(&#39;Plum&#39;, 20.21);
+INSERT INTO pies VALUES(&#39;Apricot&#39;, 20.55);
+INSERT INTO pies VALUES(&#39;Gooseberry&#39;, 23.54);
+INSERT INTO pies VALUES(&#39;Lingonberry&#39;, 24.35);
+INSERT INTO pies VALUES(&#39;Pear Vanilla Butterscotch&#39;, 25.13);
+INSERT INTO pies VALUES(&#39;Baked Alaska&#39;, 25.71);
+INSERT INTO pies VALUES(&#39;Chocolate&#39;, 19.00);
+INSERT INTO pies VALUES(&#39;Chocolate Mousse&#39;, 21.46);
+INSERT INTO pies VALUES(&#39;Mexican Chocolate&#39;, 28.33);
+INSERT INTO pies VALUES(&#39;Chocolate Caramel&#39;, 26.67);
+INSERT INTO pies VALUES(&#39;Chocolate Chip Cookie Dough&#39;, 18.65);
+INSERT INTO pies VALUES(&#39;Pecan&#39;, 26.33);
+INSERT INTO pies VALUES(&#39;Bourbon Caramel Pecan&#39;, 27.88);
+INSERT INTO pies VALUES(&#39;Chocolate Pecan&#39;, 27.63);
+INSERT INTO pies VALUES(&#39;Pumpkin&#39;, 20.91);
+INSERT INTO pies VALUES(&#39;Sweet Potato&#39;, 20.75);
+INSERT INTO pies VALUES(&#39;Purple Sweet Potato&#39;, 26.34);
+INSERT INTO pies VALUES(&#39;Cheesecake&#39;, 28.99);
+INSERT INTO pies VALUES(&#39;Butterscotch Praline&#39;, 29.78);
+INSERT INTO pies VALUES(&#39;Salted Caramel&#39;, 30.32);
+INSERT INTO pies VALUES(&#39;Salted Honey&#39;, 59.00);
+INSERT INTO pies VALUES(&#39;Sugar Cream&#39;, 33.89);
+INSERT INTO pies VALUES(&#39;Mississippi Mud&#39;, 28.67);
+INSERT INTO pies VALUES(&#39;Turtle Fudge&#39;, 30.58);
+INSERT INTO pies VALUES(&#39;Fruit Loops&#39;, 20.45);
+INSERT INTO pies VALUES(&#39;Black Forest&#39;, 34.99);
+INSERT INTO pies VALUES(&#39;Maple Cream&#39;, 35.88);
+INSERT INTO pies VALUES(&#39;Smores&#39;, 26.43);
+INSERT INTO pies VALUES(&#39;Milk Bar&#39;, 46.00);
+
+SELECT * FROM pies;</code></pre>
+<h2 id="populating-a-database-via-left-caret">Populating a database via &lt; (“left caret”)</h2>
+<p>Now that you have a seed file, you can insert it into a database with a simple command.</p>
+<p>Create a database named “bakery”.</p>
+<p>The syntax is <code>psql -d [database] &lt; [path_to_file/file.sql]</code>. The left caret (<code>&lt;</code>) takes the standard input from the file on the right (your seed file) and inputs it into the program on the left (<code>psql</code>).</p>
+<p>Open up your terminal, and enter the following command. Make sure to replace <code>path_to_my_file</code> with the actual file path.</p>
+<pre><code>psql -d bakery &lt; path_to_my_file/seed-data.sql</code></pre>
+<p>In the terminal, you should see a bunch of <code>INSERT</code> statements and the entire “pies” table printed out (from the <code>SELECT *</code> query in the seed file).</p>
+<p>You can log into psql and use <code>\dt</code> to verify that your new table has been added to the database:</p>
+<pre><code>postgres=# \dt
+List of relations
+ Schema |     Name     | Type  |  Owner
+ public | breeds       | table | appacademy
+ public | pies         | table | appacademy
+ public | puppies      | table | appacademy</code></pre>
+<h2 id="populating-the-database-via-pipe">Populating the database via | (“pipe”)</h2>
+<p>You could also use the “pipe” (<code>|</code>) to populate the database with your seed file.</p>
+<p>The syntax is <code>cat [path_to_file/file.sql] | psql -d [database]</code>. ‘cat’ is a standard Unix utility that reads files sequentially, writing them to standard output. The “pipe” (<code>|</code>) takes the standard output of the command on the left and pipes it as standard input to the command on the right.</p>
+<p>Try out this method in your terminal. If you have an existing “pies” table, you’ll need to drop this table before you can add it again:</p>
+<pre><code>DROP TABLE pies;</code></pre>
+<p>Then, enter the following. Make sure to replace <code>path_to_my_file</code> with the actual file path.</p>
+<pre><code>cat path_to_my_file/seed-data.sql | psql -d postgres</code></pre>
+<p>Again, you should see a bunch of <code>INSERT</code> statements and the entire “pies” table printed out (from the <code>SELECT *</code> query in the seed file).</p>
+<p>You can log into psql and use <code>\dt</code> to verify that your new table has been added to the database:</p>
+<pre><code>postgres=# \dt
+List of relations
+ Schema |     Name     | Type  |  Owner
+ public | friends      | table | postgres
+ public | pies         | table | postgres
+ public | puppies      | table | postgres</code></pre>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>What a seed file is</li>
+<li>How to create a seed file</li>
+<li>How to populate a database with a seed file using &lt;</li>
+<li>How to populate a database with a seed file using |</li>
+</ul>
+<p>Did you find this lesson helpful?</p>
+<p><a href="https://open.appacademy.io/learn/js-py---oct-2020-online/week-10-oct-2020-online/using-seed-files">Source</a></p>

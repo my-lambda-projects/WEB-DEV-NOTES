@@ -1,0 +1,32 @@
+{
+    "comments": {
+        // symbol used for single line comment. Remove this entry if your language does not support line comments
+        "lineComment": "'"
+        // symbols used for start and end a block comment. Remove this entry if your language does not support block comments
+        //"blockComment": [ "/*", "*/" ]
+    },
+    // symbols used as brackets
+    "brackets": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""]
+    ],
+    // symbols that that can be used to surround a selection
+    "surroundingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""]
+    ],
+    "indentationRules": {
+        "increaseIndentPattern": "^\\s*(\\b(begin|class|Class|else|Else|elseif|ElseIf|for|For|until|Until|when|When|while|While|with|With|select|Select|case|Case)\\b|\\b(if|If)\\b.*\\b(then|Then)\\s*$|((public|Public|private|Private)\\s*(default|Default)?\\s*(property|Property|sub|Sub|function|Function)))\\b.*$",
+        "decreaseIndentPattern": "^\\s*(end|End|else|Else|elseif|ElseIf|when|When|case|Case)\\b"
+      }
+}

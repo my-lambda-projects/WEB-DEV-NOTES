@@ -1,0 +1,101 @@
+/****
+structure.css -- works with site layout wrappers
+****/
+
+.ev-page-wrapper {
+  height: 100%;
+  padding-top: 10px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background-color: var(--lightest-white);
+}
+
+.ev-content-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: [main-start] 65% [main-end sidebar-start] 35% [sidebar-end];
+  overflow: hidden;
+}
+
+.ev-main {
+  grid-column: main;
+  padding: 0px 20px 10px;
+  overflow: auto;
+  /* The emerging W3C standard that is currently Firefox-only */
+  scrollbar-color:  var(--primary-color-dark) var(--primary-color-light);
+}
+
+/* Works on Chrome/Edge/Safari */
+.ev-main::-webkit-scrollbar {
+  width: 12px; /* vertical bar */
+  height: 12px; /* horizontal bar */
+}
+.ev-main::-webkit-scrollbar-track,
+.ev-main::-webkit-scrollbar-corner {
+  background: var(--primary-color-light);
+}
+
+.ev-main::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-dark);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+}
+
+.ev-main > header {
+  position: sticky;
+  top: 0;
+  background-color: var(--lightest-white);
+  border-bottom: 3px solid var(--primary-color-dark);
+}
+
+.ev-sidebar {
+  grid-column: sidebar;
+  margin-left: 3px;
+  padding: 10px;
+  overflow: auto;
+  background-color: var(--secondary-color-white);
+  /* The emerging W3C standard that is currently Firefox-only */
+  scrollbar-color:  var(--secondary-color) var(--secondary-color-light);
+}
+
+.ev-sidebar::-webkit-scrollbar-track,
+.ev-sidebar::-webkit-scrollbar-corner {
+  background: var(--secondary-color-light);
+}
+.ev-sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color-dark);
+}
+
+/* Sets sidebar scroll position next to main's */
+.ev-rtl {
+  direction: rtl;
+}
+.ev-ltr {
+  direction: ltr;
+  height: 2000px;
+}
+
+.ev-footer {
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-color-dark);
+  background-color: var(--primary-color-light);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5) 5%, var(--primary-color-light) 15%, var(--primary-color-light) 85%, rgba(255, 255, 255, 0.5) 95%);
+}
+
+.ev-text-content {
+  padding: 5px;
+}
+
+
+
+    /* .ev-main::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+      display: none;
+        --secondary-color: rgb(250, 211, 84);
+  --secondary-color-light: rgb(255, 238, 181);
+    } */

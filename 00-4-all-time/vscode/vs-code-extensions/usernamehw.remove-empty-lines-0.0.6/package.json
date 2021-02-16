@@ -1,0 +1,79 @@
+{
+	"name": "remove-empty-lines",
+	"displayName": "Remove empty lines",
+	"description": "Remove blank lines from document or selection.",
+	"version": "0.0.6",
+	"publisher": "usernamehw",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usernamehw/vscode-remove-empty-lines"
+	},
+	"bugs": {
+		"url": "https://github.com/usernamehw/vscode-remove-empty-lines/issues"
+	},
+	"keywords": [
+		"remove",
+		"delete",
+		"empty",
+		"blank",
+		"line"
+	],
+	"categories": [
+		"Other",
+		"Formatters"
+	],
+	"activationEvents": [
+		"onCommand:remove-empty-lines.inDocument",
+		"onCommand:remove-empty-lines.inSelection"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "remove-empty-lines.inDocument",
+				"title": "in Document",
+				"category": "Remove empty lines"
+			},
+			{
+				"command": "remove-empty-lines.inSelection",
+				"title": "in Selection",
+				"category": "Remove empty lines"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Remove empty lines configuration",
+			"properties": {
+				"remove-empty-lines.allowedNumberOfEmptyLines": {
+					"type": "number",
+					"default": 0,
+					"description": "Number of allowed consecutive empty lines."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "webpack --mode production --colors",
+		"compile": "webpack --mode development",
+		"watch": "webpack --mode development --watch --display=minimal"
+	},
+	"devDependencies": {
+		"@types/node": "^8.10.54",
+		"@types/vscode": "^1.25.0",
+		"friendly-errors-webpack-plugin": "^1.7.0",
+		"ts-loader": "^6.1.2",
+		"tslint": "^5.20.0",
+		"typescript": "^3.6.3",
+		"webpack": "^4.41.0",
+		"webpack-cli": "^3.3.9"
+	},
+	"__metadata": {
+		"id": "10a12f01-b6a2-4dc4-89c0-e42c01f02e0e",
+		"publisherId": "151820df-5dc5-4c97-8751-eb84643203fa",
+		"publisherDisplayName": "Alexander"
+	}
+}

@@ -1,0 +1,241 @@
+<p><strong>This is a walk-through</strong>: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Create a database for your user,</li>
+<li>Create databases for other users,</li>
+<li>Apply security to the databases to prevent access,</li>
+<li>See the first example of “relational data” in the RDBMS, and,</li>
+<li>Create other databases and apply security to them.</li>
+</ul>
+<p>Now that you can create users for each of your applications, it’s time for you to be able to create a <strong>database</strong>. The database is where you will store the data for your application.</p>
+<p>You’ve been using the following command to log in as your superuser to the “postgres” database. This works because if you don’t specify a user with the <code>-U</code> command line parameter, it just uses the name of the currently logged in user, your user name.</p>
+<pre><code>psql postgres</code></pre>
+<p>That’s because if you don’t specify a database, then PostgreSQL will try to connect you to a database that has the same name as your user. Try it, now.</p>
+<pre><code>psql</code></pre>
+<p>When you run this, if there is no database with your user name, then you will receive an error message that reads like the following. (The text has been wrapped in the example for readability.)</p>
+<pre><code>psql: error: could not connect to server:
+      FATAL:  database &quot;appacademy&quot; does not exist</code></pre>
+<h2 id="naming-a-database">Naming a database</h2>
+<p>Names of databases should not create spaces or dashes. They should contain only lower case letters, numbers, and underscores.</p>
+<ul>
+<li>Good database names
+<ul>
+<li>appacademydata</li>
+<li>financials2020</li>
+<li>chicago_office</li>
+</ul></li>
+<li>Bad (incorrect) database names
+<ul>
+<li>App Academy Data</li>
+<li>financials-2020</li>
+<li>chicago.office</li>
+</ul></li>
+</ul>
+<h2 id="creating-a-database-for-your-user">Creating a database for your user</h2>
+<p>So that you don’t have to type “postgres” every time you want to connect on the command line, you can create a database with your user name so that one will exist. To determine your user name, type the following command at your shell, <em>not</em> in PostgreSQL.</p>
+<pre><code>whoami</code></pre>
+<p>That will show you the name of your user. Remember that name. Now, start your PostgreSQL command line as your superuser.</p>
+<pre><code>psql postgres</code></pre>
+<p>That should result in the <code>psql</code> command prompt of <code>postgres=#</code>. Again, that means that you are currently connected to the “postgres” database.</p>
+<p>Once you’re greeted by the <code>postgres=#</code> command prompt, you can create a database for your user by typing the following command. Don’t copy and paste, here. Type it out.</p>
+<pre><code>CREATE DATABASE «your user name» WITH OWNER «your user name»;</code></pre>
+<p>By making yourself the owner of that database, then your user can do anything with it.</p>
+<p>For the examples in these articles, the user name is “appacademy”, so the authors typed</p>
+<pre><code>CREATE DATABASE appacademy WITH OWNER appacademy;</code></pre>
+<p>If the command succeeds, you will see the message “CREATE DATABASE”. Now, quit the client using <code>\q</code>. Now, connect, again, to PostgreSQL by just typing the following.</p>
+<pre><code>psql</code></pre>
+<p>Now, when you log in, you will be greeted by a command prompt that reads</p>
+<pre><code>«your user name»=#</code></pre>
+<p>You’re connected to your very own database! And, now, you have less to type when you want to start <code>psql</code>! Yay for less typing!</p>
+<h2 id="creating-other-users-and-databases">Creating other users and databases</h2>
+<p>Create two normal users with the following user names and passwords using the <code>CREATE USER</code> command from the last article.</p>
+<table>
+<thead>
+<tr class="header">
+<th>User name</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ada</td>
+<td>ada1234</td>
+</tr>
+<tr class="even">
+<td>odo</td>
+<td>ODO!!!1</td>
+</tr>
+</tbody>
+</table>
+<p>Now, create two databases, each named for a user with that user as the owner. Again, type these rather than copying and pasting.</p>
+<pre><code>CREATE DATABASE ada WITH OWNER ada;
+CREATE DATABASE odo WITH OWNER odo;</code></pre>
+<p>Now that you have new users and databases for them, it’s time to test out that you can connect to PostgreSQL with those users. Quit your current session by typing <code>\q</code> and pressing Enter (or Return). Then, start a new session for “ada” by using the following <code>psql</code> command that will prompt for the user’s password (<code>-W</code>) and connect as the specified user (<code>-U ada</code>).</p>
+<pre><code>psql -W -U ada</code></pre>
+<p><strong>Note</strong>: Those command line parameters can come in any order, usually. The above statement can also be written as <code>psql -U ada -W</code>, for example.</p>
+<p>When you enter that and type the password for “ada” which is “ada1234” from the table above, you should see that you are now connected to the “ada” database in the prompt.</p>
+<pre><code>ada=&gt;</code></pre>
+<p>Notice that the character at the end is now a “&gt;” rather than the “#” that you’re used to seeing. That’s because “ada” is a normal user. Normal user prompts end with “&gt;”. Your user, the one tied to your user name, is a super user. That results in a “#”</p>
+<p>Quit this session and connect as the “odo” user, now. You will notice that because “odo” is a normal user, that you will see this prompt, too.</p>
+<pre><code>odo=&gt;</code></pre>
+<h2 id="applying-security-to-databases">Applying security to databases</h2>
+<p>You’ve created a database for “odo”. Type the following command which will try to connect as the user “ada” (<code>-U ada</code>) to the database “odo” (<code>odo</code>).</p>
+<pre><code>psql -W -U ada odo</code></pre>
+<p>After you type the password, you may be surprised to find out that “ada” can connect to the database “odo” that’s owned by the user “odo”! That’s because all databases, when they’re created, by default allow access to what is known as the “PUBLIC” schema, a kind of group that everyone belongs to. You sure don’t want that if you want to prevent the user “ada” from messing up the data in the database “odo”, and the user “odo” from messing up the data in the database “ada”.</p>
+<p>To do that, you have to revoke connection privileges to “PUBLIC”. That’s like putting a biometric lock on a bank safety deposit box so that only the owner of that deposit box (and bank officials) can get into it and do stuff with its contents.</p>
+<p>To do that, quit the current <code>psql</code> session if you’re in one. Connect to PostgreSQL as your user, a superuser. Again, now that you have your own database, you can just type <code>psql</code> at your macOS Terminal command line or Ubuntu shell command line. Once you have your prompt</p>
+<pre><code>«your user name»=#</code></pre>
+<p>you want to type a command that will revoke all privileges from the databases named “odo” and “ada” the connection privileges of the entire “PUBLIC” group. To do that, you write the command with the form:</p>
+<pre><code>REVOKE CONNECT ON DATABASE «database name» FROM PUBLIC;</code></pre>
+<p>Do that for both databases. Each time you run it, you should see the message “REVOKE” showing that it worked.</p>
+<p>Now, quit your session (<code>\q</code>). With the connection privilege revoked, “ada” can no longer connect to database “odo” and vice versa. Try typing the following.</p>
+<pre><code>psql -W -U ada odo</code></pre>
+<p>You should see an error message similar to the following.</p>
+<pre><code>psql: error: could not connect to server:
+      FATAL:  permission denied for database &quot;odo&quot;
+DETAIL:  User does not have CONNECT privilege.</code></pre>
+<p>Try connecting with the user “odo” to the database named “ada”. You should see the same error message except with the database named “ada” in it.</p>
+<p>But, your superuser status will not be thwarted! You can still connect to either of those because of your superuser privileges. Neither of the following commands should fail.</p>
+<pre><code># Connect to the database &quot;odo&quot; as your superuser
+psql odo
+
+# Connect to the database &quot;ada&quot; as your superuser
+psql ada</code></pre>
+<p>Superusers can connect to any and all databases. Because <em>superuser</em>!</p>
+<p>Remember you created a database for your user? Now, revoke connection privileges from it for “PUBLIC”, too.</p>
+<h2 id="listing-databases-and-granting-privileges">Listing databases and granting privileges</h2>
+<p>Now, say the user “ada” needs another database, one that will contain data that “ada” wants to keep separate from the data in the database “ada”. Connect to PostgreSQL as your user. Create a new database without specifying the owner.</p>
+<pre><code>CREATE DATABASE hr_data;</code></pre>
+<p>Now, type the command to list databases on your installation of PostgreSQL.</p>
+<pre><code>\list</code></pre>
+<p>You will see something akin to the following. The entries in the “Collate”, “Cypte”, and “Access privileges” columns may differ. That’s fine and can be ignored. Also, where you see “appacademy”, you’ll probably see your user name.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Owner</th>
+<th>Encoding</th>
+<th>Collate</th>
+<th>Ctype</th>
+<th>Access privileges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ada</td>
+<td>ada</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=T/ada +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ada=CTc/ada</td>
+</tr>
+<tr class="odd">
+<td>appacademy</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>hr_data</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>odo</td>
+<td>odo</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=T/odo +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>odo=CTc/odo</td>
+</tr>
+<tr class="odd">
+<td>postgres</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>template0</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=c/appacademy +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>appacademy=CTc/appacademy</td>
+</tr>
+<tr class="even">
+<td>template1</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=c/appacademy +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>appacademy=CTc/appacademy</td>
+</tr>
+</tbody>
+</table>
+<p>You will see that for the database that you just created, “hr_data”, that the owner is you. Go ahead and revoke all access to it from “PUBLIC” like you did in the last section. Once you’ve done that, no one but you (and other superusers) can connect to the “hr_data” database. (You may want to exit the <code>psql</code> shell and try connecting with the credentials for the “ada” user just to make sure. If you do that, reconnect as your user so you can continue with the security management.)</p>
+<p>Now, you need to add “ada” back to it so that user can connect to the database. The opposite of <code>REVOKE ... FROM ...</code> is <code>GRANT ... TO ...</code>. So, you will type the following:</p>
+<pre><code>GRANT CONNECT ON DATABASE hr_data TO ada;</code></pre>
+<p>Now, if you exit the <code>psql</code> shell and connect as “ada”, you will see that user can connect. Make sure that’s true.</p>
+<pre><code>psql -U ada hr_data</code></pre>
+<p>Once you have confirmed that “ada” can connect, make sure that user “odo” cannot connect.</p>
+<pre><code>psql -U odo hr_data</code></pre>
+<p>That command should return the error message that reads that the user “does not have CONNECT privilege.”</p>
+<h2 id="time-to-clean-up">Time to clean up</h2>
+<p>Time to clean up the entities that you’ve created in this walk-through. You already know how to delete a user by using the <code>DROP USER</code> statement. Log in as your superuser and try to drop the “ada” user. You should see an error message similar to the following.</p>
+<pre><code>ERROR:  role &quot;ada&quot; cannot be dropped because some objects depend on it
+DETAIL:  owner of database ada
+privileges for database hr_data</code></pre>
+<p>This tells you that you can’t drop that user because database objects in the system rely on the existence of the user “ada”. This is the first example that you’ve seen of <em>relational data</em>. The database “ada” is related to the user “ada” because user “ada” owns the database “ada”. The database “hr_data” is related to the user “ada” because the user “ada” has access privileges for the database “hr_data”.</p>
+<p>This is one of the primary reasons that relational databases provide such an important role in application design and development. If you or your application puts data into the database that relates to other data, you can’t just remove it without removing <em>all of the related data, too</em>!</p>
+<p>To remove the related data from user “ada”, you need to revoke the connect privilege on “hr_data” for user “ada”. Then, you need to delete the database “ada” that user “ada” owns. You’ve seen some <code>REVOKE</code> statements in this article that revoke the connect privilege from “PUBLIC”. It’s the same for an individual user, too, just replace “PUBLIC” with the name of the user.</p>
+<p>Then, the opposite of <code>CREATE DATABASE</code> is <code>DROP DATABASE</code> just like the opposite of <code>CREATE USER</code> is <code>DROP USER</code>.</p>
+<p>Putting together those two hints, you can type commands like this to get the job done.</p>
+<pre><code>REVOKE CONNECT ON DATABASE hr_data FROM ada;
+DROP DATABASE ada;
+DROP USER ada;</code></pre>
+<p>Run in that order, the first two statements remove the data <em>related</em> to the user “ada”. Once that’s gone, you can finally remove the user “ada” itself.</p>
+<p>Do the same for the user “odo”, deleting the related data, first. Remember, you can run the <code>DROP</code> statement for the user “odo” to see what data relates to that user.</p>
+<p><strong>Note</strong>: When you run a statement in PostgreSQL that results in an error message, do not worry! You have not corrupted anything! These are helpful statements to let you know that the state of the database won’t allow you to perform the requested operation. These kinds of error statements are guideposts for you to follow to get to the place you want to be.</p>
+<h2 id="what-youve-done">What you’ve done</h2>
+<p>You have successfully created databases for yourself and other users. You have created a database with you as the owner and given access to it to another user. You have locked down databases so only owners (and superusers) can access them. You know how to see the owner of a database. You know how to remove a user from a database after removing all data related to the user.</p>
+<p>This is the start of a lovely secure set of databases.</p>
+<p><a href="https://open.appacademy.io/learn/js-py---sep-2020-online/week-10-sep-2020-online/database-management-walk-through">Source</a></p>

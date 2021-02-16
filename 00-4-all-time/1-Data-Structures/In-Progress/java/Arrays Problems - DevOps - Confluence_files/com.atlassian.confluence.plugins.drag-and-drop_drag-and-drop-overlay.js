@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.drag-and-drop:drag-and-drop-overlay', location = 'js/drag-and-drop-overlay.js' */
+define("conf/confluence-drag-and-drop/drag-and-drop-overlay",["confluence/templates","jquery"],function(h,e){function k(){if(!c){var a=h.DragAndDrop.dragOverlay();c=e(a)}return c}function l(a,d,c){var b=k();if(b.parent()[0]!==a[0]){var f=0<a.closest(".quick-comment-container, .ic-container, .cp-editor").length;b.toggleClass("dnd-small",f);var g=b.find(".overlay-center p");f?g.text("Drop a file here"):g.text("Drop files to insert them into the page");b.toggleClass("dnd-overlay-transparent",
+d);d=getComputedStyle(a[0]);b.css({"z-index":c});b.css({"margin-left":"-"+d.paddingLeft,"margin-top":"-"+d.paddingTop,width:a.innerWidth()+"px",height:a.innerHeight()+"px"}).prependTo(a);b.off("dragleave").on("dragleave",function(a){a.relatedTarget&&e.contains(b[0],a.relatedTarget)||b.remove()});b.off("drop").on("drop",function(){b.remove()})}}var c;return{bindFileDragOverlay:function(a){var d=a.$dragZone,c=a.$overlayZone||d.eq(0),b=a.isTransparent||!1,f=a.zIndex||1;d.on("dragover",function(a){a=
+a.originalEvent.dataTransfer.types;-1===e.inArray("Files",a)||e.browser.mozilla&&-1===e.inArray("application/x-moz-file",a)||l(c,!!b,f)})}}});
+}catch(e){WRMCB(e)};

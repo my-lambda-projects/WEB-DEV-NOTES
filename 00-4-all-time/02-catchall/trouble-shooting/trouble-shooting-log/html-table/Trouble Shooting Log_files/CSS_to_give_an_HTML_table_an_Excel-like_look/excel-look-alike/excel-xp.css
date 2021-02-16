@@ -1,0 +1,31 @@
+.ExcelTableXP {
+	border: 1px solid #716F64;
+	border-width: 1px 0px 0px 1px;
+	font-size: 10pt;
+	font-family: arial;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.ExcelTableXP TH {
+	background-color: #EFEDDE;
+	border: 1px solid #ACA899;
+	border-width: 0px 1px 1px 0px;
+	font-weight: normal;
+}
+
+.ExcelTableXP TD {
+	border: 0px;
+	background-color: white;
+	padding: 0px 4px 0px 2px;
+	border: 1px solid #C0C0C0;
+	border-width: 0px 1px 1px 0px;
+}
+
+.ExcelTableXP TD.heading {
+	background-color: #EFEDDE;
+	text-align: center;
+	padding: 0px 0px 0px 0px;
+	border: 1px solid #ACA899;
+	border-width: 0px 1px 1px 0px;
+}

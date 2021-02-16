@@ -1,0 +1,5810 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+<link rel="stylesheet" type="text/css" href="excel-2000.css"/>
+<link rel="stylesheet" type="text/css" href="excel-xp.css"/>
+<link rel="stylesheet" type="text/css" href="excel-2003.css"/>
+<link rel="stylesheet" type="text/css" href="excel-2007.css"/>
+
+<script lang="javascript">
+function ChangeTableClass(newClass)
+{
+	document.getElementById("TheTable").className = "ExcelTable" + newClass;
+}
+</script>
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Table Excel-lookalike Sample</title>
+</head>
+<body>
+Sample table: U.S. Cities with Population over 100,000 &mdash; Infoplease.com<p>
+Select look: 
+<select onchange='ChangeTableClass(this.options[this.selectedIndex].value);'>
+<option value="None">HTML Default</option>
+<option value="2000">Excel 2000</option>
+<option value="XP">Excel XP</option>
+<option value="2003">Excel 2003</option>
+<option value="2007">Excel 2007</option>
+</select>
+<p />
+
+<table id="TheTable"
+border="1"
+class=""
+>
+<tr><th class="heading">&nbsp;</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+<tr><td
+align="left"
+valign="bottom"
+class="heading"
+>1</td
+><td
+align="left"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+><b>July 2005 est. pop</b></td
+><td
+align="right"
+valign="bottom"
+><b>2005 rank</b></td
+><td
+align="right"
+valign="bottom"
+><b>ZIP code</b></td
+></tr
+><tr
+><td class="heading">2</td
+><td
+align="left"
+valign="bottom"
+><b
+>Alabama</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">3</td
+><td
+align="left"
+valign="bottom"
+>Birmingham </td
+><td
+align="right"
+valign="bottom"
+>231,483</td
+><td
+align="right"
+valign="bottom"
+>79</td
+><td
+align="right"
+valign="bottom"
+>35203</td
+></tr
+><tr
+><td class="heading">4</td
+><td
+align="left"
+valign="bottom"
+>Huntsville </td
+><td
+align="right"
+valign="bottom"
+>166,313</td
+><td
+align="right"
+valign="bottom"
+>134</td
+><td
+align="right"
+valign="bottom"
+>35813</td
+></tr
+><tr
+><td class="heading">5</td
+><td
+align="left"
+valign="bottom"
+>Mobile </td
+><td
+align="right"
+valign="bottom"
+>191,544</td
+><td
+align="right"
+valign="bottom"
+>112</td
+><td
+align="right"
+valign="bottom"
+>36601</td
+></tr
+><tr
+><td class="heading">6</td
+><td
+align="left"
+valign="bottom"
+>Montgomery </td
+><td
+align="right"
+valign="bottom"
+>200,127</td
+><td
+align="right"
+valign="bottom"
+>97</td
+><td
+align="right"
+valign="bottom"
+>36119</td
+></tr
+><tr
+><td class="heading">7</td
+><td
+align="left"
+valign="bottom"
+><b
+>Alaska</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">8</td
+><td
+align="left"
+valign="bottom"
+>Anchorage </td
+><td
+align="right"
+valign="bottom"
+>275,043</td
+><td
+align="right"
+valign="bottom"
+>68</td
+><td
+align="right"
+valign="bottom"
+>99599</td
+></tr
+><tr
+><td class="heading">9</td
+><td
+align="left"
+valign="bottom"
+><b
+>Arizona</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">10</td
+><td
+align="left"
+valign="bottom"
+>Chandler </td
+><td
+align="right"
+valign="bottom"
+>234,939</td
+><td
+align="right"
+valign="bottom"
+>75</td
+><td
+align="right"
+valign="bottom"
+>85225</td
+></tr
+><tr
+><td class="heading">11</td
+><td
+align="left"
+valign="bottom"
+>Gilbert town</td
+><td
+align="right"
+valign="bottom"
+>173,989</td
+><td
+align="right"
+valign="bottom"
+>127</td
+><td
+align="right"
+valign="bottom"
+>85296</td
+></tr
+><tr
+><td class="heading">12</td
+><td
+align="left"
+valign="bottom"
+>Glendale </td
+><td
+align="right"
+valign="bottom"
+>239,435</td
+><td
+align="right"
+valign="bottom"
+>73</td
+><td
+align="right"
+valign="bottom"
+>85302</td
+></tr
+><tr
+><td class="heading">13</td
+><td
+align="left"
+valign="bottom"
+>Mesa </td
+><td
+align="right"
+valign="bottom"
+>442,780</td
+><td
+align="right"
+valign="bottom"
+>41</td
+><td
+align="right"
+valign="bottom"
+>85201</td
+></tr
+><tr
+><td class="heading">14</td
+><td
+align="left"
+valign="bottom"
+>Peoria </td
+><td
+align="right"
+valign="bottom"
+>138,200</td
+><td
+align="right"
+valign="bottom"
+>169</td
+><td
+align="right"
+valign="bottom"
+>85381</td
+></tr
+><tr
+><td class="heading">15</td
+><td
+align="left"
+valign="bottom"
+>Phoenix </td
+><td
+align="right"
+valign="bottom"
+>1,461,575</td
+><td
+align="right"
+valign="bottom"
+>6</td
+><td
+align="right"
+valign="bottom"
+>85026</td
+></tr
+><tr
+><td class="heading">16</td
+><td
+align="left"
+valign="bottom"
+>Scottsdale </td
+><td
+align="right"
+valign="bottom"
+>226,013</td
+><td
+align="right"
+valign="bottom"
+>80</td
+><td
+align="right"
+valign="bottom"
+>85251</td
+></tr
+><tr
+><td class="heading">17</td
+><td
+align="left"
+valign="bottom"
+>Tempe </td
+><td
+align="right"
+valign="bottom"
+>161,143</td
+><td
+align="right"
+valign="bottom"
+>139</td
+><td
+align="right"
+valign="bottom"
+>85282</td
+></tr
+><tr
+><td class="heading">18</td
+><td
+align="left"
+valign="bottom"
+>Tucson </td
+><td
+align="right"
+valign="bottom"
+>515,526</td
+><td
+align="right"
+valign="bottom"
+>32</td
+><td
+align="right"
+valign="bottom"
+>85726</td
+></tr
+><tr
+><td class="heading">19</td
+><td
+align="left"
+valign="bottom"
+><b
+>Arkansas</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">20</td
+><td
+align="left"
+valign="bottom"
+>Little Rock </td
+><td
+align="right"
+valign="bottom"
+>184,564</td
+><td
+align="right"
+valign="bottom"
+>116</td
+><td
+align="right"
+valign="bottom"
+>72202</td
+></tr
+><tr
+><td class="heading">21</td
+><td
+align="left"
+valign="bottom"
+><b
+>California</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">22</td
+><td
+align="left"
+valign="bottom"
+>Anaheim </td
+><td
+align="right"
+valign="bottom"
+>331,804</td
+><td
+align="right"
+valign="bottom"
+>55</td
+><td
+align="right"
+valign="bottom"
+>92803</td
+></tr
+><tr
+><td class="heading">23</td
+><td
+align="left"
+valign="bottom"
+>Antioch </td
+><td
+align="right"
+valign="bottom"
+>100,631</td
+><td
+align="right"
+valign="bottom"
+>250</td
+><td
+align="right"
+valign="top"
+>94509</td
+></tr
+><tr
+><td class="heading">24</td
+><td
+align="left"
+valign="bottom"
+>Bakersfield </td
+><td
+align="right"
+valign="bottom"
+>295,536</td
+><td
+align="right"
+valign="bottom"
+>61</td
+><td
+align="right"
+valign="bottom"
+>93380</td
+></tr
+><tr
+><td class="heading">25</td
+><td
+align="left"
+valign="bottom"
+>Berkeley </td
+><td
+align="right"
+valign="bottom"
+>100,744</td
+><td
+align="right"
+valign="bottom"
+>249</td
+><td
+align="right"
+valign="bottom"
+>94704</td
+></tr
+><tr
+><td class="heading">26</td
+><td
+align="left"
+valign="bottom"
+>Burbank </td
+><td
+align="right"
+valign="bottom"
+>104,108</td
+><td
+align="right"
+valign="bottom"
+>239</td
+><td
+align="right"
+valign="bottom"
+>91505</td
+></tr
+><tr
+><td class="heading">27</td
+><td
+align="left"
+valign="bottom"
+>Chula Vista </td
+><td
+align="right"
+valign="bottom"
+>210,497</td
+><td
+align="right"
+valign="bottom"
+>90</td
+><td
+align="right"
+valign="bottom"
+>91910</td
+></tr
+><tr
+><td class="heading">28</td
+><td
+align="left"
+valign="bottom"
+>Concord </td
+><td
+align="right"
+valign="bottom"
+>123,252</td
+><td
+align="right"
+valign="bottom"
+>191</td
+><td
+align="right"
+valign="bottom"
+>94520</td
+></tr
+><tr
+><td class="heading">29</td
+><td
+align="left"
+valign="bottom"
+>Corona </td
+><td
+align="right"
+valign="bottom"
+>149,387</td
+><td
+align="right"
+valign="bottom"
+>151</td
+><td
+align="right"
+valign="bottom"
+>91718</td
+></tr
+><tr
+><td class="heading">30</td
+><td
+align="left"
+valign="bottom"
+>Costa Mesa </td
+><td
+align="right"
+valign="bottom"
+>109,830</td
+><td
+align="right"
+valign="bottom"
+>218</td
+><td
+align="right"
+valign="bottom"
+>92628</td
+></tr
+><tr
+><td class="heading">31</td
+><td
+align="left"
+valign="bottom"
+>Daly City </td
+><td
+align="right"
+valign="bottom"
+>100,339</td
+><td
+align="right"
+valign="bottom"
+>251</td
+><td
+align="right"
+valign="bottom"
+>94015</td
+></tr
+><tr
+><td class="heading">32</td
+><td
+align="left"
+valign="bottom"
+>Downey </td
+><td
+align="right"
+valign="bottom"
+>109,718</td
+><td
+align="right"
+valign="bottom"
+>219</td
+><td
+align="right"
+valign="bottom"
+>90241</td
+></tr
+><tr
+><td class="heading">33</td
+><td
+align="left"
+valign="bottom"
+>El Monte </td
+><td
+align="right"
+valign="bottom"
+>122,513</td
+><td
+align="right"
+valign="bottom"
+>193</td
+><td
+align="right"
+valign="bottom"
+>91734</td
+></tr
+><tr
+><td class="heading">34</td
+><td
+align="left"
+valign="bottom"
+>Elk Grove </td
+><td
+align="right"
+valign="bottom"
+>112,338</td
+><td
+align="right"
+valign="bottom"
+>213</td
+><td
+align="right"
+valign="bottom"
+>95624</td
+></tr
+><tr
+><td class="heading">35</td
+><td
+align="left"
+valign="bottom"
+>Escondido </td
+><td
+align="right"
+valign="bottom"
+>134,085</td
+><td
+align="right"
+valign="bottom"
+>175</td
+><td
+align="right"
+valign="bottom"
+>92025</td
+></tr
+><tr
+><td class="heading">36</td
+><td
+align="left"
+valign="bottom"
+>Fairfield </td
+><td
+align="right"
+valign="bottom"
+>104,476</td
+><td
+align="right"
+valign="bottom"
+>236</td
+><td
+align="right"
+valign="bottom"
+>94533</td
+></tr
+><tr
+><td class="heading">37</td
+><td
+align="left"
+valign="bottom"
+>Fontana </td
+><td
+align="right"
+valign="bottom"
+>163,860</td
+><td
+align="right"
+valign="bottom"
+>138</td
+><td
+align="right"
+valign="bottom"
+>92335</td
+></tr
+><tr
+><td class="heading">38</td
+><td
+align="left"
+valign="bottom"
+>Fremont </td
+><td
+align="right"
+valign="bottom"
+>200,468</td
+><td
+align="right"
+valign="bottom"
+>96</td
+><td
+align="right"
+valign="bottom"
+>94537</td
+></tr
+><tr
+><td class="heading">39</td
+><td
+align="left"
+valign="bottom"
+>Fresno </td
+><td
+align="right"
+valign="bottom"
+>461,116</td
+><td
+align="right"
+valign="bottom"
+>36</td
+><td
+align="right"
+valign="bottom"
+>93706</td
+></tr
+><tr
+><td class="heading">40</td
+><td
+align="left"
+valign="bottom"
+>Fullerton </td
+><td
+align="right"
+valign="bottom"
+>132,787</td
+><td
+align="right"
+valign="bottom"
+>177</td
+><td
+align="right"
+valign="bottom"
+>92834</td
+></tr
+><tr
+><td class="heading">41</td
+><td
+align="left"
+valign="bottom"
+>Garden Grove </td
+><td
+align="right"
+valign="bottom"
+>166,075</td
+><td
+align="right"
+valign="bottom"
+>136</td
+><td
+align="right"
+valign="bottom"
+>92842</td
+></tr
+><tr
+><td class="heading">42</td
+><td
+align="left"
+valign="bottom"
+>Glendale </td
+><td
+align="right"
+valign="bottom"
+>200,065</td
+><td
+align="right"
+valign="bottom"
+>98</td
+><td
+align="right"
+valign="bottom"
+>91205</td
+></tr
+><tr
+><td class="heading">43</td
+><td
+align="left"
+valign="bottom"
+>Hayward </td
+><td
+align="right"
+valign="bottom"
+>140,293</td
+><td
+align="right"
+valign="bottom"
+>165</td
+><td
+align="right"
+valign="bottom"
+>94544</td
+></tr
+><tr
+><td class="heading">44</td
+><td
+align="left"
+valign="bottom"
+>Huntington Beach </td
+><td
+align="right"
+valign="bottom"
+>194,457</td
+><td
+align="right"
+valign="bottom"
+>105</td
+><td
+align="right"
+valign="bottom"
+>92647</td
+></tr
+><tr
+><td class="heading">45</td
+><td
+align="left"
+valign="bottom"
+>Inglewood </td
+><td
+align="right"
+valign="bottom"
+>114,467</td
+><td
+align="right"
+valign="bottom"
+>207</td
+><td
+align="right"
+valign="bottom"
+>90301</td
+></tr
+><tr
+><td class="heading">46</td
+><td
+align="left"
+valign="bottom"
+>Irvine </td
+><td
+align="right"
+valign="bottom"
+>186,852</td
+><td
+align="right"
+valign="bottom"
+>114</td
+><td
+align="right"
+valign="bottom"
+>92619</td
+></tr
+><tr
+><td class="heading">47</td
+><td
+align="left"
+valign="bottom"
+>Lancaster </td
+><td
+align="right"
+valign="bottom"
+>134,032</td
+><td
+align="right"
+valign="bottom"
+>176</td
+><td
+align="right"
+valign="bottom"
+>93534</td
+></tr
+><tr
+><td class="heading">48</td
+><td
+align="left"
+valign="bottom"
+>Long Beach </td
+><td
+align="right"
+valign="bottom"
+>474,014</td
+><td
+align="right"
+valign="bottom"
+>34</td
+><td
+align="right"
+valign="bottom"
+>90802</td
+></tr
+><tr
+><td class="heading">49</td
+><td
+align="left"
+valign="bottom"
+>Los Angeles </td
+><td
+align="right"
+valign="bottom"
+>3,844,829</td
+><td
+align="right"
+valign="bottom"
+>2</td
+><td
+align="right"
+valign="bottom"
+>90052</td
+></tr
+><tr
+><td class="heading">50</td
+><td
+align="left"
+valign="bottom"
+>Modesto </td
+><td
+align="right"
+valign="bottom"
+>207,011</td
+><td
+align="right"
+valign="bottom"
+>93</td
+><td
+align="right"
+valign="bottom"
+>95350</td
+></tr
+><tr
+><td class="heading">51</td
+><td
+align="left"
+valign="bottom"
+>Moreno Valley </td
+><td
+align="right"
+valign="bottom"
+>178,367</td
+><td
+align="right"
+valign="bottom"
+>121</td
+><td
+align="right"
+valign="bottom"
+>92553</td
+></tr
+><tr
+><td class="heading">52</td
+><td
+align="left"
+valign="bottom"
+>Norwalk </td
+><td
+align="right"
+valign="bottom"
+>105,834</td
+><td
+align="right"
+valign="bottom"
+>231</td
+><td
+align="right"
+valign="bottom"
+>90650</td
+></tr
+><tr
+><td class="heading">53</td
+><td
+align="left"
+valign="bottom"
+>Oakland </td
+><td
+align="right"
+valign="bottom"
+>395,274</td
+><td
+align="right"
+valign="bottom"
+>44</td
+><td
+align="right"
+valign="bottom"
+>94612</td
+></tr
+><tr
+><td class="heading">54</td
+><td
+align="left"
+valign="bottom"
+>Oceanside </td
+><td
+align="right"
+valign="bottom"
+>166,108</td
+><td
+align="right"
+valign="bottom"
+>135</td
+><td
+align="right"
+valign="bottom"
+>92054</td
+></tr
+><tr
+><td class="heading">55</td
+><td
+align="left"
+valign="bottom"
+>Ontario </td
+><td
+align="right"
+valign="bottom"
+>172,679</td
+><td
+align="right"
+valign="bottom"
+>128</td
+><td
+align="right"
+valign="bottom"
+>91761</td
+></tr
+><tr
+><td class="heading">56</td
+><td
+align="left"
+valign="bottom"
+>Orange </td
+><td
+align="right"
+valign="bottom"
+>134,950</td
+><td
+align="right"
+valign="bottom"
+>173</td
+><td
+align="right"
+valign="bottom"
+>92863</td
+></tr
+><tr
+><td class="heading">57</td
+><td
+align="left"
+valign="bottom"
+>Oxnard </td
+><td
+align="right"
+valign="bottom"
+>183,628</td
+><td
+align="right"
+valign="bottom"
+>117</td
+><td
+align="right"
+valign="bottom"
+>93030</td
+></tr
+><tr
+><td class="heading">58</td
+><td
+align="left"
+valign="bottom"
+>Palmdale </td
+><td
+align="right"
+valign="bottom"
+>134,570</td
+><td
+align="right"
+valign="bottom"
+>174</td
+><td
+align="right"
+valign="bottom"
+>93550</td
+></tr
+><tr
+><td class="heading">59</td
+><td
+align="left"
+valign="bottom"
+>Pasadena </td
+><td
+align="right"
+valign="bottom"
+>143,731</td
+><td
+align="right"
+valign="bottom"
+>160</td
+><td
+align="right"
+valign="bottom"
+>91103</td
+></tr
+><tr
+><td class="heading">60</td
+><td
+align="left"
+valign="bottom"
+>Pomona </td
+><td
+align="right"
+valign="bottom"
+>153,787</td
+><td
+align="right"
+valign="bottom"
+>144</td
+><td
+align="right"
+valign="bottom"
+>91769</td
+></tr
+><tr
+><td class="heading">61</td
+><td
+align="left"
+valign="bottom"
+>Rancho Cucamonga </td
+><td
+align="right"
+valign="bottom"
+>169,353</td
+><td
+align="right"
+valign="bottom"
+>129</td
+><td
+align="right"
+valign="bottom"
+>91729</td
+></tr
+><tr
+><td class="heading">62</td
+><td
+align="left"
+valign="bottom"
+>Richmond </td
+><td
+align="right"
+valign="bottom"
+>102,186</td
+><td
+align="right"
+valign="bottom"
+>246</td
+><td
+align="right"
+valign="bottom"
+>94801</td
+></tr
+><tr
+><td class="heading">63</td
+><td
+align="left"
+valign="bottom"
+>Riverside </td
+><td
+align="right"
+valign="bottom"
+>290,086</td
+><td
+align="right"
+valign="bottom"
+>62</td
+><td
+align="right"
+valign="bottom"
+>92507</td
+></tr
+><tr
+><td class="heading">64</td
+><td
+align="left"
+valign="bottom"
+>Roseville </td
+><td
+align="right"
+valign="bottom"
+>105,940</td
+><td
+align="right"
+valign="bottom"
+>230</td
+><td
+align="right"
+valign="bottom"
+>95661</td
+></tr
+><tr
+><td class="heading">65</td
+><td
+align="left"
+valign="bottom"
+>Sacramento </td
+><td
+align="right"
+valign="bottom"
+>456,441</td
+><td
+align="right"
+valign="bottom"
+>37</td
+><td
+align="right"
+valign="bottom"
+>95813</td
+></tr
+><tr
+><td class="heading">66</td
+><td
+align="left"
+valign="bottom"
+>Salinas </td
+><td
+align="right"
+valign="bottom"
+>146,431</td
+><td
+align="right"
+valign="bottom"
+>153</td
+><td
+align="right"
+valign="bottom"
+>93907</td
+></tr
+><tr
+><td class="heading">67</td
+><td
+align="left"
+valign="bottom"
+>San Bernardino </td
+><td
+align="right"
+valign="bottom"
+>198,550</td
+><td
+align="right"
+valign="bottom"
+>100</td
+><td
+align="right"
+valign="bottom"
+>92401</td
+></tr
+><tr
+><td class="heading">68</td
+><td
+align="left"
+valign="bottom"
+>San Buenaventura (Ventura) </td
+><td
+align="right"
+valign="bottom"
+>104,017</td
+><td
+align="right"
+valign="bottom"
+>240</td
+><td
+align="right"
+valign="bottom"
+>93001</td
+></tr
+><tr
+><td class="heading">69</td
+><td
+align="left"
+valign="bottom"
+>San Diego </td
+><td
+align="right"
+valign="bottom"
+>1,255,540</td
+><td
+align="right"
+valign="bottom"
+>8</td
+><td
+align="right"
+valign="bottom"
+>92199</td
+></tr
+><tr
+><td class="heading">70</td
+><td
+align="left"
+valign="bottom"
+>San Francisco </td
+><td
+align="right"
+valign="bottom"
+>739,426</td
+><td
+align="right"
+valign="bottom"
+>14</td
+><td
+align="right"
+valign="bottom"
+>94188</td
+></tr
+><tr
+><td class="heading">71</td
+><td
+align="left"
+valign="bottom"
+>San Jose </td
+><td
+align="right"
+valign="bottom"
+>912,332</td
+><td
+align="right"
+valign="bottom"
+>10</td
+><td
+align="right"
+valign="bottom"
+>95101</td
+></tr
+><tr
+><td class="heading">72</td
+><td
+align="left"
+valign="bottom"
+>Santa Ana </td
+><td
+align="right"
+valign="bottom"
+>340,368</td
+><td
+align="right"
+valign="bottom"
+>54</td
+><td
+align="right"
+valign="bottom"
+>92711</td
+></tr
+><tr
+><td class="heading">73</td
+><td
+align="left"
+valign="bottom"
+>Santa Clara </td
+><td
+align="right"
+valign="bottom"
+>105,402</td
+><td
+align="right"
+valign="bottom"
+>232</td
+><td
+align="right"
+valign="bottom"
+>95050</td
+></tr
+><tr
+><td class="heading">74</td
+><td
+align="left"
+valign="bottom"
+>Santa Clarita </td
+><td
+align="right"
+valign="bottom"
+>168,253</td
+><td
+align="right"
+valign="bottom"
+>130</td
+><td
+align="right"
+valign="bottom"
+>91355</td
+></tr
+><tr
+><td class="heading">75</td
+><td
+align="left"
+valign="bottom"
+>Santa Rosa </td
+><td
+align="right"
+valign="bottom"
+>153,158</td
+><td
+align="right"
+valign="bottom"
+>145</td
+><td
+align="right"
+valign="bottom"
+>95402</td
+></tr
+><tr
+><td class="heading">76</td
+><td
+align="left"
+valign="bottom"
+>Simi Valley </td
+><td
+align="right"
+valign="bottom"
+>118,687</td
+><td
+align="right"
+valign="bottom"
+>198</td
+><td
+align="right"
+valign="bottom"
+>93065</td
+></tr
+><tr
+><td class="heading">77</td
+><td
+align="left"
+valign="bottom"
+>Stockton </td
+><td
+align="right"
+valign="bottom"
+>286,926</td
+><td
+align="right"
+valign="bottom"
+>63</td
+><td
+align="right"
+valign="bottom"
+>95208</td
+></tr
+><tr
+><td class="heading">78</td
+><td
+align="left"
+valign="bottom"
+>Sunnyvale </td
+><td
+align="right"
+valign="bottom"
+>128,902</td
+><td
+align="right"
+valign="bottom"
+>181</td
+><td
+align="right"
+valign="bottom"
+>94086</td
+></tr
+><tr
+><td class="heading">79</td
+><td
+align="left"
+valign="bottom"
+>Thousand Oaks </td
+><td
+align="right"
+valign="bottom"
+>124,359</td
+><td
+align="right"
+valign="bottom"
+>189</td
+><td
+align="right"
+valign="bottom"
+>91362</td
+></tr
+><tr
+><td class="heading">80</td
+><td
+align="left"
+valign="bottom"
+>Torrance </td
+><td
+align="right"
+valign="bottom"
+>142,384</td
+><td
+align="right"
+valign="bottom"
+>161</td
+><td
+align="right"
+valign="bottom"
+>90503</td
+></tr
+><tr
+><td class="heading">81</td
+><td
+align="left"
+valign="bottom"
+>Vallejo </td
+><td
+align="right"
+valign="bottom"
+>117,483</td
+><td
+align="right"
+valign="bottom"
+>200</td
+><td
+align="right"
+valign="bottom"
+>94590</td
+></tr
+><tr
+><td class="heading">82</td
+><td
+align="left"
+valign="bottom"
+>Visalia </td
+><td
+align="right"
+valign="bottom"
+>108,669</td
+><td
+align="right"
+valign="bottom"
+>222</td
+><td
+align="right"
+valign="bottom"
+>93277</td
+></tr
+><tr
+><td class="heading">83</td
+><td
+align="left"
+valign="bottom"
+>West Covina </td
+><td
+align="right"
+valign="bottom"
+>108,185</td
+><td
+align="right"
+valign="bottom"
+>223</td
+><td
+align="right"
+valign="bottom"
+>91793</td
+></tr
+><tr
+><td class="heading">84</td
+><td
+align="left"
+valign="bottom"
+><b
+>Colorado</b
+>  </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">85</td
+><td
+align="left"
+valign="bottom"
+>Arvada </td
+><td
+align="right"
+valign="bottom"
+>103,966</td
+><td
+align="right"
+valign="bottom"
+>241</td
+><td
+align="right"
+valign="bottom"
+>80004</td
+></tr
+><tr
+><td class="heading">86</td
+><td
+align="left"
+valign="bottom"
+>Aurora </td
+><td
+align="right"
+valign="bottom"
+>297,235</td
+><td
+align="right"
+valign="bottom"
+>60</td
+><td
+align="right"
+valign="bottom"
+>80017</td
+></tr
+><tr
+><td class="heading">87</td
+><td
+align="left"
+valign="bottom"
+>Colorado Springs </td
+><td
+align="right"
+valign="bottom"
+>369,815</td
+><td
+align="right"
+valign="bottom"
+>49</td
+><td
+align="right"
+valign="bottom"
+>80903</td
+></tr
+><tr
+><td class="heading">88</td
+><td
+align="left"
+valign="bottom"
+>Denver </td
+><td
+align="right"
+valign="bottom"
+>557,917</td
+><td
+align="right"
+valign="bottom"
+>25</td
+><td
+align="right"
+valign="bottom"
+>80202</td
+></tr
+><tr
+><td class="heading">89</td
+><td
+align="left"
+valign="bottom"
+>Fort Collins </td
+><td
+align="right"
+valign="bottom"
+>128,026</td
+><td
+align="right"
+valign="bottom"
+>185</td
+><td
+align="right"
+valign="bottom"
+>80525</td
+></tr
+><tr
+><td class="heading">90</td
+><td
+align="left"
+valign="bottom"
+>Lakewood </td
+><td
+align="right"
+valign="bottom"
+>140,671</td
+><td
+align="right"
+valign="bottom"
+>164</td
+><td
+align="right"
+valign="bottom"
+>80202</td
+></tr
+><tr
+><td class="heading">91</td
+><td
+align="left"
+valign="bottom"
+>Pueblo </td
+><td
+align="right"
+valign="bottom"
+>103,495</td
+><td
+align="right"
+valign="bottom"
+>242</td
+><td
+align="right"
+valign="bottom"
+>81003</td
+></tr
+><tr
+><td class="heading">92</td
+><td
+align="left"
+valign="bottom"
+>Thornton </td
+><td
+align="right"
+valign="bottom"
+>105,182</td
+><td
+align="right"
+valign="bottom"
+>234</td
+><td
+align="right"
+valign="bottom"
+>80221</td
+></tr
+><tr
+><td class="heading">93</td
+><td
+align="left"
+valign="bottom"
+>Westminster </td
+><td
+align="right"
+valign="bottom"
+>105,084</td
+><td
+align="right"
+valign="bottom"
+>235</td
+><td
+align="right"
+valign="bottom"
+>80030</td
+></tr
+><tr
+><td class="heading">94</td
+><td
+align="left"
+valign="bottom"
+><b
+>Connecticut</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">95</td
+><td
+align="left"
+valign="bottom"
+>Bridgeport </td
+><td
+align="right"
+valign="bottom"
+>139,008</td
+><td
+align="right"
+valign="bottom"
+>168</td
+><td
+align="right"
+valign="bottom"
+>06602</td
+></tr
+><tr
+><td class="heading">96</td
+><td
+align="left"
+valign="bottom"
+>Hartford </td
+><td
+align="right"
+valign="bottom"
+>124,397</td
+><td
+align="right"
+valign="bottom"
+>188</td
+><td
+align="right"
+valign="bottom"
+>06101</td
+></tr
+><tr
+><td class="heading">97</td
+><td
+align="left"
+valign="bottom"
+>New Haven </td
+><td
+align="right"
+valign="bottom"
+>124,791</td
+><td
+align="right"
+valign="bottom"
+>187</td
+><td
+align="right"
+valign="bottom"
+>06511</td
+></tr
+><tr
+><td class="heading">98</td
+><td
+align="left"
+valign="bottom"
+>Stamford </td
+><td
+align="right"
+valign="bottom"
+>120,045</td
+><td
+align="right"
+valign="bottom"
+>196</td
+><td
+align="right"
+valign="bottom"
+>06904</td
+></tr
+><tr
+><td class="heading">99</td
+><td
+align="left"
+valign="bottom"
+>Waterbury </td
+><td
+align="right"
+valign="bottom"
+>107,902</td
+><td
+align="right"
+valign="bottom"
+>225</td
+><td
+align="right"
+valign="bottom"
+>06702</td
+></tr
+><tr
+><td class="heading">100</td
+><td
+align="left"
+valign="bottom"
+><b
+>District of Columbia</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">101</td
+><td
+align="left"
+valign="bottom"
+>Washington<sup
+
+>1</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>550,521</td
+><td
+align="right"
+valign="bottom"
+>27</td
+><td
+align="right"
+valign="bottom"
+>20090</td
+></tr
+><tr
+><td class="heading">102</td
+><td
+align="left"
+valign="bottom"
+><b
+>Florida</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">103</td
+><td
+align="left"
+valign="bottom"
+>Cape Coral </td
+><td
+align="right"
+valign="bottom"
+>140,010</td
+><td
+align="right"
+valign="bottom"
+>166</td
+><td
+align="right"
+valign="bottom"
+>33909</td
+></tr
+><tr
+><td class="heading">104</td
+><td
+align="left"
+valign="bottom"
+>Clearwater </td
+><td
+align="right"
+valign="bottom"
+>108,687</td
+><td
+align="right"
+valign="bottom"
+>221</td
+><td
+align="right"
+valign="bottom"
+>33990</td
+></tr
+><tr
+><td class="heading">105</td
+><td
+align="left"
+valign="bottom"
+>Coral Springs </td
+><td
+align="right"
+valign="bottom"
+>128,804</td
+><td
+align="right"
+valign="bottom"
+>182</td
+><td
+align="right"
+valign="bottom"
+>33075</td
+></tr
+><tr
+><td class="heading">106</td
+><td
+align="left"
+valign="bottom"
+>Fort Lauderdale </td
+><td
+align="right"
+valign="bottom"
+>167,380</td
+><td
+align="right"
+valign="bottom"
+>133</td
+><td
+align="right"
+valign="bottom"
+>33310</td
+></tr
+><tr
+><td class="heading">107</td
+><td
+align="left"
+valign="bottom"
+>Gainesville </td
+><td
+align="right"
+valign="bottom"
+>108,184</td
+><td
+align="right"
+valign="bottom"
+>224</td
+><td
+align="right"
+valign="bottom"
+>32601</td
+></tr
+><tr
+><td class="heading">108</td
+><td
+align="left"
+valign="bottom"
+>Hialeah </td
+><td
+align="right"
+valign="bottom"
+>220,485</td
+><td
+align="right"
+valign="bottom"
+>84</td
+><td
+align="right"
+valign="bottom"
+>33010</td
+></tr
+><tr
+><td class="heading">109</td
+><td
+align="left"
+valign="bottom"
+>Hollywood </td
+><td
+align="right"
+valign="bottom"
+>145,629</td
+><td
+align="right"
+valign="bottom"
+>154</td
+><td
+align="right"
+valign="bottom"
+>33022</td
+></tr
+><tr
+><td class="heading">110</td
+><td
+align="left"
+valign="bottom"
+>Jacksonville </td
+><td
+align="right"
+valign="bottom"
+>782,623</td
+><td
+align="right"
+valign="bottom"
+>13</td
+><td
+align="right"
+valign="bottom"
+>32203</td
+></tr
+><tr
+><td class="heading">111</td
+><td
+align="left"
+valign="bottom"
+>Miami </td
+><td
+align="right"
+valign="bottom"
+>386,417</td
+><td
+align="right"
+valign="bottom"
+>45</td
+><td
+align="right"
+valign="bottom"
+>33152</td
+></tr
+><tr
+><td class="heading">112</td
+><td
+align="left"
+valign="bottom"
+>Miramar </td
+><td
+align="right"
+valign="bottom"
+>106,623</td
+><td
+align="right"
+valign="bottom"
+>228</td
+><td
+align="right"
+valign="bottom"
+>33023</td
+></tr
+><tr
+><td class="heading">113</td
+><td
+align="left"
+valign="bottom"
+>Orlando </td
+><td
+align="right"
+valign="bottom"
+>213,223</td
+><td
+align="right"
+valign="bottom"
+>87</td
+><td
+align="right"
+valign="bottom"
+>32802</td
+></tr
+><tr
+><td class="heading">114</td
+><td
+align="left"
+valign="bottom"
+>Pembroke Pines </td
+><td
+align="right"
+valign="bottom"
+>150,380</td
+><td
+align="right"
+valign="bottom"
+>148</td
+><td
+align="right"
+valign="bottom"
+>33024</td
+></tr
+><tr
+><td class="heading">115</td
+><td
+align="left"
+valign="bottom"
+>Pompano Beach</td
+><td
+align="right"
+valign="bottom"
+>104,179</td
+><td
+align="right"
+valign="bottom"
+>237</td
+><td
+align="right"
+valign="bottom"
+>33060</td
+></tr
+><tr
+><td class="heading">116</td
+><td
+align="left"
+valign="bottom"
+>Port St. Lucie </td
+><td
+align="right"
+valign="bottom"
+>131,692</td
+><td
+align="right"
+valign="bottom"
+>178</td
+><td
+align="right"
+valign="bottom"
+>34952</td
+></tr
+><tr
+><td class="heading">117</td
+><td
+align="left"
+valign="bottom"
+>St. Petersburg </td
+><td
+align="right"
+valign="bottom"
+>249,079</td
+><td
+align="right"
+valign="bottom"
+>71</td
+><td
+align="right"
+valign="bottom"
+>33730</td
+></tr
+><tr
+><td class="heading">118</td
+><td
+align="left"
+valign="bottom"
+>Tallahassee </td
+><td
+align="right"
+valign="bottom"
+>158,500</td
+><td
+align="right"
+valign="bottom"
+>141</td
+><td
+align="right"
+valign="bottom"
+>32301</td
+></tr
+><tr
+><td class="heading">119</td
+><td
+align="left"
+valign="bottom"
+>Tampa </td
+><td
+align="right"
+valign="bottom"
+>325,989</td
+><td
+align="right"
+valign="bottom"
+>56</td
+><td
+align="right"
+valign="bottom"
+>33630</td
+></tr
+><tr
+><td class="heading">120</td
+><td
+align="left"
+valign="bottom"
+><b
+>Georgia</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">121</td
+><td
+align="left"
+valign="bottom"
+>Athens-Clarke County<sup
+
+>2</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>103,238</td
+><td
+align="right"
+valign="bottom"
+>243</td
+><td
+align="right"
+valign="bottom"
+>30608</td
+></tr
+><tr
+><td class="heading">122</td
+><td
+align="left"
+valign="bottom"
+>Atlanta </td
+><td
+align="right"
+valign="bottom"
+>470,688</td
+><td
+align="right"
+valign="bottom"
+>35</td
+><td
+align="right"
+valign="bottom"
+>30304</td
+></tr
+><tr
+><td class="heading">123</td
+><td
+align="left"
+valign="bottom"
+>Augusta-Richmond County<sup
+
+>3</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>190,782</td
+><td
+align="right"
+valign="bottom"
+>113</td
+><td
+align="right"
+valign="bottom"
+>30901</td
+></tr
+><tr
+><td class="heading">124</td
+><td
+align="left"
+valign="bottom"
+>Columbus </td
+><td
+align="right"
+valign="bottom"
+>185,271</td
+><td
+align="right"
+valign="bottom"
+>115</td
+><td
+align="right"
+valign="bottom"
+>31908</td
+></tr
+><tr
+><td class="heading">125</td
+><td
+align="left"
+valign="bottom"
+>Savannah </td
+><td
+align="right"
+valign="bottom"
+>128,453</td
+><td
+align="right"
+valign="bottom"
+>183</td
+><td
+align="right"
+valign="bottom"
+>31402</td
+></tr
+><tr
+><td class="heading">126</td
+><td
+align="left"
+valign="bottom"
+><b
+>Hawaii</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">127</td
+><td
+align="left"
+valign="bottom"
+>Honolulu CDP<sup
+
+>4</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>377,379</td
+><td
+align="right"
+valign="bottom"
+>47</td
+><td
+align="right"
+valign="bottom"
+>96820</td
+></tr
+><tr
+><td class="heading">128</td
+><td
+align="left"
+valign="bottom"
+><b
+>Idaho</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">129</td
+><td
+align="left"
+valign="bottom"
+>Boise City </td
+><td
+align="right"
+valign="bottom"
+>193,161</td
+><td
+align="right"
+valign="bottom"
+>111</td
+><td
+align="right"
+valign="bottom"
+>83708</td
+></tr
+><tr
+><td class="heading">130</td
+><td
+align="left"
+valign="bottom"
+><b
+>Illinois</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">131</td
+><td
+align="left"
+valign="bottom"
+>Aurora </td
+><td
+align="right"
+valign="bottom"
+>168,181</td
+><td
+align="right"
+valign="bottom"
+>131</td
+><td
+align="right"
+valign="bottom"
+>60505</td
+></tr
+><tr
+><td class="heading">132</td
+><td
+align="left"
+valign="bottom"
+>Chicago </td
+><td
+align="right"
+valign="bottom"
+>2,842,518</td
+><td
+align="right"
+valign="bottom"
+>3</td
+><td
+align="right"
+valign="bottom"
+>60607</td
+></tr
+><tr
+><td class="heading">133</td
+><td
+align="left"
+valign="bottom"
+>Joliet </td
+><td
+align="right"
+valign="bottom"
+>136,208</td
+><td
+align="right"
+valign="bottom"
+>170</td
+><td
+align="right"
+valign="bottom"
+>60436</td
+></tr
+><tr
+><td class="heading">134</td
+><td
+align="left"
+valign="bottom"
+>Naperville </td
+><td
+align="right"
+valign="bottom"
+>141,579</td
+><td
+align="right"
+valign="bottom"
+>163</td
+><td
+align="right"
+valign="bottom"
+>60540</td
+></tr
+><tr
+><td class="heading">135</td
+><td
+align="left"
+valign="bottom"
+>Peoria </td
+><td
+align="right"
+valign="bottom"
+>112,685</td
+><td
+align="right"
+valign="bottom"
+>212</td
+><td
+align="right"
+valign="bottom"
+>61601</td
+></tr
+><tr
+><td class="heading">136</td
+><td
+align="left"
+valign="bottom"
+>Rockford </td
+><td
+align="right"
+valign="bottom"
+>152,916</td
+><td
+align="right"
+valign="bottom"
+>146</td
+><td
+align="right"
+valign="bottom"
+>61125</td
+></tr
+><tr
+><td class="heading">137</td
+><td
+align="left"
+valign="bottom"
+>Springfield </td
+><td
+align="right"
+valign="bottom"
+>115,668</td
+><td
+align="right"
+valign="bottom"
+>204</td
+><td
+align="right"
+valign="bottom"
+>62703</td
+></tr
+><tr
+><td class="heading">138</td
+><td
+align="left"
+valign="bottom"
+><b
+>Indiana</b
+> </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">139</td
+><td
+align="left"
+valign="bottom"
+>Evansville </td
+><td
+align="right"
+valign="bottom"
+>115,918</td
+><td
+align="right"
+valign="bottom"
+>203</td
+><td
+align="right"
+valign="bottom"
+>47708</td
+></tr
+><tr
+><td class="heading">140</td
+><td
+align="left"
+valign="bottom"
+>Fort Wayne </td
+><td
+align="right"
+valign="bottom"
+>223,341</td
+><td
+align="right"
+valign="bottom"
+>81</td
+><td
+align="right"
+valign="bottom"
+>46802</td
+></tr
+><tr
+><td class="heading">141</td
+><td
+align="left"
+valign="bottom"
+>Indianapolis</td
+><td
+align="right"
+valign="bottom"
+>784,118</td
+><td
+align="right"
+valign="bottom"
+>12</td
+><td
+align="right"
+valign="bottom"
+>46206</td
+></tr
+><tr
+><td class="heading">142</td
+><td
+align="left"
+valign="bottom"
+>South Bend </td
+><td
+align="right"
+valign="bottom"
+>105,262</td
+><td
+align="right"
+valign="bottom"
+>233</td
+><td
+align="right"
+valign="bottom"
+>46624</td
+></tr
+><tr
+><td class="heading">143</td
+><td
+align="left"
+valign="bottom"
+><b
+>Iowa</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">144</td
+><td
+align="left"
+valign="bottom"
+>Cedar Rapids </td
+><td
+align="right"
+valign="bottom"
+>123,119</td
+><td
+align="right"
+valign="bottom"
+>192</td
+><td
+align="right"
+valign="bottom"
+>52401</td
+></tr
+><tr
+><td class="heading">145</td
+><td
+align="left"
+valign="bottom"
+>Des Moines </td
+><td
+align="right"
+valign="bottom"
+>194,163</td
+><td
+align="right"
+valign="bottom"
+>106</td
+><td
+align="right"
+valign="bottom"
+>50318</td
+></tr
+><tr
+><td class="heading">146</td
+><td
+align="left"
+valign="bottom"
+><b
+>Kansas</b
+>  </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">147</td
+><td
+align="left"
+valign="bottom"
+>Kansas City </td
+><td
+align="right"
+valign="bottom"
+>144,210</td
+><td
+align="right"
+valign="bottom"
+>158</td
+><td
+align="right"
+valign="bottom"
+>66106</td
+></tr
+><tr
+><td class="heading">148</td
+><td
+align="left"
+valign="bottom"
+>Olathe </td
+><td
+align="right"
+valign="bottom"
+>111,334</td
+><td
+align="right"
+valign="bottom"
+>216</td
+><td
+align="right"
+valign="bottom"
+>66051</td
+></tr
+><tr
+><td class="heading">149</td
+><td
+align="left"
+valign="bottom"
+>Overland Park </td
+><td
+align="right"
+valign="bottom"
+>164,811</td
+><td
+align="right"
+valign="bottom"
+>137</td
+><td
+align="right"
+valign="bottom"
+>66204</td
+></tr
+><tr
+><td class="heading">150</td
+><td
+align="left"
+valign="bottom"
+>Topeka </td
+><td
+align="right"
+valign="bottom"
+>121,946</td
+><td
+align="right"
+valign="bottom"
+>194</td
+><td
+align="right"
+valign="bottom"
+>66603</td
+></tr
+><tr
+><td class="heading">151</td
+><td
+align="left"
+valign="bottom"
+>Wichita </td
+><td
+align="right"
+valign="bottom"
+>354,865</td
+><td
+align="right"
+valign="bottom"
+>51</td
+><td
+align="right"
+valign="bottom"
+>67276</td
+></tr
+><tr
+><td class="heading">152</td
+><td
+align="left"
+valign="bottom"
+><b
+>Kentucky</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">153</td
+><td
+align="left"
+valign="bottom"
+>Lexington-Fayette</td
+><td
+align="right"
+valign="bottom"
+>268,080</td
+><td
+align="right"
+valign="bottom"
+>69</td
+><td
+align="right"
+valign="bottom"
+>40511</td
+></tr
+><tr
+><td class="heading">154</td
+><td
+align="left"
+valign="bottom"
+>Louisville-Jefferson County<sup
+
+>5</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>556,429</td
+><td
+align="right"
+valign="bottom"
+>26</td
+><td
+align="right"
+valign="bottom"
+>40231</td
+></tr
+><tr
+><td class="heading">155</td
+><td
+align="left"
+valign="bottom"
+><b
+>Louisiana</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">156</td
+><td
+align="left"
+valign="bottom"
+>Baton Rouge </td
+><td
+align="right"
+valign="bottom"
+>222,064</td
+><td
+align="right"
+valign="bottom"
+>82</td
+><td
+align="right"
+valign="bottom"
+>70826</td
+></tr
+><tr
+><td class="heading">157</td
+><td
+align="left"
+valign="bottom"
+>Lafayette </td
+><td
+align="right"
+valign="bottom"
+>112,030</td
+><td
+align="right"
+valign="bottom"
+>214</td
+><td
+align="right"
+valign="bottom"
+>70509</td
+></tr
+><tr
+><td class="heading">158</td
+><td
+align="left"
+valign="bottom"
+>New Orleans </td
+><td
+align="right"
+valign="bottom"
+>454,863</td
+><td
+align="right"
+valign="bottom"
+>38</td
+><td
+align="right"
+valign="bottom"
+>70113</td
+></tr
+><tr
+><td class="heading">159</td
+><td
+align="left"
+valign="bottom"
+>Shreveport </td
+><td
+align="right"
+valign="bottom"
+>198,874</td
+><td
+align="right"
+valign="bottom"
+>99</td
+><td
+align="right"
+valign="bottom"
+>71102</td
+></tr
+><tr
+><td class="heading">160</td
+><td
+align="left"
+valign="bottom"
+><b
+>Maryland</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">161</td
+><td
+align="left"
+valign="bottom"
+>Baltimore </td
+><td
+align="right"
+valign="bottom"
+>635,815</td
+><td
+align="right"
+valign="bottom"
+>18</td
+><td
+align="right"
+valign="bottom"
+>21202</td
+></tr
+><tr
+><td class="heading">162</td
+><td
+align="left"
+valign="bottom"
+><b
+>Massachusetts</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">163</td
+><td
+align="left"
+valign="bottom"
+>Boston </td
+><td
+align="right"
+valign="bottom"
+>559,034</td
+><td
+align="right"
+valign="bottom"
+>24</td
+><td
+align="right"
+valign="bottom"
+>02205</td
+></tr
+><tr
+><td class="heading">164</td
+><td
+align="left"
+valign="bottom"
+>Cambridge </td
+><td
+align="right"
+valign="bottom"
+>100,135</td
+><td
+align="right"
+valign="bottom"
+>254</td
+><td
+align="right"
+valign="bottom"
+>02139</td
+></tr
+><tr
+><td class="heading">165</td
+><td
+align="left"
+valign="bottom"
+>Lowell </td
+><td
+align="right"
+valign="bottom"
+>103,111</td
+><td
+align="right"
+valign="bottom"
+>244</td
+><td
+align="right"
+valign="bottom"
+>01853</td
+></tr
+><tr
+><td class="heading">166</td
+><td
+align="left"
+valign="bottom"
+>Springfield </td
+><td
+align="right"
+valign="bottom"
+>151,732</td
+><td
+align="right"
+valign="bottom"
+>147</td
+><td
+align="right"
+valign="bottom"
+>01101</td
+></tr
+><tr
+><td class="heading">167</td
+><td
+align="left"
+valign="bottom"
+>Worcester </td
+><td
+align="right"
+valign="bottom"
+>175,898</td
+><td
+align="right"
+valign="bottom"
+>126</td
+><td
+align="right"
+valign="bottom"
+>01613</td
+></tr
+><tr
+><td class="heading">168</td
+><td
+align="left"
+valign="bottom"
+><b
+>Michigan</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">169</td
+><td
+align="left"
+valign="bottom"
+>Ann Arbor </td
+><td
+align="right"
+valign="bottom"
+>113,271</td
+><td
+align="right"
+valign="bottom"
+>210</td
+><td
+align="right"
+valign="bottom"
+>48104</td
+></tr
+><tr
+><td class="heading">170</td
+><td
+align="left"
+valign="bottom"
+>Detroit </td
+><td
+align="right"
+valign="bottom"
+>886,671</td
+><td
+align="right"
+valign="bottom"
+>11</td
+><td
+align="right"
+valign="bottom"
+>48233</td
+></tr
+><tr
+><td class="heading">171</td
+><td
+align="left"
+valign="bottom"
+>Flint </td
+><td
+align="right"
+valign="bottom"
+>118,551</td
+><td
+align="right"
+valign="bottom"
+>199</td
+><td
+align="right"
+valign="bottom"
+>48502</td
+></tr
+><tr
+><td class="heading">172</td
+><td
+align="left"
+valign="bottom"
+>Grand Rapids </td
+><td
+align="right"
+valign="bottom"
+>193,780</td
+><td
+align="right"
+valign="bottom"
+>107</td
+><td
+align="right"
+valign="bottom"
+>49501</td
+></tr
+><tr
+><td class="heading">173</td
+><td
+align="left"
+valign="bottom"
+>Lansing </td
+><td
+align="right"
+valign="bottom"
+>115,518</td
+><td
+align="right"
+valign="bottom"
+>205</td
+><td
+align="right"
+valign="bottom"
+>48924</td
+></tr
+><tr
+><td class="heading">174</td
+><td
+align="left"
+valign="bottom"
+>Sterling Heights </td
+><td
+align="right"
+valign="bottom"
+>128,034</td
+><td
+align="right"
+valign="bottom"
+>184</td
+><td
+align="right"
+valign="bottom"
+>48311</td
+></tr
+><tr
+><td class="heading">175</td
+><td
+align="left"
+valign="bottom"
+>Warren </td
+><td
+align="right"
+valign="bottom"
+>135,311</td
+><td
+align="right"
+valign="bottom"
+>172</td
+><td
+align="right"
+valign="bottom"
+>48090</td
+></tr
+><tr
+><td class="heading">176</td
+><td
+align="left"
+valign="bottom"
+><b
+>Minnesota</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">177</td
+><td
+align="left"
+valign="bottom"
+>Minneapolis </td
+><td
+align="right"
+valign="bottom"
+>372,811</td
+><td
+align="right"
+valign="bottom"
+>48</td
+><td
+align="right"
+valign="bottom"
+>55401</td
+></tr
+><tr
+><td class="heading">178</td
+><td
+align="left"
+valign="bottom"
+>St. Paul </td
+><td
+align="right"
+valign="bottom"
+>275,150</td
+><td
+align="right"
+valign="bottom"
+>67</td
+><td
+align="right"
+valign="bottom"
+>55109</td
+></tr
+><tr
+><td class="heading">179</td
+><td
+align="left"
+valign="bottom"
+><b
+>Mississippi</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">180</td
+><td
+align="left"
+valign="bottom"
+>Jackson </td
+><td
+align="right"
+valign="bottom"
+>177,977</td
+><td
+align="right"
+valign="bottom"
+>123</td
+><td
+align="right"
+valign="bottom"
+>39205</td
+></tr
+><tr
+><td class="heading">181</td
+><td
+align="left"
+valign="bottom"
+><b
+>Missouri</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">182</td
+><td
+align="left"
+valign="bottom"
+>Independence </td
+><td
+align="right"
+valign="bottom"
+>110,208</td
+><td
+align="right"
+valign="bottom"
+>217</td
+><td
+align="right"
+valign="bottom"
+>64052</td
+></tr
+><tr
+><td class="heading">183</td
+><td
+align="left"
+valign="bottom"
+>Kansas City </td
+><td
+align="right"
+valign="bottom"
+>444,965</td
+><td
+align="right"
+valign="bottom"
+>40</td
+><td
+align="right"
+valign="bottom"
+>64108</td
+></tr
+><tr
+><td class="heading">184</td
+><td
+align="left"
+valign="bottom"
+>Springfield </td
+><td
+align="right"
+valign="bottom"
+>150,298</td
+><td
+align="right"
+valign="bottom"
+>149</td
+><td
+align="right"
+valign="bottom"
+>65801</td
+></tr
+><tr
+><td class="heading">185</td
+><td
+align="left"
+valign="bottom"
+>St. Louis </td
+><td
+align="right"
+valign="bottom"
+>344,362</td
+><td
+align="right"
+valign="bottom"
+>52</td
+><td
+align="right"
+valign="bottom"
+>63155</td
+></tr
+><tr
+><td class="heading">186</td
+><td
+align="left"
+valign="bottom"
+><b
+>Nebraska</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">187</td
+><td
+align="left"
+valign="bottom"
+>Lincoln </td
+><td
+align="right"
+valign="bottom"
+>239,213</td
+><td
+align="right"
+valign="bottom"
+>74</td
+><td
+align="right"
+valign="bottom"
+>68501</td
+></tr
+><tr
+><td class="heading">188</td
+><td
+align="left"
+valign="bottom"
+>Omaha </td
+><td
+align="right"
+valign="bottom"
+>414,521</td
+><td
+align="right"
+valign="bottom"
+>43</td
+><td
+align="right"
+valign="bottom"
+>68108</td
+></tr
+><tr
+><td class="heading">189</td
+><td
+align="left"
+valign="bottom"
+><b
+>Nevada</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">190</td
+><td
+align="left"
+valign="bottom"
+>Henderson </td
+><td
+align="right"
+valign="bottom"
+>232,146</td
+><td
+align="right"
+valign="bottom"
+>76</td
+><td
+align="right"
+valign="bottom"
+>89015</td
+></tr
+><tr
+><td class="heading">191</td
+><td
+align="left"
+valign="bottom"
+>Las Vegas </td
+><td
+align="right"
+valign="bottom"
+>545,147</td
+><td
+align="right"
+valign="bottom"
+>29</td
+><td
+align="right"
+valign="bottom"
+>89199</td
+></tr
+><tr
+><td class="heading">192</td
+><td
+align="left"
+valign="bottom"
+>North Las Vegas </td
+><td
+align="right"
+valign="bottom"
+>176,635</td
+><td
+align="right"
+valign="bottom"
+>125</td
+><td
+align="right"
+valign="bottom"
+>89030</td
+></tr
+><tr
+><td class="heading">193</td
+><td
+align="left"
+valign="bottom"
+>Reno </td
+><td
+align="right"
+valign="bottom"
+>203,550</td
+><td
+align="right"
+valign="bottom"
+>95</td
+><td
+align="right"
+valign="bottom"
+>89510</td
+></tr
+><tr
+><td class="heading">194</td
+><td
+align="left"
+valign="bottom"
+><b
+>New Hampshire</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">195</td
+><td
+align="left"
+valign="bottom"
+>Manchester </td
+><td
+align="right"
+valign="bottom"
+>109,691</td
+><td
+align="right"
+valign="bottom"
+>220</td
+><td
+align="right"
+valign="bottom"
+>03103</td
+></tr
+><tr
+><td class="heading">196</td
+><td
+align="left"
+valign="bottom"
+><b
+>New Jersey</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">197</td
+><td
+align="left"
+valign="bottom"
+>Elizabeth </td
+><td
+align="right"
+valign="bottom"
+>125,809</td
+><td
+align="right"
+valign="bottom"
+>186</td
+><td
+align="right"
+valign="bottom"
+>07208</td
+></tr
+><tr
+><td class="heading">198</td
+><td
+align="left"
+valign="bottom"
+>Jersey City </td
+><td
+align="right"
+valign="bottom"
+>239,614</td
+><td
+align="right"
+valign="bottom"
+>72</td
+><td
+align="right"
+valign="bottom"
+>07302</td
+></tr
+><tr
+><td class="heading">199</td
+><td
+align="left"
+valign="bottom"
+>Newark </td
+><td
+align="right"
+valign="bottom"
+>280,666</td
+><td
+align="right"
+valign="bottom"
+>65</td
+><td
+align="right"
+valign="bottom"
+>07102</td
+></tr
+><tr
+><td class="heading">200</td
+><td
+align="left"
+valign="bottom"
+>Paterson </td
+><td
+align="right"
+valign="bottom"
+>149,843</td
+><td
+align="right"
+valign="bottom"
+>150</td
+><td
+align="right"
+valign="bottom"
+>07510</td
+></tr
+><tr
+><td class="heading">201</td
+><td
+align="left"
+valign="bottom"
+><b
+>New Mexico</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">202</td
+><td
+align="left"
+valign="bottom"
+>Albuquerque </td
+><td
+align="right"
+valign="bottom"
+>494,236</td
+><td
+align="right"
+valign="bottom"
+>33</td
+><td
+align="right"
+valign="bottom"
+>87101</td
+></tr
+><tr
+><td class="heading">203</td
+><td
+align="left"
+valign="bottom"
+><b
+>New York </b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">204</td
+><td
+align="left"
+valign="bottom"
+>Buffalo </td
+><td
+align="right"
+valign="bottom"
+>279,745</td
+><td
+align="right"
+valign="bottom"
+>66</td
+><td
+align="right"
+valign="bottom"
+>14240</td
+></tr
+><tr
+><td class="heading">205</td
+><td
+align="left"
+valign="bottom"
+>New York </td
+><td
+align="right"
+valign="bottom"
+>8,143,197</td
+><td
+align="right"
+valign="bottom"
+>1</td
+><td
+align="right"
+valign="bottom"
+>10199</td
+></tr
+><tr
+><td class="heading">206</td
+><td
+align="left"
+valign="bottom"
+>Rochester </td
+><td
+align="right"
+valign="bottom"
+>211,091</td
+><td
+align="right"
+valign="bottom"
+>88</td
+><td
+align="right"
+valign="bottom"
+>14692</td
+></tr
+><tr
+><td class="heading">207</td
+><td
+align="left"
+valign="bottom"
+>Syracuse </td
+><td
+align="right"
+valign="bottom"
+>141,683</td
+><td
+align="right"
+valign="bottom"
+>162</td
+><td
+align="right"
+valign="bottom"
+>13220</td
+></tr
+><tr
+><td class="heading">208</td
+><td
+align="left"
+valign="bottom"
+>Yonkers </td
+><td
+align="right"
+valign="bottom"
+>196,425</td
+><td
+align="right"
+valign="bottom"
+>102</td
+><td
+align="right"
+valign="bottom"
+>10701</td
+></tr
+><tr
+><td class="heading">209</td
+><td
+align="left"
+valign="bottom"
+><b
+>North Carolina</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">210</td
+><td
+align="left"
+valign="bottom"
+>Cary</td
+><td
+align="right"
+valign="bottom"
+>106,439</td
+><td
+align="right"
+valign="bottom"
+>229</td
+><td
+align="right"
+valign="bottom"
+>27511</td
+></tr
+><tr
+><td class="heading">211</td
+><td
+align="left"
+valign="bottom"
+>Charlotte </td
+><td
+align="right"
+valign="bottom"
+>610,949</td
+><td
+align="right"
+valign="bottom"
+>20</td
+><td
+align="right"
+valign="bottom"
+>28228</td
+></tr
+><tr
+><td class="heading">212</td
+><td
+align="left"
+valign="bottom"
+>Durham </td
+><td
+align="right"
+valign="bottom"
+>204,845</td
+><td
+align="right"
+valign="bottom"
+>94</td
+><td
+align="right"
+valign="bottom"
+>27701</td
+></tr
+><tr
+><td class="heading">213</td
+><td
+align="left"
+valign="bottom"
+>Fayetteville </td
+><td
+align="right"
+valign="bottom"
+>129,928</td
+><td
+align="right"
+valign="bottom"
+>179</td
+><td
+align="right"
+valign="bottom"
+>28302</td
+></tr
+><tr
+><td class="heading">214</td
+><td
+align="left"
+valign="bottom"
+>Greensboro </td
+><td
+align="right"
+valign="bottom"
+>231,962</td
+><td
+align="right"
+valign="bottom"
+>77</td
+><td
+align="right"
+valign="bottom"
+>27420</td
+></tr
+><tr
+><td class="heading">215</td
+><td
+align="left"
+valign="bottom"
+>Raleigh </td
+><td
+align="right"
+valign="bottom"
+>341,530</td
+><td
+align="right"
+valign="bottom"
+>53</td
+><td
+align="right"
+valign="bottom"
+>27613</td
+></tr
+><tr
+><td class="heading">216</td
+><td
+align="left"
+valign="bottom"
+>Winston-Salem </td
+><td
+align="right"
+valign="bottom"
+>193,755</td
+><td
+align="right"
+valign="bottom"
+>109</td
+><td
+align="right"
+valign="bottom"
+>27102</td
+></tr
+><tr
+><td class="heading">217</td
+><td
+align="left"
+valign="bottom"
+><b
+>Ohio</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">218</td
+><td
+align="left"
+valign="bottom"
+>Akron </td
+><td
+align="right"
+valign="bottom"
+>210,795</td
+><td
+align="right"
+valign="bottom"
+>89</td
+><td
+align="right"
+valign="bottom"
+>44309</td
+></tr
+><tr
+><td class="heading">219</td
+><td
+align="left"
+valign="bottom"
+>Cincinnati </td
+><td
+align="right"
+valign="bottom"
+>308,728</td
+><td
+align="right"
+valign="bottom"
+>58</td
+><td
+align="right"
+valign="bottom"
+>45225</td
+></tr
+><tr
+><td class="heading">220</td
+><td
+align="left"
+valign="bottom"
+>Cleveland </td
+><td
+align="right"
+valign="bottom"
+>452,208</td
+><td
+align="right"
+valign="bottom"
+>39</td
+><td
+align="right"
+valign="bottom"
+>44101</td
+></tr
+><tr
+><td class="heading">221</td
+><td
+align="left"
+valign="bottom"
+>Columbus </td
+><td
+align="right"
+valign="bottom"
+>730,657</td
+><td
+align="right"
+valign="bottom"
+>15</td
+><td
+align="right"
+valign="bottom"
+>43216</td
+></tr
+><tr
+><td class="heading">222</td
+><td
+align="left"
+valign="bottom"
+>Dayton </td
+><td
+align="right"
+valign="bottom"
+>158,873</td
+><td
+align="right"
+valign="bottom"
+>140</td
+><td
+align="right"
+valign="bottom"
+>45401</td
+></tr
+><tr
+><td class="heading">223</td
+><td
+align="left"
+valign="bottom"
+>Toledo </td
+><td
+align="right"
+valign="bottom"
+>301,285</td
+><td
+align="right"
+valign="bottom"
+>59</td
+><td
+align="right"
+valign="bottom"
+>43601</td
+></tr
+><tr
+><td class="heading">224</td
+><td
+align="left"
+valign="bottom"
+><b
+>Oklahoma</b
+>  </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">225</td
+><td
+align="left"
+valign="bottom"
+>Norman </td
+><td
+align="right"
+valign="bottom"
+>101,719</td
+><td
+align="right"
+valign="bottom"
+>247</td
+><td
+align="right"
+valign="bottom"
+>73019</td
+></tr
+><tr
+><td class="heading">226</td
+><td
+align="left"
+valign="bottom"
+>Oklahoma City </td
+><td
+align="right"
+valign="bottom"
+>531,324</td
+><td
+align="right"
+valign="bottom"
+>31</td
+><td
+align="right"
+valign="bottom"
+>73125</td
+></tr
+><tr
+><td class="heading">227</td
+><td
+align="left"
+valign="bottom"
+>Tulsa </td
+><td
+align="right"
+valign="bottom"
+>382,457</td
+><td
+align="right"
+valign="bottom"
+>46</td
+><td
+align="right"
+valign="bottom"
+>74107</td
+></tr
+><tr
+><td class="heading">228</td
+><td
+align="left"
+valign="bottom"
+><b
+>Oregon</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">229</td
+><td
+align="left"
+valign="bottom"
+>Eugene </td
+><td
+align="right"
+valign="bottom"
+>144,515</td
+><td
+align="right"
+valign="bottom"
+>156</td
+><td
+align="right"
+valign="bottom"
+>97401</td
+></tr
+><tr
+><td class="heading">230</td
+><td
+align="left"
+valign="bottom"
+>Portland </td
+><td
+align="right"
+valign="bottom"
+>533,427</td
+><td
+align="right"
+valign="bottom"
+>30</td
+><td
+align="right"
+valign="bottom"
+>97208</td
+></tr
+><tr
+><td class="heading">231</td
+><td
+align="left"
+valign="bottom"
+>Salem </td
+><td
+align="right"
+valign="bottom"
+>148,751</td
+><td
+align="right"
+valign="bottom"
+>152</td
+><td
+align="right"
+valign="bottom"
+>97309</td
+></tr
+><tr
+><td class="heading">232</td
+><td
+align="left"
+valign="bottom"
+><b
+>Pennsylvania</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">233</td
+><td
+align="left"
+valign="bottom"
+>Allentown </td
+><td
+align="right"
+valign="bottom"
+>106,992</td
+><td
+align="right"
+valign="bottom"
+>226</td
+><td
+align="right"
+valign="bottom"
+>18101</td
+></tr
+><tr
+><td class="heading">234</td
+><td
+align="left"
+valign="bottom"
+>Erie </td
+><td
+align="right"
+valign="bottom"
+>102,612</td
+><td
+align="right"
+valign="bottom"
+>245</td
+><td
+align="right"
+valign="bottom"
+>16515</td
+></tr
+><tr
+><td class="heading">235</td
+><td
+align="left"
+valign="bottom"
+>Philadelphia </td
+><td
+align="right"
+valign="bottom"
+>1,463,281</td
+><td
+align="right"
+valign="bottom"
+>5</td
+><td
+align="right"
+valign="bottom"
+>19104</td
+></tr
+><tr
+><td class="heading">236</td
+><td
+align="left"
+valign="bottom"
+>Pittsburgh </td
+><td
+align="right"
+valign="bottom"
+>316,718</td
+><td
+align="right"
+valign="bottom"
+>57</td
+><td
+align="right"
+valign="bottom"
+>15290</td
+></tr
+><tr
+><td class="heading">237</td
+><td
+align="left"
+valign="bottom"
+><b
+>Rhode Island</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">238</td
+><td
+align="left"
+valign="bottom"
+>Providence </td
+><td
+align="right"
+valign="bottom"
+>176,862</td
+><td
+align="right"
+valign="bottom"
+>124</td
+><td
+align="right"
+valign="bottom"
+>02904</td
+></tr
+><tr
+><td class="heading">239</td
+><td
+align="left"
+valign="bottom"
+><b
+>South Carolina</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">240</td
+><td
+align="left"
+valign="bottom"
+>Charleston </td
+><td
+align="right"
+valign="bottom"
+>106,712</td
+><td
+align="right"
+valign="bottom"
+>227</td
+><td
+align="right"
+valign="bottom"
+>29401</td
+></tr
+><tr
+><td class="heading">241</td
+><td
+align="left"
+valign="bottom"
+>Columbia </td
+><td
+align="right"
+valign="bottom"
+>117,088</td
+><td
+align="right"
+valign="bottom"
+>202</td
+><td
+align="right"
+valign="bottom"
+>29201</td
+></tr
+><tr
+><td class="heading">242</td
+><td
+align="left"
+valign="bottom"
+><b
+>South Dakota</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">243</td
+><td
+align="left"
+valign="bottom"
+>Sioux Falls </td
+><td
+align="right"
+valign="bottom"
+>139,517</td
+><td
+align="right"
+valign="bottom"
+>167</td
+><td
+align="right"
+valign="bottom"
+>57104</td
+></tr
+><tr
+><td class="heading">244</td
+><td
+align="left"
+valign="bottom"
+><b
+>Tennessee</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">245</td
+><td
+align="left"
+valign="bottom"
+>Chattanooga </td
+><td
+align="right"
+valign="bottom"
+>154,762</td
+><td
+align="right"
+valign="bottom"
+>143</td
+><td
+align="right"
+valign="bottom"
+>37421</td
+></tr
+><tr
+><td class="heading">246</td
+><td
+align="left"
+valign="bottom"
+>Clarksville </td
+><td
+align="right"
+valign="bottom"
+>112,878</td
+><td
+align="right"
+valign="bottom"
+>211</td
+><td
+align="right"
+valign="bottom"
+>37043</td
+></tr
+><tr
+><td class="heading">247</td
+><td
+align="left"
+valign="bottom"
+>Knoxville </td
+><td
+align="right"
+valign="bottom"
+>180,130</td
+><td
+align="right"
+valign="bottom"
+>119</td
+><td
+align="right"
+valign="bottom"
+>37950</td
+></tr
+><tr
+><td class="heading">248</td
+><td
+align="left"
+valign="bottom"
+>Memphis </td
+><td
+align="right"
+valign="bottom"
+>672,277</td
+><td
+align="right"
+valign="bottom"
+>17</td
+><td
+align="right"
+valign="bottom"
+>38101</td
+></tr
+><tr
+><td class="heading">249</td
+><td
+align="left"
+valign="bottom"
+>Nashville-Davidson<sup
+
+>6</sup
+> </td
+><td
+align="right"
+valign="bottom"
+>549,110</td
+><td
+align="right"
+valign="bottom"
+>28</td
+><td
+align="right"
+valign="bottom"
+>37230</td
+></tr
+><tr
+><td class="heading">250</td
+><td
+align="left"
+valign="bottom"
+><b
+>Texas</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">251</td
+><td
+align="left"
+valign="bottom"
+>Abilene </td
+><td
+align="right"
+valign="bottom"
+>114,757</td
+><td
+align="right"
+valign="bottom"
+>206</td
+><td
+align="right"
+valign="bottom"
+>79604</td
+></tr
+><tr
+><td class="heading">252</td
+><td
+align="left"
+valign="bottom"
+>Amarillo </td
+><td
+align="right"
+valign="bottom"
+>183,021</td
+><td
+align="right"
+valign="bottom"
+>118</td
+><td
+align="right"
+valign="bottom"
+>79120</td
+></tr
+><tr
+><td class="heading">253</td
+><td
+align="left"
+valign="bottom"
+>Arlington </td
+><td
+align="right"
+valign="bottom"
+>362,805</td
+><td
+align="right"
+valign="bottom"
+>50</td
+><td
+align="right"
+valign="bottom"
+>76004</td
+></tr
+><tr
+><td class="heading">254</td
+><td
+align="left"
+valign="bottom"
+>Austin </td
+><td
+align="right"
+valign="bottom"
+>690,252</td
+><td
+align="right"
+valign="bottom"
+>16</td
+><td
+align="right"
+valign="bottom"
+>78710</td
+></tr
+><tr
+><td class="heading">255</td
+><td
+align="left"
+valign="bottom"
+>Beaumont </td
+><td
+align="right"
+valign="bottom"
+>111,799</td
+><td
+align="right"
+valign="bottom"
+>215</td
+><td
+align="right"
+valign="bottom"
+>77707</td
+></tr
+><tr
+><td class="heading">256</td
+><td
+align="left"
+valign="bottom"
+>Brownsville </td
+><td
+align="right"
+valign="bottom"
+>167,493</td
+><td
+align="right"
+valign="bottom"
+>132</td
+><td
+align="right"
+valign="bottom"
+>78520</td
+></tr
+><tr
+><td class="heading">257</td
+><td
+align="left"
+valign="bottom"
+>Carrollton </td
+><td
+align="right"
+valign="bottom"
+>118,870</td
+><td
+align="right"
+valign="bottom"
+>197</td
+><td
+align="right"
+valign="bottom"
+>75006</td
+></tr
+><tr
+><td class="heading">258</td
+><td
+align="left"
+valign="bottom"
+>Corpus Christi </td
+><td
+align="right"
+valign="bottom"
+>283,474</td
+><td
+align="right"
+valign="bottom"
+>64</td
+><td
+align="right"
+valign="bottom"
+>78469</td
+></tr
+><tr
+><td class="heading">259</td
+><td
+align="left"
+valign="bottom"
+>Dallas </td
+><td
+align="right"
+valign="bottom"
+>1,213,825</td
+><td
+align="right"
+valign="bottom"
+>9</td
+><td
+align="right"
+valign="bottom"
+>75260</td
+></tr
+><tr
+><td class="heading">260</td
+><td
+align="left"
+valign="bottom"
+>Denton</td
+><td
+align="right"
+valign="bottom"
+>104,153</td
+><td
+align="right"
+valign="bottom"
+>238</td
+><td
+align="right"
+valign="bottom"
+>76201</td
+></tr
+><tr
+><td class="heading">261</td
+><td
+align="left"
+valign="bottom"
+>El Paso </td
+><td
+align="right"
+valign="bottom"
+>598,590</td
+><td
+align="right"
+valign="bottom"
+>21</td
+><td
+align="right"
+valign="bottom"
+>79910</td
+></tr
+><tr
+><td class="heading">262</td
+><td
+align="left"
+valign="bottom"
+>Fort Worth </td
+><td
+align="right"
+valign="bottom"
+>624,067</td
+><td
+align="right"
+valign="bottom"
+>19</td
+><td
+align="right"
+valign="bottom"
+>76161</td
+></tr
+><tr
+><td class="heading">263</td
+><td
+align="left"
+valign="bottom"
+>Garland </td
+><td
+align="right"
+valign="bottom"
+>216,346</td
+><td
+align="right"
+valign="bottom"
+>86</td
+><td
+align="right"
+valign="bottom"
+>75040</td
+></tr
+><tr
+><td class="heading">264</td
+><td
+align="left"
+valign="bottom"
+>Grand Prairie </td
+><td
+align="right"
+valign="bottom"
+>144,337</td
+><td
+align="right"
+valign="bottom"
+>157</td
+><td
+align="right"
+valign="bottom"
+>75051</td
+></tr
+><tr
+><td class="heading">265</td
+><td
+align="left"
+valign="bottom"
+>Houston </td
+><td
+align="right"
+valign="bottom"
+>2,016,582</td
+><td
+align="right"
+valign="bottom"
+>4</td
+><td
+align="right"
+valign="bottom"
+>77201</td
+></tr
+><tr
+><td class="heading">266</td
+><td
+align="left"
+valign="bottom"
+>Irving </td
+><td
+align="right"
+valign="bottom"
+>193,649</td
+><td
+align="right"
+valign="bottom"
+>110</td
+><td
+align="right"
+valign="bottom"
+>75061</td
+></tr
+><tr
+><td class="heading">267</td
+><td
+align="left"
+valign="bottom"
+>Killeen</td
+><td
+align="right"
+valign="bottom"
+>100,233</td
+><td
+align="right"
+valign="bottom"
+>252</td
+><td
+align="right"
+valign="bottom"
+>76541 </td
+></tr
+><tr
+><td class="heading">268</td
+><td
+align="left"
+valign="bottom"
+>Laredo </td
+><td
+align="right"
+valign="bottom"
+>208,754</td
+><td
+align="right"
+valign="bottom"
+>92</td
+><td
+align="right"
+valign="bottom"
+>78041</td
+></tr
+><tr
+><td class="heading">269</td
+><td
+align="left"
+valign="bottom"
+>Lubbock </td
+><td
+align="right"
+valign="bottom"
+>209,737</td
+><td
+align="right"
+valign="bottom"
+>91</td
+><td
+align="right"
+valign="bottom"
+>79402</td
+></tr
+><tr
+><td class="heading">270</td
+><td
+align="left"
+valign="bottom"
+>McAllen </td
+><td
+align="right"
+valign="bottom"
+>123,622</td
+><td
+align="right"
+valign="bottom"
+>190</td
+><td
+align="right"
+valign="bottom"
+>78501</td
+></tr
+><tr
+><td class="heading">271</td
+><td
+align="left"
+valign="bottom"
+>Mesquite </td
+><td
+align="right"
+valign="bottom"
+>129,902</td
+><td
+align="right"
+valign="bottom"
+>180</td
+><td
+align="right"
+valign="bottom"
+>75149</td
+></tr
+><tr
+><td class="heading">272</td
+><td
+align="left"
+valign="bottom"
+>Pasadena </td
+><td
+align="right"
+valign="bottom"
+>143,852</td
+><td
+align="right"
+valign="bottom"
+>159</td
+><td
+align="right"
+valign="bottom"
+>77501</td
+></tr
+><tr
+><td class="heading">273</td
+><td
+align="left"
+valign="bottom"
+>Plano </td
+><td
+align="right"
+valign="bottom"
+>250,096</td
+><td
+align="right"
+valign="bottom"
+>70</td
+><td
+align="right"
+valign="bottom"
+>75074</td
+></tr
+><tr
+><td class="heading">274</td
+><td
+align="left"
+valign="bottom"
+>San Antonio </td
+><td
+align="right"
+valign="bottom"
+>1,256,509</td
+><td
+align="right"
+valign="bottom"
+>7</td
+><td
+align="right"
+valign="bottom"
+>78284</td
+></tr
+><tr
+><td class="heading">275</td
+><td
+align="left"
+valign="bottom"
+>Waco </td
+><td
+align="right"
+valign="bottom"
+>120,465</td
+><td
+align="right"
+valign="bottom"
+>195</td
+><td
+align="right"
+valign="bottom"
+>76702</td
+></tr
+><tr
+><td class="heading">276</td
+><td
+align="left"
+valign="bottom"
+><b
+>Utah</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">277</td
+><td
+align="left"
+valign="bottom"
+>Salt Lake City </td
+><td
+align="right"
+valign="bottom"
+>178,097</td
+><td
+align="right"
+valign="bottom"
+>122</td
+><td
+align="right"
+valign="bottom"
+>84199</td
+></tr
+><tr
+><td class="heading">278</td
+><td
+align="left"
+valign="bottom"
+>West Valley City </td
+><td
+align="right"
+valign="bottom"
+>113,300</td
+><td
+align="right"
+valign="bottom"
+>209</td
+><td
+align="right"
+valign="bottom"
+>84199</td
+></tr
+><tr
+><td class="heading">279</td
+><td
+align="left"
+valign="bottom"
+><b
+>Virginia</b
+>  </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">280</td
+><td
+align="left"
+valign="bottom"
+>Alexandria </td
+><td
+align="right"
+valign="bottom"
+>135,337</td
+><td
+align="right"
+valign="bottom"
+>171</td
+><td
+align="right"
+valign="bottom"
+>22314</td
+></tr
+><tr
+><td class="heading">281</td
+><td
+align="left"
+valign="bottom"
+>Arlington CDP</td
+><td
+align="right"
+valign="bottom"
+>195,965</td
+><td
+align="right"
+valign="bottom"
+>103</td
+><td
+align="right"
+valign="bottom"
+>23320</td
+></tr
+><tr
+><td class="heading">282</td
+><td
+align="left"
+valign="bottom"
+>Chesapeake </td
+><td
+align="right"
+valign="bottom"
+>218,968</td
+><td
+align="right"
+valign="bottom"
+>85</td
+><td
+align="right"
+valign="bottom"
+>23670</td
+></tr
+><tr
+><td class="heading">283</td
+><td
+align="left"
+valign="bottom"
+>Hampton </td
+><td
+align="right"
+valign="bottom"
+>145,579</td
+><td
+align="right"
+valign="bottom"
+>155</td
+><td
+align="right"
+valign="bottom"
+>23607</td
+></tr
+><tr
+><td class="heading">284</td
+><td
+align="left"
+valign="bottom"
+>Newport News </td
+><td
+align="right"
+valign="bottom"
+>179,899</td
+><td
+align="right"
+valign="bottom"
+>120</td
+><td
+align="right"
+valign="bottom"
+>23501</td
+></tr
+><tr
+><td class="heading">285</td
+><td
+align="left"
+valign="bottom"
+>Norfolk </td
+><td
+align="right"
+valign="bottom"
+>231,954</td
+><td
+align="right"
+valign="bottom"
+>78</td
+><td
+align="right"
+valign="bottom"
+>23707</td
+></tr
+><tr
+><td class="heading">286</td
+><td
+align="left"
+valign="bottom"
+>Portsmouth</td
+><td
+align="right"
+valign="bottom"
+>100,169</td
+><td
+align="right"
+valign="bottom"
+>253</td
+><td
+align="right"
+valign="bottom"
+>23702</td
+></tr
+><tr
+><td class="heading">287</td
+><td
+align="left"
+valign="bottom"
+>Richmond </td
+><td
+align="right"
+valign="bottom"
+>193,777</td
+><td
+align="right"
+valign="bottom"
+>108</td
+><td
+align="right"
+valign="bottom"
+>23232</td
+></tr
+><tr
+><td class="heading">288</td
+><td
+align="left"
+valign="bottom"
+>Virginia Beach </td
+><td
+align="right"
+valign="bottom"
+>438,415</td
+><td
+align="right"
+valign="bottom"
+>42</td
+><td
+align="right"
+valign="bottom"
+>23450</td
+></tr
+><tr
+><td class="heading">289</td
+><td
+align="left"
+valign="bottom"
+><b
+>Washington</b
+> </td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">290</td
+><td
+align="left"
+valign="bottom"
+>Bellevue </td
+><td
+align="right"
+valign="bottom"
+>117,137</td
+><td
+align="right"
+valign="bottom"
+>201</td
+><td
+align="right"
+valign="bottom"
+>98009</td
+></tr
+><tr
+><td class="heading">291</td
+><td
+align="left"
+valign="bottom"
+>Seattle </td
+><td
+align="right"
+valign="bottom"
+>573,911</td
+><td
+align="right"
+valign="bottom"
+>23</td
+><td
+align="right"
+valign="bottom"
+>98108</td
+></tr
+><tr
+><td class="heading">292</td
+><td
+align="left"
+valign="bottom"
+>Spokane </td
+><td
+align="right"
+valign="bottom"
+>196,818</td
+><td
+align="right"
+valign="bottom"
+>101</td
+><td
+align="right"
+valign="bottom"
+>99201</td
+></tr
+><tr
+><td class="heading">293</td
+><td
+align="left"
+valign="bottom"
+>Tacoma </td
+><td
+align="right"
+valign="bottom"
+>195,898</td
+><td
+align="right"
+valign="bottom"
+>104</td
+><td
+align="right"
+valign="bottom"
+>98413</td
+></tr
+><tr
+><td class="heading">294</td
+><td
+align="left"
+valign="bottom"
+>Vancouver </td
+><td
+align="right"
+valign="bottom"
+>157,493</td
+><td
+align="right"
+valign="bottom"
+>142</td
+><td
+align="right"
+valign="bottom"
+>98668</td
+></tr
+><tr
+><td class="heading">295</td
+><td
+align="left"
+valign="bottom"
+><b
+>Wisconsin</b
+></td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+><td
+align="right"
+valign="bottom"
+>&nbsp;</td
+></tr
+><tr
+><td class="heading">296</td
+><td
+align="left"
+valign="bottom"
+>Green Bay </td
+><td
+align="right"
+valign="bottom"
+>101,203</td
+><td
+align="right"
+valign="bottom"
+>248</td
+><td
+align="right"
+valign="bottom"
+>54303</td
+></tr
+><tr
+><td class="heading">297</td
+><td
+align="left"
+valign="bottom"
+>Madison </td
+><td
+align="right"
+valign="bottom"
+>221,551</td
+><td
+align="right"
+valign="bottom"
+>83</td
+><td
+align="right"
+valign="bottom"
+>53714</td
+></tr
+><tr
+><td class="heading">298</td
+><td
+align="left"
+valign="bottom"
+>Milwaukee </td
+><td
+align="right"
+valign="bottom"
+>578,887</td
+><td
+align="right"
+valign="bottom"
+>22</td
+><td
+align="right"
+valign="bottom"
+>53203</td
+></tr
+></table
+></body></html>

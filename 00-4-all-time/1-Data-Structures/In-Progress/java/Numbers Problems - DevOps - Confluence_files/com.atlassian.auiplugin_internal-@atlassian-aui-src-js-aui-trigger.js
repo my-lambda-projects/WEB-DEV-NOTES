@@ -1,0 +1,7 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.auiplugin:internal-@atlassian-aui-src-js-aui-trigger', location = 'node_modules/@atlassian/aui/src/js/aui/trigger.js' */
+("undefined"===typeof window?global:window).__ea2e55215adfd7d713f5dd9cd22093bf=function(){function e(a){return a&&a.__esModule?a:{"default":a}}function d(a,b){if(a.isEnabled()){var c=document.getElementById(a.getAttribute("aria-controls"));c&&c.message&&c.message(b)}}"use strict";var g=e(__02fa0d2334b5d2f9701871403ba9d89a),h=e(__8f23956215d754ca94df621efa6b0438),f=e(__da172e72afc5a7088e3034df761062a6);(0,f.default)("data-aui-trigger",{type:f.default.type.ATTRIBUTE,events:{click:function(a,b){var c=
+b.target,c=(0,g.default)(c).closest("a[href]",a);c.length&&c[0]!==a||(d(a,b),b.preventDefault())},mouseenter:function(a,b){d(a,b)},mouseleave:function(a,b){d(a,b)},focus:function(a,b){d(a,b)},blur:function(a,b){d(a,b)}},prototype:{disable:function(){this.setAttribute("aria-disabled","true")},enable:function(){this.setAttribute("aria-disabled","false")},isEnabled:function(){return"true"!==this.getAttribute("aria-disabled")}}});(0,h.default)("aui/trigger");return{}}.call(this);
+}catch(e){WRMCB(e)};

@@ -1,0 +1,31 @@
+<h1 id="postgres-docker-for-local-development">Postgres Docker for local development</h1>
+<p>This is a docker-compose.yml file and setup instructions for running postgreSQL in docker for local development.</p>
+<h2 id="install-docker-desktop">Install Docker Desktop</h2>
+<p>Install <a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a></p>
+<h2 id="clone-this-repository">Clone this repository</h2>
+<p><code>git clone &lt;repo url&gt;</code></p>
+<h2 id="start-the-container-with-docker-compose-in-the-background">Start the container with docker-compose in the background</h2>
+<pre class="shell"><code>docker-compose up -d</code></pre>
+<p>If you reboot your computer you will probably have to issue this command in order to get your container going again.</p>
+<h2 id="if-your-container-doesnt-start">If your container doesn’t start</h2>
+<p>you can find out more info about what happened with this command</p>
+<pre class="shell"><code>docker-compose logs</code></pre>
+<h2 id="stopping-the-container">Stopping the container</h2>
+<pre class="shell"><code>docker-compose down</code></pre>
+<h2 id="connecting-via-psql">Connecting via psql</h2>
+<p>To connect via psql you need to connect to localhost using the postgres user with the default password <code>password</code> (You can change this in the docker-compose.yml file before you run the container for the first time)</p>
+<pre class="shell"><code>psql -h localhost -U postgres</code></pre>
+<p>If you want to be able to type <code>psql</code> without specifying localhost or the user you can set the following environment variables in your shell startup file:</p>
+<pre class="shell"><code>export PGHOST=localhost
+export PGUSER=postgres</code></pre>
+<p>Then you can simply type <code>psql</code> by itself and it will connect</p>
+<p>If you want to not have to type the password copy the <code>.pgpass</code> file to your home directory. (If you’ve changed the password in docker-compose.yml you’ll also need to change it in this file)</p>
+<pre class="shell"><code>cp -v .pgpass ~/.pgpass</code></pre>
+<p>You also have to give this file proper permissions for it to work with this command once you’ve copied it.</p>
+<pre class="shell"><code>chmod 0600 ~/.pgpass</code></pre>
+<p>After this should you be able to type <code>pgsql</code> and it should connect without prompting you for anything.</p>
+<h2 id="starting-over">Starting over</h2>
+<p>This docker-compose.yml keeps your postgres data in a docker <code>volume</code> called <code>postgres-data</code>. If you want to start over with a clean postgres database, you can remove the container AND volume with this docker command:</p>
+<pre class="shell"><code>docker-compose down -v</code></pre>
+<p>and then just start it back up.</p>
+<pre class="shell"><code>docker-compose up</code></pre>

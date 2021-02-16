@@ -1,0 +1,181 @@
+{
+	"new class": {
+		"prefix": "class",
+		"body": [
+			"class ${1:$TM_FILENAME_BASE}$0",
+				"",
+				"\tprivate sub class_Initialize",
+					"\t\t' Called automatically when class is created",
+				"\tend sub",
+				"",
+				"\tprivate sub class_Terminate",
+					"\t\t' Called automatically when all references to class instance are removed",
+				"\tend sub",
+				"",
+				"",
+			"end class"
+		],
+		"description": "new class..."
+	},
+
+	"new Dictionnary": {
+		"prefix": "dictionnary",
+		"body": [
+			"set ${1:objName} = CreateObject(\"Scripting.Dictionary\")"
+		],
+		"description": "new dictionnary..."
+	},
+	"new SortedList": {
+		"prefix": "sortedList",
+		"body": [
+			"set ${1:objName} = CreateObject(\"System.Collections.SortedList\")"
+		],
+		"description": "new sortedList..."
+	},
+
+	"new function": {
+		"prefix": "function",
+		"body": [
+			"function $1($2)",
+			"\t$0",
+			"end function"
+		],
+		"description": "new function..."
+	},
+	"new sub": {
+		"prefix": "sub",
+		"body": [
+			"sub $1($2)",
+				"\t$0",
+			"end sub"
+		],
+		"description": "new sub..."
+	},
+
+	"public property": {
+		"prefix": "property",
+		"body": [
+			"public property get ${1:propertyName}",
+				"\tset ${1:propertyName} = m_${1:propertyName}",
+			"end property",
+			"public property let ${1:propertyName}(Value)",
+				"\tset m_${1:propertyName} = value",
+			"end property"
+		],
+		"description": "public property..."
+	},
+	"private property": {
+		"prefix": "property",
+		"body": [
+			"private property get ${1:propertyName}",
+				"\tset ${1:propertyName} = m_${1:propertyName}",
+			"end property",
+			"private property let ${1:propertyName}(Value)",
+				"\tset m_${1:propertyName} = value",
+			"end property"
+		],
+		"description": "private property..."
+	},
+
+	"if statement": {
+		"prefix": "if",
+		"body": [
+			"if ${1:True} Then",
+				"\t$0${2:",
+			"end if"
+		],
+		"description": "if then..."
+	},
+
+	"if else statement": {
+		"prefix": "if else",
+		"body": [
+			"if ${1:True} Then",
+				"\t$0${2:",
+			"else",
+				"\t}",
+			"end if"
+		],
+		"description": "if else then..."
+	},
+
+	"elseif statement": {
+		"prefix": "elseif",
+		"body": [
+			"elseif ${1:True} Then",
+				"\t$0${2:"
+		],
+		"description": "elseif..."
+	},
+
+	"select case": {
+		"prefix": "select case",
+		"body": [
+			"select case ${1:statement}",
+				"",
+				"\tcase ${0}",
+				"\t\t",
+				"\tcase else",
+				"\t\t",
+			"end select"
+		],
+		"description": "select case..."
+	},
+
+	"for... next": {
+		"prefix": "for",
+		"body": [
+			"for ${1:i} = 0 to ${2:value} step 1",
+				"\t$0",
+			"next"
+		],
+		"description": "for... next"
+	},
+	"for each": {
+		"prefix": "for",
+		"body": [
+			"for each ${1:element} in ${2:elementList}",
+				"\t$0",
+			"next"
+		],
+		"description": "for each..."
+	},
+
+	"do loop until": {
+		"prefix": "do",
+		"body": [
+			"do",
+				"$0",
+			"loop until ${1:statement}"
+		],
+		"description": "do loop until"
+	},
+	"do loop while": {
+		"prefix": "do",
+		"body": [
+			"do",
+				"$0",
+			"loop while ${1:statement}"
+		],
+		"description": "do loop while"
+	},
+	"do until loop": {
+		"prefix": "do",
+		"body": [
+			"do until ${1:statement}",
+				"$0",
+			"loop"
+		],
+		"description": "do until loop"
+	},
+	"do while loop": {
+		"prefix": "do",
+		"body": [
+			"do while ${1:statement}",
+				"$0",
+			"loop"
+		],
+		"description": "do while loop"
+	}
+
+}

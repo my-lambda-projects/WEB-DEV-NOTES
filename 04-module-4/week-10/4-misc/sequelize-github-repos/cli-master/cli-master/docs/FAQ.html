@@ -1,0 +1,25 @@
+<p>The Sequelize Command Line Interface (CLI) Frequently Asked Question</p>
+<h2 id="initialize-sequelize-to-create-necessary-files-in-the-project">Initialize sequelize to create necessary files in the project</h2>
+<pre><code>$ sequelize init</code></pre>
+<h2 id="how-can-i-generate-a-model">How can I generate a model?</h2>
+<p>Specify model name with <code>--name</code> argument. List of table fields can be passed with <code>--attributes</code> option</p>
+<pre><code>$ sequelize model:create --name User --attributes name:string,state:boolean,birth:date,card:integer,role:enum:&#39;{Admin,Guest}&#39;</code></pre>
+<h2 id="how-can-i-create-a-migration">How can I create a migration?</h2>
+<p>Specify migration name with <code>--name</code> argument</p>
+<pre><code>$ sequelize migration:create --name &lt;migration_name&gt;</code></pre>
+<h2 id="what-is-the-command-to-execute-all-migrations">What is the command to execute all migrations?</h2>
+<pre><code>$ sequelize db:migrate</code></pre>
+<h2 id="how-can-i-make-a-migrations-rollback">How can I make a migrations rollback?</h2>
+<pre><code>$ sequelize db:migrate:undo:all</code></pre>
+<h2 id="how-can-i-create-a-seeder">How can I create a seeder?</h2>
+<p>Specify seeder name with <code>--name</code> argument</p>
+<pre><code>$ sequelize seed:create --name &lt;seeder_name&gt; </code></pre>
+<h2 id="how-can-i-run-the-seeders">How can I run the seeders?</h2>
+<pre><code>$ sequelize db:seed:all</code></pre>
+<h2 id="how-can-i-make-the-seeders-rollback">How can I make the seeders rollback?</h2>
+<pre><code>$ sequelize db:seed:undo:all</code></pre>
+<h2 id="i-am-getting-an-error-when-attempting-to-create-a-model-with-an-enum-type.">I am getting an error when attempting to create a model with an enum type.</h2>
+<p>The brackets <code>{}</code> likely need to be quoted in your shell</p>
+<pre><code>sequelize model:create --name User --attributes role:enum:&#39;{Admin,Guest}&#39;</code></pre>
+<p>or possibly</p>
+<pre><code>sequelize model:create --name User --attributes role:enum:\{Admin,Guest\}</code></pre>

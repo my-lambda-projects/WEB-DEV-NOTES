@@ -1,0 +1,70 @@
+<h1 id="installation">Installation</h1>
+<p>Sequelize is available via NPM.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">$ <span class="ex">npm</span> install sequelize</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># And one of the following:</span></a>
+<a class="sourceLine" id="cb1-4" title="4">$ <span class="ex">npm</span> install pg@6 pg-hstore <span class="co">#pg@7 is currently not supported</span></a>
+<a class="sourceLine" id="cb1-5" title="5">$ <span class="ex">npm</span> install mysql2</a>
+<a class="sourceLine" id="cb1-6" title="6">$ <span class="ex">npm</span> install sqlite3</a></code></pre></div>
+<h1 id="setting-up-a-connection">Setting up a connection</h1>
+<p>Sequelize allow you to use a connection uri:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> Sequelize <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> db <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;postgres://localhost:5432/your-db&#39;</span>)</a></code></pre></div>
+<h1 id="your-first-model">Your first model</h1>
+<p>Models are defined with the <code>.define()</code> method: <code>db.define('name', {attributes}, {options})</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;user&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">lastName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">// force: true will drop the table if it already exists</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="cf">await</span> <span class="va">User</span>.<span class="at">sync</span>(<span class="op">{</span><span class="dt">force</span><span class="op">:</span> <span class="kw">true</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">// Table created</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;John&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Hancock&#39;</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-18" title="18"></a></code></pre></div>
+<p>You can read more about creating models and available types at <a href="/column-types">Column Types</a></p>
+<h1 id="your-first-query">Your first query</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> users <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="va">console</span>.<span class="at">log</span>(users)<span class="op">;</span></a></code></pre></div>
+<h3 id="instances-vs-data">Instances vs data</h3>
+<p>When you console log the returned value from a Sequelize statement (just like in the example above), what you see is a weird looking object like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="dt">dataValues</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb5-3" title="3">     <span class="op">{</span> <span class="dt">id</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">       <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;John&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-5" title="5">       <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Hancock&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">       <span class="dt">createdAt</span><span class="op">:</span> <span class="dv">2018-01</span><span class="op">-</span>22T19<span class="op">:</span><span class="dv">18</span><span class="op">:</span><span class="fl">39.875</span>Z<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">       <span class="dt">updatedAt</span><span class="op">:</span> <span class="dv">2018-01</span><span class="op">-</span>22T19<span class="op">:</span><span class="dv">18</span><span class="op">:</span><span class="fl">39.879</span>Z<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-8" title="8">       <span class="dt">authorId</span><span class="op">:</span> <span class="dv">6</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="dt">_changed</span><span class="op">:</span> <span class="op">{},</span></a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="dt">_modelOptions</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb5-11" title="11">     <span class="op">{</span> ... <span class="op">},</span> <span class="co">// Omitted for brevity</span></a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="dt">_options</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb5-13" title="13">     <span class="op">{</span> ... <span class="op">},</span>  <span class="co">// Omitted for brevity</span></a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="dt">__eagerlyLoadedAssociations</span><span class="op">:</span> []<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="dt">isNewRecord</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span> </a></code></pre></div>
+<p>This is not a simple object containing only data, this is a full instance of the given model: It contains the data you queried plus a bunch of additional information and methods.</p>
+<p>Notice that the actual data is available inside <code>dataValues</code>, but don’t worry about this key - Sequelize creates getters and setters automatically for you - In plain english this means that you can simply type the desired field name directly:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1">  <span class="va">user</span>.<span class="at">firstName</span> <span class="co">// &#39;John&#39;</span></a></code></pre></div>
+<h2 id="promises">Promises</h2>
+<p>Sequelize uses promises to control async control-flow.</p>
+<p><strong>Note:</strong> <em>Internally, Sequelize uses an independent copy of <a href="http://bluebirdjs.com">Bluebird</a>. You can access it using <code>Sequelize.Promise</code> if you want to set any Bluebird-specific options</em>.</p>
+<p>Basically, a promise represents a value which will be present at some point - “I promise you I will give you a result or an error at some point”. This means that</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// DON&#39;T DO THIS</span></a>
+<a class="sourceLine" id="cb7-2" title="2">user <span class="op">=</span> <span class="va">User</span>.<span class="at">findOne</span>()</a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="va">user</span>.<span class="at">get</span>(<span class="st">&#39;firstName&#39;</span>))<span class="op">;</span></a></code></pre></div>
+<p><em>will never work!</em> This is because <code>user</code> is a promise object, not a data row from the DB. The right way to do it is:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1">user <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findOne</span>()</a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="va">console</span>.<span class="at">log</span>(<span class="va">user</span>.<span class="at">get</span>(<span class="st">&#39;firstName&#39;</span>))<span class="op">;</span></a></code></pre></div>
+<p><strong>Note:</strong> this will work but only in the body of an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">async</a> function:</p>

@@ -1,0 +1,539 @@
+<h1 id="associations">Associations</h1>
+<p>Sequelize supports the standard associations: <a href="https://en.wikipedia.org/wiki/One-to-one_%28data_model%29">One-To-One</a>, <a href="https://en.wikipedia.org/wiki/One-to-many_%28data_model%29">One-To-Many</a> and <a href="https://en.wikipedia.org/wiki/Many-to-many_%28data_model%29">Many-To-Many</a>.</p>
+<p>To do this, Sequelize provides <strong>four</strong> types of associations that should be combined to create them:</p>
+<ul>
+<li>The <code>HasOne</code> association</li>
+<li>The <code>BelongsTo</code> association</li>
+<li>The <code>HasMany</code> association</li>
+<li>The <code>BelongsToMany</code> association</li>
+</ul>
+<p>The guide will start explaining how to define these four types of associations, and then will follow up to explain how to combine those to define the three standard association types (<a href="https://en.wikipedia.org/wiki/One-to-one_%28data_model%29">One-To-One</a>, <a href="https://en.wikipedia.org/wiki/One-to-many_%28data_model%29">One-To-Many</a> and <a href="https://en.wikipedia.org/wiki/Many-to-many_%28data_model%29">Many-To-Many</a>).</p>
+<h2 id="defining-the-sequelize-associations">Defining the Sequelize associations</h2>
+<p>The four association types are defined in a very similar way. Let’s say we have two models, <code>A</code> and <code>B</code>. Telling Sequelize that you want an association between the two needs just a function call:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> A <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;A&#39;</span><span class="op">,</span> <span class="co">/* ... */</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> B <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;B&#39;</span><span class="op">,</span> <span class="co">/* ... */</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="va">A</span>.<span class="at">hasOne</span>(B)<span class="op">;</span> <span class="co">// A HasOne B</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="va">A</span>.<span class="at">belongsTo</span>(B)<span class="op">;</span> <span class="co">// A BelongsTo B</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="va">A</span>.<span class="at">hasMany</span>(B)<span class="op">;</span> <span class="co">// A HasMany B</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="va">A</span>.<span class="at">belongsToMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;C&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// A BelongsToMany B through the junction table C</span></a></code></pre></div>
+<p>They all accept an options object as a second parameter (optional for the first three, mandatory for <code>belongsToMany</code> containing at least the <code>through</code> property):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">A</span>.<span class="at">hasOne</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">A</span>.<span class="at">belongsTo</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">A</span>.<span class="at">hasMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="va">A</span>.<span class="at">belongsToMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;C&#39;</span><span class="op">,</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The order in which the association is defined is relevant. In other words, the order matters, for the four cases. In all examples above, <code>A</code> is called the <strong>source</strong> model and <code>B</code> is called the <strong>target</strong> model. This terminology is important.</p>
+<p>The <code>A.hasOne(B)</code> association means that a One-To-One relationship exists between <code>A</code> and <code>B</code>, with the foreign key being defined in the target model (<code>B</code>).</p>
+<p>The <code>A.belongsTo(B)</code> association means that a One-To-One relationship exists between <code>A</code> and <code>B</code>, with the foreign key being defined in the source model (<code>A</code>).</p>
+<p>The <code>A.hasMany(B)</code> association means that a One-To-Many relationship exists between <code>A</code> and <code>B</code>, with the foreign key being defined in the target model (<code>B</code>).</p>
+<p>These three calls will cause Sequelize to automatically add foreign keys to the appropriate models (unless they are already present).</p>
+<p>The <code>A.belongsToMany(B, { through: 'C' })</code> association means that a Many-To-Many relationship exists between <code>A</code> and <code>B</code>, using table <code>C</code> as <a href="https://en.wikipedia.org/wiki/Associative_entity">junction table</a>, which will have the foreign keys (<code>aId</code> and <code>bId</code>, for example). Sequelize will automatically create this model <code>C</code> (unless it already exists) and define the appropriate foreign keys on it.</p>
+<p><em>Note: In the examples above for <code>belongsToMany</code>, a string (<code>'C'</code>) was passed to the through option. In this case, Sequelize automatically generates a model with this name. However, you can also pass a model directly, if you have already defined it.</em></p>
+<p>These are the main ideas involved in each type of association. However, these relationships are often used in pairs, in order to enable better usage with Sequelize. This will be seen later on.</p>
+<h2 id="creating-the-standard-relationships">Creating the standard relationships</h2>
+<p>As mentioned, usually the Sequelize associations are defined in pairs. In summary:</p>
+<ul>
+<li>To create a <strong>One-To-One</strong> relationship, the <code>hasOne</code> and <code>belongsTo</code> associations are used together;</li>
+<li>To create a <strong>One-To-Many</strong> relationship, the <code>hasMany</code> and <code>belongsTo</code> associations are used together;</li>
+<li>To create a <strong>Many-To-Many</strong> relationship, two <code>belongsToMany</code> calls are used together.
+<ul>
+<li>Note: there is also a <em>Super Many-To-Many</em> relationship, which uses six associations at once, and will be discussed in the <a href="advanced-many-to-many.html">Advanced Many-to-Many relationships guide</a>.</li>
+</ul></li>
+</ul>
+<p>This will all be seen in detail next. The advantages of using these pairs instead of one single association will be discussed in the end of this chapter.</p>
+<h2 id="one-to-one-relationships">One-To-One relationships</h2>
+<h3 id="philosophy">Philosophy</h3>
+<p>Before digging into the aspects of using Sequelize, it is useful to take a step back to consider what happens with a One-To-One relationship.</p>
+<p>Let’s say we have two models, <code>Foo</code> and <code>Bar</code>. We want to establish a One-To-One relationship between Foo and Bar. We know that in a relational database, this will be done by establishing a foreign key in one of the tables. So in this case, a very relevant question is: in which table do we want this foreign key to be? In other words, do we want <code>Foo</code> to have a <code>barId</code> column, or should <code>Bar</code> have a <code>fooId</code> column instead?</p>
+<p>In principle, both options are a valid way to establish a One-To-One relationship between Foo and Bar. However, when we say something like <em>“there is a One-To-One relationship between Foo and Bar”</em>, it is unclear whether or not the relationship is <em>mandatory</em> or optional. In other words, can a Foo exist without a Bar? Can a Bar exist without a Foo? The answers to these questions helps figuring out where we want the foreign key column to be.</p>
+<h3 id="goal">Goal</h3>
+<p>For the rest of this example, let’s assume that we have two models, <code>Foo</code> and <code>Bar</code>. We want to setup a One-To-One relationship between them such that <code>Bar</code> gets a <code>fooId</code> column.</p>
+<h3 id="implementation">Implementation</h3>
+<p>The main setup to achieve the goal is as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo)<span class="op">;</span></a></code></pre></div>
+<p>Since no option was passed, Sequelize will infer what to do from the names of the models. In this case, Sequelize knows that a <code>fooId</code> column must be added to <code>Bar</code>.</p>
+<p>This way, calling <code>Bar.sync()</code> after the above will yield the following SQL (on PostgreSQL, for example):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;foos&quot;</span> (</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb4-3" title="3">);</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;bars&quot;</span> (</a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="ot">&quot;fooId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;foos&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb4-8" title="8">);</a></code></pre></div>
+<h3 id="options">Options</h3>
+<p>Various options can be passed as a second parameter of the association call.</p>
+<h4 id="ondelete-and-onupdate"><code>onDelete</code> and <code>onUpdate</code></h4>
+<p>For example, to configure the <code>ON DELETE</code> and <code>ON UPDATE</code> behaviors, you can do:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">onDelete</span><span class="op">:</span> <span class="st">&#39;RESTRICT&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">onUpdate</span><span class="op">:</span> <span class="st">&#39;RESTRICT&#39;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo)<span class="op">;</span></a></code></pre></div>
+<p>The possible choices are <code>RESTRICT</code>, <code>CASCADE</code>, <code>NO ACTION</code>, <code>SET DEFAULT</code> and <code>SET NULL</code>.</p>
+<p>The defaults for the One-To-One associations is <code>SET NULL</code> for <code>ON DELETE</code> and <code>CASCADE</code> for <code>ON UPDATE</code>.</p>
+<h4 id="customizing-the-foreign-key">Customizing the foreign key</h4>
+<p>Both the <code>hasOne</code> and <code>belongsTo</code> calls shown above will infer that the foreign key to be created should be called <code>fooId</code>. To use a different name, such as <code>myFooId</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="co">// Option 1</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;myFooId&#39;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">// Option 2</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;myFooId&#39;</span></a>
+<a class="sourceLine" id="cb6-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-14" title="14"></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">// Option 3</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-18" title="18">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;myFooId&#39;</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-20" title="20"></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">// Option 4</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-24" title="24">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-25" title="25">    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;myFooId&#39;</span></a>
+<a class="sourceLine" id="cb6-26" title="26">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>As shown above, the <code>foreignKey</code> option accepts a string or an object. When receiving an object, this object will be used as the definition for the column just like it would do in a standard <code>sequelize.define</code> call. Therefore, specifying options such as <code>type</code>, <code>allowNull</code>, <code>defaultValue</code>, etc, just work.</p>
+<p>For example, to use <code>UUID</code> as the foreign key data type instead of the default (<code>INTEGER</code>), you can simply do:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> <span class="op">{</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;Sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="co">// name: &#39;myFooId&#39;</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">UUID</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="va">Bar</span>.<span class="at">belongsTo</span>(Foo)<span class="op">;</span></a></code></pre></div>
+<h4 id="mandatory-versus-optional-associations">Mandatory versus optional associations</h4>
+<p>By default, the association is considered optional. In other words, in our example, the <code>fooId</code> is allowed to be null, meaning that one Bar can exist without a Foo. Changing this is just a matter of specifying <code>allowNull: false</code> in the foreign key options:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">// &quot;fooId&quot; INTEGER NOT NULL REFERENCES &quot;foos&quot; (&quot;id&quot;) ON DELETE RESTRICT ON UPDATE RESTRICT</span></a></code></pre></div>
+<h2 id="one-to-many-relationships">One-To-Many relationships</h2>
+<h3 id="philosophy-1">Philosophy</h3>
+<p>One-To-Many associations are connecting one source with multiple targets, while all these targets are connected only with this single source.</p>
+<p>This means that, unlike the One-To-One association, in which we had to choose where the foreign key would be placed, there is only one option in One-To-Many associations. For example, if one Foo has many Bars (and this way each Bar belongs to one Foo), then the only sensible implementation is to have a <code>fooId</code> column in the <code>Bar</code> table. The opposite is impossible, since one Foo has many Bars.</p>
+<h3 id="goal-1">Goal</h3>
+<p>In this example, we have the models <code>Team</code> and <code>Player</code>. We want to tell Sequelize that there is a One-To-Many relationship between them, meaning that one Team has many Players, while each Player belongs to a single Team.</p>
+<h3 id="implementation-1">Implementation</h3>
+<p>The main way to do this is as follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">Team</span>.<span class="at">hasMany</span>(Player)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="va">Player</span>.<span class="at">belongsTo</span>(Team)<span class="op">;</span></a></code></pre></div>
+<p>Again, as mentioned, the main way to do it used a pair of Sequelize associations (<code>hasMany</code> and <code>belongsTo</code>).</p>
+<p>For example, in PostgreSQL, the above setup will yield the following SQL upon <code>sync()</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;Teams&quot;</span> (</a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb10-3" title="3">);</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;Players&quot;</span> (</a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="ot">&quot;TeamId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;Teams&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb10-8" title="8">);</a></code></pre></div>
+<h3 id="options-1">Options</h3>
+<p>The options to be applied in this case are the same from the One-To-One case. For example, to change the name of the foreign key and make sure that the relationship is mandatory, we can do:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="va">Team</span>.<span class="at">hasMany</span>(Player<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;clubId&#39;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="va">Player</span>.<span class="at">belongsTo</span>(Team)<span class="op">;</span></a></code></pre></div>
+<p>Like One-To-One relationships, <code>ON DELETE</code> defaults to <code>SET NULL</code> and <code>ON UPDATE</code> defaults to <code>CASCADE</code>.</p>
+<h2 id="many-to-many-relationships">Many-To-Many relationships</h2>
+<h3 id="philosophy-2">Philosophy</h3>
+<p>Many-To-Many associations connect one source with multiple targets, while all these targets can in turn be connected to other sources beyond the first.</p>
+<p>This cannot be represented by adding one foreign key to one of the tables, like the other relationships did. Instead, the concept of a <a href="https://en.wikipedia.org/wiki/Associative_entity">Junction Model</a> is used. This will be an extra model (and extra table in the database) which will have two foreign key columns and will keep track of the associations. The junction table is also sometimes called <em>join table</em> or <em>through table</em>.</p>
+<h3 id="goal-2">Goal</h3>
+<p>For this example, we will consider the models <code>Movie</code> and <code>Actor</code>. One actor may have participated in many movies, and one movie had many actors involved with its production. The junction table that will keep track of the associations will be called <code>ActorMovies</code>, which will contain the foreign keys <code>movieId</code> and <code>actorId</code>.</p>
+<h3 id="implementation-2">Implementation</h3>
+<p>The main way to do this in Sequelize is as follows:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> Movie <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Movie&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">const</span> Actor <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Actor&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="va">Movie</span>.<span class="at">belongsToMany</span>(Actor<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;ActorMovies&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="va">Actor</span>.<span class="at">belongsToMany</span>(Movie<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;ActorMovies&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Since a string was given in the <code>through</code> option of the <code>belongsToMany</code> call, Sequelize will automatically create the <code>ActorMovies</code> model which will act as the junction model. For example, in PostgreSQL:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;ActorMovies&quot;</span> (</a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="ot">&quot;createdAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb13-3" title="3">  <span class="ot">&quot;updatedAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb13-4" title="4">  <span class="ot">&quot;MovieId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;Movies&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="ot">&quot;ActorId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;Actors&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb13-6" title="6">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="ot">&quot;MovieId&quot;</span>,<span class="ot">&quot;ActorId&quot;</span>)</a>
+<a class="sourceLine" id="cb13-7" title="7">);</a></code></pre></div>
+<p>Instead of a string, passing a model directly is also supported, and in that case the given model will be used as the junction model (and no model will be created automatically). For example:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> Movie <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Movie&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> Actor <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Actor&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> ActorMovies <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;ActorMovies&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="dt">MovieId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">      <span class="dt">model</span><span class="op">:</span> Movie<span class="op">,</span> <span class="co">// &#39;Movies&#39; would also work</span></a>
+<a class="sourceLine" id="cb14-8" title="8">      <span class="dt">key</span><span class="op">:</span> <span class="st">&#39;id&#39;</span></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-10" title="10">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-11" title="11">  <span class="dt">ActorId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-12" title="12">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-13" title="13">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-14" title="14">      <span class="dt">model</span><span class="op">:</span> Actor<span class="op">,</span> <span class="co">// &#39;Actors&#39; would also work</span></a>
+<a class="sourceLine" id="cb14-15" title="15">      <span class="dt">key</span><span class="op">:</span> <span class="st">&#39;id&#39;</span></a>
+<a class="sourceLine" id="cb14-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="va">Movie</span>.<span class="at">belongsToMany</span>(Actor<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;ActorMovies&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-20" title="20"><span class="va">Actor</span>.<span class="at">belongsToMany</span>(Movie<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;ActorMovies&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The above yields the following SQL in PostgreSQL, which is equivalent to the one shown above:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;ActorMovies&quot;</span> (</a>
+<a class="sourceLine" id="cb15-2" title="2">  <span class="ot">&quot;MovieId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;Movies&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">RESTRICT</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="ot">&quot;ActorId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;Actors&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">RESTRICT</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="ot">&quot;createdAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb15-5" title="5">  <span class="ot">&quot;updatedAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb15-6" title="6">  <span class="kw">UNIQUE</span> (<span class="ot">&quot;MovieId&quot;</span>, <span class="ot">&quot;ActorId&quot;</span>),     <span class="co">-- Note: Sequelize generated this UNIQUE constraint but</span></a>
+<a class="sourceLine" id="cb15-7" title="7">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="ot">&quot;MovieId&quot;</span>,<span class="ot">&quot;ActorId&quot;</span>)  <span class="co">-- it is irrelevant since it&#39;s also a PRIMARY KEY</span></a>
+<a class="sourceLine" id="cb15-8" title="8">);</a></code></pre></div>
+<h3 id="options-2">Options</h3>
+<p>Unlike One-To-One and One-To-Many relationships, the defaults for both <code>ON UPDATE</code> and <code>ON DELETE</code> are <code>CASCADE</code> for Many-To-Many relationships.</p>
+<p>Belongs-To-Many creates a unique key when primary key is not present on through model. This unique key name can be overridden using <strong>uniqueKey</strong> option.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="va">Project</span>.<span class="at">belongsToMany</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> UserProjects<span class="op">,</span> <span class="dt">uniqueKey</span><span class="op">:</span> <span class="st">&#39;my_custom_unique&#39;</span> <span class="op">}</span>)</a></code></pre></div>
+<h2 id="basics-of-queries-involving-associations">Basics of queries involving associations</h2>
+<p>With the basics of defining associations covered, we can look at queries involving associations. The most common queries on this matter are the <em>read</em> queries (i.e. SELECTs). Later on, other types of queries will be shown.</p>
+<p>In order to study this, we will consider an example in which we have Ships and Captains, and a one-to-one relationship between them. We will allow null on foreign keys (the default), meaning that a Ship can exist without a Captain and vice-versa.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="co">// This is the setup of our models for the examples below</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">const</span> Ship <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;ship&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">crewCapacity</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-5" title="5">  <span class="dt">amountOfSails</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="kw">const</span> Captain <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;captain&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-8" title="8">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-9" title="9">  <span class="dt">skillLevel</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-10" title="10">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-11" title="11">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span> <span class="dt">min</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">10</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-14" title="14"><span class="va">Captain</span>.<span class="at">hasOne</span>(Ship)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-15" title="15"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain)<span class="op">;</span></a></code></pre></div>
+<h3 id="fetching-associations---eager-loading-vs-lazy-loading">Fetching associations - Eager Loading vs Lazy Loading</h3>
+<p>The concepts of Eager Loading and Lazy Loading are fundamental to understand how fetching associations work in Sequelize. Lazy Loading refers to the technique of fetching the associated data only when you really want it; Eager Loading, on the other hand, refers to the technique of fetching everything at once, since the beginning, with a larger query.</p>
+<h4 id="lazy-loading-example">Lazy Loading example</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">const</span> awesomeCaptain <span class="op">=</span> <span class="cf">await</span> <span class="va">Captain</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-3" title="3">    <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Jack Sparrow&quot;</span></a>
+<a class="sourceLine" id="cb18-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="co">// Do stuff with the fetched captain</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Name:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="at">name</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Skill Level:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="at">skillLevel</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="co">// Now we want information about his ship!</span></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="kw">const</span> hisShip <span class="op">=</span> <span class="cf">await</span> <span class="va">awesomeCaptain</span>.<span class="at">getShip</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="co">// Do stuff with the ship</span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Ship Name:&#39;</span><span class="op">,</span> <span class="va">hisShip</span>.<span class="at">name</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Amount of Sails:&#39;</span><span class="op">,</span> <span class="va">hisShip</span>.<span class="at">amountOfSails</span>)<span class="op">;</span></a></code></pre></div>
+<p>Observe that in the example above, we made two queries, only fetching the associated ship when we wanted to use it. This can be especially useful if we may or may not need the ship, perhaps we want to fetch it conditionally, only in a few cases; this way we can save time and memory by only fetching it when necessary.</p>
+<p>Note: the <code>getShip()</code> instance method used above is one of the methods Sequelize automatically adds to <code>Captain</code> instances. There are others. You will learn more about them later in this guide.</p>
+<h4 id="eager-loading-example">Eager Loading Example</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> awesomeCaptain <span class="op">=</span> <span class="cf">await</span> <span class="va">Captain</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb19-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-3" title="3">    <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Jack Sparrow&quot;</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb19-5" title="5">  <span class="dt">include</span><span class="op">:</span> Ship</a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="co">// Now the ship comes with it</span></a>
+<a class="sourceLine" id="cb19-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Name:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="at">name</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Skill Level:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="at">skillLevel</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Ship Name:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="va">ship</span>.<span class="at">name</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Amount of Sails:&#39;</span><span class="op">,</span> <span class="va">awesomeCaptain</span>.<span class="va">ship</span>.<span class="at">amountOfSails</span>)<span class="op">;</span></a></code></pre></div>
+<p>As shown above, Eager Loading is performed in Sequelize by using the <code>include</code> option. Observe that here only one query was performed to the database (which brings the associated data along with the instance).</p>
+<p>This was just a quick introduction to Eager Loading in Sequelize. There is a lot more to it, which you can learn at <a href="eager-loading.html">the dedicated guide on Eager Loading</a>.</p>
+<h3 id="creating-updating-and-deleting">Creating, updating and deleting</h3>
+<p>The above showed the basics on queries for fetching data involving associations. For creating, updating and deleting, you can either:</p>
+<ul>
+<li><p>Use the standard model queries directly:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="co">// Example: creating an associated model using the standard methods</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;My Bar&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">fooId</span><span class="op">:</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">// This creates a Bar belonging to the Foo of ID 5 (since fooId is</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">// a regular column, after all). Nothing very clever going on here.</span></a></code></pre></div></li>
+<li><p>Or use the <em><a href="#special-methods-mixins-added-to-instances">special methods/mixins</a></em> available for associated models, which are explained later on this page.</p></li>
+</ul>
+<p><strong>Note:</strong> The <a href="../class/lib/model.js~Model.html#instance-method-save"><code>save()</code> instance method</a> is not aware of associations. In other words, if you change a value from a <em>child</em> object that was eager loaded along a <em>parent</em> object, calling <code>save()</code> on the parent will completely ignore the change that happened on the child.</p>
+<h2 id="association-aliases-custom-foreign-keys">Association Aliases &amp; Custom Foreign Keys</h2>
+<p>In all the above examples, Sequelize automatically defined the foreign key names. For example, in the Ship and Captain example, Sequelize automatically defined a <code>captainId</code> field on the Ship model. However, it is easy to specify a custom foreign key.</p>
+<p>Let’s consider the models Ship and Captain in a simplified form, just to focus on the current topic, as shown below (less fields):</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">const</span> Ship <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;ship&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">const</span> Captain <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;captain&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>There are three ways to specify a different name for the foreign key:</p>
+<ul>
+<li>By providing the foreign key name directly</li>
+<li>By defining an Alias</li>
+<li>By doing both things</li>
+</ul>
+<h3 id="recap-the-default-setup">Recap: the default setup</h3>
+<p>By using simply <code>Ship.belongsTo(Captain)</code>, sequelize will generate the foreign key name automatically:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain)<span class="op">;</span> <span class="co">// This creates the `captainId` foreign key in Ship.</span></a>
+<a class="sourceLine" id="cb22-2" title="2"></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="co">// Eager Loading is done by passing the model to `include`:</span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Captain <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="co">// Or by providing the associated model name:</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;captain&#39;</span> <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-7" title="7"></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="co">// Also, instances obtain a `getCaptain()` method for Lazy Loading:</span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="kw">const</span> ship <span class="op">=</span> <span class="va">Ship</span>.<span class="at">findOne</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">ship</span>.<span class="at">getCaptain</span>()).<span class="at">toJSON</span>())<span class="op">;</span></a></code></pre></div>
+<h3 id="providing-the-foreign-key-name-directly">Providing the foreign key name directly</h3>
+<p>The foreign key name can be provided directly with an option in the association definition, as follows:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain<span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;bossId&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// This creates the `bossId` foreign key in Ship.</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co">// Eager Loading is done by passing the model to `include`:</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Captain <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co">// Or by providing the associated model name:</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;Captain&#39;</span> <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-7" title="7"></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="co">// Also, instances obtain a `getCaptain()` method for Lazy Loading:</span></a>
+<a class="sourceLine" id="cb23-9" title="9"><span class="kw">const</span> ship <span class="op">=</span> <span class="va">Ship</span>.<span class="at">findOne</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-10" title="10"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">ship</span>.<span class="at">getCaptain</span>()).<span class="at">toJSON</span>())<span class="op">;</span></a></code></pre></div>
+<h3 id="defining-an-alias">Defining an Alias</h3>
+<p>Defining an Alias is more powerful than simply specifying a custom name for the foreign key. This is better understood with an example:</p>
+<!-- NOTE: any change in this part might also require a change on advanced-many-to-many.md -->
+<div class="sourceCode" id="cb24"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// This creates the `leaderId` foreign key in Ship.</span></a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co">// Eager Loading no longer works by passing the model to `include`:</span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Captain <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span> <span class="co">// Throws an error</span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="co">// Instead, you have to pass the alias:</span></a>
+<a class="sourceLine" id="cb24-6" title="6"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span> <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-7" title="7"><span class="co">// Or you can pass an object specifying the model and alias:</span></a>
+<a class="sourceLine" id="cb24-8" title="8"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-9" title="9">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-10" title="10">    <span class="dt">model</span><span class="op">:</span> Captain<span class="op">,</span></a>
+<a class="sourceLine" id="cb24-11" title="11">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span></a>
+<a class="sourceLine" id="cb24-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb24-13" title="13"><span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-14" title="14"></a>
+<a class="sourceLine" id="cb24-15" title="15"><span class="co">// Also, instances obtain a `getLeader()` method for Lazy Loading:</span></a>
+<a class="sourceLine" id="cb24-16" title="16"><span class="kw">const</span> ship <span class="op">=</span> <span class="va">Ship</span>.<span class="at">findOne</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-17" title="17"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">ship</span>.<span class="at">getLeader</span>()).<span class="at">toJSON</span>())<span class="op">;</span></a></code></pre></div>
+<p>Aliases are especially useful when you need to define two different associations between the same models. For example, if we have the models <code>Mail</code> and <code>Person</code>, we may want to associate them twice, to represent the <code>sender</code> and <code>receiver</code> of the Mail. In this case we must use an alias for each association, since otherwise a call like <code>mail.getPerson()</code> would be ambiguous. With the <code>sender</code> and <code>receiver</code> aliases, we would have the two methods available and working: <code>mail.getSender()</code> and <code>mail.getReceiver()</code>, both of them returning a <code>Promise&lt;Person&gt;</code>.</p>
+<p>When defining an alias for a <code>hasOne</code> or <code>belongsTo</code> association, you should use the singular form of a word (such as <code>leader</code>, in the example above). On the other hand, when defining an alias for <code>hasMany</code> and <code>belongsToMany</code>, you should use the plural form. Defining aliases for Many-to-Many relationships (with <code>belongsToMany</code>) is covered in the <a href="advanced-many-to-many.html">Advanced Many-to-Many Associations guide</a>.</p>
+<h3 id="doing-both-things">Doing both things</h3>
+<p>We can define and alias and also directly define the foreign key:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;bossId&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// This creates the `bossId` foreign key in Ship.</span></a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co">// Since an alias was defined, eager Loading doesn&#39;t work by simply passing the model to `include`:</span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Captain <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span> <span class="co">// Throws an error</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co">// Instead, you have to pass the alias:</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span> <span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="co">// Or you can pass an object specifying the model and alias:</span></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">Ship</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb25-9" title="9">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-10" title="10">    <span class="dt">model</span><span class="op">:</span> Captain<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-11" title="11">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;leader&#39;</span></a>
+<a class="sourceLine" id="cb25-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb25-13" title="13"><span class="op">}</span>)).<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-14" title="14"></a>
+<a class="sourceLine" id="cb25-15" title="15"><span class="co">// Also, instances obtain a `getLeader()` method for Lazy Loading:</span></a>
+<a class="sourceLine" id="cb25-16" title="16"><span class="kw">const</span> ship <span class="op">=</span> <span class="va">Ship</span>.<span class="at">findOne</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-17" title="17"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">ship</span>.<span class="at">getLeader</span>()).<span class="at">toJSON</span>())<span class="op">;</span></a></code></pre></div>
+<h2 id="special-methodsmixins-added-to-instances">Special methods/mixins added to instances</h2>
+<p>When an association is defined between two models, the instances of those models gain special methods to interact with their associated counterparts.</p>
+<p>For example, if we have two models, <code>Foo</code> and <code>Bar</code>, and they are associated, their instances will have the following methods/mixins available, depending on the association type:</p>
+<h3 id="foo.hasonebar"><code>Foo.hasOne(Bar)</code></h3>
+<ul>
+<li><code>fooInstance.getBar()</code></li>
+<li><code>fooInstance.setBar()</code></li>
+<li><code>fooInstance.createBar()</code></li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">const</span> foo <span class="op">=</span> <span class="cf">await</span> <span class="va">Foo</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;the-foo&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="kw">const</span> bar1 <span class="op">=</span> <span class="cf">await</span> <span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;some-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="kw">const</span> bar2 <span class="op">=</span> <span class="cf">await</span> <span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;another-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">getBar</span>())<span class="op">;</span> <span class="co">// null</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">setBar</span>(bar1)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">foo</span>.<span class="at">getBar</span>()).<span class="at">name</span>)<span class="op">;</span> <span class="co">// &#39;some-bar&#39;</span></a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">createBar</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;yet-another-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-8" title="8"><span class="kw">const</span> newlyAssociatedBar <span class="op">=</span> <span class="cf">await</span> <span class="va">foo</span>.<span class="at">getBar</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-9" title="9"><span class="va">console</span>.<span class="at">log</span>(<span class="va">newlyAssociatedBar</span>.<span class="at">name</span>)<span class="op">;</span> <span class="co">// &#39;yet-another-bar&#39;</span></a>
+<a class="sourceLine" id="cb26-10" title="10"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">setBar</span>(<span class="kw">null</span>)<span class="op">;</span> <span class="co">// Un-associate</span></a>
+<a class="sourceLine" id="cb26-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">getBar</span>())<span class="op">;</span> <span class="co">// null</span></a></code></pre></div>
+<h3 id="foo.belongstobar"><code>Foo.belongsTo(Bar)</code></h3>
+<p>The same ones from <code>Foo.hasOne(Bar)</code>:</p>
+<ul>
+<li><code>fooInstance.getBar()</code></li>
+<li><code>fooInstance.setBar()</code></li>
+<li><code>fooInstance.createBar()</code></li>
+</ul>
+<h3 id="foo.hasmanybar"><code>Foo.hasMany(Bar)</code></h3>
+<ul>
+<li><code>fooInstance.getBars()</code></li>
+<li><code>fooInstance.countBars()</code></li>
+<li><code>fooInstance.hasBar()</code></li>
+<li><code>fooInstance.hasBars()</code></li>
+<li><code>fooInstance.setBars()</code></li>
+<li><code>fooInstance.addBar()</code></li>
+<li><code>fooInstance.addBars()</code></li>
+<li><code>fooInstance.removeBar()</code></li>
+<li><code>fooInstance.removeBars()</code></li>
+<li><code>fooInstance.createBar()</code></li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">const</span> foo <span class="op">=</span> <span class="cf">await</span> <span class="va">Foo</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;the-foo&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="kw">const</span> bar1 <span class="op">=</span> <span class="cf">await</span> <span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;some-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="kw">const</span> bar2 <span class="op">=</span> <span class="cf">await</span> <span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;another-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">getBars</span>())<span class="op">;</span> <span class="co">// []</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 0</span></a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">hasBar</span>(bar1))<span class="op">;</span> <span class="co">// false</span></a>
+<a class="sourceLine" id="cb27-7" title="7"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">addBars</span>([bar1<span class="op">,</span> bar2])<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 2</span></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">addBar</span>(bar1)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 2</span></a>
+<a class="sourceLine" id="cb27-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">hasBar</span>(bar1))<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb27-12" title="12"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">removeBar</span>(bar2)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-13" title="13"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 1</span></a>
+<a class="sourceLine" id="cb27-14" title="14"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">createBar</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;yet-another-bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-15" title="15"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 2</span></a>
+<a class="sourceLine" id="cb27-16" title="16"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">setBars</span>([])<span class="op">;</span> <span class="co">// Un-associate all previously associated bars</span></a>
+<a class="sourceLine" id="cb27-17" title="17"><span class="va">console</span>.<span class="at">log</span>(<span class="cf">await</span> <span class="va">foo</span>.<span class="at">countBars</span>())<span class="op">;</span> <span class="co">// 0</span></a></code></pre></div>
+<p>The getter method accepts options just like the usual finder methods (such as <code>findAll</code>):</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">const</span> easyTasks <span class="op">=</span> <span class="cf">await</span> <span class="va">project</span>.<span class="at">getTasks</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-3" title="3">    <span class="dt">difficulty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-4" title="4">      [<span class="va">Op</span>.<span class="at">lte</span>]<span class="op">:</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb28-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="kw">const</span> taskTitles <span class="op">=</span> (<span class="cf">await</span> <span class="va">project</span>.<span class="at">getTasks</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-9" title="9">  <span class="dt">attributes</span><span class="op">:</span> [<span class="st">&#39;title&#39;</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb28-10" title="10">  <span class="dt">raw</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="op">}</span>)).<span class="at">map</span>(task <span class="kw">=&gt;</span> <span class="va">task</span>.<span class="at">title</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="foo.belongstomanybar-through-baz"><code>Foo.belongsToMany(Bar, { through: Baz })</code></h3>
+<p>The same ones from <code>Foo.hasMany(Bar)</code>:</p>
+<ul>
+<li><code>fooInstance.getBars()</code></li>
+<li><code>fooInstance.countBars()</code></li>
+<li><code>fooInstance.hasBar()</code></li>
+<li><code>fooInstance.hasBars()</code></li>
+<li><code>fooInstance.setBars()</code></li>
+<li><code>fooInstance.addBar()</code></li>
+<li><code>fooInstance.addBars()</code></li>
+<li><code>fooInstance.removeBar()</code></li>
+<li><code>fooInstance.removeBars()</code></li>
+<li><code>fooInstance.createBar()</code></li>
+</ul>
+<h3 id="note-method-names">Note: Method names</h3>
+<p>As shown in the examples above, the names Sequelize gives to these special methods are formed by a prefix (e.g. <code>get</code>, <code>add</code>, <code>set</code>) concatenated with the model name (with the first letter in uppercase). When necessary, the plural is used, such as in <code>fooInstance.setBars()</code>. Again, irregular plurals are also handled automatically by Sequelize. For example, <code>Person</code> becomes <code>People</code> and <code>Hypothesis</code> becomes <code>Hypotheses</code>.</p>
+<p>If an alias was defined, it will be used instead of the model name to form the method names. For example:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="va">Task</span>.<span class="at">hasOne</span>(User<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Author&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ul>
+<li><code>taskInstance.getAuthor()</code></li>
+<li><code>taskInstance.setAuthor()</code></li>
+<li><code>taskInstance.createAuthor()</code></li>
+</ul>
+<h2 id="why-associations-are-defined-in-pairs">Why associations are defined in pairs?</h2>
+<p>As mentioned earlier and shown in most examples above, usually associations in Sequelize are defined in pairs:</p>
+<ul>
+<li>To create a <strong>One-To-One</strong> relationship, the <code>hasOne</code> and <code>belongsTo</code> associations are used together;</li>
+<li>To create a <strong>One-To-Many</strong> relationship, the <code>hasMany</code> and <code>belongsTo</code> associations are used together;</li>
+<li>To create a <strong>Many-To-Many</strong> relationship, two <code>belongsToMany</code> calls are used together.</li>
+</ul>
+<p>When a Sequelize association is defined between two models, only the <em>source</em> model <em>knows about it</em>. So, for example, when using <code>Foo.hasOne(Bar)</code> (so <code>Foo</code> is the source model and <code>Bar</code> is the target model), only <code>Foo</code> knows about the existence of this association. This is why in this case, as shown above, <code>Foo</code> instances gain the methods <code>getBar()</code>, <code>setBar()</code> and <code>createBar()</code>, while on the other hand <code>Bar</code> instances get nothing.</p>
+<p>Similarly, for <code>Foo.hasOne(Bar)</code>, since <code>Foo</code> knows about the relationship, we can perform eager loading as in <code>Foo.findOne({ include: Bar })</code>, but we can’t do <code>Bar.findOne({ include: Foo })</code>.</p>
+<p>Therefore, to bring full power to Sequelize usage, we usually setup the relationship in pairs, so that both models get to <em>know about it</em>.</p>
+<p>Practical demonstration:</p>
+<ul>
+<li><p>If we do not define the pair of associations, calling for example just <code>Foo.hasOne(Bar)</code>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="co">// This works...</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="cf">await</span> <span class="va">Foo</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Bar <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-3" title="3"></a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="co">// But this throws an error:</span></a>
+<a class="sourceLine" id="cb30-5" title="5"><span class="cf">await</span> <span class="va">Bar</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Foo <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="co">// SequelizeEagerLoadingError: foo is not associated to bar!</span></a></code></pre></div></li>
+<li><p>If we define the pair as recommended, i.e., both <code>Foo.hasOne(Bar)</code> and <code>Bar.belongsTo(Foo)</code>:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="co">// This works!</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="cf">await</span> <span class="va">Foo</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Bar <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-3" title="3"></a>
+<a class="sourceLine" id="cb31-4" title="4"><span class="co">// This also works!</span></a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="cf">await</span> <span class="va">Bar</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Foo <span class="op">}</span>)<span class="op">;</span></a></code></pre></div></li>
+</ul>
+<h2 id="multiple-associations-involving-the-same-models">Multiple associations involving the same models</h2>
+<p>In Sequelize, it is possible to define multiple associations between the same models. You just have to define different aliases for them:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="va">Team</span>.<span class="at">hasOne</span>(Game<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;HomeTeam&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;homeTeamId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="va">Team</span>.<span class="at">hasOne</span>(Game<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;AwayTeam&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;awayTeamId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="va">Game</span>.<span class="at">belongsTo</span>(Team)<span class="op">;</span></a></code></pre></div>
+<h2 id="creating-associations-referencing-a-field-which-is-not-the-primary-key">Creating associations referencing a field which is not the primary key</h2>
+<p>In all the examples above, the associations were defined by referencing the primary keys of the involved models (in our case, their IDs). However, Sequelize allows you to define an association that uses another field, instead of the primary key field, to establish the association.</p>
+<p>This other field must have a unique constraint on it (otherwise, it wouldn’t make sense).</p>
+<h3 id="for-belongsto-relationships">For <code>belongsTo</code> relationships</h3>
+<p>First, recall that the <code>A.belongsTo(B)</code> association places the foreign key in the <em>source model</em> (i.e., in <code>A</code>).</p>
+<p>Let’s again use the example of Ships and Captains. Additionally, we will assume that Captain names are unique:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> Ship <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;ship&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw">const</span> Captain <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;captain&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span> <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This way, instead of keeping the <code>captainId</code> on our Ships, we could keep a <code>captainName</code> instead and use it as our association tracker. In other words, instead of referencing the <code>id</code> from the target model (Captain), our relationship will reference another column on the target model: the <code>name</code> column. To specify this, we have to define a <em>target key</em>. We will also have to specify a name for the foreign key itself:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb34-1" title="1"><span class="va">Ship</span>.<span class="at">belongsTo</span>(Captain<span class="op">,</span> <span class="op">{</span> <span class="dt">targetKey</span><span class="op">:</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;captainName&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="co">// This creates a foreign key called `captainName` in the source model (Ship)</span></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="co">// which references the `name` field from the target model (Captain).</span></a></code></pre></div>
+<p>Now we can do things like:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="cf">await</span> <span class="va">Captain</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Jack Sparrow&quot;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="kw">const</span> ship <span class="op">=</span> <span class="cf">await</span> <span class="va">Ship</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Black Pearl&quot;</span><span class="op">,</span> <span class="dt">captainName</span><span class="op">:</span> <span class="st">&quot;Jack Sparrow&quot;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="va">console</span>.<span class="at">log</span>((<span class="cf">await</span> <span class="va">ship</span>.<span class="at">getCaptain</span>()).<span class="at">name</span>)<span class="op">;</span> <span class="co">// &quot;Jack Sparrow&quot;</span></a></code></pre></div>
+<h3 id="for-hasone-and-hasmany-relationships">For <code>hasOne</code> and <code>hasMany</code> relationships</h3>
+<p>The exact same idea can be applied to the <code>hasOne</code> and <code>hasMany</code> associations, but instead of providing a <code>targetKey</code>, we provide a <code>sourceKey</code> when defining the association. This is because unlike <code>belongsTo</code>, the <code>hasOne</code> and <code>hasMany</code> associations keep the foreign key on the target model:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">const</span> Foo <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb36-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span> <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="kw">const</span> Bar <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;bar&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb36-5" title="5">  <span class="dt">title</span><span class="op">:</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span> <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-7" title="7"><span class="kw">const</span> Baz <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;baz&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">summary</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-8" title="8"><span class="va">Foo</span>.<span class="at">hasOne</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">sourceKey</span><span class="op">:</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;fooName&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-9" title="9"><span class="va">Bar</span>.<span class="at">hasMany</span>(Baz<span class="op">,</span> <span class="op">{</span> <span class="dt">sourceKey</span><span class="op">:</span> <span class="st">&#39;title&#39;</span><span class="op">,</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;barTitle&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-10" title="10"><span class="co">// [...]</span></a>
+<a class="sourceLine" id="cb36-11" title="11"><span class="cf">await</span> <span class="va">Bar</span>.<span class="at">setFoo</span>(<span class="st">&quot;Foo&#39;s Name Here&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-12" title="12"><span class="cf">await</span> <span class="va">Baz</span>.<span class="at">addBar</span>(<span class="st">&quot;Bar&#39;s Title Here&quot;</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="for-belongstomany-relationships">For <code>belongsToMany</code> relationships</h3>
+<p>The same idea can also be applied to <code>belongsToMany</code> relationships. However, unlike the other situations, in which we have only one foreign key involved, the <code>belongsToMany</code> relationship involves two foreign keys which are kept on an extra table (the junction table).</p>
+<p>Consider the following setup:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">const</span> Foo <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span> <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="kw">const</span> Bar <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;bar&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-5" title="5">  <span class="dt">title</span><span class="op">:</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span> <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb37-6" title="6"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>There are four cases to consider:</p>
+<ul>
+<li>We might want a many-to-many relationship using the default primary keys for both <code>Foo</code> and <code>Bar</code>:</li>
+</ul>
+<div class="sourceCode" id="cb38"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb38-1" title="1"><span class="va">Foo</span>.<span class="at">belongsToMany</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;foo_bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-2" title="2"><span class="co">// This creates a junction table `foo_bar` with fields `fooId` and `barId`</span></a></code></pre></div>
+<ul>
+<li>We might want a many-to-many relationship using the default primary key for <code>Foo</code> but a different field for <code>Bar</code>:</li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb39-1" title="1"><span class="va">Foo</span>.<span class="at">belongsToMany</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;foo_bar&#39;</span><span class="op">,</span> <span class="dt">targetKey</span><span class="op">:</span> <span class="st">&#39;title&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb39-2" title="2"><span class="co">// This creates a junction table `foo_bar` with fields `fooId` and `barTitle`</span></a></code></pre></div>
+<ul>
+<li>We might want a many-to-many relationship using the a different field for <code>Foo</code> and the default primary key for <code>Bar</code>:</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb40-1" title="1"><span class="va">Foo</span>.<span class="at">belongsToMany</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;foo_bar&#39;</span><span class="op">,</span> <span class="dt">sourceKey</span><span class="op">:</span> <span class="st">&#39;name&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb40-2" title="2"><span class="co">// This creates a junction table `foo_bar` with fields `fooName` and `barId`</span></a></code></pre></div>
+<ul>
+<li>We might want a many-to-many relationship using different fields for both <code>Foo</code> and <code>Bar</code>:</li>
+</ul>
+<div class="sourceCode" id="cb41"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb41-1" title="1"><span class="va">Foo</span>.<span class="at">belongsToMany</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;foo_bar&#39;</span><span class="op">,</span> <span class="dt">sourceKey</span><span class="op">:</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="dt">targetKey</span><span class="op">:</span> <span class="st">&#39;title&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="co">// This creates a junction table `foo_bar` with fields `fooName` and `barTitle`</span></a></code></pre></div>
+<h3 id="notes">Notes</h3>
+<p>Don’t forget that the field referenced in the association must have a unique constraint placed on it. Otherwise, an error will be thrown (and sometimes with a mysterious error message - such as <code>SequelizeDatabaseError: SQLITE_ERROR: foreign key mismatch - "ships" referencing "captains"</code> for SQLite).</p>
+<p>The trick to deciding between <code>sourceKey</code> and <code>targetKey</code> is just to remember where each relationship places its foreign key. As mentioned in the beginning of this guide:</p>
+<ul>
+<li><p><code>A.belongsTo(B)</code> keeps the foreign key in the source model (<code>A</code>), therefore the referenced key is in the target model, hence the usage of <code>targetKey</code>.</p></li>
+<li><p><code>A.hasOne(B)</code> and <code>A.hasMany(B)</code> keep the foreign key in the target model (<code>B</code>), therefore the referenced key is in the source model, hence the usage of <code>sourceKey</code>.</p></li>
+<li><p><code>A.belongsToMany(B)</code> involves an extra table (the junction table), therefore both <code>sourceKey</code> and <code>targetKey</code> are usable, with <code>sourceKey</code> corresponding to some field in <code>A</code> (the source) and <code>targetKey</code> corresponding to some field in <code>B</code> (the target).</p></li>
+</ul>

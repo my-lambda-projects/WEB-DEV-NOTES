@@ -1,0 +1,72 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:customeventtype-edit', location = 'com/atlassian/confluence/extra/calendar3/components/customeventype/customeventtype-edit/customeventtype-edit.less' */
+#edit-custom-event-type-form .select-avatar button {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  color: #000;
+  margin: 2px 7px 0 1px;
+  outline: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+}
+#edit-custom-event-type-form .select-avatar button:hover {
+  outline: 1px solid #3b73af;
+}
+#edit-custom-event-type-form .select-avatar button.selected {
+  outline: 2px solid #326ca6;
+}
+#edit-custom-event-type-form .custom_event_type_field_error {
+  color: #D04437;
+  padding-left: 90px;
+}
+#edit-custom-event-type-form .custom-event-title label {
+  color: #000000 !important;
+  display: block;
+  margin-bottom: 5px;
+}
+#edit-custom-event-type-form .custom-event-title label span.icon-required {
+  left: 78px;
+}
+#edit-custom-event-type-form .field-group {
+  padding-left: 0;
+}
+#edit-custom-event-type-form .field-group label {
+  margin-left: 0;
+  text-align: left;
+  width: 90px;
+}
+#edit-custom-event-type-form .field-group.select-avatar label {
+  margin-bottom: 65px;
+}
+#edit-custom-event-type-form .field-group.select-avatar label span.icon-required {
+  left: 68px;
+}
+#edit-custom-event-type-form form.form-add-custom {
+  margin-top: 10px;
+}
+#edit-custom-event-type-form form.form-add-custom .buttons-container {
+  padding-left: 88px;
+}
+#edit-custom-event-type-form form.form-add-custom .buttons-container input.button {
+  margin: 10px 0;
+}
+#edit-custom-event-type-form .sanbox-event-title {
+  margin-bottom: 0 !important;
+}
+#edit-custom-event-type-form .event-type-info {
+  display: table;
+  margin: 10px 0 10px 88px;
+}
+#edit-custom-event-type-form .event-type-info .event-type-info-icon {
+  color: #f6c342;
+  display: table-cell;
+  vertical-align: middle;
+}
+#edit-custom-event-type-form .event-type-info .event-type-info-text {
+  display: table-cell;
+  padding-left: 14px;
+  width: 100%;
+  vertical-align: middle;
+}

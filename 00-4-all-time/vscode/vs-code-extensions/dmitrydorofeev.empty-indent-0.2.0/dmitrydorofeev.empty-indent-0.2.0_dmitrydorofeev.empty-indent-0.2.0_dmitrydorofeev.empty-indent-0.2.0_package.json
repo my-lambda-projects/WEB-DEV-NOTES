@@ -1,0 +1,69 @@
+{
+	"name": "empty-indent",
+	"description": "Removes indentation in empty lines on save",
+	"version": "0.2.0",
+	"publisher": "DmitryDorofeev",
+	"author": {
+		"name": "Dmitry Dorofeev"
+	},
+	"icon": "assets/icon.png",
+	"license": "MIT",
+	"engines": {
+		"vscode": "0.10.x"
+	},
+	"repository": {
+		"url": "https://github.com/DmitryDorofeev/vscode-empty-indent.git",
+		"type": "git"
+	},
+	"bugs": {
+		"url": "https://github.com/DmitryDorofeev/vscode-empty-indent/issues"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Empty Indent configuration",
+			"properties": {
+				"emptyIndent.removeIndent": {
+					"type": "boolean",
+					"default": true,
+					"description": "Automatically remove indentation in empty lines on save"
+				},
+				"emptyIndent.highlightIndent": {
+					"type": "boolean",
+					"default": false,
+					"description": "Highlight indent on empty lines"
+				},
+				"emptyIndent.highlightColor": {
+					"type": "string",
+					"default": "rgba(246,36,89,0.6)",
+					"description": "Highlight indent color"
+				},
+				"emptyIndent.exclude": {
+					"type": "array",
+					"default": [],
+					"description": "Excluded file types"
+				}
+			}
+		}
+	},
+	"main": "./out/extension",
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+	},
+	"devDependencies": {
+		"vscode": "0.10.x",
+		"typescript": "^2.0.10"
+	},
+	"__metadata": {
+		"id": "a00511c0-6281-4a61-8aa1-a25f57fd9785",
+		"publisherId": "73e5557b-7719-42f9-b25f-0cb5714e9c0b",
+		"publisherDisplayName": "DmitryDorofeev"
+	}
+}

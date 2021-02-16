@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.drag-and-drop:drop-zone-for-image-dialog-conf-frontend', location = 'js/image-dialog-drop-zone.js' */
+define("confluence-drag-and-drop/image-dialog-drop-zone","ajs confluence/legacy-editor-global-AVOID-IF-POSSIBLE jquery confluence-drag-and-drop/drag-and-drop-utils confluence/meta confluence/i18n".split(" "),function(a,g,c,d,h,e){return function(){if(h.get("remote-user")){var a=g.ImageDialog.findPanelComponentById("attachments");a?c(a).bind("afterThumbnail",function(a,f){if(!f.find(".image-dialog-drop-zone-container").length){a=c("\x3cli/\x3e").addClass("attached-image");var b=c("\x3cdiv/\x3e").addClass("image-dialog-drop-zone-container image-container");
+c("\x3cdiv/\x3e").addClass("drop-zone-image").attr("title",e.getText("dnd.drop.zone.text")).appendTo(b);c("\x3cdiv/\x3e").addClass("drop-zone-text").text(e.getText("dnd.drop.here")).appendTo(b);b.appendTo(a);f.prepend(a);c.browser.msie||(d.bindDragEnter(b[0],function(){b.addClass("drop-zone-on-hover")}),d.bindDragOver(b[0],function(){b.addClass("drop-zone-on-hover")}),d.bindDragLeave(b[0],function(){b.removeClass("drop-zone-on-hover")}))}}):console.log("Skipping image attachment drop-zone - no Image Dialog attachment panel")}else console.debug("Skipping image attachment drop-zone for anonymous user creating new content")}});
+require("confluence/module-exporter").safeRequire("confluence-drag-and-drop/image-dialog-drop-zone",function(a){require("ajs").toInit(a)});
+}catch(e){WRMCB(e)};

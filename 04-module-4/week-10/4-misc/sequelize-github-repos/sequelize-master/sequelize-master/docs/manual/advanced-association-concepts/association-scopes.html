@@ -1,0 +1,44 @@
+<h1 id="association-scopes">Association Scopes</h1>
+<p>This section concerns association scopes, which are similar but not the same as <a href="scopes.html">model scopes</a>.</p>
+<p>Association scopes can be placed both on the associated model (the target of the association) and on the through table for Many-to-Many relationships.</p>
+<h2 id="concept">Concept</h2>
+<p>Similarly to how a <a href="scopes.html">model scope</a> is automatically applied on the model static calls, such as <code>Model.scope('foo').findAll()</code>, an association scope is a rule (more precisely, a set of default attributes and options) that is automatically applied on instance calls from the model. Here, <em>instance calls</em> mean method calls that are called from an instance (rather than from the Model itself). Mixins are the main example of instance methods (<code>instance.getSomething</code>, <code>instance.setSomething</code>, <code>instance.addSomething</code> and <code>instance.createSomething</code>).</p>
+<p>Association scopes behave just like model scopes, in the sense that both cause an automatic application of things like <code>where</code> clauses to finder calls; the difference being that instead of applying to static finder calls (which is the case for model scopes), the association scopes automatically apply to instance finder calls (such as mixins).</p>
+<h2 id="example">Example</h2>
+<p>A basic example of an association scope for the One-to-Many association between models <code>Foo</code> and <code>Bar</code> is shown below.</p>
+<ul>
+<li><p>Setup:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Foo <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> Bar <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;bar&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">status</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">Foo</span>.<span class="at">hasMany</span>(Bar<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">        <span class="dt">status</span><span class="op">:</span> <span class="st">&#39;open&#39;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;openBars&#39;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">sync</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">const</span> myFoo <span class="op">=</span> <span class="cf">await</span> <span class="va">Foo</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;My Foo&quot;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div></li>
+<li><p>After this setup, calling <code>myFoo.getOpenBars()</code> generates the following SQL:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    `id`, `status`, `createdAt`, `updatedAt`, `fooId`</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">FROM</span> `bars` <span class="kw">AS</span> `bar`</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">WHERE</span> `bar`.`status` <span class="op">=</span> <span class="st">&#39;open&#39;</span> <span class="kw">AND</span> `bar`.`fooId` <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div></li>
+</ul>
+<p>With this we can see that upon calling the <code>.getOpenBars()</code> mixin, the association scope <code>{ status: 'open' }</code> was automatically applied into the <code>WHERE</code> clause of the generated SQL.</p>
+<h2 id="achieving-the-same-behavior-with-standard-scopes">Achieving the same behavior with standard scopes</h2>
+<p>We could have achieved the same behavior with standard scopes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// Foo.hasMany(Bar, {</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">//     scope: {</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">//         status: &#39;open&#39;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">//     },</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">//     as: &#39;openBars&#39;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">// });</span></a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="va">Bar</span>.<span class="at">addScope</span>(<span class="st">&#39;open&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-10" title="10">        <span class="dt">status</span><span class="op">:</span> <span class="st">&#39;open&#39;</span></a>
+<a class="sourceLine" id="cb3-11" title="11">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="va">Foo</span>.<span class="at">hasMany</span>(Bar)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="va">Foo</span>.<span class="at">hasMany</span>(<span class="va">Bar</span>.<span class="at">scope</span>(<span class="st">&#39;open&#39;</span>)<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;openBars&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>With the above code, <code>myFoo.getOpenBars()</code> yields the same SQL shown above.</p>

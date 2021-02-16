@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:date-time-formatting', location = 'includes/js/date-time-formatting.js' */
+define("confluence/date-time-formatting",["ajs","moment"],function(c,g){var e={wholeMinutesBetween:function(a,b){return Math.floor((b.valueOf()-a.valueOf())/6E4)},roundedHoursBetween:function(a,b){return Math.round((b.valueOf()-a.valueOf())/36E5)},isYesterdayRelativeTo:function(a,b,c){a=new Date(a.valueOf()+c);b=new Date(b.valueOf()+c-864E5);return a.getUTCFullYear()==b.getUTCFullYear()&&a.getUTCMonth()==b.getUTCMonth()&&a.getUTCDate()==b.getUTCDate()},formatTime:function(a,b){return g(a.valueOf()+
+b).utc().format("h:mm A")},formatDate:function(a,b){return g(a.valueOf()+b).utc().format("MMM DD, YYYY")},formatDateTime:function(a,b){return g(a.valueOf()+b).utc().format("MMM DD, YYYY HH:mm")},friendlyFormatDateTime:function(a,b,f){var d=b.valueOf()-a.valueOf();return 0>d?e.formatDateTime(a,f):0==d?"right now":4E3>d?"just a moment ago":6E4>d?"less than a minute ago":12E4>d?"a minute ago":3E6>d?c.format("{0} minutes ago",
+e.wholeMinutesBetween(a,b)):54E5>d?"about an hour ago":18E6<d&&e.isYesterdayRelativeTo(a,b,f)?c.format("yesterday at {0}",e.formatTime(a,f)):864E5>d?c.format("about {0} hours ago",e.roundedHoursBetween(a,b)):e.formatDate(a,f)}};return e});require("confluence/module-exporter").exportModuleAsGlobal("confluence/date-time-formatting","AJS.DateTimeFormatting");
+}catch(e){WRMCB(e)};

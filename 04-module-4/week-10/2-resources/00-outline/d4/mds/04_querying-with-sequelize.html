@@ -1,0 +1,423 @@
+<h1 id="querying-using-sequelize">Querying Using Sequelize</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#basic-usage-of-findall-to-retrieve-multiple-records">Basic Usage Of <code>findAll</code> To Retrieve Multiple Records</a></li>
+<li><a href="#using-findall-to-find-objects-not-matching-a-criterion">Using <code>findAll</code> To Find Objects Not Matching A Criterion</a></li>
+<li><a href="#combining-criteria-with-opand">Combining Criteria with <code>Op.and</code></a></li>
+<li><a href="#combining-criteria-with-opor">Combining Criteria with <code>Op.or</code></a></li>
+<li><a href="#querying-with-comparisons">Querying With Comparisons</a></li>
+<li><a href="#ordering-results">Ordering Results</a></li>
+<li><a href="#limiting-results-and-findone">Limiting Results and <code>findOne</code></a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>We have already seen how to find a single record by primary key: <code>findByPk</code>. In this reading we will learn about more advanced ways to query a table. We will learn how to:</p>
+<ul>
+<li>Fetch all <code>Cats</code> whose name is <code>"Markov"</code>,</li>
+<li>Fetch all <code>Cats</code> whose name is <code>"Markov"</code> <strong>OR</strong> <code>"Curie"</code>,</li>
+<li>Fetch all <code>Cats</code> whose age is <strong>not</strong> 5,</li>
+<li>Fetch all <code>Cats</code> whose name is <code>"Markov"</code> <strong>AND</strong> whose age is 5,</li>
+<li>Fetch all <code>Cats</code> whose age is <strong>less than</strong> 5,</li>
+</ul>
+<p>We will also learn how to:</p>
+<ul>
+<li>Order <code>Cats</code> results by age (descending or ascending),</li>
+<li>Limit <code>Cats</code> results to a finite number.</li>
+</ul>
+<h2 id="basic-usage-of-findall-to-retrieve-multiple-records">Basic Usage Of <code>findAll</code> To Retrieve Multiple Records</h2>
+<p>Let’s consider a simple example where we want to retrieve all the <code>Cats</code> in the database:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="co">// `findAll` asks to retrieve _ALL_ THE CATS!!  An array of `Cat`</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="co">// objects will be returned.</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="co">// Log the fetched cats.</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Since this is an array we can’t use that <code>.toJSON()</code> method we learned earlier, so we can instead use <code>JSON.stringify</code> on the Array.</p>
+<p>Pro tip: giving a 3rd argument to <code>JSON.stringify</code> will pretty-print the result with the specified spacing. (We pass <code>null</code> as the 2nd argument to skip it.) You can read more at the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify"><code>JSON.stringify</code> docs</a>.</p>
+<p>Running this code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot;;
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  },
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>It isn’t typical to want to fetch <em>every</em> record. We typically want to get only those records that match some criterion. In SQL, we use a <code>WHERE</code> clause to do this. With Sequelize, we issue a <code>WHERE</code> query like so:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="co">// Fetch all cats named Markov.</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">      <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Markov&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Which prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;firstName&quot; = &#39;Markov&#39;;
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  }
+]</code></pre>
+<p>We’ve passed the <code>findAll</code> class method the <code>where</code> option. The <code>where</code> option tells Sequelize to use a <code>WHERE</code> clause. The option value passed is <code>{ firstName: "Markov" }</code>. This tells Sequelize to only return those <code>Cats</code> where <code>firstName</code> is equal to <code>"Markov"</code>.</p>
+<p>If we wanted to select those <code>Cats</code> named Markov <strong>OR</strong> Curie, we can map <code>firstName</code> to an array of <code>["Markov", "Curie"]</code>. For example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="co">// Fetch all cats named either Markov or Curie.</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-7" title="7">      <span class="dt">firstName</span><span class="op">:</span> [<span class="st">&quot;Markov&quot;</span><span class="op">,</span> <span class="st">&quot;Curie&quot;</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-14" title="14"></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;firstName&quot; IN (&#39;Markov&#39;, &#39;Curie&#39;);
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  },
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>The difference is that we’ve passed <code>{ firstName: ["Markov", "Curie" ]}</code>. Sequelize will return all <code>Cats</code> whose <code>firstName</code> matches either <code>"Markov"</code> or <code>"Curie"</code>.</p>
+<h2 id="using-findall-to-find-objects-not-matching-a-criterion">Using <code>findAll</code> To Find Objects Not Matching A Criterion</h2>
+<p>We can also find all the <code>Cats</code> whose names are <strong>NOT</strong> Markov, but we will need to require in the <code>Op</code> object from Sequelize so we can use the “not equal” operator from it:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> <span class="op">{</span> Op <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-8" title="8">        <span class="co">// Op.ne means the &quot;not equal&quot; operator.</span></a>
+<a class="sourceLine" id="cb7-9" title="9">        [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&quot;Markov&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-10" title="10">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-12" title="12">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-14" title="14"></a>
+<a class="sourceLine" id="cb7-15" title="15">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-17" title="17"></a>
+<a class="sourceLine" id="cb7-18" title="18"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;firstName&quot; != &#39;Markov&#39;;
+[
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>This is our first example of a Sequelize <a href="https://sequelize.org/v5/manual/querying.html#operators"><em>operator</em></a>: <code>Op.ne</code>. <code>ne</code> stands for “not equal.” Instead of mapping <code>firstName</code> to a single value like <code>"Markov"</code> or an array of values like <code>["Markov", "Curie"]</code>, we have mapped it to:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&quot;Markov&quot;</span> <span class="op">}</span></a></code></pre></div>
+<p>How does this work? <code>Op.ne</code> is a JavaScript <em>symbol</em>: <code>Op.ne === Symbol.for('ne')</code>. To simplify, let’s just imagine that <code>Op.ne === "ne"</code>.</p>
+<p>When we write <code>{ [Op.ne]: "Markov" }</code>, the <code>[]</code> brackets perform key interpolation. So this is equal to <code>{ "ne": "Markov" }</code>. So overall, we are effectively writing:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="va">db</span>.<span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="co">// Won&#39;t exactly work (you need to use `[Op.ne]` after all). Does</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="co">// illustrate the concept though.</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span> <span class="st">&quot;ne&quot;</span><span class="op">:</span> <span class="st">&quot;Markov&quot;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="op">}</span>)</a></code></pre></div>
+<p>This perhaps makes it clearer how Sequelize understands what we want. Sequelize is being passed an <em>object</em> as the <code>firstName</code> value. The object is specifying that we want to do a <code>!=</code> SQL operation by using the <code>"ne"</code> (“not equal”) key. The value to “not equal” is specified as <code>"Markov"</code>.</p>
+<h2 id="combining-criteria-with-op.and">Combining Criteria with <code>Op.and</code></h2>
+<p>We’ve seen one way to do an <code>OR</code> operation above (by mapping a column name to an array of values). Let’s see how to do an <code>AND</code> operation:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> <span class="op">{</span> Op <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize <span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="co">// fetch cats with name != Markov AND age = 4.</span></a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-8" title="8">      <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-9" title="9">        [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&quot;Markov&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-10" title="10">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-11" title="11">      <span class="dt">age</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-12" title="12">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-13" title="13">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-15" title="15"></a>
+<a class="sourceLine" id="cb11-16" title="16">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="op">}</span></a>
+<a class="sourceLine" id="cb11-18" title="18"></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;firstName&quot; != &#39;Markov&#39; AND &quot;Cat&quot;.&quot;age&quot; = 4;
+[
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>Simply by listing more key/value pairs in the <code>where</code> object, we ask Sequelize to “AND” together multiple criteria.</p>
+<p>Another way to do the same thing is like so:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> <span class="op">{</span> Op <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize <span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-7" title="7">      [<span class="va">Op</span>.<span class="at">and</span>]<span class="op">:</span> [</a>
+<a class="sourceLine" id="cb13-8" title="8">        <span class="op">{</span> <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&quot;Markov&quot;</span> <span class="op">}</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-9" title="9">        <span class="op">{</span> <span class="dt">age</span><span class="op">:</span> <span class="dv">4</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-10" title="10">      ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb13-11" title="11">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-12" title="12">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-14" title="14"></a>
+<a class="sourceLine" id="cb13-15" title="15">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb13-17" title="17"></a>
+<a class="sourceLine" id="cb13-18" title="18"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>The use of the <code>Op.and</code> operator is somewhat similar to <code>Op.ne</code>. This time we map <code>Op.and</code> to an <em>array</em> of criteria. Returned records must match all the criteria.</p>
+<h2 id="combining-criteria-with-op.or">Combining Criteria with <code>Op.or</code></h2>
+<p>We’ve already seen how to do an <code>OR</code> to match a <em>single column</em> against <em>multiple values</em>. You can use <code>Op.or</code> for even greater flexibility:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> <span class="op">{</span> Op <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="co">// fetch cats with name == Markov OR age = 4.</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-8" title="8">      [<span class="va">Op</span>.<span class="at">or</span>]<span class="op">:</span> [</a>
+<a class="sourceLine" id="cb14-9" title="9">        <span class="op">{</span> <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Markov&quot;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-10" title="10">        <span class="op">{</span> <span class="dt">age</span><span class="op">:</span> <span class="dv">4</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-11" title="11">      ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb14-12" title="12">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-13" title="13">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15"></a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="op">}</span></a>
+<a class="sourceLine" id="cb14-18" title="18"></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE (&quot;Cat&quot;.&quot;firstName&quot; = &#39;Markov&#39; OR &quot;Cat&quot;.&quot;age&quot; = 4);
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  },
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>Our query is to find all cats whose names are “Markov” and whose age is 4. Therefore both cats are returned: Markov and Curie (whose age is 4).</p>
+<h2 id="querying-with-comparisons">Querying With Comparisons</h2>
+<p>We can use operators like <code>Op.gt</code> (greater than) and <code>Op.lt</code> (less than) to select by comparing values. We use these just like <code>Op.ne</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> <span class="op">{</span> Op <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="co">// Fetch all cats whose age is &gt; 4.</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-8" title="8">      <span class="dt">age</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">gt</span>]<span class="op">:</span> <span class="dv">4</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-9" title="9">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-11" title="11">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-12" title="12"></a>
+<a class="sourceLine" id="cb16-13" title="13">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-14" title="14"><span class="op">}</span></a>
+<a class="sourceLine" id="cb16-15" title="15"></a>
+<a class="sourceLine" id="cb16-16" title="16"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;age&quot; &gt; 4;
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  }
+]</code></pre>
+<h2 id="ordering-results">Ordering Results</h2>
+<p>We’ve seen how to use a <code>where</code> query option to filter results with a SQL <code>WHERE</code> clause. We can use the <code>order</code> query option to perform a SQL <code>ORDER BY</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> db <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-4" title="4">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb18-5" title="5">    <span class="dt">order</span><span class="op">:</span> [[<span class="st">&quot;age&quot;</span><span class="op">,</span> <span class="st">&quot;DESC&quot;</span>]]<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-8" title="8"></a>
+<a class="sourceLine" id="cb18-9" title="9">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="op">}</span></a>
+<a class="sourceLine" id="cb18-11" title="11"></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; ORDER BY &quot;Cat&quot;.&quot;age&quot; DESC;
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  },
+  {
+    &quot;id&quot;: 5,
+    &quot;firstName&quot;: &quot;Curie&quot;,
+    &quot;specialSkill&quot;: &quot;jumping&quot;,
+    &quot;age&quot;: 4,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.398Z&quot;
+  }
+]</code></pre>
+<p>We’ve specified <code>{ order: [["age", "DESC"]] }</code>. Notice how we specify the sort order with a doubly-nested array. If we wanted to sort ascending we could more simply write: <code>{ order: ["age"] }</code>.</p>
+<p>What if we wanted to sort by <em>two</em> columns? For instance, say we wanted to <code>SORT BY age DESC, firstName</code>. We would write: <code>{ order: [["age", "DESC"], "firstName"] }</code>. That would sort descending by <code>age</code>, and then ascending by <code>firstName</code> for cats with the same age.</p>
+<h2 id="limiting-results-and-findone">Limiting Results and <code>findOne</code></h2>
+<p>If we want only the oldest cat we can use the <code>limit</code> query option:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-2" title="2"></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="kw">const</span> cats <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb20-5" title="5">    <span class="dt">order</span><span class="op">:</span> [[<span class="st">&quot;age&quot;</span><span class="op">,</span> <span class="st">&quot;DESC&quot;</span>]]<span class="op">,</span></a>
+<a class="sourceLine" id="cb20-6" title="6">    <span class="dt">limit</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-7" title="7">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cats<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-9" title="9"></a>
+<a class="sourceLine" id="cb20-10" title="10">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb20-12" title="12"></a>
+<a class="sourceLine" id="cb20-13" title="13"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This selects only one (the oldest) cat:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; ORDER BY &quot;Cat&quot;.&quot;age&quot; DESC LIMIT 1;
+[
+  {
+    &quot;id&quot;: 4,
+    &quot;firstName&quot;: &quot;Markov&quot;,
+    &quot;specialSkill&quot;: &quot;sleeping&quot;,
+    &quot;age&quot;: 5,
+    &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+    &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+  }
+]</code></pre>
+<p>Since we know that there will be only one result, it is pointless to return an array. In cases when we want a maximum of one result, we can use <code>findOne</code>:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-2" title="2"></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-4" title="4">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb22-5" title="5">    <span class="dt">order</span><span class="op">:</span> [[<span class="st">&quot;age&quot;</span><span class="op">,</span> <span class="st">&quot;DESC&quot;</span>]]<span class="op">,</span></a>
+<a class="sourceLine" id="cb22-6" title="6">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cat<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-8" title="8"></a>
+<a class="sourceLine" id="cb22-9" title="9">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="op">}</span></a>
+<a class="sourceLine" id="cb22-11" title="11"></a>
+<a class="sourceLine" id="cb22-12" title="12"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Which prints:</p>
+<pre><code>&gt;&gt; node index.js
+Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; ORDER BY &quot;Cat&quot;.&quot;age&quot; DESC LIMIT 1;
+{
+  &quot;id&quot;: 4,
+  &quot;firstName&quot;: &quot;Markov&quot;,
+  &quot;specialSkill&quot;: &quot;sleeping&quot;,
+  &quot;age&quot;: 5,
+  &quot;createdAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;,
+  &quot;updatedAt&quot;: &quot;2020-02-11T23:03:25.388Z&quot;
+}</code></pre>
+<p>This returned the <code>Cat</code> object directly, not wrapped in an array.</p>
+<p>If there is no record matching the criteria passed to <code>findOne</code>, it will return <code>null</code> (rather than an empty array):</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> Cat <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-4" title="4">  <span class="co">// Try to find a non-existant cat.</span></a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="kw">const</span> cat <span class="op">=</span> <span class="cf">await</span> <span class="va">Cat</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-7" title="7">      <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Franklin Delano Catsevelt&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb24-8" title="8">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb24-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(cat<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-11" title="11"></a>
+<a class="sourceLine" id="cb24-12" title="12">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-13" title="13"><span class="op">}</span></a>
+<a class="sourceLine" id="cb24-14" title="14"></a>
+<a class="sourceLine" id="cb24-15" title="15"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>No such cat exists:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;firstName&quot;, &quot;specialSkill&quot;, &quot;age&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;Cats&quot; AS &quot;Cat&quot; WHERE &quot;Cat&quot;.&quot;firstName&quot; = &#39;Franklin Delano Catsevelt&#39; LIMIT 1;
+null</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>We’ve scratched the surface of the many query options supported by Sequelize. You may find more information as necessary by reading the <a href="https://sequelize.org/v5/manual/querying.html">Sequelize querying documentation</a>. You can in particular review the <a href="https://sequelize.org/v5/manual/querying.html#operators">list of Sequelize query operators</a>.</p>
+<p>Now that you’ve completed this reading you should know how to:</p>
+<ul>
+<li>Use the <code>where</code> query option,</li>
+<li>Use the <code>Op.and</code> operator to match <strong>all</strong> of multiple criteria,</li>
+<li>Use the <code>Op.or</code> operator to match <strong>any</strong> of multiple criteria,</li>
+<li>Use the <code>Op.ne</code> to match rows where the value <strong>does not equal</strong> the specified value,</li>
+<li>Use the <code>Op.gt</code>, <code>Op.lt</code> operators to <strong>compare</strong> values,</li>
+<li>Use the <code>order</code> query option to <strong>order</strong> results,</li>
+<li>Use the <code>limit</code> query option to <strong>limit</strong> the number of returned results,</li>
+<li>Use <code>findOne</code> when only one result is expected or desired.</li>
+</ul>

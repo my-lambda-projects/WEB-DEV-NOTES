@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "196c19e4-f0ae-4d5d-803c-00155deeabaa",
+    "name": "TTT: Saving Game State",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-06-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--saving-game-state"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Requirement 6: Saving Game State\n\nIn this requirement, you will make it so that if someone refreshes the screen,\nthe game state will be restored when the page shows back up.\n"
+  },
+  "success": true
+}

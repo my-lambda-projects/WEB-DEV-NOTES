@@ -1,0 +1,110 @@
+<p>\# Writing And Running A Seed File In PSQL ________________________________________________________________________________ <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} --></p>
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#creating-a-seed-file">Creating a seed file</a></li>
+<li><a href="#populating-a-database-via--left-caret">Populating a database via &lt; (“left caret”)</a></li>
+<li><a href="#populating-the-database-via--pipe">Populating the database via | (“pipe”)</a></li>
+<li><a href="#what-we-learned">What we learned:</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>After a database is created, we need to populate it, or <em>seed</em> it, with data. Until now, we’ve used the command-line psql interface to create tables and insert rows into those tables. While that’s fine for small datasets, it would be cumbersome to add a large dataset using the command line.</p>
+<p>In this reading, we’ll learn how to create and run a seed file, which makes the process of populating a database with test data much easier.</p>
+<h2 id="creating-a-seed-file">Creating a seed file</h2>
+<p>You can create a seed file by opening up VSCode or any text editor and saving a file with the <code>.sql</code> extension.</p>
+<p>Let’s create a seed file called <code>seed-data.sql</code> that’s going to create a new table called <code>pies</code> and insert 50 pie rows into the table. Use the code below to create the seed file, and make sure to save your seed file on your machine.</p>
+<p><em><strong>seed-data.sql</strong></em></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> pies (</a>
+<a class="sourceLine" id="cb1-2" title="2">  flavor <span class="dt">VARCHAR</span>(<span class="dv">255</span>) <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb1-3" title="3">  price <span class="dt">FLOAT</span></a>
+<a class="sourceLine" id="cb1-4" title="4">);</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Apple&#39;</span>, <span class="fl">19.95</span>);</a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Caramel Apple Crumble&#39;</span>, <span class="fl">20.53</span>);</a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Blueberry&#39;</span>, <span class="fl">19.31</span>);</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Blackberry&#39;</span>, <span class="fl">22.86</span>);</a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Cherry&#39;</span>, <span class="fl">22.32</span>);</a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Peach&#39;</span>, <span class="fl">20.45</span>);</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Raspberry&#39;</span>, <span class="fl">20.99</span>);</a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Mixed Berry&#39;</span>, <span class="fl">21.45</span>);</a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Strawberry Rhubarb&#39;</span>, <span class="fl">24.81</span>);</a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Banana Cream&#39;</span>, <span class="fl">18.66</span>);</a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Boston Toffee&#39;</span>, <span class="fl">25.00</span>);</a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Banana Nutella&#39;</span>, <span class="fl">22.12</span>);</a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Bananas Foster&#39;</span>, <span class="fl">24.99</span>);</a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Boston Cream&#39;</span>, <span class="fl">23.75</span>);</a>
+<a class="sourceLine" id="cb1-20" title="20"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Cookies and Cream&#39;</span>, <span class="fl">18.27</span>);</a>
+<a class="sourceLine" id="cb1-21" title="21"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Coconut Cream&#39;</span>, <span class="fl">22.89</span>);</a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chess&#39;</span>, <span class="fl">25.00</span>);</a>
+<a class="sourceLine" id="cb1-23" title="23"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Lemon Chess&#39;</span>, <span class="fl">25.00</span>);</a>
+<a class="sourceLine" id="cb1-24" title="24"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Key Lime&#39;</span>, <span class="fl">19.34</span>);</a>
+<a class="sourceLine" id="cb1-25" title="25"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Lemon Meringue&#39;</span>, <span class="fl">19.58</span>);</a>
+<a class="sourceLine" id="cb1-26" title="26"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Guava&#39;</span>, <span class="fl">18.92</span>);</a>
+<a class="sourceLine" id="cb1-27" title="27"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Mango&#39;</span>, <span class="fl">19.55</span>);</a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Plum&#39;</span>, <span class="fl">20.21</span>);</a>
+<a class="sourceLine" id="cb1-29" title="29"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Apricot&#39;</span>, <span class="fl">20.55</span>);</a>
+<a class="sourceLine" id="cb1-30" title="30"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Gooseberry&#39;</span>, <span class="fl">23.54</span>);</a>
+<a class="sourceLine" id="cb1-31" title="31"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Lingonberry&#39;</span>, <span class="fl">24.35</span>);</a>
+<a class="sourceLine" id="cb1-32" title="32"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Pear Vanilla Butterscotch&#39;</span>, <span class="fl">25.13</span>);</a>
+<a class="sourceLine" id="cb1-33" title="33"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Baked Alaska&#39;</span>, <span class="fl">25.71</span>);</a>
+<a class="sourceLine" id="cb1-34" title="34"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chocolate&#39;</span>, <span class="fl">19.00</span>);</a>
+<a class="sourceLine" id="cb1-35" title="35"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chocolate Mousse&#39;</span>, <span class="fl">21.46</span>);</a>
+<a class="sourceLine" id="cb1-36" title="36"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Mexican Chocolate&#39;</span>, <span class="fl">28.33</span>);</a>
+<a class="sourceLine" id="cb1-37" title="37"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chocolate Caramel&#39;</span>, <span class="fl">26.67</span>);</a>
+<a class="sourceLine" id="cb1-38" title="38"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chocolate Chip Cookie Dough&#39;</span>, <span class="fl">18.65</span>);</a>
+<a class="sourceLine" id="cb1-39" title="39"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Pecan&#39;</span>, <span class="fl">26.33</span>);</a>
+<a class="sourceLine" id="cb1-40" title="40"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Bourbon Caramel Pecan&#39;</span>, <span class="fl">27.88</span>);</a>
+<a class="sourceLine" id="cb1-41" title="41"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Chocolate Pecan&#39;</span>, <span class="fl">27.63</span>);</a>
+<a class="sourceLine" id="cb1-42" title="42"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Pumpkin&#39;</span>, <span class="fl">20.91</span>);</a>
+<a class="sourceLine" id="cb1-43" title="43"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Sweet Potato&#39;</span>, <span class="fl">20.75</span>);</a>
+<a class="sourceLine" id="cb1-44" title="44"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Purple Sweet Potato&#39;</span>, <span class="fl">26.34</span>);</a>
+<a class="sourceLine" id="cb1-45" title="45"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Cheesecake&#39;</span>, <span class="fl">28.99</span>);</a>
+<a class="sourceLine" id="cb1-46" title="46"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Butterscotch Praline&#39;</span>, <span class="fl">29.78</span>);</a>
+<a class="sourceLine" id="cb1-47" title="47"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Salted Caramel&#39;</span>, <span class="fl">30.32</span>);</a>
+<a class="sourceLine" id="cb1-48" title="48"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Salted Honey&#39;</span>, <span class="fl">59.00</span>);</a>
+<a class="sourceLine" id="cb1-49" title="49"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Sugar Cream&#39;</span>, <span class="fl">33.89</span>);</a>
+<a class="sourceLine" id="cb1-50" title="50"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Mississippi Mud&#39;</span>, <span class="fl">28.67</span>);</a>
+<a class="sourceLine" id="cb1-51" title="51"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Turtle Fudge&#39;</span>, <span class="fl">30.58</span>);</a>
+<a class="sourceLine" id="cb1-52" title="52"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Fruit Loops&#39;</span>, <span class="fl">20.45</span>);</a>
+<a class="sourceLine" id="cb1-53" title="53"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Black Forest&#39;</span>, <span class="fl">34.99</span>);</a>
+<a class="sourceLine" id="cb1-54" title="54"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Maple Cream&#39;</span>, <span class="fl">35.88</span>);</a>
+<a class="sourceLine" id="cb1-55" title="55"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Smores&#39;</span>, <span class="fl">26.43</span>);</a>
+<a class="sourceLine" id="cb1-56" title="56"><span class="kw">INSERT</span> <span class="kw">INTO</span> pies <span class="kw">VALUES</span>(<span class="st">&#39;Milk Bar&#39;</span>, <span class="fl">46.00</span>);</a>
+<a class="sourceLine" id="cb1-57" title="57"></a>
+<a class="sourceLine" id="cb1-58" title="58"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> pies;</a></code></pre></div>
+<h2 id="populating-a-database-via-left-caret">Populating a database via &lt; (“left caret”)</h2>
+<p>Now that you have a seed file, you can insert it into a database with a simple command.</p>
+<p>Create a database named “bakery”.</p>
+<p>The syntax is <code>psql -d [database] &lt; [path_to_file/file.sql]</code>. The left caret (<code>&lt;</code>) takes the standard input from the file on the right (your seed file) and inputs it into the program on the left (<code>psql</code>).</p>
+<p>Open up your terminal, and enter the following command. Make sure to replace <code>path_to_my_file</code> with the actual file path.</p>
+<pre class="shell"><code>psql -d bakery &lt; path_to_my_file/seed-data.sql</code></pre>
+<p>In the terminal, you should see a bunch of <code>INSERT</code> statements and the entire “pies” table printed out (from the <code>SELECT *</code> query in the seed file).</p>
+<p>You can log into psql and use <code>\dt</code> to verify that your new table has been added to the database:</p>
+<pre class="shell"><code>postgres=# \dt
+List of relations
+ Schema |     Name     | Type  |  Owner
+ public | breeds       | table | appacademy
+ public | pies         | table | appacademy
+ public | puppies      | table | appacademy</code></pre>
+<h2 id="populating-the-database-via-pipe">Populating the database via | (“pipe”)</h2>
+<p>You could also use the “pipe” (<code>|</code>) to populate the database with your seed file.</p>
+<p>The syntax is <code>cat [path_to_file/file.sql] | psql -d [database]</code>. ‘cat’ is a standard Unix utility that reads files sequentially, writing them to standard output. The “pipe” (<code>|</code>) takes the standard output of the command on the left and pipes it as standard input to the command on the right.</p>
+<p>Try out this method in your terminal. If you have an existing “pies” table, you’ll need to drop this table before you can add it again:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">DROP</span> <span class="kw">TABLE</span> pies;</a></code></pre></div>
+<p>Then, enter the following. Make sure to replace <code>path_to_my_file</code> with the actual file path.</p>
+<pre class="shell"><code>cat path_to_my_file/seed-data.sql | psql -d postgres</code></pre>
+<p>Again, you should see a bunch of <code>INSERT</code> statements and the entire “pies” table printed out (from the <code>SELECT *</code> query in the seed file).</p>
+<p>You can log into psql and use <code>\dt</code> to verify that your new table has been added to the database:</p>
+<pre class="shell"><code>postgres=# \dt
+List of relations
+ Schema |     Name     | Type  |  Owner
+ public | friends      | table | postgres
+ public | pies         | table | postgres
+ public | puppies      | table | postgres</code></pre>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>What a seed file is</li>
+<li>How to create a seed file</li>
+<li>How to populate a database with a seed file using &lt;</li>
+<li>How to populate a database with a seed file using |</li>
+</ul>

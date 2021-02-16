@@ -1,0 +1,96 @@
+<ul>
+<li><p>⏱ 30 minutes</p></li>
+<li>Catalog</li>
+<li>Js Py Sep 2020 Online</li>
+<li>Week 10 Sep 2020 Online</li>
+<li><p>User Management Walk Through</p></li>
+</ul>
+<p><strong>This is a walk-through</strong>: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Create superusers with full access to the system,</li>
+<li>Create normal users,</li>
+<li>Delete users from the system, and,</li>
+<li>See how SQL is not case sensitive</li>
+</ul>
+<p>It’s good practice to create a different database user for each application that you will have connect to an RDBMS. This prevents applications from reading and changing data in <em>other</em> databases that they should not have access to.</p>
+<p>The “User” in PostgreSQL is a <strong>database entity</strong> that represents a person or system that will connect to the RDBMS and access data from one or more databases. This is the first entity that you will create, modify, and destroy.</p>
+<p>All user management is beyond the scope of the ANSI SQL standard. That means each relational database management system has its own vendor-specific extensions about how to do this. When working with a new RDBMS, check out its documentation about how to create users, groups, and other security entities.</p>
+<h2 id="naming-a-user">Naming a user</h2>
+<p>Names of users should not create spaces or dashes. They should contain only lower case letters, numbers, and underscores.</p>
+<ul>
+<li>Good user names
+<ul>
+<li>appacademy</li>
+<li>patel_kush_112</li>
+<li>bdorsey</li>
+</ul></li>
+<li>Bad (incorrect) user names
+<ul>
+<li>Ned Ruggeri</li>
+<li>melvin-howard-tormé</li>
+<li>b.d.o.r.s.e.y</li>
+</ul></li>
+</ul>
+<h2 id="creating-a-superuser">Creating a superuser</h2>
+<p>On Windows, open your Ubuntu shell. On macOS, open your Terminal. Start the PostgreSQL command line client with the command <code>psql postgres</code>.</p>
+<p>You should see some information about the version of the database and the command line tool, plus a helpful hint to type “help” if you need help. Then, you will see the <code>psql</code> prompt:</p>
+<pre><code>postgres=#</code></pre>
+<p>The value “postgres” means that you’re currently connected to the “postgres” database. More on that in the next article.</p>
+<p>To create a user in PostgreSQL you will use the following command. It creates a user with the name “test_superuser” and the password “test”. _Type_ that command (please don’t copy and paste it) and run it by hitting Enter (or Return).</p>
+<pre><code>CREATE USER test_superuser
+WITH
+PASSWORD &#39;test&#39;
+SUPERUSER;</code></pre>
+<p>Note that this SQL statement ends with a semicolon. All SQL statements in PostgreSQL do. Don’t forget it. If you do forget it, just type it on an empty line. The above statement, for example, can also be entered as the following where the semicolon is on a line all its own.</p>
+<pre><code>CREATE USER test_superuser
+WITH
+PASSWORD &#39;test&#39;
+SUPERUSER
+;</code></pre>
+<p>If you typed it correctly, you will see the message <code>CREATE ROLE</code>. Because you created test_superuser as a super user, when a person or application uses that login, they can do whatever they want. You will test out that fact, now.</p>
+<p>Quit your current session by typing <code>\q</code> and hitting Enter (or Return). Now type the following command to connect to PostgreSQL with the newly-created user. It instructs the client to connect as the user “test_superuser” (<code>-U test_superuser</code>) to the database named “postgres” (<code>postgres</code>) and prompt for the password (<code>-W</code>) for the user.</p>
+<pre><code>psql -W -U test_superuser postgres</code></pre>
+<p>At the prompt, type the password <em>test</em> that you used when you created the user. If everything went well, then you will find yourself at the SQL prompt just like before. To prove to you that you’re now the “test_superuser”, type the following command.</p>
+<pre><code>SELECT CURRENT_USER;</code></pre>
+<p>It should respond with the following output:</p>
+<pre><code>  current_user
+----------------
+ test_superuser
+(1 row)</code></pre>
+<h2 id="creating-a-limited-user">Creating a limited user</h2>
+<p>You’re logged in as a super user that can do anything. Use that power! Create another user that does not have such amazing power. You will rarely create super users in real life. The following user creation is more appropriate. It creates just a normal user that can log in. Then, you can assign that user specific access to specific databases.</p>
+<pre><code>CREATE USER test_normal_user
+WITH
+PASSWORD &#39;test&#39;;</code></pre>
+<p>That should also give you the <code>CREATE ROLE</code> message that means everything went ok.</p>
+<p>Quit the session by typing <code>\q</code> and pressing Enter (or Return). Start another as the new user.</p>
+<pre><code>psql -U test_normal_user -W postgres</code></pre>
+<p>Type the password <em>test</em> for this user. Confirm that you are now that new user by using the <code>SELECT CURRENT_USER;</code> command. Once confirmed, try to create a user named <em>hacking_the_planet</em> with a password of <em>pwned!</em>. What happens?</p>
+<p>That’s right. This user doesn’t have the security privileges to create users.</p>
+<p>Create users to do the job you want them to do. Then, give the appropriate permissions to that user. This will make a safe and secure application development world for you and your team.</p>
+<h2 id="removing-a-user">Removing a user</h2>
+<p>Time to remove both of these users. The opposite of <code>CREATE USER</code> is <code>DROP USER</code>. To drop a user, you just type <code>DROP USER «user name»;</code>.</p>
+<p>Connect again as just you, the OG super user. (Once again, that’s with the command <code>psql postgres</code>.)</p>
+<p>Drop the normal user with the command</p>
+<pre><code>DROP USER test_normal_user;</code></pre>
+<p>Then, drop the user with the name “test_superuser”. You should receive the message “DROP ROLE” for each of your commands.</p>
+<h2 id="case-sensitivity">Case sensitivity</h2>
+<p>Unlike JavaScript, the keywords in SQL are case insensitive. that means you can type any of the following and they’ll all work.</p>
+<pre><code>DROP USER test_user;
+Drop User test_user;
+drop user test_user;</code></pre>
+<p>Notice that entity names like user names <em>are</em> case sensitive.</p>
+<p>SQL is conventionally written in all uppercase to distinguish the commands from the names that you will have for your entities and their properties.</p>
+<h2 id="what-you-learned">What you learned</h2>
+<h1 id="william-really-likes-databases">William really likes databases</h1>
+<ul>
+<li>That a user is a <em>database entity</em> in PostgreSQL</li>
+<li>That it is best practice to create a user for each application that you will create</li>
+<li>How to create a super user with the <code>CREATE USER ... SUPERUSER</code> command</li>
+<li>How to create a restricted (normal) user with the <code>CREATE USER</code> command</li>
+<li>How to remove a user with the <code>DROP USER</code> command</li>
+<li>SQL keywords are not sensitive to case, but are conventionally written in uppercase</li>
+</ul>
+<p>Did you find this lesson helpful?</p>
+<p><a href="https://open.appacademy.io/learn/js-py---sep-2020-online/week-10-sep-2020-online/user-management-walk-through">Source</a></p>

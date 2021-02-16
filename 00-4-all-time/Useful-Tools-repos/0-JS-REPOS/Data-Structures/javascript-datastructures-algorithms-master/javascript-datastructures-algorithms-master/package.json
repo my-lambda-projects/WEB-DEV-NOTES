@@ -1,0 +1,27 @@
+{
+  "name": "javascript-datastructures-algorithms",
+  "description": "JavaScript 版数据结构与算法",
+  "version": "1.0.0",
+  "devDependencies": {
+    "codecov": "^1.0.1",
+    "jest": "^18.1.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:cov": "jest && codecov"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewis617/javascript-datastructures-algorithms.git"
+  },
+  "author": "lewis617",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lewis617/javascript-datastructures-algorithms/issues"
+  },
+  "homepage": "https://github.com/lewis617/javascript-datastructures-algorithms#readme"
+}

@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:view-comment', location = 'includes/js/comments.js' */
+define("confluence/comments",["ajs","jquery","confluence/storage-manager"],function(b,g,h){function f(){return confirm("Are you sure you want to delete the comment?")?(this.href+="\x26confirm\x3dyes",!0):!1}return{binder:{bindRemoveConfirmation:function(a){g("#comment-"+a+" .comment-action-remove a").click(f)}},initialiser:function(a){var d=h("confluence","comments");if(a("#comments-section").length){a("#comments-section .comment:odd").addClass("odd");a(".comment-action-remove a").click(f);
+var e=a("#addcomment.comment-text"),c=a("#comments-text-editor textarea");c.focus(function(){e.addClass("active")}).blur(function(){a.trim(c.val()).length||e.removeClass("active")}).bind("reset.default-text",function(){e.removeClass("active")});a("form[name\x3d'textcommentform']").submit(function(){var k=c.val();return a.trim(k)?!0:(alert("Comment text is empty. Cannot create empty comments."),!1)});a("#add-comment-rte").click(function(){c.hasClass("placeholded")||d.setItem("text-comment",a.trim(c.val()))});a("#addcomment #rte").length&&
+b.bind("init.rte",function(a,b){if(a=d.getItem("text-comment"))b.editor.setContent(a),d.setItem("text-comment","")})}}}});require("confluence/module-exporter").safeRequire("confluence/comments",function(b){Confluence.Comments=b.binder;require("ajs").toInit(b.initialiser)});
+}catch(e){WRMCB(e)};

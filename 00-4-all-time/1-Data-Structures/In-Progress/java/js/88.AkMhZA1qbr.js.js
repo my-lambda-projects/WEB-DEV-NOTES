@@ -1,0 +1,1374 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 88 ], {
+    "2wsP": function ( e, t, o ) {
+      var r = o( "EI7Z" )( "length" );
+      e.exports = r
+    },
+    ESpw: function ( e, t, o ) {
+      "use strict";
+      o.d( t, "b", ( function () {
+        return r
+      } ) ), o.d( t, "a", ( function () {
+        return s
+      } ) );
+      const r = e => ( {} ),
+        s = function ( e, t = Object.create( Object.prototype ) ) {
+          if ( !e ) throw new Error( "a default set of overrides *must* be passed in as the first argument" );
+          return function ( o ) {
+            const {
+              cssFn: r,
+              attributesFn: s,
+              component: a
+            } = e[ o ];
+            if ( !t[ o ] ) return {
+              cssFn: r,
+              attributesFn: s,
+              component: a
+            };
+            const {
+              cssFn: n,
+              attributesFn: i,
+              component: c
+            } = t[ o ];
+            return {
+              cssFn: n ? e => n( r( e ), e ) : r,
+              attributesFn: i || s,
+              component: c || a
+            }
+          }
+        }
+    },
+    "GNK+": function ( e ) {
+      e.exports = JSON.parse( '{"a":"@atlaskit/checkbox","b":"11.0.7"}' )
+    },
+    GVul: function ( e, t, o ) {
+      var r = o( "2wsP" ),
+        s = o( "GZgP" ),
+        a = o( "QZ90" );
+      e.exports = function ( e ) {
+        return s( e ) ? a( e ) : r( e )
+      }
+    },
+    HJ22: function ( e, t, o ) {
+      "use strict";
+      var r = o( "8pvK" ),
+        s = o( "3IV/" );
+      const a = {
+          light: s.N20,
+          dark: s.DN20
+        },
+        n = {
+          light: s.R400,
+          dark: s.R400
+        },
+        i = {
+          light: s.B100,
+          dark: s.B75
+        },
+        c = {
+          light: s.N40,
+          dark: s.DN40
+        },
+        l = {
+          light: s.N10,
+          dark: s.DN10
+        },
+        d = {
+          light: s.N30,
+          dark: s.DN30
+        },
+        u = {
+          light: s.N0,
+          dark: s.DN10
+        },
+        h = {
+          light: s.N100,
+          dark: s.DN200
+        },
+        p = {
+          light: s.N900,
+          dark: s.DN600
+        },
+        b = {
+          light: s.N70,
+          dark: s.DN90
+        },
+        m = {
+          light: "transparent",
+          dark: "transparent"
+        };
+      o.d( t, "b", ( function () {
+        return F
+      } ) ), o.d( t, "a", ( function () {
+        return O
+      } ) );
+      const k = {
+          light: {
+            backgroundColor: a.light,
+            backgroundColorFocus: a.light,
+            backgroundColorHover: a.light,
+            borderColor: c.light,
+            borderColorFocus: i.light,
+            textColor: b.light
+          },
+          dark: {
+            backgroundColor: a.dark,
+            backgroundColorFocus: a.dark,
+            backgroundColorHover: a.dark,
+            borderColor: c.dark,
+            borderColorFocus: i.dark,
+            textColor: b.dark
+          }
+        },
+        f = {
+          light: {
+            borderColor: n.light,
+            borderColorFocus: i.light,
+            backgroundColor: l.light,
+            backgroundColorFocus: u.light,
+            backgroundColorHover: d.light
+          },
+          dark: {
+            borderColor: n.dark,
+            borderColorFocus: i.dark,
+            backgroundColor: l.dark,
+            backgroundColorFocus: u.dark,
+            backgroundColorHover: d.dark
+          }
+        },
+        g = {
+          standard: l,
+          subtle: m,
+          none: m
+        },
+        C = {
+          standard: u,
+          subtle: u,
+          none: m
+        },
+        v = {
+          standard: d,
+          subtle: d,
+          none: m
+        },
+        y = {
+          standard: c,
+          subtle: m,
+          none: m
+        },
+        x = {
+          standard: i,
+          subtle: i,
+          none: m
+        },
+        F = {
+          borderColor: y,
+          borderColorFocus: x,
+          backgroundColor: g,
+          backgroundColorFocus: C,
+          backgroundColorHover: v,
+          disabledRules: k,
+          invalidRules: f,
+          textColor: p,
+          placeholderTextColor: h
+        },
+        O = Object( r.a )( ( {
+          appearance: e,
+          mode: t
+        } ) => ( {
+          borderColor: y[ e ][ t ],
+          borderColorFocus: x[ e ][ t ],
+          backgroundColorHover: v[ e ][ t ],
+          backgroundColorFocus: C[ e ][ t ],
+          backgroundColor: g[ e ][ t ],
+          disabledRules: k[ t ],
+          invalidRules: f[ t ],
+          textColor: p[ t ],
+          placeholderTextColor: h[ t ]
+        } ) )
+    },
+    MDav: function ( e, t, o ) {
+      var r = o( "Dhk8" ),
+        s = o( "tLQN" );
+      e.exports = function ( e ) {
+        return s( e ) && "[object RegExp]" == r( e )
+      }
+    },
+    N4KI: function ( e, t, o ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var r = a( o( "ERkP" ) ),
+        s = a( o( "4KTy" ) );
+
+      function a( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function n() {
+        return ( n = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var o = arguments[ t ];
+            for ( var r in o ) Object.prototype.hasOwnProperty.call( o, r ) && ( e[ r ] = o[ r ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var i = function ( e ) {
+        return r.default.createElement( s.default, n( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill-rule="evenodd"><rect fill="currentColor" x="6" y="6" width="12" height="12" rx="2"/><rect fill="inherit" x="8" y="11" width="8" height="2" rx="1"/></g></svg>'
+        }, e ) )
+      };
+      i.displayName = "CheckboxIndeterminateIcon";
+      var c = i;
+      t.default = c
+    },
+    QZ90: function ( e, t ) {
+      var o = "[\\ud800-\\udfff]",
+        r = "[\\u0300-\\u036f\\ufe20-\\ufe2f\\u20d0-\\u20ff]",
+        s = "\\ud83c[\\udffb-\\udfff]",
+        a = "[^\\ud800-\\udfff]",
+        n = "(?:\\ud83c[\\udde6-\\uddff]){2}",
+        i = "[\\ud800-\\udbff][\\udc00-\\udfff]",
+        c = "(?:" + r + "|" + s + ")" + "?",
+        l = "[\\ufe0e\\ufe0f]?" + c + ( "(?:\\u200d(?:" + [ a, n, i ].join( "|" ) + ")[\\ufe0e\\ufe0f]?" + c + ")*" ),
+        d = "(?:" + [ a + r + "?", r, n, i, o ].join( "|" ) + ")",
+        u = RegExp( s + "(?=" + s + ")|" + d + l, "g" );
+      e.exports = function ( e ) {
+        for ( var t = u.lastIndex = 0; u.test( e ); ) ++t;
+        return t
+      }
+    },
+    UBkg: function ( e, t, o ) {
+      var r = o( "MDav" ),
+        s = o( "SU8Q" ),
+        a = o( "T6vp" ),
+        n = a && a.isRegExp,
+        i = n ? s( n ) : r;
+      e.exports = i
+    },
+    bXhU: function ( e, t, o ) {
+      "use strict";
+      var r = o( "HbGN" ),
+        s = o( "ERkP" ),
+        a = o.n( s ),
+        n = o( "lSUb" ),
+        i = o( "xQ8g" ),
+        c = o.n( i ),
+        l = o( "N4KI" ),
+        d = o.n( l ),
+        u = o( "EFzz" ),
+        h = o( "Czhu" ),
+        p = o( "l1C2" ),
+        b = o( "ESpw" );
+      const m = e => {
+          let {
+            tokens: t
+          } = e, o = Object( r.a )( e, [ "tokens" ] );
+          return o.isDisabled ? {
+            stroke: ( s = t.icon ).borderColor.disabled,
+            strokeWidth: s.borderWidth
+          } : o.isActive ? ( e => ( {
+            stroke: e.borderColor.active,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : o.isFocused ? ( e => ( {
+            stroke: e.borderColor.focused,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : o.isInvalid ? o.isChecked ? ( e => ( {
+            stroke: e.borderColor.invalidAndChecked,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : ( e => ( {
+            stroke: e.borderColor.invalid,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : o.isHovered ? o.isChecked ? ( e => ( {
+            stroke: e.borderColor.hoveredAndChecked,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : ( e => ( {
+            stroke: e.borderColor.hovered,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : o.isChecked ? ( e => ( {
+            stroke: e.borderColor.checked,
+            strokeWidth: e.borderWidth
+          } ) )( t.icon ) : {
+            stroke: t.icon.borderColor.rest,
+            strokeWidth: t.icon.borderWidth
+          };
+          var s
+        },
+        k = e => {
+          const {
+            isChecked: t,
+            isDisabled: o,
+            isActive: r,
+            tokens: {
+              icon: s
+            }
+          } = e;
+          let a = s.tickColor.checked;
+          return o && t ? a = s.tickColor.disabledAndChecked : r && t && !o ? a = s.tickColor.activeAndChecked : t || ( a = s.tickColor.rest ), a
+        },
+        f = e => {
+          const {
+            isChecked: t,
+            isDisabled: o,
+            isActive: r,
+            isHovered: s,
+            tokens: {
+              icon: a
+            }
+          } = e;
+          let n = a.boxColor.rest;
+          return o ? n = a.boxColor.disabled : r ? n = a.boxColor.active : s && t ? n = a.boxColor.hoveredAndChecked : s ? n = a.boxColor.hovered : t && ( n = a.boxColor.checked ), n
+        };
+      var g = {
+          component: function ( e ) {
+            let {
+              attributesFn: t,
+              cssFn: o,
+              children: s
+            } = e, a = Object( r.a )( e, [ "attributesFn", "cssFn", "children" ] );
+            return Object( p.f )( "span", Object.assign( {
+              css: o( a )
+            }, t( a ), {
+              children: s
+            } ) )
+          },
+          cssFn: e => ( {
+            lineHeight: 0,
+            flexShrink: 0,
+            color: f( e ),
+            fill: k( e ),
+            transition: "all 0.2s ease-in-out;",
+            "& rect:first-of-type": Object( h.a )( {
+              transition: "stroke 0.2s ease-in-out;"
+            }, m( e ) ),
+            "> span": {
+              display: "flex"
+            }
+          } ),
+          attributesFn: b.b
+        },
+        C = o( "oXDD" );
+      o.d( t, "a", ( function () {
+        return y
+      } ) );
+      const v = {
+        IconWrapper: g,
+        IconIndeterminate: {
+          component: d.a
+        },
+        Icon: {
+          component: c.a
+        }
+      };
+      class y extends s.Component {
+        constructor( e ) {
+          super( e ), this.createExtender = Object( n.default )( b.a ).bind( this )
+        }
+        render() {
+          const {
+            isChecked: e,
+            isDisabled: t,
+            isInvalid: o,
+            isActive: s,
+            isFocused: n,
+            isHovered: i,
+            isIndeterminate: c,
+            overrides: l,
+            primaryColor: d,
+            secondaryColor: h,
+            theme: p
+          } = this.props, b = this.createExtender( v, l ), m = b( "IconWrapper" ), {
+            component: k
+          } = m, f = Object( r.a )( m, [ "component" ] ), {
+            component: g
+          } = b( "IconIndeterminate" ), {
+            component: y
+          } = b( "Icon" );
+          return a.a.createElement( C.b.Provider, {
+            value: p
+          }, a.a.createElement( u.a.Consumer, null, ( {
+            mode: r
+          } ) => a.a.createElement( C.b.Consumer, {
+            mode: r,
+            tokens: C.a
+          }, r => a.a.createElement( k, Object.assign( {}, f, {
+            tokens: r,
+            isChecked: e,
+            isDisabled: t,
+            isFocused: n,
+            isActive: s,
+            isHovered: i,
+            isInvalid: o
+          } ), c ? a.a.createElement( g, {
+            primaryColor: d,
+            secondaryColor: h,
+            size: r.icon.size,
+            label: ""
+          } ) : a.a.createElement( y, {
+            primaryColor: d,
+            secondaryColor: h,
+            size: r.icon.size,
+            label: ""
+          } ) ) ) ) )
+        }
+      }
+      y.defaultProps = {
+        primaryColor: "inherit",
+        secondaryColor: "inherit",
+        isIndeterminate: !1,
+        theme: ( e, t ) => e( t )
+      }
+    },
+    iBFh: function ( e, t, o ) {
+      "use strict";
+      var r = o( "ERkP" ),
+        s = o.n( r ),
+        a = o( "re2U" ),
+        n = o.n( a ),
+        i = o( "Czhu" ),
+        c = o( "kgsK" ),
+        l = o( "30eJ" ),
+        d = o( "FyK+" ),
+        u = o( "MqVv" ),
+        h = o( "rx1S" ),
+        p = o( "uq3c" );
+      const b = {
+          bug: "Describe the bug or issue",
+          comment: "Let us know what's on your mind",
+          suggestion: "Let us know what you'd like to improve",
+          question: "What would you like to know?",
+          empty: "Select an option"
+        },
+        m = [ {
+          label: "Ask a question",
+          value: "question"
+        }, {
+          label: "Leave a comment",
+          value: "comment"
+        }, {
+          label: "Report a bug",
+          value: "bug"
+        }, {
+          label: "Suggest an improvement",
+          value: "suggestion"
+        } ],
+        k = {
+          label: "I want to...",
+          value: "empty"
+        };
+      class f extends r.Component {
+        constructor() {
+          super( ...arguments ), this.state = {
+            type: "empty",
+            description: "",
+            canBeContacted: !1,
+            enrollInResearchGroup: !1
+          }, this.isTypeSelected = () => "empty" !== this.state.type, this.onSubmit = () => {
+            const {
+              type: e,
+              description: t,
+              canBeContacted: o,
+              enrollInResearchGroup: r
+            } = this.state;
+            this.props.onSubmit( {
+              type: e,
+              description: t,
+              canBeContacted: o,
+              enrollInResearchGroup: r
+            } )
+          }
+        }
+        render() {
+          const {
+            showTypeField: e
+          } = this.props, t = this.isTypeSelected() || !e, o = e && !this.isTypeSelected() || !this.state.description;
+          return s.a.createElement( u.a, {
+            actions: [ {
+              text: "Send feedback",
+              appearance: "primary",
+              type: "submit",
+              isDisabled: o,
+              onClick: this.onSubmit
+            }, {
+              text: "Cancel",
+              onClick: this.props.onClose,
+              appearance: "subtle"
+            } ],
+            heading: this.props.feedbackTitle,
+            onClose: this.props.onClose
+          }, s.a.createElement( l.default, {
+            onSubmit: () => {}
+          }, ( {
+            formProps: o
+          } ) => s.a.createElement( "form", Object.assign( {}, o ), this.props.feedbackTitleDetails, e ? s.a.createElement( h.a, {
+            onChange: e => {
+              !e || e instanceof Array || this.setState( {
+                type: e.value
+              } )
+            },
+            menuPortalTarget: document.body,
+            styles: {
+              menuPortal: e => Object( i.a )( Object( i.a )( {}, e ), {}, {
+                zIndex: 9999
+              } )
+            },
+            defaultValue: k,
+            options: m
+          } ) : null, t ? s.a.createElement( r.Fragment, null, s.a.createElement( d.default, {
+            label: e ? b[ this.state.type ] : null,
+            isRequired: !0,
+            name: "description"
+          }, ( {
+            fieldProps: e
+          } ) => s.a.createElement( p.a, Object.assign( {}, e, {
+            name: "foo",
+            minimumRows: 6,
+            placeholder: this.props.summaryPlaceholder,
+            onChange: e => this.setState( {
+              description: e.target.value
+            } ),
+            value: this.state.description
+          } ) ) ), s.a.createElement( d.default, {
+            name: "can-be-contacted"
+          }, ( {
+            fieldProps: e
+          } ) => s.a.createElement( c.a, Object.assign( {}, e, {
+            label: this.props.canBeContactedLabel,
+            onChange: e => this.setState( {
+              canBeContacted: e.target.checked
+            } )
+          } ) ) ), s.a.createElement( d.default, {
+            name: "enroll-in-research-group"
+          }, ( {
+            fieldProps: e
+          } ) => s.a.createElement( c.a, Object.assign( {}, e, {
+            label: this.props.enrolInResearchLabel,
+            onChange: e => this.setState( {
+              enrollInResearchGroup: e.target.checked
+            } )
+          } ) ) ) ) : s.a.createElement( r.Fragment, null ) ) ) )
+        }
+      }
+      f.defaultProps = {
+        showTypeField: !0,
+        feedbackTitle: "Share your thoughts",
+        enrolInResearchLabel: "I'd like to participate in product research",
+        canBeContactedLabel: "Atlassian can contact me about this feedback",
+        onClose: () => {},
+        onSubmit: () => {}
+      };
+      class g extends r.Component {
+        constructor() {
+          super( ...arguments ), this.postFeedback = e => {
+            const t = this.mapFormToJSD( e );
+            this.props.embeddableKey && this.props.requestTypeId && fetch( `https://jsd-widget.atlassian.com/api/embeddable/${this.props.embeddableKey}/request?requestTypeId=${this.props.requestTypeId}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify( t )
+            } ), this.props.onClose(), setTimeout( () => this.props.onSubmit( e ), this.props.timeoutOnSubmit )
+          }
+        }
+        getTypeFieldValue( e ) {
+          switch ( e ) {
+            case "bug":
+              return this.props.typeBugDefaultValue;
+            case "comment":
+              return this.props.typeCommentDefaultValue;
+            case "suggestion":
+              return this.props.typeSuggestionDefaultValue;
+            case "question":
+              return this.props.typeQuestionDefaultValue;
+            case "empty":
+            default:
+              return this.props.typeEmptyDefaultValue
+          }
+        }
+        getEmail( e ) {
+          return e.canBeContacted && this.props.email ? this.props.email : this.props.emailDefaultValue
+        }
+        getDescription( e ) {
+          return e.description || this.props.descriptionDefaultValue
+        }
+        getSummary( e ) {
+          return ( ( e, t = 100 ) => {
+            const o = e.replace( /\n/g, " " );
+            return n()( o, {
+              length: t
+            } )
+          } )( e.description, this.props.summaryTruncateLength ) || this.props.summaryDefaultValue
+        }
+        getCustomerName() {
+          return this.props.name || this.props.customerNameDefaultValue
+        }
+        mapFormToJSD( e ) {
+          return {
+            fields: [ this.props.showTypeField ? {
+              id: this.props.typeFieldId,
+              value: this.getTypeFieldValue( e.type )
+            } : void 0, {
+              id: this.props.summaryFieldId,
+              value: this.getSummary( e )
+            }, {
+              id: this.props.descriptionFieldId,
+              value: this.getDescription( e )
+            }, {
+              id: this.props.emailFieldId,
+              value: this.getEmail( e )
+            }, {
+              id: this.props.customerNameFieldId,
+              value: this.getCustomerName()
+            }, e.canBeContacted ? {
+              id: this.props.canBeContactedFieldId,
+              value: this.props.canBeContactedDefaultValue
+            } : void 0, e.enrollInResearchGroup ? {
+              id: this.props.enrollInResearchFieldId,
+              value: this.props.enrollInResearchDefaultValue
+            } : void 0, ...this.props.additionalFields ].filter( Boolean )
+          }
+        }
+        render() {
+          return s.a.createElement( f, {
+            feedbackTitle: this.props.feedbackTitle,
+            feedbackTitleDetails: this.props.feedbackTitleDetails,
+            showTypeField: this.props.showTypeField,
+            canBeContactedLabel: this.props.canBeContactedLabel,
+            enrolInResearchLabel: this.props.enrolInResearchLabel,
+            summaryPlaceholder: this.props.summaryPlaceholder,
+            onSubmit: this.postFeedback,
+            onClose: this.props.onClose
+          } )
+        }
+      }
+      g.defaultProps = {
+        canBeContactedFieldId: "customfield_10043",
+        canBeContactedDefaultValue: [ {
+          id: "10109"
+        } ],
+        additionalFields: [],
+        customerNameFieldId: "customfield_10045",
+        customerNameDefaultValue: "unknown",
+        descriptionFieldId: "description",
+        descriptionDefaultValue: "",
+        enrollInResearchFieldId: "customfield_10044",
+        enrollInResearchDefaultValue: [ {
+          id: "10110"
+        } ],
+        emailFieldId: "email",
+        emailDefaultValue: "do-not-reply@atlassian.com",
+        summaryFieldId: "summary",
+        summaryDefaultValue: "",
+        summaryTruncateLength: 100,
+        timeoutOnSubmit: 700,
+        typeFieldId: "customfield_10042",
+        typeBugDefaultValue: {
+          id: "10105"
+        },
+        typeCommentDefaultValue: {
+          id: "10106"
+        },
+        typeSuggestionDefaultValue: {
+          id: "10107"
+        },
+        typeQuestionDefaultValue: {
+          id: "10108"
+        },
+        typeEmptyDefaultValue: {
+          id: "empty"
+        },
+        showTypeField: !0,
+        onClose: () => {},
+        onSubmit: () => {}
+      };
+      t.a = g
+    },
+    kgsK: function ( e, t, o ) {
+      "use strict";
+      var r = o( "HbGN" ),
+        s = o( "ERkP" ),
+        a = o.n( s ),
+        n = o( "lSUb" ),
+        i = o( "Cmaw" ),
+        c = o( "ORIB" ),
+        l = o( "lbXe" ),
+        d = o( "EFzz" ),
+        u = o( "bXhU" ),
+        h = o( "Czhu" ),
+        p = o( "l1C2" ),
+        b = o( "BMbf" ),
+        m = o( "ESpw" );
+      var k = {
+        component: function ( {
+          attributesFn: e,
+          children: t,
+          isDisabled: o,
+          onMouseUp: r,
+          onMouseDown: s,
+          onMouseLeave: a,
+          onMouseEnter: n,
+          tokens: i,
+          cssFn: c,
+          testId: l
+        } ) {
+          return Object( p.f )( "label", Object.assign( {}, e( {
+            isDisabled: o
+          } ), {
+            onMouseUp: r,
+            onMouseDown: s,
+            onMouseLeave: a,
+            onMouseEnter: n,
+            css: c( {
+              isDisabled: o,
+              tokens: i
+            } ),
+            "data-testid": l
+          } ), t )
+        },
+        cssFn: ( {
+          isDisabled: e,
+          tokens: t
+        } ) => Object( h.a )( {
+          fontFamily: Object( b.e )(),
+          alignItems: "flex-start",
+          display: "flex",
+          color: e ? t.label.textColor.disabled : t.label.textColor.rest
+        }, e && {
+          cursor: "not-allowed"
+        } ),
+        attributesFn: m.b
+      };
+      var f = {
+          component: function ( {
+            attributesFn: e,
+            tokens: t,
+            children: o,
+            cssFn: r
+          } ) {
+            return Object( p.f )( "span", Object.assign( {}, e(), {
+              css: r( {
+                tokens: t
+              } )
+            } ), o )
+          },
+          cssFn: ( {
+            tokens: e
+          } ) => ( {
+            paddingTop: e.label.spacing.top,
+            paddingRight: e.label.spacing.right,
+            paddingBottom: e.label.spacing.bottom,
+            paddingLeft: e.label.spacing.left
+          } ),
+          attributesFn: m.b
+        },
+        g = ( {
+          children: e
+        } ) => Object( p.f )( "span", {
+          css: {
+            display: "flex;",
+            flexShrink: 0,
+            position: "relative"
+          }
+        }, e ),
+        C = Object( s.forwardRef )( ( e, t ) => {
+          let {
+            createAnalyticsEvent: o,
+            attributesFn: s,
+            testId: a
+          } = e, n = Object( r.a )( e, [ "createAnalyticsEvent", "attributesFn", "testId" ] );
+          return Object( p.f )( "input", Object.assign( {
+            type: "checkbox"
+          }, s( {
+            disabled: n.disabled,
+            checked: n.checked,
+            required: n.required
+          } ), n, {
+            ref: t,
+            css: {
+              left: "50%",
+              margin: 0,
+              opacity: 0,
+              padding: 0,
+              position: "absolute",
+              transform: "translate(-50%, -50%)",
+              top: "50%",
+              pointerEvents: "none"
+            },
+            "data-testid": a
+          } ) )
+        } ),
+        v = o( "ZgvQ" ),
+        y = e => {
+          let {
+            tokens: t
+          } = e, o = Object( r.a )( e, [ "tokens" ] );
+          return Object( p.f )( "span", Object.assign( {
+            css: {
+              color: t.requiredIndicator.textColor.rest,
+              paddingLeft: Object( v.multiply )( b.h, .25 ) + "px;"
+            }
+          }, o ) )
+        },
+        x = o( "oXDD" ),
+        F = o( "GNK+" );
+      const O = {
+        Label: k,
+        LabelText: f,
+        HiddenCheckbox: {
+          attributesFn: () => ( {} )
+        }
+      };
+      class j extends s.Component {
+        constructor( e ) {
+          super( e ), this.state = {
+            isActive: !1,
+            isFocused: !1,
+            isHovered: !1,
+            isMouseDown: !1,
+            isChecked: void 0 !== this.props.isChecked ? this.props.isChecked : this.props.defaultChecked
+          }, this.checkbox = void 0, this.actionKeys = [ " " ], this.onChange = e => this.props.isDisabled ? null : ( e.persist(), void 0 !== e.target.checked && this.setState( {
+            isChecked: e.target.checked
+          } ), this.props.onChange && this.props.onChange( e ), !0 ), this.blur = () => {
+            this.checkbox && this.checkbox.blur && this.checkbox.blur()
+          }, this.focus = () => {
+            this.checkbox && this.checkbox.focus && this.checkbox.focus()
+          }, this.onBlur = () => this.setState( {
+            isActive: this.state.isMouseDown && this.state.isActive,
+            isFocused: !1
+          } ), this.onFocus = () => this.setState( {
+            isFocused: !0
+          } ), this.onMouseLeave = () => this.setState( {
+            isActive: !1,
+            isHovered: !1
+          } ), this.onMouseEnter = () => this.setState( {
+            isHovered: !0
+          } ), this.onMouseUp = () => this.setState( {
+            isActive: !1,
+            isMouseDown: !1
+          } ), this.onMouseDown = () => this.setState( {
+            isActive: !0,
+            isMouseDown: !0
+          } ), this.onKeyDown = e => {
+            e.key in this.actionKeys && this.setState( {
+              isActive: !0
+            } )
+          }, this.onKeyUp = e => {
+            e.key in this.actionKeys && this.setState( {
+              isActive: !1
+            } )
+          }, this.createExtender = Object( n.default )( m.a )
+        }
+        componentDidMount() {
+          const {
+            isIndeterminate: e
+          } = this.props;
+          this.checkbox && ( this.checkbox.indeterminate = !!e, this.props.inputRef && this.props.inputRef( this.checkbox ) )
+        }
+        componentDidUpdate( e ) {
+          const {
+            isIndeterminate: t
+          } = this.props;
+          e.isIndeterminate !== t && this.checkbox && ( this.checkbox.indeterminate = !!t )
+        }
+        render() {
+          const {
+            isDisabled: e,
+            isInvalid: t,
+            isIndeterminate: o,
+            label: s,
+            name: n,
+            overrides: i,
+            value: c,
+            isRequired: l,
+            isChecked: h,
+            theme: p,
+            testId: b
+          } = this.props, k = void 0 === this.props.isChecked ? this.state.isChecked : h, {
+            isFocused: f,
+            isActive: v,
+            isHovered: F
+          } = this.state, j = Object( m.a )( O, i ), D = j( "Label" ), {
+            component: I
+          } = D, R = Object( r.a )( D, [ "component" ] ), w = j( "LabelText" ), {
+            component: E
+          } = w, N = Object( r.a )( w, [ "component" ] ), {
+            attributesFn: S
+          } = j( "HiddenCheckbox" );
+          return a.a.createElement( x.b.Provider, {
+            value: p
+          }, a.a.createElement( d.a.Consumer, null, ( {
+            mode: r
+          } ) => a.a.createElement( x.b.Consumer, {
+            mode: r,
+            tokens: x.a
+          }, r => a.a.createElement( I, Object.assign( {}, R, {
+            isDisabled: e,
+            onMouseDown: this.onMouseDown,
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave,
+            onMouseUp: this.onMouseUp,
+            tokens: r,
+            testId: b && b + "--checkbox-label"
+          } ), a.a.createElement( g, null, a.a.createElement( C, {
+            disabled: e,
+            checked: k,
+            onChange: this.onChange,
+            onBlur: this.onBlur,
+            onFocus: this.onFocus,
+            onKeyUp: this.onKeyUp,
+            onKeyDown: this.onKeyDown,
+            value: c,
+            name: n,
+            ref: e => this.checkbox = e,
+            required: l,
+            attributesFn: S,
+            testId: b && b + "--hidden-checkbox"
+          } ), a.a.createElement( u.a, {
+            theme: p,
+            overrides: {
+              IconWrapper: i && i.IconWrapper,
+              Icon: i && i.Icon,
+              IconIndeterminate: i && i.IconIndeterminate
+            },
+            isChecked: k,
+            isDisabled: e,
+            isFocused: f,
+            isActive: v,
+            isHovered: F,
+            isInvalid: t,
+            isIndeterminate: o,
+            primaryColor: "inherit",
+            secondaryColor: "inherit",
+            label: ""
+          } ) ), a.a.createElement( E, Object.assign( {}, N, {
+            tokens: r
+          } ), s, l && a.a.createElement( y, {
+            tokens: r,
+            "aria-hidden": "true"
+          }, "*" ) ) ) ) ) )
+        }
+      }
+      j.defaultProps = {
+        isDisabled: !1,
+        isInvalid: !1,
+        defaultChecked: !1,
+        isIndeterminate: !1,
+        theme: ( e, t ) => e( t )
+      };
+      const D = Object( i.a )( "atlaskit" );
+      t.a = Object( c.a )( {
+        componentName: "checkbox",
+        packageName: F.a,
+        packageVersion: F.b
+      } )( Object( l.a )( {
+        onChange: D( {
+          action: "changed",
+          actionSubject: "checkbox",
+          attributes: {
+            componentName: "checkbox",
+            packageName: F.a,
+            packageVersion: F.b
+          }
+        } )
+      } )( j ) )
+    },
+    m0CL: function ( e ) {
+      e.exports = JSON.parse( '{"a":"@atlaskit/textarea","b":"4.0.0"}' )
+    },
+    oXDD: function ( e, t, o ) {
+      "use strict";
+      o.d( t, "a", ( function () {
+        return a
+      } ) );
+      var r = o( "3IV/" ),
+        s = o( "8pvK" );
+      const a = {
+        label: {
+          textColor: {
+            rest: {
+              light: r.N900,
+              dark: r.DN600
+            },
+            disabled: {
+              light: r.N80,
+              dark: r.N80
+            }
+          },
+          spacing: {
+            top: "2px",
+            right: "4px",
+            bottom: "2px",
+            left: "4px"
+          }
+        },
+        icon: {
+          borderWidth: "2px",
+          borderColor: {
+            rest: {
+              light: r.N40,
+              dark: r.DN80
+            },
+            disabled: {
+              light: "",
+              dark: ""
+            },
+            checked: {
+              light: "currentColor",
+              dark: "currentColor"
+            },
+            active: {
+              light: "currentColor",
+              dark: "currentColor"
+            },
+            invalid: {
+              light: r.R300,
+              dark: r.R300
+            },
+            invalidAndChecked: {
+              light: r.R300,
+              dark: r.R300
+            },
+            focused: {
+              light: r.B100,
+              dark: r.B75
+            },
+            hovered: {
+              light: r.N40,
+              dark: r.DN200
+            },
+            hoveredAndChecked: {
+              light: "currentColor",
+              dark: "currentColor"
+            }
+          },
+          boxColor: {
+            rest: {
+              light: r.N10,
+              dark: r.DN10
+            },
+            disabled: {
+              light: r.N20,
+              dark: r.DN10
+            },
+            active: {
+              light: r.B50,
+              dark: r.B200
+            },
+            hoveredAndChecked: {
+              light: r.B300,
+              dark: r.B75
+            },
+            hovered: {
+              light: r.N30,
+              dark: r.DN30
+            },
+            checked: {
+              light: r.B400,
+              dark: r.B400
+            }
+          },
+          tickColor: {
+            rest: {
+              light: "transparent",
+              dark: "transparent"
+            },
+            disabledAndChecked: {
+              light: r.N70,
+              dark: r.DN90
+            },
+            activeAndChecked: {
+              light: r.B400,
+              dark: r.DN10
+            },
+            checked: {
+              light: r.N10,
+              dark: r.DN10
+            }
+          },
+          size: "medium"
+        },
+        requiredIndicator: {
+          textColor: {
+            rest: r.R500
+          }
+        }
+      };
+      t.b = Object( s.a )( ( {
+        tokens: e,
+        mode: t
+      } ) => function ( e, t ) {
+        return function e( o ) {
+          return Object.keys( o ).reduce( ( r, s ) => {
+            const a = o[ s ];
+            return "object" != typeof a || null == typeof a || Array.isArray( a ) ? r[ s ] = a : Object.keys( a ).includes( t ) ? r[ s ] = a[ t ] : r[ s ] = e( o[ s ] ), r
+          }, {} )
+        }( e )
+      }( e, t ) )
+    },
+    re2U: function ( e, t, o ) {
+      var r = o( "JcJ6" ),
+        s = o( "rXFn" ),
+        a = o( "GZgP" ),
+        n = o( "tQYX" ),
+        i = o( "UBkg" ),
+        c = o( "GVul" ),
+        l = o( "f2p0" ),
+        d = o( "m2YG" ),
+        u = o( "dw5g" ),
+        h = /\w*$/;
+      e.exports = function ( e, t ) {
+        var o = 30,
+          p = "...";
+        if ( n( t ) ) {
+          var b = "separator" in t ? t.separator : b;
+          o = "length" in t ? d( t.length ) : o, p = "omission" in t ? r( t.omission ) : p
+        }
+        var m = ( e = u( e ) ).length;
+        if ( a( e ) ) {
+          var k = l( e );
+          m = k.length
+        }
+        if ( o >= m ) return e;
+        var f = o - c( p );
+        if ( f < 1 ) return p;
+        var g = k ? s( k, 0, f ).join( "" ) : e.slice( 0, f );
+        if ( void 0 === b ) return g + p;
+        if ( k && ( f += g.length - f ), i( b ) ) {
+          if ( e.slice( f ).search( b ) ) {
+            var C, v = g;
+            for ( b.global || ( b = RegExp( b.source, u( h.exec( b ) ) + "g" ) ), b.lastIndex = 0; C = b.exec( v ); ) var y = C.index;
+            g = g.slice( 0, void 0 === y ? f : y )
+          }
+        } else if ( e.indexOf( r( b ), f ) != f ) {
+          var x = g.lastIndexOf( b );
+          x > -1 && ( g = g.slice( 0, x ) )
+        }
+        return g + p
+      }
+    },
+    uq3c: function ( e, t, o ) {
+      "use strict";
+      var r = o( "Czhu" ),
+        s = o( "HbGN" ),
+        a = o( "ERkP" ),
+        n = o( "l1C2" ),
+        i = o( "bbmB" ),
+        c = o( "EFzz" ),
+        l = o( "BMbf" );
+      const d = Object( l.h )(),
+        u = 2.5 * d,
+        h = 2 * d,
+        p = d,
+        b = Object( l.f )(),
+        m = Object( l.e )(),
+        k = Object( l.d )(),
+        f = ( e, t ) => u * e + 12 + 2 * t,
+        g = ( e, t ) => h * e + 4 + 2 * t,
+        C = {
+          flex: "1 1 100%",
+          position: "relative",
+          borderRadius: 3,
+          boxSizing: "border-box",
+          overflow: "auto",
+          transition: "background-color 0.2s ease-in-out",
+          wordWrap: "break-word",
+          fontSize: b,
+          borderWidth: 2,
+          maxWidth: "100%",
+          display: "block",
+          margin: 0,
+          minWidth: 0,
+          outline: "none",
+          width: "100%",
+          "&:disabled": Object( r.a )( {
+            cursor: "not-allowed"
+          }, {
+            WebkitTextFillColor: "unset",
+            WebkitOpacity: "1"
+          } ),
+          "&::-ms-clear": {
+            display: "none"
+          },
+          "&:invalid": {
+            boxShadow: "none"
+          }
+        },
+        v = ( {
+          minimumRows: e,
+          resize: t,
+          appearance: o,
+          isMonospaced: s,
+          maxHeight: a
+        } ) => Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( {}, C ), ( ( e = 1 ) => {
+          const t = p - 2;
+          return {
+            "&[data-compact]": {
+              padding: `2px ${t}px`,
+              lineHeight: h / b,
+              minHeight: g( e, 2 )
+            },
+            "&:not([data-compact])": {
+              padding: `6px ${t}px`,
+              lineHeight: u / b,
+              minHeight: f( e, 2 )
+            }
+          }
+        } )( e ) ), ( e => "horizontal" === e || "vertical" === e ? {
+          resize: e
+        } : "auto" === e ? {
+          resize: "both"
+        } : {
+          resize: "none"
+        } )( t ) ), ( e => ( {
+          borderStyle: "none" === e ? "none" : "solid"
+        } ) )( o ) ), ( e => ( {
+          fontFamily: e ? k : m
+        } ) )( s ) ), {}, {
+          maxHeight: a
+        } ),
+        y = e => Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( {}, ( e => ( {
+          "&:focus": {
+            backgroundColor: e.backgroundColorFocus,
+            borderColor: e.borderColorFocus
+          },
+          "&:not(:focus)": {
+            backgroundColor: e.backgroundColor,
+            borderColor: e.borderColor
+          },
+          "&:disabled:focus": {
+            backgroundColor: e.disabledRules.backgroundColorFocus,
+            borderColor: e.disabledRules.borderColorFocus
+          },
+          "&:disabled:not(:focus)": {
+            backgroundColor: e.disabledRules.backgroundColor,
+            borderColor: e.disabledRules.borderColor
+          },
+          "&[data-invalid]:focus": {
+            backgroundColor: e.invalidRules.backgroundColorFocus,
+            borderColor: e.invalidRules.borderColorFocus
+          },
+          "&[data-invalid]:not(:focus)": {
+            backgroundColor: e.invalidRules.backgroundColor,
+            borderColor: e.invalidRules.borderColor
+          }
+        } ) )( e ) ), ( e => ( {
+          "&:hover:not(:read-only):not(:focus)": {
+            backgroundColor: e.backgroundColorHover,
+            "&:disabled": {
+              backgroundColor: e.disabledRules.backgroundColorHover
+            },
+            "&[data-invalid]": {
+              backgroundColor: e.invalidRules.backgroundColorHover
+            }
+          }
+        } ) )( e ) ), {
+          "&::placeholder": {
+            color: e.placeholderTextColor
+          }
+        } ), {}, {
+          color: e.textColor,
+          "&:disabled": {
+            color: e.disabledRules.textColor
+          }
+        } );
+      var x = o( "HJ22" ),
+        F = o( "m0CL" );
+      const O = {
+          componentName: "textArea",
+          packageName: F.a,
+          packageVersion: F.b
+        },
+        j = e => {
+          const t = e.scrollHeight + 4;
+          e.style.height = t + "px"
+        },
+        D = Object( a.forwardRef )( ( e, t ) => {
+          const o = Object( a.useRef )( null ),
+            {
+              resize: c = "smart",
+              appearance: l = "standard",
+              isCompact: d = !1,
+              isRequired: u = !1,
+              isReadOnly: h = !1,
+              isDisabled: p = !1,
+              isInvalid: b = !1,
+              isMonospaced: m = !1,
+              minimumRows: k = 1,
+              theme: f,
+              testId: g,
+              maxHeight: C = "50vh",
+              onBlur: x,
+              onFocus: F,
+              onChange: D,
+              tokens: I
+            } = e,
+            R = Object( s.a )( e, [ "resize", "appearance", "isCompact", "isRequired", "isReadOnly", "isDisabled", "isInvalid", "isMonospaced", "minimumRows", "theme", "testId", "maxHeight", "onBlur", "onFocus", "onChange", "tokens" ] );
+          Object( a.useEffect )( () => {
+            const e = o.current;
+            "smart" === c && e && j( e )
+          }, [ c ] );
+          const w = Object( i.a )( Object( r.a )( {
+              fn: e => {
+                x && x( e )
+              },
+              action: "blurred"
+            }, O ) ),
+            E = Object( i.a )( Object( r.a )( {
+              fn: e => {
+                F && F( e )
+              },
+              action: "focused"
+            }, O ) ),
+            N = Object( a.useCallback )( e => {
+              const t = o.current;
+              "smart" === c && t && ( t.style.height = "auto", j( t ) ), D && D( e )
+            }, [ D, c ] ),
+            S = {
+              "data-invalid": b || void 0,
+              "data-compact": d || void 0,
+              "data-testid": g || void 0
+            },
+            B = [ Object( a.useMemo )( () => v( {
+              minimumRows: k,
+              resize: c,
+              appearance: l,
+              isMonospaced: m,
+              maxHeight: C
+            } ), [ k, c, l, m, C ] ), y( I ) ];
+          return Object( n.f )( "textarea", Object.assign( {}, S, {
+            disabled: p,
+            readOnly: h,
+            required: u,
+            ref: e => {
+              o.current = e, t && "object" == typeof t && ( t.current = e ), t && "function" == typeof t && t( e )
+            },
+            onChange: N,
+            onBlur: w,
+            onFocus: E,
+            css: B
+          }, R ) )
+        } ),
+        I = Object( a.memo )( Object( a.forwardRef )( ( function ( e, t ) {
+          return Object( n.f )( c.a.Consumer, null, ( {
+            mode: o
+          } ) => Object( n.f )( x.a.Provider, {
+            value: e.theme
+          }, Object( n.f )( x.a.Consumer, {
+            appearance: e.appearance || "standard",
+            mode: o
+          }, o => Object( n.f )( D, Object.assign( {
+            ref: t
+          }, e, {
+            tokens: o
+          } ) ) ) ) )
+        } ) ) );
+      I.displayName = "TextArea";
+      t.a = I
+    }
+  }
+] );
+//# sourceMappingURL=88.AkMhZA1qbr.js.map

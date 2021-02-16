@@ -1,0 +1,270 @@
+{
+  "comment": "Modified from the original ASP bundle. Originally modified by Thomas Aylott subtleGradient.com",
+  "fileTypes": [
+    "vbs",
+    "vba",
+    "bas",
+    "vbe",
+    "wsf",
+    "wsc",
+    "acm",
+    "acr",
+    "acf"
+  ],
+  "foldingStartMarker": "(<(?i:(head|table|div|style|script|ul|ol|form|dl))\\b.*?>|\\{|^\\s*<?%?\\s*'?\\s*(?i:(sub|private\\s+Sub|public\\s+Sub|function|if|while|For))\\s*.*$)",
+  "foldingStopMarker": "(</(?i:(head|table|div|style|script|ul|ol|form|dl))>?|\\}|^\\s*<?%?\\s*\\s*'?\\s*(?i:(end|Next))\\s*.*$)",
+  "keyEquivalent": "^~A",
+  "name": "VBScript",
+  "patterns": [
+    {
+      "include": "#round-brackets"
+    },
+    {
+      "name": "meta.ending-space",
+      "match": "\\n"
+    },
+    {
+      "name": "meta.leading-space",
+      "begin": "^(?=\\t)",
+      "end": "(?=[^\\t])",
+      "patterns": [
+        {
+          "match": "(\\t)(\\t)?",
+          "captures": {
+            "1": {
+              "name": "meta.odd-tab.tabs"
+            },
+            "2": {
+              "name": "meta.even-tab.tabs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "meta.leading-space",
+      "begin": "^(?= )",
+      "end": "(?=[^ ])",
+      "patterns": [
+        {
+          "match": "(  )(  )?",
+          "captures": {
+            "1": {
+              "name": "meta.odd-tab.spaces"
+            },
+            "2": {
+              "name": "meta.even-tab.spaces"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "meta.function.vbs",
+      "match": "[ \\t]*((?i:public|private)\\s*(?i:default)?)\\s*((?i:function|sub))\\s*([a-zA-Z_]\\w*)\\s*((\\()([^)]*)(\\)))?.*\\n",
+
+      "captures": {
+        "1": {
+          "name": "storage.modifier.function.vbs"
+        },
+        "2": {
+          "name": "storage.type.function.vbs"
+        },
+        "3": {
+          "name": "entity.name.function.vbs"
+        },
+        "5": {
+          "name": "punctuation.definition.parameters.vbs"
+        },
+        "6": {
+          "name": "variable.parameter.function.vbs"
+        },
+        "7": {
+          "name": "punctuation.definition.parameters.vbs"
+        }
+      }
+    },
+    {
+      "name": "meta.function.vbs",
+      "match": "\\s*((?i:function))\\s*([a-zA-Z_]\\w*)\\s*(\\()([^)]*)(\\)).*\\n",
+      "captures": {
+        "1": {
+          "name": "storage.type.function.vbs"
+        },
+        "2": {
+          "name": "entity.name.function.vbs"
+        },
+        "3": {
+          "name": "punctuation.definition.parameters.vbs"
+        },
+        "4": {
+          "name": "variable.parameter.function.vbs"
+        },
+        "5": {
+          "name": "punctuation.definition.parameters.vbs"
+        }
+      }
+    },
+    {
+      "name": "meta.type.vbs",
+      "match": "^\\s*((?i:class))\\s*([a-zA-Z_]\\w*)\\n",
+      "captures": {
+        "1": {
+          "name": "storage.type.vbs"
+        },
+        "2": {
+          "name": "entity.name.type.vbs"
+        }
+      }
+    },
+    {
+      "name": "comment.line.apostrophe.vbs",
+      "begin": "('|(?i:Rem)\\s{1,})",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.vbs"
+        }
+      },
+      "end": "(?=(\\n|%>))"
+    },
+    {
+      "name": "keyword.control.vbs",
+      "match": "(?i:\\b(If|Then|Else|ElseIf|Else If|End If|While|Wend|For|To|Each|In|Step|Case|Select|End Select|Return|Continue|Do|Until|Loop|Next|With|End With|Exit Do|Exit For|Exit Function|Exit Property|Exit Sub|IIf)\\b)"
+    },
+    {
+      "name": "keyword.operator.vbs",
+      "match": "(?i:\\b(Mod|And|Not|Is|Or|Xor|as)\\b)"
+    },
+    {
+      "name": "variable.other.dim.vbs",
+      "match": "(?i:(dim)\\s*(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)\\s*(,?)))",
+      "captures": {
+        "1": {
+          "name": "storage.type.vbs"
+        },
+        "2": {
+          "name": "variable.other.bfeac.vbs"
+        },
+        "3": {
+          "name": "meta.separator.comma.vbs"
+        }
+      }
+    },
+    {
+      "name": "storage.type.vbs",
+      "match": "(?i:\\s*\\b(Call|Class|Const|Dim|Redim|Function|Sub|Private Sub|Public Sub|End sub|End Function|Set|Let|Get|New|Randomize|Option Explicit|On Error Resume Next|On Error GoTo|ByRef|ByVal|Public Function|Private Function|Preserve)\\b\\s*)"
+    },
+    {
+      "name": "storage.modifier.vbs",
+      "match": "(?i:\\b(Private|Public|Default)\\b)"
+    },
+    {
+      "name": "constant.language.vbs",
+      "match": "(?i:\\s*\\b(Empty|False|Nothing|Null|True)\\b)"
+    },
+    {
+      "name": "string.quoted.double.vbs",
+      "begin": "\"",
+      "end": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.vbs"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.vbs"
+        }
+      },
+      "patterns": [
+        {
+          "name": "constant.character.escape.apostrophe.vbs",
+          "match": "\"\""
+        }
+      ]
+    },
+    {
+      "name": "support.class.vbs",
+      "match": "(?i:\\b(Application|ObjectContext|Request|Response|Server|Session)\\b)"
+    },
+    {
+      "name": "support.class.collection.vbs",
+      "match": "(?i:\\b(Contents|StaticObjects|ClientCertificate|Cookies|Form|QueryString|ServerVariables)\\b)"
+    },
+    {
+      "name": "support.constant.vbs",
+      "match": "(?i:\\b(TotalBytes|Buffer|CacheControl|Charset|ContentType|Expires|ExpiresAbsolute|IsClientConnected|PICS|Status|ScriptTimeout|CodePage|LCID|SessionID|Timeout)\\b)"
+    },
+    {
+      "name": "support.function.vbs",
+      "match": "(?i:\\b(Lock|Unlock|SetAbort|SetComplete|BinaryRead|AddHeader|AppendToLog|BinaryWrite|Clear|End|Flush|Redirect|Write|CreateObject|HTMLEncode|MapPath|URLEncode|Abandon|Convert|Regex)\\b)"
+    },
+    {
+      "name": "support.function.event.vbs",
+      "match": "(?i:\\b(Application_OnEnd|Application_OnStart|OnTransactionAbort|OnTransactionCommit|Session_OnEnd|Session_OnStart)\\b)"
+    },
+    {
+      "name": "support.type.vb.vbs",
+      "match": "(?i:(?<=as )(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b))"
+    },
+    {
+      "name": "support.function.vb.vbs",
+      "match": "(?i:\\b(Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng|Conversions|Cos|CreateObject|CSng|CStr|Date|DateAdd|DateDiff|DatePart|DateSerial|DateValue|Day|Derived|Math|Escape|Eval|Exists|Exp|Filter|FormatCurrency|FormatDateTime|FormatNumber|FormatPercent|GetLocale|GetObject|GetRef|Hex|Hour|InputBox|InStr|InStrRev|Int|Fix|IsArray|IsDate|IsEmpty|IsNull|IsNumeric|IsObject|Item|Items|Join|Keys|LBound|LCase|Left|Len|LoadPicture|Log|LTrim|RTrim|Trim|Maths|Mid|Minute|Month|MonthName|MsgBox|Now|Oct|Remove|RemoveAll|Replace|RGB|Right|Rnd|Round|ScriptEngine|ScriptEngineBuildVersion|ScriptEngineMajorVersion|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year)\\b)"
+    },
+    {
+      "name": "constant.numeric.vbs",
+      "match": "-?\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\\b"
+    },
+    {
+      "name": "support.type.vb.vbs",
+      "match": "(?i:\\s*\\b(vbtrue|vbfalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|int32|vbtab|vbverticaltab|vbbinarycompare|vbtextcompare|vbsunday|vbmonday|vbtuesday|vbwednesday|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant|vbDataObject|vbDecimal|vbByte|vbArray)\\b\\s*)"
+    },
+    {
+      "name": "support.function.vbs",
+      "match": "(?i:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.vbs"
+        }
+      }
+    },
+    {
+      "name": "variable.other.vbs",
+      "match": "(\\$)[a-zA-Z_xf-xff][a-zA-Z0-9_xf-xff]*?\\b\\s*",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.variable.vbs"
+        }
+      }
+    },
+    {
+      "name": "variable.other.vbs",
+      "match": "(?i:((?<=(\\+|=|-|\\&|\\\\|/|<|>|\\(|,))\\s*\\b([a-zA-Z_xf-xff][a-zA-Z0-9_xf-xff]*?)\\b(?!(\\(|\\.))|\\b([a-zA-Z_xf-xff][a-zA-Z0-9_xf-xff]*?)\\b(?=\\s*(\\+|=|-|\\&|\\\\|/|<|>|\\(|\\)))))"
+    }
+  ],
+  "repository": {
+    "round-brackets": {
+      "name": "meta.round-brackets",
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.round-brackets.begin.vbs"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.round-brackets.end.vbs"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.vbs"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.vbs"
+}
+
+

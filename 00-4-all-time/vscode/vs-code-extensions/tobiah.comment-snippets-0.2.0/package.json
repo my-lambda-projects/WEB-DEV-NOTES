@@ -1,0 +1,62 @@
+{
+	"name": "comment-snippets",
+	"displayName": "Comment Snippets",
+	"description": "Snippets for standard comment formats",
+	"version": "0.2.0",
+	"publisher": "Tobiah",
+	"engines": {
+		"vscode": "^0.10.8"
+	},
+	"homepage": "https://github.com/TobiahZ/vscode-comment-snippets",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TobiahZ/vscode-comment-snippets.git"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"bugs": "https://github.com/TobiahZ/vscode-comment-snippets/issues",
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"keywords": [
+		"snippets",
+		"comments",
+		"comment",
+		"block comments",
+		"fancy comments"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "objective-c",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "c",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "cpp",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "java",
+				"path": "./snippets/snippets.json"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^1.6.2",
+		"vscode": "^0.11.x"
+	},
+	"icon": "icon.png",
+	"__metadata": {
+		"id": "313d9a89-cc51-4fae-a0be-448a61c6f7fb",
+		"publisherId": "78340c2c-d1af-49be-be2a-52d70f219e0a",
+		"publisherDisplayName": "Tobiah Zarlez"
+	}
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./filereader.js"></script>
+</head>
+
+<body>
+  <input type='file' accept=".gif,.jpg,.jpeg,.png,.doc,.docx,.js,.html,.css,.xml,.java,.cpp,.mp4,.pdf,.sql,.md,.jsx,.py,.sh,.bat,.txt,.json,.jsonc,.rb,.php,.svg,.c,.h,.ts" onchange='openFile(event)'><br>
+  <img id='output'>
+  <script>
+    var openFile = function ( event ) {
+      var input = event.target;
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataURL = reader.result;
+        var output = document.getElementById( 'output' );
+        output.src = dataURL;
+      };
+      reader.readAsDataURL( input.files[ 0 ] );
+    };
+  </script>
+
+</body>
+
+</html>

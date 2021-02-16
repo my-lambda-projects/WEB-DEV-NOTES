@@ -1,0 +1,291 @@
+{
+	"name": "snippets",
+	"displayName": "Snippets",
+	"description": "Manage your code snippets without quitting your editor.",
+	"version": "1.0.0",
+	"preview": true,
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"publisher": "tahabasri",
+	"author": {
+		"name": "Taha BASRI"
+	},
+	"icon": "images/logo/logo.png",
+	"homepage": "https://github.com/tahabasri/snippets/blob/main/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tahabasri/snippets.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tahabasri/snippets/issues"
+	},
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"categories": [
+		"Snippets",
+		"Other"
+	],
+	"keywords": [
+		"Snippets",
+		"Snippet",
+		"Collections",
+		"Collection",
+		"Bookmarks",
+		"Bookmark"
+	],
+	"activationEvents": [
+		"onStartupFinished",
+		"onView:snippetsExplorer"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"viewsWelcome": [
+			{
+				"view": "snippetsExplorer",
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:snippetsCmd.addSnippet)\n[Add Snippet Folder](command:snippetsCmd.addSnippetFolder)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
+			}
+		],
+		"commands": [
+			{
+				"command": "snippetsCmd.refreshEntry",
+				"title": "Refresh Snippets",
+				"category": "Snippets",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetsCmd.openSnippet",
+				"title": "Open Snippet",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.openSnippetInTerminal",
+				"title": "Open Snippet in Terminal",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.addSnippet",
+				"title": "New Snippet",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.addSnippetFromClipboard",
+				"title": "New Snippet from Clipboard",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.addSnippetFolder",
+				"title": "Add Folder",
+				"icon": "$(new-folder)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.editSnippet",
+				"title": "Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.deleteSnippet",
+				"title": "Delete Snippet",
+				"icon": "$(remove)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.moveSnippetUp",
+				"title": "Move Snippet Up",
+				"icon": "$(marker-navigation-previous)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.moveSnippetDown",
+				"title": "Move Snippet Down",
+				"icon": "$(marker-navigation-next)",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.editSnippetFolder",
+				"title": "Edit Folder",
+				"category": "Snippets"
+			},
+			{
+				"command": "snippetsCmd.deleteSnippetFolder",
+				"title": "Delete Folder",
+				"icon": "$(remove)",
+				"category": "Snippets"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "snippetsCmd.refreshEntry",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.editSnippet",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippet",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetUp",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetDown",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.editSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippetFolder",
+					"when": "false"
+				}
+			],
+			"view/title": [
+				{
+					"command": "snippetsCmd.addSnippet",
+					"when": "view == snippetsExplorer",
+					"group": "navigation@1"
+				},
+				{
+					"command": "snippetsCmd.addSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "navigation@2"
+				},
+				{
+					"command": "snippetsCmd.refreshEntry",
+					"when": "view == snippetsExplorer",
+					"group": "navigation@3"
+				},
+				{
+					"command": "snippetsCmd.addSnippetFromClipboard",
+					"when": "view == snippetsExplorer",
+					"group": "other"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "snippetsCmd.openSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@1"
+				},
+				{
+					"command": "snippetsCmd.openSnippetInTerminal",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@2"
+				},
+				{
+					"command": "snippetsCmd.addSnippet",
+					"when": "view == snippetsExplorer",
+					"group": "2_snippetManagement@1"
+				},
+				{
+					"command": "snippetsCmd.addSnippetFromClipboard",
+					"when": "view == snippetsExplorer",
+					"group": "2_snippetManagement@2"
+				},
+				{
+					"command": "snippetsCmd.editSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "2_snippetManagement@3"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "2_snippetManagement@4"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetUp",
+					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(up|up&down)$/",
+					"group": "inline"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetDown",
+					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(down|up&down)$/",
+					"group": "inline"
+				},
+				{
+					"command": "snippetsCmd.addSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "4_folderManagement@1"
+				},
+				{
+					"command": "snippetsCmd.editSnippetFolder",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
+					"group": "4_folderManagement@2"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippetFolder",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
+					"group": "4_folderManagement@3"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "snippetsCmd.addSnippet",
+					"when": "editorTextFocus",
+					"group": "snippets@1"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "snippets-explorer",
+					"title": "Snippets",
+					"icon": "resources/icons/logo_w.svg"
+				}
+			]
+		},
+		"views": {
+			"snippets-explorer": [
+				{
+					"id": "snippetsExplorer",
+					"name": "Snippets Explorer"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+		"test-compile": "tsc -p ./",
+		"test-watch": "tsc -watch -p ./",
+		"pretest": "npm run test-compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.51.0",
+		"@typescript-eslint/eslint-plugin": "^4.1.1",
+		"@typescript-eslint/parser": "^4.1.1",
+		"eslint": "^7.9.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"ts-loader": "^8.0.11",
+		"typescript": "^4.0.2",
+		"vscode-test": "^1.4.0",
+		"webpack": "^5.8.0",
+		"webpack-cli": "^4.2.0"
+	},
+	"dependencies": {
+		"@types/mustache": "^4.0.1",
+		"mustache": "^4.0.1"
+	},
+	"__metadata": {
+		"id": "b709532e-98e7-4385-ae4d-693d38df013a",
+		"publisherId": "7d066c29-d21c-41ce-8d04-04cb7a5fb949",
+		"publisherDisplayName": "Taha BASRI"
+	}
+}

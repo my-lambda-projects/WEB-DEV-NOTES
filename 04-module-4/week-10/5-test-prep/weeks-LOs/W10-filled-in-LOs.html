@@ -1,0 +1,182 @@
+<h1 id="learning-objectives">Learning Objectives</h1>
+<h2 id="rdbms-and-database-entity-objectives">RDBMS And Database Entity Objectives</h2>
+<ul>
+<li>Define what a <strong>relational database management system (RDBMS)</strong> is
+<ul>
+<li>the software application that manages databases for us.</li>
+</ul></li>
+<li>Describe what <strong>relational database</strong> is
+<ul>
+<li>a type of database that stores and provides access to data points that are related to one another</li>
+</ul></li>
+<li>Define what a <strong>database</strong> is
+<ul>
+<li>a collection of structured data</li>
+</ul></li>
+<li>Define what a database <strong>table</strong> is
+<ul>
+<li>defines how data is stored and contains that data</li>
+<li>Naming convention: plural, snake_case, lowercased</li>
+</ul></li>
+<li>Describe the purpose of a <strong>primary key</strong>
+<ul>
+<li>uniquely identify a row in the table</li>
+</ul></li>
+<li>Describe the purpose of a <strong>foreign key</strong>
+<ul>
+<li>a key used to link two tables together</li>
+<li>a field (or collection of fields) in one table that refers to the PRIMARY KEY in another table</li>
+</ul></li>
+<li>Connect to a PostgresQL database with the command line tool <code>psql</code>
+<ul>
+<li><code>psql &lt;database_name&gt;</code>, if no database name is specified, it will connect to the database of the current user in your bash/terminal</li>
+</ul></li>
+<li>Create a user for the relational database management system
+<ul>
+<li><p>Normal User</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="fu">USER</span> username <span class="kw">WITH</span> <span class="kw">PASSWORD</span> <span class="st">&#39;&lt;password&gt;&#39;</span>;</a></code></pre></div></li>
+<li><p>Create DB Access User</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">CREATE</span> <span class="fu">USER</span> username <span class="kw">WITH</span> <span class="kw">PASSWORD</span> <span class="st">&#39;&lt;password&gt;&#39;</span> CREATEDB;</a></code></pre></div></li>
+<li><p>Superuser</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="fu">USER</span> username <span class="kw">WITH</span> <span class="kw">PASSWORD</span> <span class="st">&#39;&lt;password&gt;&#39;</span> SUPERUSER;</a></code></pre></div></li>
+</ul></li>
+<li>Create a database in the database management system
+<ul>
+<li><div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> database_name <span class="kw">WITH</span> OWNER username;</a></code></pre></div></li>
+</ul></li>
+<li>Configure a database so that only the owner (and superusers) can connect to it
+<ul>
+<li><div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">REVOKE</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> database_name <span class="kw">ON</span> <span class="kw">PUBLIC</span>;</a></code></pre></div></li>
+</ul></li>
+<li>View a list of databases in an installation of PostgreSQL
+<ul>
+<li><code>\l</code> in psql command line</li>
+<li><code>psql -c "/l"</code></li>
+</ul></li>
+<li>Create tables in a database
+<ul>
+<li><div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb6-2" title="2">  name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb6-3" title="3">  age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb6-4" title="4">  breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>),</a>
+<a class="sourceLine" id="cb6-5" title="5">  weight_lbs <span class="dt">INTEGER</span>,</a>
+<a class="sourceLine" id="cb6-6" title="6">  microchipped <span class="dt">BOOLEAN</span></a>
+<a class="sourceLine" id="cb6-7" title="7">);</a></code></pre></div></li>
+</ul></li>
+<li>View a list of tables in a database
+<ul>
+<li><code>\dt</code> in <code>psql</code> command line</li>
+</ul></li>
+<li>Identify and describe the common data types used in PostgreSQL
+<ul>
+<li>https://www.postgresql.org/docs/current/datatype.html</li>
+</ul></li>
+<li>Describe the purpose of the <code>UNIQUE</code> and <code>NOT NULL</code> constraints, and create columns in database tables that have them
+<ul>
+<li><code>UNIQUE</code> constraint on a column for a specific table doesn’t allow repeated values in that column.</li>
+<li><code>NOT NULL</code> constraint on a column for a specific table doesn’t allow <code>NULL</code> values in that column (empty strings are <code>NOT NULL</code> so they can be saved even in a <code>NOT NULL</code> constraint column)</li>
+</ul></li>
+<li>Create a <strong>primary key for a table</strong>
+<ul>
+<li><div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb7-4" title="4">);</a></code></pre></div></li>
+<li><div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span></a>
+<a class="sourceLine" id="cb8-3" title="3">);</a></code></pre></div></li>
+</ul></li>
+<li>Create <strong>foreign key constraints</strong> to relate tables
+<ul>
+<li><div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb9-3" title="3">  breed_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> breeds(<span class="kw">id</span>),</a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb9-5" title="5">);</a></code></pre></div></li>
+<li><div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb10-3" title="3">  breed_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>),</a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (breed_id) <span class="kw">REFERENCES</span> breeds(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb10-6" title="6">);</a></code></pre></div></li>
+</ul></li>
+<li>Explain that SQL is not case sensitive for its keywords but is for its entity names
+<ul>
+<li>keywords in SQL are case <strong>insensitive</strong></li>
+<li>entity names are case <strong>sensitive</strong></li>
+</ul></li>
+</ul>
+<h2 id="sql-objectives">SQL Objectives</h2>
+<p><a href="https://www.postgresql.org/docs/12/queries.html">PostgresQL docs on Queries</a></p>
+<p><a href="https://www.postgresql.org/docs/12/dml.html">PostgresQL docs on Data Manipulation</a></p>
+<ul>
+<li>How to use the <code>SELECT ... FROM ...</code> statement to select data from a single table
+<ul>
+<li><div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">SELECT</span> <span class="kw">id</span>, <span class="fu">value</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">FROM</span> table_name</a></code></pre></div></li>
+</ul></li>
+<li>How to use the <code>JOIN</code> keyword to join two (or more) tables together into a single virtual table
+<ul>
+<li><div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">SELECT</span> t1.num, t2.ord</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">FROM</span> t1 </a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">LEFT</span> <span class="kw">JOIN</span> t2 <span class="kw">ON</span> t1.t2_id <span class="op">=</span> t2.<span class="kw">id</span> </a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="kw">WHERE</span> t2.<span class="fu">value</span> <span class="op">=</span> <span class="st">&#39;xxx&#39;</span>;</a></code></pre></div></li>
+</ul></li>
+<li>How to use the <code>INSERT</code> statement to insert data into a table
+<ul>
+<li><div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> products (product_no, name, price)</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb13-3" title="3">  (<span class="dv">1</span>, <span class="st">&#39;Cheese&#39;</span>, <span class="fl">9.99</span>),</a>
+<a class="sourceLine" id="cb13-4" title="4">  (<span class="dv">2</span>, <span class="st">&#39;Bread&#39;</span>, <span class="fl">1.99</span>),</a>
+<a class="sourceLine" id="cb13-5" title="5">  (<span class="dv">3</span>, <span class="st">&#39;Milk&#39;</span>, <span class="fl">2.99</span>);</a></code></pre></div></li>
+</ul></li>
+<li>How to use an <code>UPDATE</code> statement to update data in a table
+<ul>
+<li><p>Update columns <code>a</code>, <code>b</code>, and <code>c</code> in <code>table_name</code></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">UPDATE</span> `table_name` </a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">SET</span> a <span class="op">=</span> <span class="dv">5</span>, b <span class="op">=</span> <span class="dv">3</span>, c <span class="op">=</span> <span class="dv">1</span> </a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">WHERE</span> a <span class="op">&gt;</span> <span class="dv">0</span>;</a></code></pre></div></li>
+</ul></li>
+<li>How to use a <code>DELETE</code> statement to remove data from a table
+<ul>
+<li><p>Delete all entries in <code>table_name</code></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">DELETE</span> <span class="kw">FROM</span> table_name;</a></code></pre></div></li>
+<li><p>Delete row with id of 1 in <code>table_name</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">DELETE</span> <span class="kw">FROM</span> table_name</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div></li>
+</ul></li>
+<li>How to use the <code>WHERE</code> clause on <code>SELECT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements to narrow the scope of the command
+<ul>
+<li><code>WHERE</code> comes after the <code>JOIN</code> in <code>SELECT</code></li>
+<li><code>WHERE</code> comes after <code>SET</code> in <code>UPDATE</code></li>
+<li><code>WHERE</code> comes after <code>DELETE FROM</code> in <code>DELETE</code></li>
+</ul></li>
+<li>How to use a seed file to populate data in a database
+<ul>
+<li><code>psql -f &lt;seed_file_name.sql&gt;</code></li>
+<li>If already in psql? <code>\i &lt;seed_file_name.sql&gt;</code></li>
+</ul></li>
+</ul>
+<h2 id="orm-and-sequelize-objectives">ORM and Sequelize Objectives</h2>
+<p><a href="../W10D3/README.md">Sequelize CheatSheet</a></p>
+<p><a href="../W10D4/README.md">Sequelize Lecture Videos Pets</a></p>
+<p>To prepare for this, get practice project down to 50 minutes or less or do it 10 times over.</p>
+<ul>
+<li>How to install, configure, and use Sequelize, an ORM for JavaScript</li>
+<li>How to use database migrations to make your database grow with your application in a source-control enabled way</li>
+<li>How to perform CRUD operations with Sequelize</li>
+<li>How to query using Sequelize</li>
+<li>How to perform data validations with Sequelize</li>
+<li>How to use transactions with Sequelize</li>
+</ul>
+<h3 id="helpful-sequelize-docs">Helpful Sequelize Docs</h3>
+<p><a href="https://sequelize.org/master/manual/query-interface.html">Sequelize Migrations Docs</a></p>
+<p><a href="https://sequelize.org/master/manual/assocs.html">Sequelize Associations Docs</a></p>
+<h2 id="format-of-the-assessment">Format of the Assessment</h2>
+<ul>
+<li>2:55 long assessment</li>
+<li>&lt; 10 MC’s</li>
+<li>2 Free Responses</li>
+<li>SQL Project - 40 minutes</li>
+<li>Sequelize Project - 1 hour 45 minutes</li>
+</ul>

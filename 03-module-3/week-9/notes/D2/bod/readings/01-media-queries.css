@@ -1,0 +1,106 @@
+/* In an example.css file */
+@media screen and (min-width: 768px) {
+    /* styles for this breakpoint go here */
+}
+/*@media to start the definition of a media quer
+specify the specific type of medium you want to target,
+in this case, the CSS targets the screen
+in this case it will apply the rules inside the media query when the browser window has a minimum width of 768 pixels
+types of conditions fall into categories named media features
+ in this case, the "width" feature
+Each media query's conditions define what is called a //- breakpoint,
+ "all" refers to all devices which is the default for a media query when the type is not provided
+"print" applies to the layout of the document when a person intends to print it
+"screen" applies to the layout of the document when a browser displays it
+"speech" refers to when a screen reader reads the content
+ 
+ */
+
+/*
+ following CSS customizes the font sizes for "print" and "screen" display using "points" for the printing and "pixels" for the screen.
+ */
+
+html {
+    font-family: "Roboto", "Arial", sans-serif;
+}
+
+@media print {
+    html {
+        font-size: 12pt;
+    }
+}
+
+@media screen {
+    html {
+        font-size: 14px;
+    }
+}
+
+/*
+The following CSS changes the size of the font depending on the width of the viewport,
+*/
+body {
+    font-size: 14px;
+    display: flex;
+}
+
+@media (min-width: 1600px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 360px) {
+    body {
+        font-size: 10px;
+    }
+}
+
+@media (orientation: landscape) {
+    flex-direction: row;
+}
+
+@media (orientation: portrait) {
+    flex-direction: column;
+}
+/*
+Please note that all of the prefixed versions of the features are inclusive. 
+That means that min-width: 300px
+means that the user agent will test that the width of the viewport is greater than or equal to 300 pixels.
+*/
+
+/*
+Media queries allow you to create Boolean expressions using AND and OR operators
+*/
+
+/*
+target a specific width of screen greater than 300 pixels and less than or equal to 600 pixels
+swap the background and text colors for screens between those two sizes. 
+do it with the and keyword like this.
+*/
+html {
+    background-color: white;
+    color: #333333;
+}
+
+@media (min-width: 301px) and (max-width: 600px) {
+    html {
+        background-color: #333333;
+        color: white;
+    }
+}
+
+/*
+To do the same thing, but with an OR, you just use a comma. 
+*/
+html {
+    background-color: #333333;
+    color: white;
+}
+
+@media (max-width: 300px), (min-width: 601px) {
+    html {
+        background-color: white;
+        color: #333333;
+    }
+}

@@ -1,0 +1,487 @@
+<h1 id="eager-loading">Eager Loading</h1>
+<p>As briefly mentioned in <a href="assocs.html">the associations guide</a>, eager Loading is the act of querying data of several models at once (one ‘main’ model and one or more associated models). At the SQL level, this is a query with one or more <a href="https://en.wikipedia.org/wiki/Join_(SQL)">joins</a>.</p>
+<p>When this is done, the associated models will be added by Sequelize in appropriately named, automatically created field(s) in the returned objects.</p>
+<p>In Sequelize, eager loading is mainly done by using the <code>include</code> option on a model finder query (such as <code>findOne</code>, <code>findAll</code>, etc).</p>
+<h2 id="basic-example">Basic example</h2>
+<p>Let’s assume the following setup:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;user&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> Task <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;task&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">const</span> Tool <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;tool&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">size</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">},</span> <span class="op">{</span> <span class="dt">timestamps</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="va">User</span>.<span class="at">hasMany</span>(Task)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="va">Task</span>.<span class="at">belongsTo</span>(User)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="va">User</span>.<span class="at">hasMany</span>(Tool<span class="op">,</span> <span class="op">{</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="fetching-a-single-associated-element">Fetching a single associated element</h3>
+<p>OK. So, first of all, let’s load all tasks with their associated user:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> tasks <span class="op">=</span> <span class="cf">await</span> <span class="va">Task</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> User <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(tasks<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;A Task&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">&quot;user&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;John Doe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<p>Here, <code>tasks[0].user instanceof User</code> is <code>true</code>. This shows that when Sequelize fetches associated models, they are added to the output object as model instances.</p>
+<p>Above, the associated model was added to a new field called <code>user</code> in the fetched task. The name of this field was automatically chosen by Sequelize based on the name of the associated model, where its pluralized form is used when applicable (i.e., when the association is <code>hasMany</code> or <code>belongsToMany</code>). In other words, since <code>Task.belongsTo(User)</code>, a task is associated to one user, therefore the logical choice is the singular form (which Sequelize follows automatically).</p>
+<h3 id="fetching-all-associated-elements">Fetching all associated elements</h3>
+<p>Now, instead of loading the user that is associated to a given task, we will do the opposite - we will find all tasks associated to a given user.</p>
+<p>The method call is essentially the same. The only difference is that now the extra field created in the query result uses the pluralized form (<code>tasks</code> in this case), and its value is an array of task instances (instead of a single instance, as above).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> users <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Task <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(users<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;John Doe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;A Task&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<p>Notice that the accessor (the <code>tasks</code> property in the resulting instance) is pluralized since the association is one-to-many.</p>
+<h3 id="fetching-an-aliased-association">Fetching an Aliased association</h3>
+<p>If an association is aliased (using the <code>as</code> option), you must specify this alias when including the model. Instead of passing the model directly to the <code>include</code> option, you should instead provide an object with two options: <code>model</code> and <code>as</code>.</p>
+<p>Notice how the user’s <code>Tool</code>s are aliased as <code>Instruments</code> above. In order to get that right you have to specify the model you want to load, as well as the alias:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> users <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(users<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;John Doe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">&quot;Instruments&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Scissor&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<p>You can also include by alias name by specifying a string that matches the association alias:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// Also works</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="op">{</span> <span class="dt">association</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// Also works</span></a></code></pre></div>
+<h3 id="required-eager-loading">Required eager loading</h3>
+<p>When eager loading, we can force the query to return only records which have an associated model, effectively converting the query from the default <code>OUTER JOIN</code> to an <code>INNER JOIN</code>. This is done with the <code>required: true</code> option, as follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="dt">model</span><span class="op">:</span> Task<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="dt">required</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This option also works on nested includes.</p>
+<h3 id="eager-loading-filtered-at-the-associated-model-level">Eager loading filtered at the associated model level</h3>
+<p>When eager loading, we can also filter the associated model using the <code>where</code> option, as in the following example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-6" title="6">      <span class="dt">size</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-7" title="7">        [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span></a>
+<a class="sourceLine" id="cb10-8" title="8">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  `user`.`id`,</a>
+<a class="sourceLine" id="cb11-3" title="3">  `user`.`name`,</a>
+<a class="sourceLine" id="cb11-4" title="4">  `Instruments`.`id` <span class="kw">AS</span> `Instruments.id`,</a>
+<a class="sourceLine" id="cb11-5" title="5">  `Instruments`.`name` <span class="kw">AS</span> `Instruments.name`,</a>
+<a class="sourceLine" id="cb11-6" title="6">  `Instruments`.`size` <span class="kw">AS</span> `Instruments.size`,</a>
+<a class="sourceLine" id="cb11-7" title="7">  `Instruments`.`userId` <span class="kw">AS</span> `Instruments.userId`</a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb11-10" title="10">  `user`.`id` <span class="op">=</span> `Instruments`.`userId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb11-11" title="11">  `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a></code></pre></div>
+<p>Note that the SQL query generated above will only fetch users that have at least one tool that matches the condition (of not being <code>small</code>, in this case). This is the case because, when the <code>where</code> option is used inside an <code>include</code>, Sequelize automatically sets the <code>required</code> option to <code>true</code>. This means that, instead of an <code>OUTER JOIN</code>, an <code>INNER JOIN</code> is done, returning only the parent models with at least one matching children.</p>
+<p>Note also that the <code>where</code> option used was converted into a condition for the <code>ON</code> clause of the <code>INNER JOIN</code>. In order to obtain a <em>top-level</em> <code>WHERE</code> clause, instead of an <code>ON</code> clause, something different must be done. This will be shown next.</p>
+<h4 id="referring-to-other-columns">Referring to other columns</h4>
+<p>If you want to apply a <code>WHERE</code> clause in an included model referring to a value from an associated model, you can simply use the <code>Sequelize.col</code> function, as show in the example below:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// Find all projects with a least one task where task.state === project.state</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="va">Project</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    <span class="dt">model</span><span class="op">:</span> Task<span class="op">,</span></a>
+<a class="sourceLine" id="cb12-5" title="5">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-6" title="6">      <span class="dt">state</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">col</span>(<span class="st">&#39;project.state&#39;</span>)</a>
+<a class="sourceLine" id="cb12-7" title="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="op">}</span>)</a></code></pre></div>
+<h3 id="complex-where-clauses-at-the-top-level">Complex where clauses at the top-level</h3>
+<p>To obtain top-level <code>WHERE</code> clauses that involve nested columns, Sequelize provides a way to reference nested columns: the <code>'$nested.column$'</code> syntax.</p>
+<p>It can be used, for example, to move the where conditions from an included model from the <code>ON</code> condition to a top-level <code>WHERE</code> clause.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="st">&#39;$Instruments.size$&#39;</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb13-7" title="7">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span></a>
+<a class="sourceLine" id="cb13-8" title="8">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  `user`.`id`,</a>
+<a class="sourceLine" id="cb14-3" title="3">  `user`.`name`,</a>
+<a class="sourceLine" id="cb14-4" title="4">  `Instruments`.`id` <span class="kw">AS</span> `Instruments.id`,</a>
+<a class="sourceLine" id="cb14-5" title="5">  `Instruments`.`name` <span class="kw">AS</span> `Instruments.name`,</a>
+<a class="sourceLine" id="cb14-6" title="6">  `Instruments`.`size` <span class="kw">AS</span> `Instruments.size`,</a>
+<a class="sourceLine" id="cb14-7" title="7">  `Instruments`.`userId` <span class="kw">AS</span> `Instruments.userId`</a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb14-10" title="10">  `user`.`id` <span class="op">=</span> `Instruments`.`userId`</a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="kw">WHERE</span> `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a></code></pre></div>
+<p>The <code>$nested.column$</code> syntax also works for columns that are nested several levels deep, such as <code>$some.super.deeply.nested.column$</code>. Therefore, you can use this to make complex filters on deeply nested columns.</p>
+<p>For a better understanding of all differences between the inner <code>where</code> option (used inside an <code>include</code>), with and without the <code>required</code> option, and a top-level <code>where</code> using the <code>$nested.column$</code> syntax, below we have four examples for you:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="co">// Inner where, with default `required: true`</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-4" title="4">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-5" title="5">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-7" title="7">      <span class="dt">size</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-11" title="11"></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">// Inner where, `required: false`</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-14" title="14">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-15" title="15">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-16" title="16">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-17" title="17">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-18" title="18">      <span class="dt">size</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-19" title="19">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-20" title="20">    <span class="dt">required</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb15-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-23" title="23"></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="co">// Top-level where, with default `required: false`</span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-26" title="26">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-27" title="27">    <span class="st">&#39;$Instruments.size$&#39;</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-28" title="28">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-29" title="29">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-30" title="30">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-31" title="31">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span></a>
+<a class="sourceLine" id="cb15-32" title="32">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-33" title="33"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-34" title="34"></a>
+<a class="sourceLine" id="cb15-35" title="35"><span class="co">// Top-level where, `required: true`</span></a>
+<a class="sourceLine" id="cb15-36" title="36"><span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-37" title="37">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-38" title="38">    <span class="st">&#39;$Instruments.size$&#39;</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-39" title="39">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb15-40" title="40">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-41" title="41">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb15-42" title="42">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-43" title="43">    <span class="dt">required</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb15-44" title="44">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-45" title="45"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQLs, in order:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="co">-- Inner where, with default `required: true`</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">SELECT</span> [<span class="op">..</span>.] <span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  `user`.`id` <span class="op">=</span> `Instruments`.`userId`</a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="kw">AND</span> `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a>
+<a class="sourceLine" id="cb16-6" title="6"></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="co">-- Inner where, `required: false`</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="kw">SELECT</span> [<span class="op">..</span>.] <span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb16-10" title="10">  `user`.`id` <span class="op">=</span> `Instruments`.`userId`</a>
+<a class="sourceLine" id="cb16-11" title="11">  <span class="kw">AND</span> `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a>
+<a class="sourceLine" id="cb16-12" title="12"></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="co">-- Top-level where, with default `required: false`</span></a>
+<a class="sourceLine" id="cb16-14" title="14"><span class="kw">SELECT</span> [<span class="op">..</span>.] <span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb16-16" title="16">  `user`.`id` <span class="op">=</span> `Instruments`.`userId`</a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="kw">WHERE</span> `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a>
+<a class="sourceLine" id="cb16-18" title="18"></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="co">-- Top-level where, `required: true`</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="kw">SELECT</span> [<span class="op">..</span>.] <span class="kw">FROM</span> `users` <span class="kw">AS</span> `user`</a>
+<a class="sourceLine" id="cb16-21" title="21"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tools` <span class="kw">AS</span> `Instruments` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb16-22" title="22">  `user`.`id` <span class="op">=</span> `Instruments`.`userId`</a>
+<a class="sourceLine" id="cb16-23" title="23"><span class="kw">WHERE</span> `Instruments`.`size` <span class="op">!=</span> <span class="st">&#39;small&#39;</span>;</a></code></pre></div>
+<h3 id="fetching-with-right-outer-join-mysql-mariadb-postgresql-and-mssql-only">Fetching with <code>RIGHT OUTER JOIN</code> (MySQL, MariaDB, PostgreSQL and MSSQL only)</h3>
+<p>By default, associations are loaded using a <code>LEFT OUTER JOIN</code> - that is to say it only includes records from the parent table. You can change this behavior to a <code>RIGHT OUTER JOIN</code> by passing the <code>right</code> option, if the dialect you are using supports it.</p>
+<p>Currenly, SQLite does not support <a href="https://www.sqlite.org/omitted.html">right joins</a>.</p>
+<p><em>Note:</em> <code>right</code> is only respected if <code>required</code> is false.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="dt">model</span><span class="op">:</span> Task <span class="co">// will create a left join</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-7" title="7">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-8" title="8">    <span class="dt">model</span><span class="op">:</span> Task<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-9" title="9">    <span class="dt">right</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// will create a right join</span></a>
+<a class="sourceLine" id="cb17-10" title="10">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-13" title="13">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-14" title="14">    <span class="dt">model</span><span class="op">:</span> Task<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-15" title="15">    <span class="dt">required</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-16" title="16">    <span class="dt">right</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// has no effect, will create an inner join</span></a>
+<a class="sourceLine" id="cb17-17" title="17">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-19" title="19"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-20" title="20">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-21" title="21">    <span class="dt">model</span><span class="op">:</span> Task<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-22" title="22">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;empty trash&#39;</span> <span class="op">}</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-23" title="23">    <span class="dt">right</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// has no effect, will create an inner join</span></a>
+<a class="sourceLine" id="cb17-24" title="24">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-25" title="25"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-26" title="26"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-27" title="27">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-28" title="28">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-29" title="29">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;empty trash&#39;</span> <span class="op">}</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-30" title="30">    <span class="dt">required</span><span class="op">:</span> <span class="kw">false</span> <span class="co">// will create a left join</span></a>
+<a class="sourceLine" id="cb17-31" title="31">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-32" title="32"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-33" title="33"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-34" title="34">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-35" title="35">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-36" title="36">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;empty trash&#39;</span> <span class="op">}</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-37" title="37">    <span class="dt">required</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb17-38" title="38">    <span class="dt">right</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// will create a right join</span></a>
+<a class="sourceLine" id="cb17-39" title="39">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb17-40" title="40"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="multiple-eager-loading">Multiple eager loading</h2>
+<p>The <code>include</code> option can receive an array in order to fetch multiple associated models at once:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">Foo</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">include</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb18-3" title="3">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-4" title="4">      <span class="dt">model</span><span class="op">:</span> Bar<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-5" title="5">      <span class="dt">required</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb18-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-7" title="7">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-8" title="8">      <span class="dt">model</span><span class="op">:</span> Baz<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-9" title="9">      <span class="dt">where</span><span class="op">:</span> <span class="co">/* ... */</span></a>
+<a class="sourceLine" id="cb18-10" title="10">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-11" title="11">    Qux <span class="co">// Shorthand syntax for { model: Qux } also works here</span></a>
+<a class="sourceLine" id="cb18-12" title="12">  ]</a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="eager-loading-with-many-to-many-relationships">Eager loading with Many-to-Many relationships</h2>
+<p>When you perform eager loading on a model with a Belongs-to-Many relationship, Sequelize will fetch the junction table data as well, by default. For example:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> Foo <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Foo&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="kw">const</span> Bar <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Bar&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="va">Foo</span>.<span class="at">belongsToMany</span>(Bar<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;Foo_Bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="va">Bar</span>.<span class="at">belongsToMany</span>(Foo<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;Foo_Bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-5" title="5"></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">sync</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="kw">const</span> foo <span class="op">=</span> <span class="cf">await</span> <span class="va">Foo</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;foo&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-8" title="8"><span class="kw">const</span> bar <span class="op">=</span> <span class="cf">await</span> <span class="va">Bar</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="cf">await</span> <span class="va">foo</span>.<span class="at">addBar</span>(bar)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="kw">const</span> fetchedFoo <span class="op">=</span> <span class="va">Foo</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> Bar <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(fetchedFoo<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;foo&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">&quot;Bars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb20-5" title="5">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-6" title="6">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-7" title="7">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;bar&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-8" title="8">      <span class="dt">&quot;Foo_Bar&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-9" title="9">        <span class="dt">&quot;FooId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-10" title="10">        <span class="dt">&quot;BarId&quot;</span><span class="fu">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb20-11" title="11">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb20-12" title="12">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb20-13" title="13">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb20-14" title="14"><span class="fu">}</span></a></code></pre></div>
+<p>Note that every bar instance eager loaded into the <code>"Bars"</code> property has an extra property called <code>Foo_Bar</code> which is the relevant Sequelize instance of the junction model. By default, Sequelize fetches all attributes from the junction table in order to build this extra property.</p>
+<p>However, you can specify which attributes you want fetched. This is done with the <code>attributes</code> option applied inside the <code>through</code> option of the include. For example:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="va">Foo</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="dt">model</span><span class="op">:</span> Bar<span class="op">,</span></a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-5" title="5">      <span class="dt">attributes</span><span class="op">:</span> [<span class="co">/* list the wanted attributes here */</span>]</a>
+<a class="sourceLine" id="cb21-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb21-7" title="7">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>If you don’t want anything from the junction table, you can explicitly provide an empty array to the <code>attributes</code> option, and in this case nothing will be fetched and the extra property will not even be created:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">Foo</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb22-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="dt">model</span><span class="op">:</span> Bar<span class="op">,</span></a>
+<a class="sourceLine" id="cb22-4" title="4">    <span class="dt">attributes</span><span class="op">:</span> []</a>
+<a class="sourceLine" id="cb22-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb23-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-2" title="2">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-3" title="3">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;foo&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">&quot;Bars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb23-5" title="5">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-6" title="6">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-7" title="7">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;bar&quot;</span></a>
+<a class="sourceLine" id="cb23-8" title="8">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb23-9" title="9">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb23-10" title="10"><span class="fu">}</span></a></code></pre></div>
+<p>Whenever including a model from a Many-to-Many relationship, you can also apply a filter on the junction table. This is done with the <code>where</code> option applied inside the <code>through</code> option of the include. For example:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-3" title="3">    <span class="dt">model</span><span class="op">:</span> Project<span class="op">,</span></a>
+<a class="sourceLine" id="cb24-4" title="4">    <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-5" title="5">      <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-6" title="6">        <span class="co">// Here, `completed` is a column present at the junction table</span></a>
+<a class="sourceLine" id="cb24-7" title="7">        <span class="dt">completed</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb24-8" title="8">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb24-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb24-10" title="10">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb24-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL (using SQLite):</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb25-2" title="2">  `User`.`id`,</a>
+<a class="sourceLine" id="cb25-3" title="3">  `User`.`name`,</a>
+<a class="sourceLine" id="cb25-4" title="4">  `Projects`.`id` <span class="kw">AS</span> `Projects.id`,</a>
+<a class="sourceLine" id="cb25-5" title="5">  `Projects`.`name` <span class="kw">AS</span> `Projects.name`,</a>
+<a class="sourceLine" id="cb25-6" title="6">  `Projects<span class="op">-&gt;</span>User_Project`.`completed` <span class="kw">AS</span> `Projects.User_Project.completed`,</a>
+<a class="sourceLine" id="cb25-7" title="7">  `Projects<span class="op">-&gt;</span>User_Project`.`UserId` <span class="kw">AS</span> `Projects.User_Project.UserId`,</a>
+<a class="sourceLine" id="cb25-8" title="8">  `Projects<span class="op">-&gt;</span>User_Project`.`ProjectId` <span class="kw">AS</span> `Projects.User_Project.ProjectId`</a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="kw">FROM</span> `Users` <span class="kw">AS</span> `User`</a>
+<a class="sourceLine" id="cb25-10" title="10"><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> `User_Projects` <span class="kw">AS</span> `Projects<span class="op">-&gt;</span>User_Project` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb25-11" title="11">  `User`.`id` <span class="op">=</span> `Projects<span class="op">-&gt;</span>User_Project`.`UserId`</a>
+<a class="sourceLine" id="cb25-12" title="12"><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> `Projects` <span class="kw">AS</span> `Projects` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb25-13" title="13">  `Projects`.`id` <span class="op">=</span> `Projects<span class="op">-&gt;</span>User_Project`.`ProjectId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb25-14" title="14">  `Projects<span class="op">-&gt;</span>User_Project`.`completed` <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div>
+<h2 id="including-everything">Including everything</h2>
+<p>To include all associated models, you can use the <code>all</code> and <code>nested</code> options:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="co">// Fetch all models associated with User</span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="op">{</span> <span class="dt">all</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-3" title="3"></a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="co">// Fetch all models associated with User and their nested associations (recursively)</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> <span class="op">{</span> <span class="dt">all</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">nested</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="including-soft-deleted-records">Including soft deleted records</h2>
+<p>In case you want to eager load soft deleted records you can do that by setting <code>include.paranoid</code> to <code>false</code>:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb27-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb27-3" title="3">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb27-4" title="4">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb27-5" title="5">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">size</span><span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="st">&#39;small&#39;</span> <span class="op">}</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb27-6" title="6">    <span class="dt">paranoid</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb27-7" title="7">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="ordering-eager-loaded-associations">Ordering eager loaded associations</h2>
+<p>When you want to apply <code>ORDER</code> clauses to eager loaded models, you must use the top-level <code>order</code> option with augmented arrays, starting with the specification of the nested model you want to sort.</p>
+<p>This is better understood with examples.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="va">Company</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-2" title="2">  <span class="dt">include</span><span class="op">:</span> Division<span class="op">,</span></a>
+<a class="sourceLine" id="cb28-3" title="3">  <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb28-4" title="4">    <span class="co">// We start the order array with the model we want to sort</span></a>
+<a class="sourceLine" id="cb28-5" title="5">    [Division<span class="op">,</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;ASC&#39;</span>]</a>
+<a class="sourceLine" id="cb28-6" title="6">  ]</a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="va">Company</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-9" title="9">  <span class="dt">include</span><span class="op">:</span> Division<span class="op">,</span></a>
+<a class="sourceLine" id="cb28-10" title="10">  <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb28-11" title="11">    [Division<span class="op">,</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;DESC&#39;</span>]</a>
+<a class="sourceLine" id="cb28-12" title="12">  ]</a>
+<a class="sourceLine" id="cb28-13" title="13"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-14" title="14"><span class="va">Company</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-15" title="15">  <span class="co">// If the include uses an alias...</span></a>
+<a class="sourceLine" id="cb28-16" title="16">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> Division<span class="op">,</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Div&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb28-17" title="17">  <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb28-18" title="18">    <span class="co">// ...we use the same syntax from the include</span></a>
+<a class="sourceLine" id="cb28-19" title="19">    <span class="co">// in the beginning of the order array</span></a>
+<a class="sourceLine" id="cb28-20" title="20">    [<span class="op">{</span> <span class="dt">model</span><span class="op">:</span> Division<span class="op">,</span> <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Div&#39;</span> <span class="op">},</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;DESC&#39;</span>]</a>
+<a class="sourceLine" id="cb28-21" title="21">  ]</a>
+<a class="sourceLine" id="cb28-22" title="22"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-23" title="23"></a>
+<a class="sourceLine" id="cb28-24" title="24"><span class="va">Company</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb28-25" title="25">  <span class="co">// If we have includes nested in several levels...</span></a>
+<a class="sourceLine" id="cb28-26" title="26">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-27" title="27">    <span class="dt">model</span><span class="op">:</span> Division<span class="op">,</span></a>
+<a class="sourceLine" id="cb28-28" title="28">    <span class="dt">include</span><span class="op">:</span> Department</a>
+<a class="sourceLine" id="cb28-29" title="29">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb28-30" title="30">  <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb28-31" title="31">    <span class="co">// ... we replicate the include chain of interest</span></a>
+<a class="sourceLine" id="cb28-32" title="32">    <span class="co">// at the beginning of the order array</span></a>
+<a class="sourceLine" id="cb28-33" title="33">    [Division<span class="op">,</span> Department<span class="op">,</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;DESC&#39;</span>]</a>
+<a class="sourceLine" id="cb28-34" title="34">  ]</a>
+<a class="sourceLine" id="cb28-35" title="35"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>In the case of many-to-many relationships, you are also able to sort by attributes in the through table. For example, assuming we have a Many-to-Many relationship between <code>Division</code> and <code>Department</code> whose junction model is <code>DepartmentDivision</code>, you can do:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="va">Company</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb29-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-3" title="3">    <span class="dt">model</span><span class="op">:</span> Division<span class="op">,</span></a>
+<a class="sourceLine" id="cb29-4" title="4">    <span class="dt">include</span><span class="op">:</span> Department</a>
+<a class="sourceLine" id="cb29-5" title="5">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb29-6" title="6">  <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb29-7" title="7">    [Division<span class="op">,</span> DepartmentDivision<span class="op">,</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;ASC&#39;</span>]</a>
+<a class="sourceLine" id="cb29-8" title="8">  ]</a>
+<a class="sourceLine" id="cb29-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>In all the above examples, you have noticed that the <code>order</code> option is used at the top-level. The only situation in which <code>order</code> also works inside the include option is when <code>separate: true</code> is used. In that case, the usage is as follows:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="co">// This only works for `separate: true` (which in turn</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="co">// only works for has-many relationships).</span></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb30-4" title="4">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-5" title="5">    <span class="dt">model</span><span class="op">:</span> Post<span class="op">,</span></a>
+<a class="sourceLine" id="cb30-6" title="6">    <span class="dt">separate</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb30-7" title="7">    <span class="dt">order</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb30-8" title="8">      [<span class="st">&#39;createdAt&#39;</span><span class="op">,</span> <span class="st">&#39;DESC&#39;</span>]</a>
+<a class="sourceLine" id="cb30-9" title="9">    ]</a>
+<a class="sourceLine" id="cb30-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb30-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="complex-ordering-involving-sub-queries">Complex ordering involving sub-queries</h3>
+<p>Take a look at the <a href="sub-queries.html">guide on sub-queries</a> for an example of how to use a sub-query to assist a more complex ordering.</p>
+<h2 id="nested-eager-loading">Nested eager loading</h2>
+<p>You can use nested eager loading to load all related models of a related model:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">const</span> users <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb31-2" title="2">  <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-3" title="3">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb31-4" title="4">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-5" title="5">    <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-6" title="6">      <span class="dt">model</span><span class="op">:</span> Teacher<span class="op">,</span></a>
+<a class="sourceLine" id="cb31-7" title="7">      <span class="dt">include</span><span class="op">:</span> [ <span class="co">/* etc */</span> ]</a>
+<a class="sourceLine" id="cb31-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb31-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb31-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(users<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb32-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb32-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;John Doe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-4" title="4">  <span class="dt">&quot;Instruments&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span> <span class="er">//</span> <span class="er">1</span><span class="fu">:</span><span class="er">M</span> <span class="er">and</span> <span class="er">N:M</span> <span class="er">association</span></a>
+<a class="sourceLine" id="cb32-5" title="5">    <span class="st">&quot;name&quot;</span><span class="er">:</span> <span class="st">&quot;Scissor&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-6" title="6">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-7" title="7">    <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-8" title="8">    <span class="dt">&quot;Teacher&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="er">//</span> <span class="er">1</span><span class="fu">:</span><span class="dv">1</span> <span class="er">association</span></a>
+<a class="sourceLine" id="cb32-9" title="9">      <span class="st">&quot;name&quot;</span><span class="er">:</span> <span class="st">&quot;Jimi Hendrix&quot;</span></a>
+<a class="sourceLine" id="cb32-10" title="10">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb32-11" title="11">  <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb32-12" title="12"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<p>This will produce an outer join. However, a <code>where</code> clause on a related model will create an inner join and return only the instances that have matching sub-models. To return all parent instances, you should add <code>required: false</code>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb33-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb33-3" title="3">    <span class="dt">model</span><span class="op">:</span> Tool<span class="op">,</span></a>
+<a class="sourceLine" id="cb33-4" title="4">    <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Instruments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-5" title="5">    <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb33-6" title="6">      <span class="dt">model</span><span class="op">:</span> Teacher<span class="op">,</span></a>
+<a class="sourceLine" id="cb33-7" title="7">      <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-8" title="8">        <span class="dt">school</span><span class="op">:</span> <span class="st">&quot;Woodstock Music School&quot;</span></a>
+<a class="sourceLine" id="cb33-9" title="9">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb33-10" title="10">      <span class="dt">required</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb33-11" title="11">    <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb33-12" title="12">  <span class="op">}</span>]</a>
+<a class="sourceLine" id="cb33-13" title="13"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The query above will return all users, and all their instruments, but only those teachers associated with <code>Woodstock Music School</code>.</p>
+<h2 id="using-findandcountall-with-includes">Using <code>findAndCountAll</code> with includes</h2>
+<p>The <code>findAndCountAll</code> utility function supports includes. Only the includes that are marked as <code>required</code> will be considered in <code>count</code>. For example, if you want to find and count all users who have a profile:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb34-1" title="1"><span class="va">User</span>.<span class="at">findAndCountAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb34-2" title="2">  <span class="dt">include</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb34-3" title="3">    <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> Profile<span class="op">,</span> <span class="dt">required</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb34-4" title="4">  ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb34-5" title="5">  <span class="dt">limit</span><span class="op">:</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb34-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Because the include for <code>Profile</code> has <code>required</code> set it will result in an inner join, and only the users who have a profile will be counted. If we remove <code>required</code> from the include, both users with and without profiles will be counted. Adding a <code>where</code> clause to the include automatically makes it required:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="va">User</span>.<span class="at">findAndCountAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb35-2" title="2">  <span class="dt">include</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb35-3" title="3">    <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> Profile<span class="op">,</span> <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">active</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb35-4" title="4">  ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb35-5" title="5">  <span class="dt">limit</span><span class="op">:</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb35-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The query above will only count users who have an active profile, because <code>required</code> is implicitly set to true when you add a where clause to the include.</p>

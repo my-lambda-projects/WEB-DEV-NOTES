@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Built-in HTML5 Form Validation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="styles/css/main.css">
+</head>
+
+<body class="Site">
+    <div class="Site-content">
+        <div class="wrapper">
+            <h1 id="heading">User Registration Form</h1>
+            <form action="submit.html" id="userForm">
+                <input type="text" name="username" placeholder="username" pattern="^(?=.*\d)(?=.*[a-zA-Z]).{7,15}$"
+                    title="You have not inputted a valid username. It must contain at least one number and be at least 7 characters long."
+                    required>
+                <input type="email" name="mail" placeholder="email"
+                    pattern="(\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b)" title="Your email must contain a @ and a valid
+                    .ext" required>
+                <!-- regex checks for at least one number, one lowercase and one uppercase letter and at least six characters that are letters, numbers or the underscore -->
+                <input type="password" name="password" id="password" placeholder="password"
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{13,24}$"
+                    title="Your password must contain at least
+                one number, one lowercase and one uppercase letter and must be least 13 characters long, but no more than 24 characters long, containing letters, numbers or the underscore."
+                    required>
+                <button type="submit" form="userForm" id="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <p>&#10013; © 2018 Maria D. Campbell &#10013;</p>
+    </footer>
+
+    <script src="scripts/js/main.js"></script>
+</body>
+
+</html>

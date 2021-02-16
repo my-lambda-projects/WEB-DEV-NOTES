@@ -1,0 +1,36 @@
+{
+	"name": "theme-monokaiMega",
+	"displayName": "Monokai Mega",
+	"description": "A theme based on Monokai Phoenix from the Sublime Babel package.",
+	"version": "4.0.2",
+	"publisher": "jaszhix",
+	"engines": {
+		"vscode": "^1.19.0"
+	},
+	"categories": [
+		"Themes"
+	],
+	"homepage": "https://github.com/jaszhix/monokaimega-vscode-theme",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jaszhix/monokaimega-vscode-theme.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jaszhix/monokaimega-vscode-theme/issues"
+	},
+	"icon": "icon.png",
+	"contributes": {
+		"themes": [
+			{
+				"label": "Monokai Mega",
+				"uiTheme": "vs-dark",
+				"path": "./themes/MonokaiMega.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "43ffe7fc-b06d-40bf-ba88-ad0902b6b477",
+		"publisherId": "849543d6-e08d-4c70-8d25-01188c8860df",
+		"publisherDisplayName": "jaszhix"
+	}
+}

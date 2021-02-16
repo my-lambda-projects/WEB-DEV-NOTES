@@ -1,0 +1,120 @@
+WRMCB = function (e) {
+  var c = console;
+  if (c && c.log && c.error) {
+    c.log("Error running batched script.");
+    c.error(e);
+  }
+};
+try {
+  /* module-key = 'com.atlassian.confluence.plugins.share-page:jquery-elastic', location = 'js/jquery-elastic.js' */
+  define("confluence-share-page-plugin/js/jquery-elastic", [
+    "jquery",
+    "ajs",
+  ], function (b, a) {
+    (function (c) {
+      b.fn.extend({
+        elastic: function () {
+          var d = [
+            "paddingTop",
+            "paddingRight",
+            "paddingBottom",
+            "paddingLeft",
+            "fontSize",
+            "lineHeight",
+            "fontFamily",
+            "width",
+            "fontWeight",
+            "border-top-width",
+            "border-right-width",
+            "border-bottom-width",
+            "border-left-width",
+            "borderTopStyle",
+            "borderTopColor",
+            "borderRightStyle",
+            "borderRightColor",
+            "borderBottomStyle",
+            "borderBottomColor",
+            "borderLeftStyle",
+            "borderLeftColor",
+          ];
+          return this.each(function () {
+            if (this.type !== "textarea") {
+              return false;
+            }
+            var j = b(this),
+              e = b("<div />").css({
+                position: "absolute",
+                display: "none",
+                "word-wrap": "break-word",
+                "white-space": "pre-wrap",
+              }),
+              l =
+                parseInt(j.css("line-height"), 10) ||
+                parseInt(j.css("font-size"), "10"),
+              n = parseInt(j.css("height"), 10) || l * 3,
+              m = parseInt(j.css("max-height"), 10) || Number.MAX_VALUE,
+              f = 0;
+            if (m < 0) {
+              m = Number.MAX_VALUE;
+            }
+            e.appendTo(j.parent());
+            var h = d.length;
+            while (h--) {
+              e.css(d[h].toString(), j.css(d[h].toString()));
+            }
+            function k() {
+              var i = Math.floor(parseInt(j.width(), 10));
+              if (e.width() !== i) {
+                e.css({ width: i + "px" });
+                g(true);
+              }
+            }
+            function o(i, q) {
+              var p = Math.floor(parseInt(i, 10));
+              if (j.height() !== p) {
+                j.css({ height: p + "px", overflow: q });
+              }
+            }
+            function g(r) {
+              var q = j
+                .val()
+                .replace(/&/g, "&amp;")
+                .replace(/ {2}/g, "&nbsp;")
+                .replace(/<|>/g, "&gt;")
+                .replace(/\n/g, "<br />");
+              var i = e.html().replace(/<br>/gi, "<br />");
+              if (r || q + "&nbsp;" !== i) {
+                e.html(q + "&nbsp;");
+                if (Math.abs(e.height() + l - j.height()) > 3) {
+                  var p = e.height() + l;
+                  if (p >= m) {
+                    o(m, "auto");
+                  } else {
+                    if (p <= n) {
+                      o(n, "hidden");
+                    } else {
+                      o(p, "hidden");
+                    }
+                  }
+                }
+              }
+            }
+            j.css({ overflow: "hidden" });
+            j.bind("keyup change cut paste", function () {
+              g();
+            });
+            c(window).bind("resize", k);
+            j.bind("resize", k);
+            j.bind("update", g);
+            j.bind("input paste", function (i) {
+              setTimeout(g, 250);
+            });
+            g();
+          });
+        },
+      });
+    })(a.$);
+  });
+} catch (e) {
+  WRMCB(e);
+}

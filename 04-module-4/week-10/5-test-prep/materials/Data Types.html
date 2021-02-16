@@ -1,0 +1,233 @@
+<h1 id="data-types">Data Types</h1>
+<blockquote>
+<p>PostgreSQL has a rich set of native data types available to users. Users can add new types to PostgreSQL using the CREATE TYPE command.</p>
+</blockquote>
+<p>PostgreSQL has a rich set of native data types available to users. Users can add new types to PostgreSQL using the <a href="chrome-extension://cjedbglnccaioiolemnfhjncicchinao/sql-createtype.html">CREATE TYPE</a> command.</p>
+<p><a href="chrome-extension://cjedbglnccaioiolemnfhjncicchinao/datatype.html#DATATYPE-TABLE">Table 8-1</a> shows all the built-in general-purpose data types. Most of the alternative names listed in the “Aliases” column are the names used internally by PostgreSQL for historical reasons. In addition, some internally used or deprecated types are available, but are not listed here.</p>
+<p><strong>Table 8-1. Data Types</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Aliases</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bigint</td>
+<td>int8</td>
+<td>signed eight-byte integer</td>
+</tr>
+<tr class="even">
+<td>bigserial</td>
+<td>serial8</td>
+<td>autoincrementing eight-byte integer</td>
+</tr>
+<tr class="odd">
+<td>bit [ (n) ]</td>
+<td> </td>
+<td>fixed-length bit string</td>
+</tr>
+<tr class="even">
+<td>bit varying [ (n) ]</td>
+<td>varbit [ (n) ]</td>
+<td>variable-length bit string</td>
+</tr>
+<tr class="odd">
+<td>boolean</td>
+<td>bool</td>
+<td>logical Boolean (true/false)</td>
+</tr>
+<tr class="even">
+<td>box</td>
+<td> </td>
+<td>rectangular box on a plane</td>
+</tr>
+<tr class="odd">
+<td>bytea</td>
+<td> </td>
+<td>binary data (“byte array”)</td>
+</tr>
+<tr class="even">
+<td>character [ (n) ]</td>
+<td>char [ (n) ]</td>
+<td>fixed-length character string</td>
+</tr>
+<tr class="odd">
+<td>character varying [ (n) ]</td>
+<td>varchar [ (n) ]</td>
+<td>variable-length character string</td>
+</tr>
+<tr class="even">
+<td>cidr</td>
+<td> </td>
+<td>IPv4 or IPv6 network address</td>
+</tr>
+<tr class="odd">
+<td>circle</td>
+<td> </td>
+<td>circle on a plane</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td> </td>
+<td>calendar date (year, month, day)</td>
+</tr>
+<tr class="odd">
+<td>double precision</td>
+<td>float8</td>
+<td>double precision floating-point number (8 bytes)</td>
+</tr>
+<tr class="even">
+<td>inet</td>
+<td> </td>
+<td>IPv4 or IPv6 host address</td>
+</tr>
+<tr class="odd">
+<td>integer</td>
+<td>int, int4</td>
+<td>signed four-byte integer</td>
+</tr>
+<tr class="even">
+<td>interval [ fields ] [ (p) ]</td>
+<td> </td>
+<td>time span</td>
+</tr>
+<tr class="odd">
+<td>json</td>
+<td> </td>
+<td>textual JSON data</td>
+</tr>
+<tr class="even">
+<td>jsonb</td>
+<td> </td>
+<td>binary JSON data, decomposed</td>
+</tr>
+<tr class="odd">
+<td>line</td>
+<td> </td>
+<td>infinite line on a plane</td>
+</tr>
+<tr class="even">
+<td>lseg</td>
+<td> </td>
+<td>line segment on a plane</td>
+</tr>
+<tr class="odd">
+<td>macaddr</td>
+<td> </td>
+<td>MAC (Media Access Control) address</td>
+</tr>
+<tr class="even">
+<td>money</td>
+<td> </td>
+<td>currency amount</td>
+</tr>
+<tr class="odd">
+<td>numeric [ (p, s) ]</td>
+<td>decimal [ (p, s) ]</td>
+<td>exact numeric of selectable precision</td>
+</tr>
+<tr class="even">
+<td>path</td>
+<td> </td>
+<td>geometric path on a plane</td>
+</tr>
+<tr class="odd">
+<td>pg_lsn</td>
+<td> </td>
+<td>PostgreSQL Log Sequence Number</td>
+</tr>
+<tr class="even">
+<td>point</td>
+<td> </td>
+<td>geometric point on a plane</td>
+</tr>
+<tr class="odd">
+<td>polygon</td>
+<td> </td>
+<td>closed geometric path on a plane</td>
+</tr>
+<tr class="even">
+<td>real</td>
+<td>float4</td>
+<td>single precision floating-point number (4 bytes)</td>
+</tr>
+<tr class="odd">
+<td>smallint</td>
+<td>int2</td>
+<td>signed two-byte integer</td>
+</tr>
+<tr class="even">
+<td>smallserial</td>
+<td>serial2</td>
+<td>autoincrementing two-byte integer</td>
+</tr>
+<tr class="odd">
+<td>serial</td>
+<td>serial4</td>
+<td>autoincrementing four-byte integer</td>
+</tr>
+<tr class="even">
+<td>text</td>
+<td> </td>
+<td>variable-length character string</td>
+</tr>
+<tr class="odd">
+<td>time [ (p) ] [ without time zone ]</td>
+<td> </td>
+<td>time of day (no time zone)</td>
+</tr>
+<tr class="even">
+<td>time [ (p) ] with time zone</td>
+<td>timetz</td>
+<td>time of day, including time zone</td>
+</tr>
+<tr class="odd">
+<td>timestamp [ (p) ] [ without time zone ]</td>
+<td> </td>
+<td>date and time (no time zone)</td>
+</tr>
+<tr class="even">
+<td>timestamp [ (p) ] with time zone</td>
+<td>timestamptz</td>
+<td>date and time, including time zone</td>
+</tr>
+<tr class="odd">
+<td>tsquery</td>
+<td> </td>
+<td>text search query</td>
+</tr>
+<tr class="even">
+<td>tsvector</td>
+<td> </td>
+<td>text search document</td>
+</tr>
+<tr class="odd">
+<td>txid_snapshot</td>
+<td> </td>
+<td>user-level transaction ID snapshot</td>
+</tr>
+<tr class="even">
+<td>uuid</td>
+<td> </td>
+<td>universally unique identifier</td>
+</tr>
+<tr class="odd">
+<td>xml</td>
+<td> </td>
+<td>XML data</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Compatibility:</strong> The following types (or spellings thereof) are specified by SQL: bigint, bit, bit varying, boolean, char, character varying, character, varchar, date, double precision, integer, interval, numeric, decimal, real, smallint, time (with or without time zone), timestamp (with or without time zone), xml.</p>
+</blockquote>
+<p>Each data type has an external representation determined by its input and output functions. Many of the built-in types have obvious external formats. However, several types are either unique to PostgreSQL, such as geometric paths, or have several possible formats, such as the date and time types. Some of the input and output functions are not invertible, i.e., the result of an output function might lose accuracy when compared to the original input.</p>
+<p><a href="https://www.postgresql.org/docs/9.5/datatype.html">Source</a></p>

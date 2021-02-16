@@ -1,0 +1,70 @@
+<h1 id="upgrading-to-8.0">Upgrading to 8.0</h1>
+<p>node-postgres at 8.0 introduces a breaking change to ssl-verified connetions. If you connect with ssl and use</p>
+<pre><code>const client = new Client({ ssl: true })</code></pre>
+<p>and the server’s SSL certificate is self-signed, connections will fail as of node-postgres 8.0. To keep the existing behavior, modify the invocation to</p>
+<pre><code>const client = new Client({ ssl: { rejectUnauthorized: false } })</code></pre>
+<p>The rest of the changes are relatively minor and unlikely to cause issues; see <a href="/announcements#2020-02-25">the announcement</a> for full details.</p>
+<h1 id="upgrading-to-7.0">Upgrading to 7.0</h1>
+<p>node-postgres at 7.0 introduces somewhat significant breaking changes to the public API.</p>
+<h2 id="node-version-support">node version support</h2>
+<p>Starting with <code>pg@7.0</code> the earliest version of node supported will be <code>node@4.x LTS</code>. Support for <code>node@0.12.x</code> and <code>node@.10.x</code> is dropped, and the module wont work as it relies on new es6 features not available in older versions of node.</p>
+<h2 id="pg-singleton">pg singleton</h2>
+<p>In the past there was a singleton pool manager attached to the root <code>pg</code> object in the package. This singleton could be used to provision connection pools automatically by calling <code>pg.connect</code>. This API caused a lot of confusion for users. It also introduced a opaque module-managed singleton which was difficult to reason about, debug, error-prone, and inflexible. Starting in pg@6.0 the methods’ documentation was removed, and starting in pg@6.3 the methods were deprecated with a warning message.</p>
+<p>If your application still relies on these they will be <em>gone</em> in <code>pg@7.0</code>. In order to migrate you can do the following:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// old way, deprecated in 6.3.0:</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">// connection using global singleton</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="va">pg</span>.<span class="at">connect</span>(<span class="kw">function</span>(err<span class="op">,</span> client<span class="op">,</span> done) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="va">client</span>.<span class="at">query</span>(<span class="co">/* etc, etc */</span>)</a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="at">done</span>()</a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">// singleton pool shutdown</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="va">pg</span>.<span class="at">end</span>()</a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">// ------------------</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">// new way, available since 6.0.0:</span></a>
+<a class="sourceLine" id="cb3-15" title="15"></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="co">// create a pool</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="kw">var</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="va">pg</span>.<span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb3-18" title="18"></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="co">// connection using created pool</span></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="va">pool</span>.<span class="at">connect</span>(<span class="kw">function</span>(err<span class="op">,</span> client<span class="op">,</span> done) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-21" title="21">  <span class="va">client</span>.<span class="at">query</span>(<span class="co">/* etc, etc */</span>)</a>
+<a class="sourceLine" id="cb3-22" title="22">  <span class="at">done</span>()</a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="co">// pool shutdown</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="va">pool</span>.<span class="at">end</span>()</a></code></pre></div>
+<p>node-postgres ships with a built-in pool object provided by <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> which is already used internally by the <code>pg.connect</code> and <code>pg.end</code> methods. Migrating to a user-managed pool (or set of pools) allows you to more directly control their set up their life-cycle.</p>
+<h2 id="client.query.on">client.query(…).on</h2>
+<p>Before <code>pg@7.0</code> the <code>client.query</code> method would <em>always</em> return an instance of a query. The query instance was an event emitter, accepted a callback, and was also a promise. A few problems…</p>
+<ul>
+<li>too many flow control options on a single object was confusing</li>
+<li>event emitter <code>.on('error')</code> does not mix well with promise <code>.catch</code></li>
+<li>the <code>row</code> event was a common source of errors: it looks like a stream but has no support for back-pressure, misleading users into trying to pipe results or handling them in the event emitter for a desired performance gain.</li>
+<li>error handling with a <code>.done</code> and <code>.error</code> emitter pair for every query is cumbersome and returning the emitter from <code>client.query</code> indicated this sort of pattern may be encouraged: it is not.</li>
+</ul>
+<p>Starting with <code>pg@7.0</code> the return value <code>client.query</code> will be dependent on what you pass to the method: I think this aligns more with how most node libraries handle the callback/promise combo, and I hope it will make the “just works” :tm: feeling better while reducing surface area and surprises around event emitter / callback combos.</p>
+<h3 id="client.query-with-a-callback">client.query with a callback</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> query <span class="op">=</span> <span class="va">client</span>.<span class="at">query</span>(<span class="st">&#39;SELECT NOW()&#39;</span><span class="op">,</span> (err<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="co">/* etc, etc */</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="at">assert</span>(query <span class="op">===</span> <span class="kw">undefined</span>) <span class="co">// true</span></a></code></pre></div>
+<p>If you pass a callback to the method <code>client.query</code> will return <code>undefined</code>. This limits flow control to the callback which is in-line with almost all of node’s core APIs.</p>
+<h3 id="client.query-without-a-callback">client.query without a callback</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> query <span class="op">=</span> <span class="va">client</span>.<span class="at">query</span>(<span class="st">&#39;SELECT NOW()&#39;</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="at">assert</span>(query <span class="kw">instanceof</span> Promise) <span class="co">// true</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="at">assert</span>(<span class="va">query</span>.<span class="at">on</span> <span class="op">===</span> <span class="kw">undefined</span>) <span class="co">// true</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="va">query</span>.<span class="at">then</span>((res) <span class="kw">=&gt;</span> <span class="co">/* etc, etc */</span>)</a></code></pre></div>
+<p>If you do <strong>not</strong> pass a callback <code>client.query</code> will return an instance of a <code>Promise</code>. This will <strong>not</strong> be a query instance and will not be an event emitter. This is in line with how most promise-based APIs work in node.</p>
+<h3 id="client.querysubmittable">client.query(Submittable)</h3>
+<p><code>client.query</code> has always accepted any object that has a <code>.submit</code> method on it. In this scenario the client calls <code>.submit</code> on the object, delegating execution responsibility to it. In this situation the client also <strong>returns the instance it was passed</strong>. This is how <a href="https://github.com/brianc/node-pg-cursor">pg-cursor</a> and <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a> work. So, if you need the event emitter functionality on your queries for some reason, it is still possible because <code>Query</code> is an instance of <code>Submittable</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> <span class="op">{</span> Client<span class="op">,</span> Query <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">const</span> query <span class="op">=</span> <span class="va">client</span>.<span class="at">query</span>(<span class="kw">new</span> <span class="at">Query</span>(<span class="st">&#39;SELECT NOW()&#39;</span>))</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="va">query</span>.<span class="at">on</span>(<span class="st">&#39;row&#39;</span><span class="op">,</span> row <span class="kw">=&gt;</span> <span class="op">{}</span>)</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="va">query</span>.<span class="at">on</span>(<span class="st">&#39;end&#39;</span><span class="op">,</span> res <span class="kw">=&gt;</span> <span class="op">{}</span>)</a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">query</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> res <span class="kw">=&gt;</span> <span class="op">{}</span>)</a></code></pre></div>
+<p><code>Query</code> is considered a public, documented part of the API of node-postgres and this form will be supported indefinitely.</p>
+<p><em>note: I have been building apps with node-postgres for almost 7 years. In that time I have never used the event emitter API as the primary way to execute queries. I used to use callbacks and now I use async/await. If you need to stream results I highly recommend you use <a href="https://github.com/brianc/node-pg-cursor">pg-cursor</a> or <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a> and <strong>not</strong> the query object as an event emitter.</em></p>

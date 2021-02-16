@@ -1,0 +1,677 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 58 ], {
+    "/MSF": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return i
+      } ) ), a.d( t, "b", ( function () {
+        return o
+      } ) );
+      var n = a( "EfWO" ),
+        r = a( "ERkP" ),
+        s = a.n( r ),
+        c = a( "L21V" );
+      const i = "https://support.atlassian.com/contact/#/",
+        o = ( {
+          showHostname: e,
+          children: t
+        } ) => s.a.createElement( "a", {
+          href: i,
+          target: "_blank"
+        }, s.a.Children.count( t ) ? t : ( e => e ? Object( n.parse )( i ).hostname : s.a.createElement( c.b, {
+          id: "error-boundary.description.support-link",
+          description: "The text of the link which will lead the user to the Atlassian Support web site",
+          defaultMessage: "Atlassian Support"
+        }, e => e ) )( e ) )
+    },
+    "1d+A": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return r
+      } ) );
+      var n = a( "H5qd" );
+      const r = a.n( n ).a `fragment ArchivedPageBannerFragment on Content{id operations{operation targetType}status}`
+    },
+    "6wsw": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return i
+      } ) );
+      var n = a( "zjfJ" ),
+        r = a( "nnRT" ),
+        s = a.n( r ),
+        c = a( "lZoD" );
+      class i extends c.a {
+        constructor( ...e ) {
+          super( ...e ), Object( n.a )( this, "state", {
+            highlightPagesIds: [],
+            forceFetchPageId: null,
+            scrollToCurrent: !1
+          } )
+        }
+        scrollToCurrentPage() {
+          this.setState( {
+            scrollToCurrent: !0
+          } )
+        }
+        clearScrollTo() {
+          this.setState( {
+            scrollToCurrent: !1
+          } )
+        }
+        setHighlightPagesIds( e ) {
+          s()( this.state.highlightPagesIds, e ) || this.setState( {
+            highlightPagesIds: e
+          } )
+        }
+        clearHighlightedPages() {
+          this.setHighlightPagesIds( [] )
+        }
+        setForceFetchPageId( e ) {
+          this.setState( {
+            forceFetchPageId: e
+          } )
+        }
+        clearForceFetch() {
+          this.setForceFetchPageId( null )
+        }
+      }
+    },
+    MV18: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return s
+      } ) );
+      var n = a( "ERkP" ),
+        r = a( "6z9Z" );
+
+      function s( {
+        name: e,
+        attributes: t
+      } ) {
+        const a = Object( n.useContext )( r.a );
+        return Object( n.useEffect )( () => a.succeed( {
+          name: e,
+          attributes: t
+        } ), [ e, t, a ] ), null
+      }
+    },
+    OW50: function ( e, t, a ) {
+      "use strict";
+      var n = a( "ERkP" ),
+        r = a.n( n ),
+        s = a( "nnRT" ),
+        c = a.n( s ),
+        i = a( "u6DZ" ),
+        o = a.n( i ),
+        l = a( "dIe6" ),
+        u = a( "3VMZ" ),
+        d = a( "MV18" ),
+        g = a( "1U1M" ),
+        h = a( "6z9Z" ),
+        f = a( "H5qd" ),
+        p = a.n( f );
+      const v = p.a `query ArchiveLongTaskStatusExperimental($taskId:ID!)@experimental{experimentalLongTask(taskId:$taskId){id elapsedTime percentageComplete messages{translation}successful}}`,
+        b = ( {
+          longTaskId: e,
+          onError: t,
+          onStatusUpdate: a,
+          isArchive: r,
+          pollTimeout: s = 6e4
+        } ) => {
+          const {
+            data: c,
+            error: i,
+            stopPolling: o
+          } = Object( g.d )( v, {
+            fetchPolicy: "network-only",
+            pollInterval: 500,
+            variables: {
+              taskId: e
+            }
+          } ), l = Object( n.useContext )( h.a ), u = Object( n.useCallback )( e => {
+            l.stopOnError( {
+              name: N( r ),
+              error: e
+            } ), t( e ), o()
+          }, [ t, o, r, l ] );
+          return Object( n.useEffect )( () => {
+            const e = setTimeout( () => {
+              u( new Error( "Timed out while polling server for status of page archival process" ) )
+            }, s );
+            return () => clearTimeout( e )
+          }, [ u, s ] ), Object( n.useEffect )( () => {
+            i && u( i )
+          }, [ i, u ] ), Object( n.useEffect )( () => {
+            const e = c && c.experimentalLongTask || null;
+            if ( e ) {
+              const n = e.percentageComplete || 0,
+                {
+                  successful: r
+                } = e;
+              let s = [],
+                c = null;
+              const i = new RegExp( "^(PageUnArchivedList|PageArchivedList)", "gi" ),
+                l = new RegExp( "([\\d*]+)", "g" );
+              try {
+                const {
+                  messages: t
+                } = e;
+                for ( let e = t.length - 1; e >= 0; --e ) {
+                  const {
+                    translation: a
+                  } = t[ e ];
+                  if ( !a.match( i ) ) break;
+                  const n = a.match( l );
+                  if ( n && n.length ) {
+                    s = n;
+                    break
+                  }
+                }
+              } catch ( t ) {
+                c = t
+              }
+              c ? u( c ) : ( r && 100 === n && o(), a( {
+                archivingSuccessPages: s,
+                percentageComplete: n
+              } ) )
+            }
+          }, [ c, u, a, o ] ), null
+        };
+      var m = a( "1d+A" );
+      const E = p.a `fragment WebItemsFragment on WebSection{id label styleClass items{accessKey completeKey hasCondition id icon{path}params{key value}label moduleKey section styleClass tooltip url urlWithoutContextPath weight}}`,
+        I = p.a `query ArchiveProcessSuccessQuery($contentId:ID!$processedPageIds:[ID]!$webItemLocation:String!){content(ids:$processedPageIds status:["archived" "current"]){nodes{...ArchivedPageBannerFragment type ancestors{id type title status}}}singleContent(id:$contentId){id children{count nodes{id status}}hasVisibleChildPages}webItemSections(location:$webItemLocation contentId:$contentId){...WebItemsFragment}}${m.a}${E}`;
+
+      function P( {
+        contentId: e,
+        processedPageIds: t
+      } ) {
+        const {
+          error: a
+        } = Object( g.d )( I, {
+          errorPolicy: "all",
+          fetchPolicy: "network-only",
+          variables: {
+            contentId: e,
+            processedPageIds: t,
+            webItemLocation: "system.content.action"
+          }
+        } );
+        return a ? r.a.createElement( l.a, {
+          error: a
+        } ) : null
+      }
+      var k = a( "Czhu" ),
+        y = a( "h++M" ),
+        O = a.n( y ),
+        C = a( "L21V" ),
+        j = a( "KsTJ" ),
+        A = a( "lZoD" ),
+        w = a( "gtb1" ),
+        S = a( "W71K" ),
+        T = a( "z9P0" ),
+        F = a( "/MSF" ),
+        _ = a( "qhEF" ),
+        R = a( "UsKe" ),
+        V = a( "W90J" );
+      const x = j.default.div `
+  display: flex;
+  flex-direction: column;
+  height: 32px;
+  justify-content: center;
+  padding-right: 40px;
+`,
+        L = Object( C.f )( {
+          ARCHIVE_archivePageFlagSuccess_Title: {
+            id: "archive-pages.single-page.archive.flag.success.title",
+            defaultMessage: "{count, plural, one {Page archived} other {Pages archived}}",
+            description: "Title for the flag notifying user that archival processed successfully"
+          },
+          ARCHIVE_archivePageFlagSuccess_LinkText: {
+            id: "archive-pages.single-page.archive.flag.success.link-text",
+            defaultMessage: "View in archive",
+            description: "Link text shown on archive success to direct user to view all archived pages"
+          },
+          ARCHIVE_archivePageFlagFailure_Title: {
+            id: "archive-pages.single-page.archive.flag.failure.title",
+            defaultMessage: "We couldn't archive this page",
+            description: "Title for the flag notifying user that the archival request failed to process"
+          },
+          ARCHIVE_archivePageFlagFailure_Body: {
+            id: "archive-pages.single-page.archive.flag.failure.body",
+            defaultMessage: "Try again. If this keeps happening, try contacting {supportLink} or your space admin.",
+            description: "Description for the flag notifying user that the archival request failed to process"
+          },
+          ARCHIVE_archivePageFlagProgress_Title: {
+            id: "archive-pages.single-page.archive.flag.progress.title",
+            defaultMessage: "{count, plural, one {Page archiving...} other {Pages archiving...}}",
+            description: "Title for the flag notifying user that archival process is in progress"
+          },
+          UNARCHIVE_archivePageFlagSuccess_Title: {
+            id: "archive-pages.single-page.unarchive.flag.success.title",
+            defaultMessage: "{count, plural, one {Page restored} other {Pages restored}}",
+            description: "Title for the flag notifying user that unarchive request processed successfully"
+          },
+          UNARCHIVE_archivePageFlagSuccess_LinkText: {
+            id: "archive-pages.single-page.unarchive.flag.success.link-text",
+            defaultMessage: "View page",
+            description: "Link to view a restored page after unarchival"
+          },
+          UNARCHIVE_archivePageFlagFailure_Title: {
+            id: "archive-pages.single-page.unarchive.flag.failure.title",
+            defaultMessage: "We couldn't restore this page",
+            description: "Title for the flag notifying user that the unarchival request failed to process"
+          },
+          UNARCHIVE_archivePageFlagFailure_Body: {
+            id: "archive-pages.single-page.unarchive.flag.failure.body",
+            defaultMessage: "Try again. If this keeps happening, try contacting {supportLink} or your space admin.",
+            description: "Description for the flag notifying user that the unarchival request failed to process"
+          },
+          UNARCHIVE_archivePageFlagProgress_Title: {
+            id: "archive-pages.single-page.unarchive.flag.progress.title",
+            defaultMessage: "{count, plural, one {Page restoring...} other {Pages restoring...}}",
+            description: "Title for the flag notifying user that unarchive request process is in progress"
+          },
+          refresh_LinkText: {
+            id: "archive-pages.bulk-archive.flag.refresh.link-text",
+            defaultMessage: "Refresh",
+            description: "Link to refresh current window to see bulk archive changes."
+          }
+        } ),
+        H = ( {
+          contentIds: e,
+          error: t,
+          isArchive: a,
+          isIndeterminate: s,
+          percentageComplete: i,
+          successLinkHref: o,
+          onSuccessLinkClick: l,
+          isBulk: u
+        } ) => {
+          const [ d, g ] = Object( n.useState )( 0 ), {
+            createAnalyticsEvent: h
+          } = Object( T.a )(), [ f, p ] = Object( n.useState )( null ), v = Object( n.useRef )( null ), b = !t && 100 === i, m = `${a?V.a:V.g}${b?"archivePageFlagSuccess":t?"archivePageFlagFailure":"archivePageFlagProgress"}`, E = Object( R.d )( a ), I = `${E}Pages${(t?"Error":b&&"Success")||"Loading"}Flag`, P = r.a.createElement( r.a.Fragment, null, r.a.createElement( S.a, {
+            name: I,
+            id: ""
+          } ), r.a.createElement( C.b, Object( k.a )( Object( k.a )( {}, L[ m + "_Title" ] ), {}, {
+            values: {
+              count: e.length
+            }
+          } ) ) ), y = t ? r.a.createElement( C.b, Object( k.a )( Object( k.a )( {}, L[ m + "_Body" ] ), {}, {
+            values: {
+              supportLink: r.a.createElement( F.b, null )
+            }
+          } ) ) : b ? "" : r.a.createElement( x, null, r.a.createElement( w.a, {
+            isIndeterminate: s,
+            value: i / 100
+          } ) ), j = Object( n.useCallback )( () => {
+            Object( R.c )( {
+              createAnalyticsEvent: h,
+              actionSubject: "link",
+              actionSubjectId: `view${O()(E)}dPage`,
+              source: I
+            } ), l && l()
+          }, [ E, I, h, l ] ), H = Object( n.useMemo )( () => {
+            const e = [];
+            return b && ( e.push( {
+              content: r.a.createElement( C.b, Object( k.a )( {}, L[ m + "_LinkText" ] ) ),
+              href: o,
+              onClick: j
+            } ), u && e.push( {
+              content: r.a.createElement( C.b, Object( k.a )( {}, L.refresh_LinkText ) ),
+              href: "",
+              onClick: () => window.location.reload()
+            } ) ), e
+          }, [ b, u, j, m, o ] );
+          return r.a.createElement( A.c, {
+            to: [ _.a ]
+          }, e => ( i === d && t === f || ( e.showFlag( {
+            id: v.current,
+            type: b ? "success-circle" : t ? "error" : "info",
+            title: P,
+            description: y,
+            actions: H,
+            close: b ? "auto" : null
+          } ).then( e => {
+            e && ( v.current = e.id )
+          } ), c()( t, f ) || p( t ), g( i ) ), null ) )
+        };
+
+      function M( {
+        archivingError: e,
+        archivingPercentageComplete: t,
+        contentIds: a,
+        isArchive: r,
+        isBulk: s,
+        source: c,
+        pageCount: i
+      } ) {
+        const {
+          createAnalyticsEvent: o
+        } = Object( T.a )();
+        return Object( n.useEffect )( () => {
+          const n = Object( R.d )( r, s );
+          ( 100 === t || e ) && Object( R.b )( {
+            createAnalyticsEvent: o,
+            action: e ? n + "Failed" : n + "Success",
+            actionSubject: "page",
+            actionSubjectId: s ? "multiple" : a[ 0 ],
+            source: c,
+            attributes: {
+              pageCount: i
+            }
+          } )
+        }, [ e, t, a, o, r, c, s ] ), null
+      }
+      var U = a( "ewfN" ),
+        $ = a( "6wsw" ),
+        B = a( "Ua4J" ),
+        W = a( "+6Tk" );
+      const q = p.a `query ArchivePagesLoaderSuccessQuery($contentId:ID!){singleContent(id:$contentId){ancestors{id status}archivedContentMetadata{restoreParent{id status}}id space{homepage{id}id key}status}}`;
+
+      function D( {
+        contentId: e
+      } ) {
+        const {
+          data: t,
+          error: a,
+          loading: s
+        } = Object( g.d )( q, {
+          errorPolicy: "all",
+          fetchPolicy: "network-only",
+          variables: {
+            contentId: e
+          }
+        } ), {
+          getHref: c,
+          matchRoute: i,
+          push: o
+        } = Object( n.useContext )( B.a ), u = Object( W.a )( U.SPACE_OVERVIEW.HOMEPAGE_ID_QUERY_FF ), [ d, h ] = Object( n.useState )( null ), [ f, p ] = Object( n.useState )( !1 );
+        return Object( n.useEffect )( () => {
+          var a, n;
+          if ( s ) return;
+          if ( ( null != ( n = t ) && null != ( n = n.singleContent ) ? n.status : n ) === V.f ) {
+            var r, l;
+            const n = c(),
+              s = i( c() ),
+              g = null != ( l = t ) && null != ( l = l.singleContent ) && null != ( l = l.space ) ? l.key : l,
+              f = null != ( r = t ) && null != ( r = r.singleContent ) && null != ( r = r.space ) && null != ( r = r.homepage ) ? r.id : r;
+            let p, v = null;
+            switch ( s ? s.name : void 0 ) {
+              case U.VIEW_PAGE.name:
+                let n;
+                const r = null != ( a = t ) && null != ( a = a.singleContent ) && null != ( a = a.archivedContentMetadata ) ? a.restoreParent : a;
+                if ( r && r.id && r.id !== f && r.status !== V.f ) n = r.id;
+                else {
+                  var d;
+                  const e = null != ( d = t ) && null != ( d = d.singleContent ) ? d.ancestors : d;
+                  if ( e && Array.isArray( e ) )
+                    for ( let t = e.length - 1; t >= 0; --t ) {
+                      const a = e[ t ];
+                      if ( a && a.id !== f && a.status !== V.f ) {
+                        n = a.id;
+                        break
+                      }
+                    }
+                }
+                if ( void 0 !== n ) {
+                  v = n, p = U.VIEW_PAGE.toUrl( {
+                    contentId: n,
+                    spaceKey: g
+                  } );
+                  break
+                }
+                case U.SPACE_OVERVIEW.name:
+                  p = U.SPACE_OVERVIEW.toUrl( {
+                    spaceKey: g
+                  }, {
+                    query: u && f ? {
+                      [ U.SPACE_OVERVIEW.HOMEPAGE_ID_QUERY_KEY ]: f
+                    } : void 0
+                  } ), v = f || e
+            }
+            p && p !== n && ( o( p ), h( v ) )
+          }
+        }, [ t, u, c, s, i, o, e, h ] ), a ? r.a.createElement( l.a, {
+          error: a
+        } ) : r.a.createElement( A.c, {
+          to: [ $.a ]
+        }, e => ( !f && d && ( e.setForceFetchPageId( d ), p( !0 ) ), null ) )
+      }
+      const K = ( {
+        contentId: e
+      } ) => {
+        const [ t, a ] = Object( n.useState )( !1 );
+        return r.a.createElement( A.c, {
+          to: [ $.a ]
+        }, n => ( t || ( n.setHighlightPagesIds( [ e ] ), a( !0 ) ), null ) )
+      };
+
+      function N( e ) {
+        return e ? u.a.ARCHIVE_PAGES : u.a.RESTORE_PAGES
+      }
+      a.d( t, "b", ( function () {
+        return N
+      } ) ), a.d( t, "a", ( function () {
+        return G
+      } ) );
+      const G = ( {
+        longTaskId: e,
+        contentId: t,
+        onSuccess: a,
+        isArchive: s = !0,
+        isBulk: i,
+        successLinkHref: u,
+        source: g,
+        error: h,
+        onSuccessLinkClick: f,
+        pageCount: p
+      } ) => {
+        const [ v, m ] = Object( n.useState )( [] ), [ E, I ] = Object( n.useState )( 0 ), [ k, y ] = Object( n.useState )( void 0 ), O = Object( n.useCallback )( e => {
+          const t = o()( e.archivingSuccessPages ),
+            n = e.percentageComplete;
+          c()( v, t ) || m( t ), I( n ), 100 === n && a && a()
+        }, [ a, v ] ), C = h || k, j = t || v[ 0 ];
+        return r.a.createElement( r.a.Fragment, null, C ? r.a.createElement( l.a, {
+          error: C
+        } ) : 100 === E ? r.a.createElement( r.a.Fragment, null, r.a.createElement( P, {
+          contentId: j,
+          processedPageIds: v
+        } ), r.a.createElement( d.a, {
+          name: N( s )
+        } ), s ? i ? null : r.a.createElement( D, {
+          contentId: j
+        } ) : r.a.createElement( K, {
+          contentId: j
+        } ) ) : e ? r.a.createElement( b, {
+          longTaskId: e,
+          onError: y,
+          onStatusUpdate: O,
+          isArchive: s
+        } ) : null, r.a.createElement( H, {
+          contentIds: v,
+          percentageComplete: E,
+          error: !!C,
+          isArchive: s,
+          isIndeterminate: !0,
+          successLinkHref: u,
+          onSuccessLinkClick: f,
+          isBulk: i
+        } ), r.a.createElement( M, {
+          archivingError: C,
+          archivingPercentageComplete: E,
+          isBulk: i,
+          contentIds: i ? v : [ j ],
+          isArchive: s,
+          source: g,
+          pageCount: p
+        } ) )
+      }
+    },
+    UsKe: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "d", ( function () {
+        return s
+      } ) ), a.d( t, "c", ( function () {
+        return c
+      } ) ), a.d( t, "b", ( function () {
+        return i
+      } ) ), a.d( t, "a", ( function () {
+        return o
+      } ) );
+      var n = a( "HbGN" ),
+        r = a( "Czhu" );
+      const s = ( e, t = !1 ) => e ? t ? "bulkArchive" : "archive" : t ? "bulkRestore" : "restore",
+        c = e => ( e => l( Object( r.a )( Object( r.a )( {}, e ), {}, {
+          type: "sendUIEvent"
+        } ) ) )( Object( r.a )( Object( r.a )( {}, e ), {}, {
+          action: "clicked"
+        } ) ),
+        i = e => l( Object( r.a )( Object( r.a )( {}, e ), {}, {
+          type: "sendTrackEvent"
+        } ) ),
+        o = e => l( Object( r.a )( Object( r.a )( {}, e ), {}, {
+          type: "sendScreenEvent"
+        } ) ),
+        l = e => {
+          const {
+            createAnalyticsEvent: t,
+            type: a
+          } = e;
+          t( {
+            type: a,
+            data: Object( n.a )( e, [ "createAnalyticsEvent", "type" ] )
+          } ).fire()
+        }
+    },
+    W90J: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "c", ( function () {
+        return n
+      } ) ), a.d( t, "b", ( function () {
+        return r
+      } ) ), a.d( t, "e", ( function () {
+        return s
+      } ) ), a.d( t, "f", ( function () {
+        return c
+      } ) ), a.d( t, "a", ( function () {
+        return i
+      } ) ), a.d( t, "g", ( function () {
+        return o
+      } ) ), a.d( t, "d", ( function () {
+        return l
+      } ) );
+      const n = "confluence.frontend.archive.pages",
+        r = "confluence.frontend.archive.nested.pages",
+        s = "confluence.frontend.enable.archive.permission",
+        c = "archived",
+        i = "ARCHIVE_",
+        o = "UNARCHIVE_",
+        l = "confluence.frontend.archive.pages.selection-limit"
+    },
+    gtb1: function ( e, t, a ) {
+      "use strict";
+      var n = a( "ERkP" ),
+        r = a.n( n ),
+        s = a( "l1C2" ),
+        c = a( "3IV/" ),
+        i = a( "8pvK" );
+      const o = s.g `
+  from { left: -5%; width: 5%; }
+  to { left: 130%; width: 100%;}
+`,
+        l = s.g `
+  from { left: -80%; width: 80%; }
+  to { left: 110%; width: 10%;}
+`,
+        u = Object( i.a )( e => ( {
+          container: {
+            background: c.N40A,
+            borderRadius: 3,
+            height: 6,
+            overflow: "hidden",
+            position: "relative",
+            width: "100%"
+          },
+          bar: {
+            borderRadius: 3,
+            display: "block",
+            height: 6,
+            position: "absolute",
+            background: c.N500
+          },
+          determinateBar: {
+            transition: "width 0.2s",
+            width: 100 * Number( e.value ) + "%"
+          },
+          increasingBar: {
+            animation: o + " 2s infinite"
+          },
+          decreasingBar: {
+            animation: l + " 2s 0.5s infinite"
+          }
+        } ) );
+      a.d( t, "a", ( function () {
+        return g
+      } ) );
+      const d = ( {
+        isIndeterminate: e,
+        tokens: t
+      } ) => e ? Object( s.f )( r.a.Fragment, null, Object( s.f )( "span", {
+        css: [ t.bar, t.increasingBar ]
+      } ), Object( s.f )( "span", {
+        css: [ t.bar, t.decreasingBar ]
+      } ) ) : Object( s.f )( "span", {
+        css: [ t.bar, t.determinateBar ]
+      } );
+      class g extends r.a.PureComponent {
+        render() {
+          const {
+            value: e,
+            isIndeterminate: t,
+            theme: a
+          } = this.props, n = t ? 0 : Math.max( 0, Math.min( e, 1 ) );
+          return Object( s.f )( u.Provider, {
+            value: a
+          }, Object( s.f )( u.Consumer, {
+            value: e
+          }, e => Object( s.f )( "div", {
+            css: e.container,
+            role: "progressbar",
+            "aria-valuemin": 0,
+            "aria-valuenow": n,
+            "aria-valuemax": 1,
+            tabIndex: 0
+          }, Object( s.f )( d, {
+            isIndeterminate: t,
+            tokens: e
+          } ) ) ) )
+        }
+      }
+      g.defaultProps = {
+        value: 0,
+        isIndeterminate: !1
+      }
+    },
+    "h++M": function ( e, t, a ) {
+      var n = a( "dw5g" ),
+        r = a( "TYRa" );
+      e.exports = function ( e ) {
+        return r( n( e ).toLowerCase() )
+      }
+    },
+    u6DZ: function ( e, t, a ) {
+      var n = a( "YpBQ" ),
+        r = a( "eHpp" ),
+        s = a( "R3TX" ),
+        c = a( "R5u7" ),
+        i = s( ( function ( e, t ) {
+          if ( null == e ) return [];
+          var a = t.length;
+          return a > 1 && c( e, t[ 0 ], t[ 1 ] ) ? t = [] : a > 2 && c( t[ 0 ], t[ 1 ], t[ 2 ] ) && ( t = [ t[ 0 ] ] ), r( e, n( t, 1 ), [] )
+        } ) );
+      e.exports = i
+    }
+  }
+] );
+//# sourceMappingURL=58.War8qg4eTw.js.map

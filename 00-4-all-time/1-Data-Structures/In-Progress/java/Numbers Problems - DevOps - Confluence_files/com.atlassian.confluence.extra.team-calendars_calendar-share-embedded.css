@@ -1,0 +1,8 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:calendar-share-embedded', location = 'com/atlassian/confluence/extra/calendar3/components/calendar-share-dialog/calendar-share-dialog.less' */
+.calendar-share-dialog-panel .share-address-field {
+  font-size: 14px;
+  width: 335px;
+}
+.calendar-share-dialog-panel .description {
+  margin-left: 83px;
+}

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "2aa5a774-6b4e-42d0-ad2c-8fad56879a45",
+    "name": "Element Selection &amp; Placement 3",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/topics/element-selection-placement/readings/reading-element-selection-placement-part3-js.md",
+    "type": "Reading",
+    "timeEstimate": 180,
+    "urls": [
+      "element-selection--amp--placement-3"
+    ],
+    "topic": "Homework for Tuesday",
+    "subtopic": "Homework",
+    "body": "# Hello, World DOMination: Adding a CSS Class After DOM Load Event\n\nIn our previous JS examples, we used `window.onload` to run a function after the\nwindow has loaded the page, which ensures that all of the objects are in the\nDOM, including images, scripts, links, and subframes. However, we don't need to\nwait for stylesheets, images, and subframes to finish loading before our\nJavaScript runs because JS isn't dependent on them. And, some images may be so\nlarge that waiting on them to load before the JS runs would make the user\nexperience feel slow and clunky. There is a better method to use in this case:\n`DOMContentLoaded`.\n\nAccording to\n[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event),\n\"the DOMContentLoaded event fires when the initial HTML document has been\ncompletely loaded and parsed, without waiting for stylesheets, images, and\nsubframes to finish loading.\"\n\nWe'll use DOMContentLoaded to add CSS classes to page elements immediately after\nthey are loaded. Let's add the CSS class \"i-got-loaded\" to the `body` element\nwhen the window fires the DOMContentLoaded event. We can do this in the script\nblock or in an external JS file, as we did in the examples above.\n\n**Javascript**\n\n```js\nwindow.addEventListener(\"DOMContentLoaded\", event => {\n  document.body.className = \"i-got-loaded\";\n});\n```\n\nAfter adding the Javascript above, refresh the HTML in your browser, inspect the\npage, and notice that the `body` element now has a class of \"i-got-loaded\".\n"
+  },
+  "success": true
+}

@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.auiplugin:internal-@atlassian-aui-src-js-vendor-jquery-jquery-spin', location = 'node_modules/@atlassian/aui/src/js-vendor/jquery/jquery.spin.js' */
+("undefined"===typeof window?global:window).__d8ff3af7054b670547578cbb83ac113e=function(){var b=jQuery;b.fn.spin=function(a,c){var f,d;if("string"===typeof a){if(!a in b.fn.spin.presets)throw Error("Preset '"+a+"' isn't defined");f=b.fn.spin.presets[a];d=c||{}}else{if(c)throw Error("Invalid arguments. Accepted arguments:\n$.spin([String preset[, Object options]]),\n$.spin(Object options),\n$.spin(Boolean shouldSpin)");f=b.fn.spin.presets.small;d=b.isPlainObject(a)?a:{}}if(window.Spinner)return this.each(function(){var c=
+b(this),e=c.data();e.spinner&&(e.spinner.stop(),delete e.spinner);!1!==a&&(d=b.extend({color:c.css("color")},f,d),e.spinner=(new Spinner(d)).spin(this))});throw"Spinner class not available.";};b.fn.spin.presets={small:{lines:12,length:3,width:2,radius:3,trail:60,speed:1.5},medium:{lines:12,length:5,width:3,radius:8,trail:60,speed:1.5},large:{lines:12,length:8,width:4,radius:10,trail:60,speed:1.5}};b.fn.spinStop=function(){if(window.Spinner)return this.each(function(){var a=b(this).data();a.spinner&&
+(a.spinner.stop(),delete a.spinner)});throw"Spinner class not available.";};return{}}.call(this);
+}catch(e){WRMCB(e)};

@@ -1,0 +1,67 @@
+{
+	"name": "code-beautifier",
+	"displayName": "Beautify css/sass/scss/less",
+	"description": "Beautify css, sass and less code (extension for Visual Studio Code)",
+	"version": "2.3.3",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mike7515/code-beautifier"
+	},
+	"publisher": "michelemelluso",
+	"license": "Apache-2.0",
+	"icon": "icon.png",
+	"bugs": {
+		"url": "https://github.com/mike7515/code-beautifier/issues",
+		"email": "michele.jr.melluso@gmail.com"
+	},
+	"engines": {
+		"vscode": "^1.22.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Beautify css/sass/scss/less",
+			"properties": {
+				"beautify.options": {
+					"type": "object",
+					"default": {},
+					"description": "Tab Size"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "beautify.format",
+				"title": "Beautify css/sass/scss/less"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "node ./node_modules/typescript/bin/tsc -p .",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"dependencies": {
+		"js-beautify": "^1.10.1"
+	},
+	"devDependencies": {
+		"typescript": "^2.9.1",
+		"vscode": "^1.1.35",
+		"mocha": "^6.2.0",
+		"@types/node": "^12.6.8",
+		"@types/mocha": "^5.2.7",
+		"@types/js-beautify": "^1.8.1"
+	},
+	"__metadata": {
+		"id": "8a0c151b-eb13-4bed-9d49-4a252a118a0c",
+		"publisherId": "81220008-de86-48d4-9d4a-a5f250aaee57",
+		"publisherDisplayName": "michelemelluso"
+	}
+}

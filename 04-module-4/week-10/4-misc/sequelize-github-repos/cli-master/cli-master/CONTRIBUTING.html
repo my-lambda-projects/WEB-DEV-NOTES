@@ -1,0 +1,32 @@
+<h1 id="contributing">Contributing</h1>
+<p>Sequelize CLI is entirely driven by community contributions. Any little contribution with code or documentation work helps us keeping this project running.</p>
+<p>You can help us in various ways</p>
+<h2 id="reporting-bugs">Reporting Bugs</h2>
+<h3 id="security-issues">Security Issues</h3>
+<p>Although CLI is never supposed to be web facing, we still want to fix any security issues. Please contact project maintainers <strong>privately</strong>. You can find more information <a href="https://github.com/sequelize/sequelize/blob/master/CONTACT.md">here</a>.</p>
+<h3 id="general-issues-or-feature-requests">General Issues or Feature Requests</h3>
+<p>Github issues should follow specified template. When you start creating a new issue, an empty template will be already filled.</p>
+<p>Please make sure issue you are reporting is strictly related to Sequelize CLI.</p>
+<p>If you want to propose new features to Sequelize CLI, you may ignore issue template. You still need to clearly state new feature. Feature request should give various examples, API suggestions and references to support idea behind it.</p>
+<h2 id="fixing-bugs-or-implementing-features">Fixing Bugs or Implementing Features</h2>
+<h3 id="preparing-your-environment">Preparing your environment</h3>
+<p>Start with cloning Sequelize CLI repo</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">$ <span class="fu">git</span> clone git@github.com:sequelize/cli.git</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">$ <span class="fu">git</span> clone https://github.com/sequelize/cli.git <span class="co"># Using HTTPS</span></a></code></pre></div>
+<p>Make sure you have all required dependencies, you will need</p>
+<ul>
+<li>Node v4 or above</li>
+<li>NPM v3 or above</li>
+</ul>
+<p>Now go to cloned repository folder</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="bu">cd</span> /path/to/cloned/repository</a></code></pre></div>
+<p>Install required modules</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="ex">npm</span> install</a></code></pre></div>
+<h3 id="running-tests">Running tests</h3>
+<p>By default CLI use SQLite, which requires no database configuration. We use Babel to build CLI. Running default test command will automatically build it for you.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1">$ <span class="ex">npm</span> test</a></code></pre></div>
+<p>Test can take about 7 to 10 minutes to finish, subjected to hardware configuration.</p>
+<h2 id="improving-documentation">Improving Documentation</h2>
+<p>If you want to improve or expand our documentation you can start with documentation in <code>/docs</code> folder of this repository.</p>
+<p>You can also help by improving <a href="http://docs.sequelizejs.com/manual/tutorial/migrations.html">Migration section</a>. Please read more about contributing to Sequelize Docs <a href="https://github.com/sequelize/sequelize/blob/master/CONTRIBUTING.DOCS.md">here</a></p>

@@ -1,0 +1,410 @@
+<h1 id="migrations">Migrations</h1>
+<p>Just like you use <a href="https://en.wikipedia.org/wiki/Version_control">version control</a> systems such as <a href="https://en.wikipedia.org/wiki/Git">Git</a> to manage changes in your source code, you can use <strong>migrations</strong> to keep track of changes to the database. With migrations you can transfer your existing database into another state and vice versa: Those state transitions are saved in migration files, which describe how to get to the new state and how to revert the changes in order to get back to the old state.</p>
+<p>You will need the <a href="https://github.com/sequelize/cli">Sequelize Command-Line Interface (CLI)</a>. The CLI ships support for migrations and project bootstrapping.</p>
+<p>A Migration in Sequelize is javascript file which exports two functions, <code>up</code> and <code>down</code>, that dictate how to perform the migration and undo it. You define those functions manually, but you don’t call them manually; they will be called automatically by the CLI. In these functions, you should simply perform whatever queries you need, with the help of <code>sequelize.query</code> and whichever other methods Sequelize provides to you. There is no extra magic beyond that.</p>
+<h2 id="installing-the-cli">Installing the CLI</h2>
+<p>To install the Sequelize CLI:</p>
+<pre class="text"><code>npm install --save-dev sequelize-cli</code></pre>
+<p>For details see the <a href="https://github.com/sequelize/cli">CLI GitHub repository</a>.</p>
+<h2 id="project-bootstrapping">Project bootstrapping</h2>
+<p>To create an empty project you will need to execute <code>init</code> command</p>
+<pre class="text"><code>npx sequelize-cli init</code></pre>
+<p>This will create following folders</p>
+<ul>
+<li><code>config</code>, contains config file, which tells CLI how to connect with database</li>
+<li><code>models</code>, contains all models for your project</li>
+<li><code>migrations</code>, contains all migration files</li>
+<li><code>seeders</code>, contains all seed files</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>Before continuing further we will need to tell the CLI how to connect to the database. To do that let’s open default config file <code>config/config.json</code>. It looks something like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-11" title="11">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-13" title="13">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-14" title="14">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-17" title="17">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-18" title="18">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_production&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-20" title="20">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-21" title="21">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb3-22" title="22">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="fu">}</span></a></code></pre></div>
+<p>Note that the Sequelize CLI assumes mysql by default. If you’re using another dialect, you need to change the content of the <code>"dialect"</code> option.</p>
+<p>Now edit this file and set correct database credentials and dialect. The keys of the objects (e.g. “development”) are used on <code>model/index.js</code> for matching <code>process.env.NODE_ENV</code> (When undefined, “development” is a default value).</p>
+<p>Sequelize will use the default connection port for each dialect (for example, for postgres, it is port 5432). If you need to specify a different port, use the <code>"port"</code> field (it is not present by default in <code>config/config.js</code> but you can simply add it).</p>
+<p><strong>Note:</strong> <em>If your database doesn’t exist yet, you can just call <code>db:create</code> command. With proper access it will create that database for you.</em></p>
+<h2 id="creating-the-first-model-and-migration">Creating the first Model (and Migration)</h2>
+<p>Once you have properly configured CLI config file you are ready to create your first migration. It’s as simple as executing a simple command.</p>
+<p>We will use <code>model:generate</code> command. This command requires two options:</p>
+<ul>
+<li><code>name</code>: the name of the model;</li>
+<li><code>attributes</code>: the list of model attributes.</li>
+</ul>
+<p>Let’s create a model named <code>User</code>.</p>
+<pre class="text"><code>npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string</code></pre>
+<p>This will:</p>
+<ul>
+<li>Create a model file <code>user</code> in <code>models</code> folder;</li>
+<li>Create a migration file with name like <code>XXXXXXXXXXXXXX-create-user.js</code> in <code>migrations</code> folder.</li>
+</ul>
+<p><strong>Note:</strong> <em>Sequelize will only use Model files, it’s the table representation. On the other hand, the migration file is a change in that model or more specifically that table, used by CLI. Treat migrations like a commit or a log for some change in database.</em></p>
+<h2 id="running-migrations">Running Migrations</h2>
+<p>Until this step, we haven’t inserted anything into the database. We have just created required model and migration files for our first model <code>User</code>. Now to actually create that table in database you need to run <code>db:migrate</code> command.</p>
+<pre class="text"><code>npx sequelize-cli db:migrate</code></pre>
+<p>This command will execute these steps:</p>
+<ul>
+<li>Will ensure a table called <code>SequelizeMeta</code> in database. This table is used to record which migrations have run on the current database</li>
+<li>Start looking for any migration files which haven’t run yet. This is possible by checking <code>SequelizeMeta</code> table. In this case it will run <code>XXXXXXXXXXXXXX-create-user.js</code> migration, which we created in last step.</li>
+<li>Creates a table called <code>Users</code> with all columns as specified in its migration file.</li>
+</ul>
+<h2 id="undoing-migrations">Undoing Migrations</h2>
+<p>Now our table has been created and saved in database. With migration you can revert to old state by just running a command.</p>
+<p>You can use <code>db:migrate:undo</code>, this command will revert most recent migration.</p>
+<pre class="text"><code>npx sequelize-cli db:migrate:undo</code></pre>
+<p>You can revert back to initial state by undoing all migrations with <code>db:migrate:undo:all</code> command. You can also revert back to a specific migration by passing its name in <code>--to</code> option.</p>
+<pre class="text"><code>npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js</code></pre>
+<h3 id="creating-the-first-seed">Creating the first Seed</h3>
+<p>Suppose we want to insert some data into a few tables by default. If we follow up on previous example we can consider creating a demo user for <code>User</code> table.</p>
+<p>To manage all data migrations you can use seeders. Seed files are some change in data that can be used to populate database table with sample data or test data.</p>
+<p>Let’s create a seed file which will add a demo user to our <code>User</code> table.</p>
+<pre class="text"><code>npx sequelize-cli seed:generate --name demo-user</code></pre>
+<p>This command will create a seed file in <code>seeders</code> folder. File name will look something like <code>XXXXXXXXXXXXXX-demo-user.js</code>. It follows the same <code>up / down</code> semantics as the migration files.</p>
+<p>Now we should edit this file to insert demo user to <code>User</code> table.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(<span class="st">&#39;Users&#39;</span><span class="op">,</span> [<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;John&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-5" title="5">      <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Doe&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">      <span class="dt">email</span><span class="op">:</span> <span class="st">&#39;example@example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-7" title="7">      <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-8" title="8">      <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()</a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="op">}</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-10" title="10">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkDelete</span>(<span class="st">&#39;Users&#39;</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="op">};</span></a></code></pre></div>
+<h2 id="running-seeds">Running Seeds</h2>
+<p>In last step you have create a seed file. It’s still not committed to database. To do that we need to run a simple command.</p>
+<pre class="text"><code>npx sequelize-cli db:seed:all</code></pre>
+<p>This will execute that seed file and you will have a demo user inserted into <code>User</code> table.</p>
+<p><strong>Note:</strong> <em>Seeder execution history is not stored anywhere, unlike migrations, which use the <code>SequelizeMeta</code> table. If you wish to change this behavior, please read the <code>Storage</code> section.</em></p>
+<h2 id="undoing-seeds">Undoing Seeds</h2>
+<p>Seeders can be undone if they are using any storage. There are two commands available for that:</p>
+<p>If you wish to undo the most recent seed:</p>
+<pre class="text"><code>npx sequelize-cli db:seed:undo</code></pre>
+<p>If you wish to undo a specific seed:</p>
+<pre class="text"><code>npx sequelize-cli db:seed:undo --seed name-of-seed-as-in-data</code></pre>
+<p>If you wish to undo all seeds:</p>
+<pre class="text"><code>npx sequelize-cli db:seed:undo:all</code></pre>
+<h2 id="migration-skeleton">Migration Skeleton</h2>
+<p>The following skeleton shows a typical migration file.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">// logic for transforming into the new state</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="co">// logic for reverting the changes</span></a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="op">}</span></a></code></pre></div>
+<p>We can generate this file using <code>migration:generate</code>. This will create <code>xxx-migration-skeleton.js</code> in your migration folder.</p>
+<pre class="text"><code>npx sequelize-cli migration:generate --name migration-skeleton</code></pre>
+<p>The passed <code>queryInterface</code> object can be used to modify the database. The <code>Sequelize</code> object stores the available data types such as <code>STRING</code> or <code>INTEGER</code>. Function <code>up</code> or <code>down</code> should return a <code>Promise</code>. Let’s look at an example:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-4" title="4">      <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-5" title="5">      <span class="dt">isBetaMember</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-6" title="6">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-7" title="7">        <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-8" title="8">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb16-9" title="9">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-10" title="10">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-11" title="11">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-12" title="12">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-13" title="13">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Person&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="op">};</span></a></code></pre></div>
+<p>The following is an example of a migration that performs two changes in the database, using an automatically-managed transaction to ensure that all instructions are successfully executed or rolled back in case of failure:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="va">sequelize</span>.<span class="at">transaction</span>(t <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-4" title="4">      <span class="cf">return</span> <span class="va">Promise</span>.<span class="at">all</span>([</a>
+<a class="sourceLine" id="cb17-5" title="5">        <span class="va">queryInterface</span>.<span class="at">addColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-6" title="6">          <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb17-7" title="7">        <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-8" title="8">        <span class="va">queryInterface</span>.<span class="at">addColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;favoriteColor&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-9" title="9">          <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-10" title="10">        <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb17-11" title="11">      ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-12" title="12">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-13" title="13">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-14" title="14">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-15" title="15">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="va">sequelize</span>.<span class="at">transaction</span>(t <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-16" title="16">      <span class="cf">return</span> <span class="va">Promise</span>.<span class="at">all</span>([</a>
+<a class="sourceLine" id="cb17-17" title="17">        <span class="va">queryInterface</span>.<span class="at">removeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-18" title="18">        <span class="va">queryInterface</span>.<span class="at">removeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;favoriteColor&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb17-19" title="19">      ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-20" title="20">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-22" title="22"><span class="op">};</span></a></code></pre></div>
+<p>The next example is of a migration that has a foreign key. You can use references to specify a foreign key:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-4" title="4">      <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-5" title="5">      <span class="dt">isBetaMember</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-6" title="6">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-7" title="7">        <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-8" title="8">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb18-9" title="9">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-10" title="10">      <span class="dt">userId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-11" title="11">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-12" title="12">        <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-13" title="13">          <span class="dt">model</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-14" title="14">            <span class="dt">tableName</span><span class="op">:</span> <span class="st">&#39;users&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-15" title="15">            <span class="dt">schema</span><span class="op">:</span> <span class="st">&#39;schema&#39;</span></a>
+<a class="sourceLine" id="cb18-16" title="16">          <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-17" title="17">          <span class="dt">key</span><span class="op">:</span> <span class="st">&#39;id&#39;</span></a>
+<a class="sourceLine" id="cb18-18" title="18">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-19" title="19">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb18-20" title="20">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-21" title="21">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-22" title="22">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-23" title="23">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-24" title="24">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Person&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-25" title="25">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-26" title="26"><span class="op">}</span></a></code></pre></div>
+<p>The next example is of a migration that uses async/await where you create an unique index on a new column, with a manually-managed transaction:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-2" title="2">  <span class="kw">async</span> <span class="at">up</span>(queryInterface<span class="op">,</span> Sequelize) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-3" title="3">    <span class="kw">const</span> transaction <span class="op">=</span> <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="va">sequelize</span>.<span class="at">transaction</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-4" title="4">    <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-5" title="5">      <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">addColumn</span>(</a>
+<a class="sourceLine" id="cb19-6" title="6">        <span class="st">&#39;Person&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-7" title="7">        <span class="st">&#39;petName&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-8" title="8">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-9" title="9">          <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-10" title="10">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb19-11" title="11">        <span class="op">{</span> transaction <span class="op">}</span></a>
+<a class="sourceLine" id="cb19-12" title="12">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-13" title="13">      <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">addIndex</span>(</a>
+<a class="sourceLine" id="cb19-14" title="14">        <span class="st">&#39;Person&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-15" title="15">        <span class="st">&#39;petName&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-16" title="16">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-17" title="17">          <span class="dt">fields</span><span class="op">:</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-18" title="18">          <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-19" title="19">          transaction<span class="op">,</span></a>
+<a class="sourceLine" id="cb19-20" title="20">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb19-21" title="21">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-22" title="22">      <span class="cf">await</span> <span class="va">transaction</span>.<span class="at">commit</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-23" title="23">    <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-24" title="24">      <span class="cf">await</span> <span class="va">transaction</span>.<span class="at">rollback</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-25" title="25">      <span class="cf">throw</span> err<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-26" title="26">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb19-27" title="27">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb19-28" title="28">  <span class="kw">async</span> <span class="at">down</span>(queryInterface<span class="op">,</span> Sequelize) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-29" title="29">    <span class="kw">const</span> transaction <span class="op">=</span> <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="va">sequelize</span>.<span class="at">transaction</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-30" title="30">    <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-31" title="31">      <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">removeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span> <span class="op">{</span> transaction <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-32" title="32">      <span class="cf">await</span> <span class="va">transaction</span>.<span class="at">commit</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-33" title="33">    <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-34" title="34">      <span class="cf">await</span> <span class="va">transaction</span>.<span class="at">rollback</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-35" title="35">      <span class="cf">throw</span> err<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-36" title="36">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb19-37" title="37">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb19-38" title="38"><span class="op">};</span></a></code></pre></div>
+<p>The next example is of a migration that creates an unique index composed of multiple fields with a condition, which allows a relation to exist multiple times but only one can satisfy the condition:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-3" title="3">    <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-4" title="4">      <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-5" title="5">      <span class="dt">bool</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-6" title="6">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="va">DataTypes</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-7" title="7">        <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb20-8" title="8">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb20-9" title="9">    <span class="op">}</span>).<span class="at">then</span>((queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-10" title="10">      <span class="va">queryInterface</span>.<span class="at">addIndex</span>(</a>
+<a class="sourceLine" id="cb20-11" title="11">        <span class="st">&#39;Person&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-12" title="12">        [<span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;bool&#39;</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb20-13" title="13">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-14" title="14">          <span class="dt">indicesType</span><span class="op">:</span> <span class="st">&#39;UNIQUE&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-15" title="15">          <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">bool </span><span class="op">:</span> <span class="st">&#39;true&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb20-16" title="16">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb20-17" title="17">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-18" title="18">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-19" title="19">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb20-20" title="20">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-21" title="21">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Person&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-22" title="22">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb20-23" title="23"><span class="op">}</span></a></code></pre></div>
+<h3 id="the-.sequelizerc-file">The <code>.sequelizerc</code> file</h3>
+<p>This is a special configuration file. It lets you specify the following options that you would usually pass as arguments to CLI:</p>
+<ul>
+<li><code>env</code>: The environment to run the command in</li>
+<li><code>config</code>: The path to the config file</li>
+<li><code>options-path</code>: The path to a JSON file with additional options</li>
+<li><code>migrations-path</code>: The path to the migrations folder</li>
+<li><code>seeders-path</code>: The path to the seeders folder</li>
+<li><code>models-path</code>: The path to the models folder</li>
+<li><code>url</code>: The database connection string to use. Alternative to using –config files</li>
+<li><code>debug</code>: When available show various debug information</li>
+</ul>
+<p>Some scenarios where you can use it:</p>
+<ul>
+<li>You want to override default path to <code>migrations</code>, <code>models</code>, <code>seeders</code> or <code>config</code> folder.</li>
+<li>You want to rename <code>config.json</code> to something else like <code>database.json</code></li>
+</ul>
+<p>And a whole lot more. Let’s see how you can use this file for custom configuration.</p>
+<p>To begin, let’s create the <code>.sequelizerc</code> file in the root directory of your project, with the following content:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="co">// .sequelizerc</span></a>
+<a class="sourceLine" id="cb21-2" title="2"></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">const</span> path <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;path&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-4" title="4"></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="st">&#39;config&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;config&#39;</span><span class="op">,</span> <span class="st">&#39;database.json&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb21-7" title="7">  <span class="st">&#39;models-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;db&#39;</span><span class="op">,</span> <span class="st">&#39;models&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb21-8" title="8">  <span class="st">&#39;seeders-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;db&#39;</span><span class="op">,</span> <span class="st">&#39;seeders&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb21-9" title="9">  <span class="st">&#39;migrations-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;db&#39;</span><span class="op">,</span> <span class="st">&#39;migrations&#39;</span>)</a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="op">};</span></a></code></pre></div>
+<p>With this config you are telling the CLI to:</p>
+<ul>
+<li>Use <code>config/database.json</code> file for config settings;</li>
+<li>Use <code>db/models</code> as models folder;</li>
+<li>Use <code>db/seeders</code> as seeders folder;</li>
+<li>Use <code>db/migrations</code> as migrations folder.</li>
+</ul>
+<h3 id="dynamic-configuration">Dynamic configuration</h3>
+<p>The configuration file is by default a JSON file called <code>config.json</code>. But sometimes you need a dynamic configuration, for example to access environment variables or execute some other code to determine the configuration.</p>
+<p>Thankfully, the Sequelize CLI can read from both <code>.json</code> and <code>.js</code> files. This can be setup with <code>.sequelizerc</code> file. You just have to provide the path to your <code>.js</code> file as the <code>config</code> option of your exported object:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">const</span> path <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;path&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-2" title="2"></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-4" title="4">  <span class="st">&#39;config&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;config&#39;</span><span class="op">,</span> <span class="st">&#39;config.js&#39;</span>)</a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="op">}</span></a></code></pre></div>
+<p>Now the Sequelize CLI will load <code>config/config.js</code> for getting configuration options.</p>
+<p>An example of <code>config/config.js</code> file:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">development</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-5" title="5">    <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;database_dev&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-6" title="6">    <span class="dt">password</span><span class="op">:</span> <span class="st">&#39;database_dev&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-7" title="7">    <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;database_dev&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-8" title="8">    <span class="dt">host</span><span class="op">:</span> <span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-9" title="9">    <span class="dt">port</span><span class="op">:</span> <span class="dv">3306</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-10" title="10">    <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mysql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-11" title="11">    <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-12" title="12">      <span class="dt">bigNumberStrings</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb23-13" title="13">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-14" title="14">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb23-15" title="15">  <span class="dt">test</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-16" title="16">    <span class="dt">username</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">CI_DB_USERNAME</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-17" title="17">    <span class="dt">password</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">CI_DB_PASSWORD</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-18" title="18">    <span class="dt">database</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">CI_DB_NAME</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-19" title="19">    <span class="dt">host</span><span class="op">:</span> <span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-20" title="20">    <span class="dt">port</span><span class="op">:</span> <span class="dv">3306</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-21" title="21">    <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mysql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-22" title="22">    <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-23" title="23">      <span class="dt">bigNumberStrings</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb23-24" title="24">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-25" title="25">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb23-26" title="26">  <span class="dt">production</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-27" title="27">    <span class="dt">username</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">PROD_DB_USERNAME</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-28" title="28">    <span class="dt">password</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">PROD_DB_PASSWORD</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-29" title="29">    <span class="dt">database</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">PROD_DB_NAME</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-30" title="30">    <span class="dt">host</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">PROD_DB_HOSTNAME</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-31" title="31">    <span class="dt">port</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">PROD_DB_PORT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-32" title="32">    <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mysql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-33" title="33">    <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-34" title="34">      <span class="dt">bigNumberStrings</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-35" title="35">      <span class="dt">ssl</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-36" title="36">        <span class="dt">ca</span><span class="op">:</span> <span class="va">fs</span>.<span class="at">readFileSync</span>(__dirname <span class="op">+</span> <span class="st">&#39;/mysql-ca-master.crt&#39;</span>)</a>
+<a class="sourceLine" id="cb23-37" title="37">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-38" title="38">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-39" title="39">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-40" title="40"><span class="op">};</span></a></code></pre></div>
+<p>The example above also shows how to add custom dialect options to the configuration.</p>
+<h3 id="using-babel">Using Babel</h3>
+<p>To enable more modern constructions in your migrations and seeders, you can simply install <code>babel-register</code> and require it at the beginning of <code>.sequelizerc</code>:</p>
+<pre class="text"><code>npm i --save-dev babel-register</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="co">// .sequelizerc</span></a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="at">require</span>(<span class="st">&quot;babel-register&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-4" title="4"></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="kw">const</span> path <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;path&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-6" title="6"></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-8" title="8">  <span class="st">&#39;config&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;config&#39;</span><span class="op">,</span> <span class="st">&#39;config.json&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-9" title="9">  <span class="st">&#39;models-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;models&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-10" title="10">  <span class="st">&#39;seeders-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;seeders&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-11" title="11">  <span class="st">&#39;migrations-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;migrations&#39;</span>)</a>
+<a class="sourceLine" id="cb25-12" title="12"><span class="op">}</span></a></code></pre></div>
+<p>Of course, the outcome will depend upon your babel configuration (such as in a <code>.babelrc</code> file). Learn more at <a href="https://babeljs.io">babeljs.io</a>.</p>
+<h3 id="security-tip">Security tip</h3>
+<p>Use environment variables for config settings. This is because secrets such as passwords should never be part of the source code (and especially not committed to version control).</p>
+<h3 id="storage">Storage</h3>
+<p>There are three types of storage that you can use: <code>sequelize</code>, <code>json</code>, and <code>none</code>.</p>
+<ul>
+<li><code>sequelize</code> : stores migrations and seeds in a table on the sequelize database</li>
+<li><code>json</code> : stores migrations and seeds on a json file</li>
+<li><code>none</code> : does not store any migration/seed</li>
+</ul>
+<h4 id="migration-storage">Migration Storage</h4>
+<p>By default the CLI will create a table in your database called <code>SequelizeMeta</code> containing an entry for each executed migration. To change this behavior, there are three options you can add to the configuration file. Using <code>migrationStorage</code>, you can choose the type of storage to be used for migrations. If you choose <code>json</code>, you can specify the path of the file using <code>migrationStoragePath</code> or the CLI will write to the file <code>sequelize-meta.json</code>. If you want to keep the information in the database, using <code>sequelize</code>, but want to use a different table, you can change the table name using <code>migrationStorageTableName</code>. Also you can define a different schema for the <code>SequelizeMeta</code> table by providing the <code>migrationStorageTableSchema</code> property.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb26-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb26-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb26-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-8" title="8"></a>
+<a class="sourceLine" id="cb26-9" title="9">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">storage</span> <span class="er">type.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">sequelize</span></a>
+<a class="sourceLine" id="cb26-10" title="10">    <span class="st">&quot;migrationStorage&quot;</span><span class="er">:</span> <span class="st">&quot;json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-11" title="11"></a>
+<a class="sourceLine" id="cb26-12" title="12">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">file</span> <span class="er">name.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">sequelize-meta.json</span></a>
+<a class="sourceLine" id="cb26-13" title="13">    <span class="st">&quot;migrationStoragePath&quot;</span><span class="er">:</span> <span class="st">&quot;sequelizeMeta.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-14" title="14"></a>
+<a class="sourceLine" id="cb26-15" title="15">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">table</span> <span class="er">name.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">SequelizeMeta</span></a>
+<a class="sourceLine" id="cb26-16" title="16">    <span class="st">&quot;migrationStorageTableName&quot;</span><span class="er">:</span> <span class="st">&quot;sequelize_meta&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb26-17" title="17"></a>
+<a class="sourceLine" id="cb26-18" title="18">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">schema</span> <span class="er">for</span> <span class="er">the</span> <span class="er">SequelizeMeta</span> <span class="er">table</span></a>
+<a class="sourceLine" id="cb26-19" title="19">    <span class="dt">&quot;migrationStorageTableSchema&quot;</span><span class="fu">:</span> <span class="st">&quot;custom_schema&quot;</span></a>
+<a class="sourceLine" id="cb26-20" title="20">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb26-21" title="21"><span class="fu">}</span></a></code></pre></div>
+<p><strong>Note:</strong> <em>The <code>none</code> storage is not recommended as a migration storage. If you decide to use it, be aware of the implications of having no record of what migrations did or didn’t run.</em></p>
+<h4 id="seed-storage">Seed Storage</h4>
+<p>By default the CLI will not save any seed that is executed. If you choose to change this behavior (!), you can use <code>seederStorage</code> in the configuration file to change the storage type. If you choose <code>json</code>, you can specify the path of the file using <code>seederStoragePath</code> or the CLI will write to the file <code>sequelize-data.json</code>. If you want to keep the information in the database, using <code>sequelize</code>, you can specify the table name using <code>seederStorageTableName</code>, or it will default to <code>SequelizeData</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-8" title="8">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">storage.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">none</span></a>
+<a class="sourceLine" id="cb27-9" title="9">    <span class="st">&quot;seederStorage&quot;</span><span class="er">:</span> <span class="st">&quot;json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-10" title="10">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">file</span> <span class="er">name.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">sequelize-data.json</span></a>
+<a class="sourceLine" id="cb27-11" title="11">    <span class="st">&quot;seederStoragePath&quot;</span><span class="er">:</span> <span class="st">&quot;sequelizeData.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-12" title="12">    <span class="er">//</span> <span class="er">Use</span> <span class="er">a</span> <span class="er">different</span> <span class="er">table</span> <span class="er">name.</span> <span class="er">Default</span><span class="fu">:</span> <span class="er">SequelizeData</span></a>
+<a class="sourceLine" id="cb27-13" title="13">    <span class="st">&quot;seederStorageTableName&quot;</span><span class="er">:</span> <span class="st">&quot;sequelize_data&quot;</span></a>
+<a class="sourceLine" id="cb27-14" title="14">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb27-15" title="15"><span class="fu">}</span></a></code></pre></div>
+<h3 id="configuration-connection-string">Configuration Connection String</h3>
+<p>As an alternative to the <code>--config</code> option with configuration files defining your database, you can use the <code>--url</code> option to pass in a connection string. For example:</p>
+<pre class="text"><code>npx sequelize-cli db:migrate --url &#39;mysql://root:password@mysql_host.com/database_name&#39;</code></pre>
+<h3 id="programmatic-usage">Programmatic usage</h3>
+<p>Sequelize has a sister library called <a href="https://github.com/sequelize/umzug">umzug</a> for programmatically handling execution and logging of migration tasks.</p>

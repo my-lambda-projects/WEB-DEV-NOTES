@@ -1,0 +1,60 @@
+/****
+auth.css
+
+(NOTE: Used by LoginForm)
+****/
+
+.ev-user-info-change > main {
+  max-width: 500px;
+  margin: 0 auto;
+  --text-space: 9rem;
+}
+
+.ev-user-info-change form {
+  max-width: 80%;
+  margin: 30px auto;
+  padding: 30px;
+  border: 1px solid var(--primary-color-dark);
+  border-radius: 10px;
+  position: relative;
+}
+
+.ev-user-info-change form > div {
+  margin-bottom: 5px;
+}
+
+.ev-user-info-change label {
+  display: inline-block;
+  width: var(--text-space);
+  padding-right: 5px;
+  font-weight: bold;
+}
+
+.ev-user-info-change input {
+  width: 60%;
+}
+
+.ev-user-info-change button {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.ev-user-info-change .error-border {
+  outline: var(--error-color) auto 1px;
+  /* box-shadow: 0 0 3px var(--error-color); */
+}
+
+.ev-user-info-change .unmatched-confirm {
+  color: var(--error-color);
+  padding-left: calc(var(--text-space) + 7px);
+  font-size: .9em;
+  margin-bottom: -1rem;
+}
+
+.ev-user-info-change .icon.submit {
+  position: absolute;
+  z-index: 1;
+  left: 95%;
+  top: 50%;
+  margin-top: calc(var(--icon-button-font-size)/-2 - var(--icon-button-padding) - var(--icon-padding) - var(--icon-margin));
+}

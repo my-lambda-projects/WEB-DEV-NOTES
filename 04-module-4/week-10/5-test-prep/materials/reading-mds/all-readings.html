@@ -1,0 +1,1202 @@
+<h1 id="week-10-day-1hello-database">WEEK-10 DAY-1Hello, Database</h1>
+<figure>
+<embed src="C:\Users\15512\OneDrive\Documents\Google%20Drive\a-A-Google-Drive\0-REPOSITORY\00-weeks\00-WEB-DEV-SCRIPTURE\css-styles-for-markdown-preview\markdown.css" /><figcaption>[css]</figcaption>
+</figure>
+<hr />
+<ul>
+<li><a href="#week-10-day-1hello-database">WEEK-10 DAY-1Hello, Database</a></li>
+<li><a href="#make-it-pretty-learning-objectives">Make It Pretty Learning Objectives</a>
+<ul>
+<li><a href="#portfolio-quality">Portfolio Quality</a></li>
+</ul></li>
+<li><a href="#rdbms-and-database-entity-learning-objectives">RDBMS And Database Entity Learning Objectives</a></li>
+<li><a href="#make-it-pretty-practice">Make It Pretty Practice</a>
+<ul>
+<li><a href="#what-recruiters-are-looking-for">What Recruiters Are Looking For</a></li>
+<li><a href="#attributes-of-great-looking-websites">Attributes of Great Looking Websites</a></li>
+<li><a href="#additional-requirements">Additional requirements</a></li>
+<li><a href="#avoid-these-things">Avoid these things</a></li>
+<li><a href="#exercise">Exercise</a></li>
+</ul></li>
+<li><a href="#database-lingo-the-relational-database-management-system-">Database Lingo-The Relational Database Management System-</a>
+<ul>
+<li><a href="#rdbms">RDBMS</a></li>
+<li><a href="#what-is-postgresql">What is PostgreSQL?</a></li>
+<li><a href="#what-is-sql">What is SQL?</a></li>
+</ul></li>
+<li><a href="#installing-postgresql-12-and-postbird-on-windows">Installing PostgreSQL 12 and Postbird on Windows</a>
+<ul>
+<li><a href="#installing-postgresql-12">Installing PostgreSQL 12</a></li>
+<li><a href="#installing-postgresql-client-tools-on-ubuntu">Installing PostgreSQL Client Tools on Ubuntu</a></li>
+<li><a href="#configuring-the-client-tools">Configuring the client tools</a></li>
+<li><a href="#installing-postbird">Installing Postbird</a></li>
+</ul></li>
+<li><a href="#installing-postgresql-12-and-postbird-on-macos">Installing PostgreSQL 12 and Postbird on macOS</a>
+<ul>
+<li><a href="#configuring-postgresql-12">Configuring PostgreSQL 12</a></li>
+<li><a href="#connecting-to-postgresql">Connecting to PostgreSQL</a></li>
+<li><a href="#installing-postbird-1">Installing Postbird</a></li>
+</ul></li>
+<li><a href="#user-management-walk-through">User Management Walk-Through</a>
+<ul>
+<li><a href="#naming-a-user">Naming a user</a></li>
+<li><a href="#creating-a-superuser">Creating a superuser</a></li>
+<li><a href="#current_user">current_user</a></li>
+<li><a href="#creating-a-limited-user">Creating a limited user</a></li>
+<li><a href="#removing-a-user">Removing a user</a></li>
+<li><a href="#case-sensitivity">Case sensitivity</a></li>
+<li><a href="#what-you-learned">What you learned</a></li>
+</ul></li>
+<li><a href="#database-management-walk-through">Database Management Walk-Through</a>
+<ul>
+<li><a href="#naming-a-database">Naming a database</a></li>
+<li><a href="#creating-a-database-for-your-user">Creating a database for your user</a></li>
+<li><a href="#creating-other-users-and-databases">Creating other users and databases</a></li>
+<li><a href="#applying-security-to-databases">Applying security to databases</a></li>
+</ul></li>
+<li><a href="#connect-to-the-database-odo-as-your-superuser">Connect to the database “odo” as your superuser</a></li>
+<li><a href="#connect-to-the-database-ada-as-your-superuser">Connect to the database “ada” as your superuser</a>
+<ul>
+<li><a href="#listing-databases-and-granting-privileges">Listing databases and granting privileges</a></li>
+<li><a href="#time-to-clean-up">Time to clean up</a></li>
+<li><a href="#what-youve-done">What you’ve done</a></li>
+</ul></li>
+<li><a href="#table-management----part-i">Table Management - Part I</a>
+<ul>
+<li><a href="#what-is-a-table">What is a table?</a></li>
+<li><a href="#defining-tables">Defining tables</a>
+<ul>
+<li><a href="#string-types">String types</a></li>
+<li><a href="#numeric-types">Numeric types</a></li>
+</ul></li>
+<li><a href="#other-data-types">Other data types</a></li>
+<li><a href="#naming-a-table">Naming a table</a></li>
+<li><a href="#writing-the-sql">Writing the SQL</a></li>
+<li><a href="#listing-tables-and-table-definitions">Listing tables and table definitions</a></li>
+<li><a href="#deleting-a-table">Deleting a table</a></li>
+<li><a href="#what-youve-done-1">What you’ve done</a></li>
+</ul></li>
+<li><a href="#table-management----part-ii">Table Management - Part II</a>
+<ul>
+<li><a href="#nullable-columns">Nullable columns</a></li>
+<li><a href="#default-values">Default values</a></li>
+<li><a href="#primary-keys">Primary keys</a></li>
+<li><a href="#unique-values">Unique values</a></li>
+<li><a href="#refactor-for-data-integrity">Refactor for data integrity</a></li>
+<li><a href="#order-of-table-declarations">Order of table declarations</a></li>
+<li><a href="#what-youve-done-2">What you’ve done</a></li>
+<li><a href="#puppies-and-breed-spreadsheets-normalized-imagesspreadsheet-puppies-and-breeds-normalizedpngimagesspreadsheet-puppies-and-breeds-normalizedpngort-toc-cmdtoc-depthfrom2-depthto6-orderedlistfalse---">[Puppies and breed spreadsheets normalized]: images/spreadsheet-puppies-and-breeds-normalized.pngimages/spreadsheet-puppies-and-breeds-normalized.pngort “[TOC]” {cmd=“toc” depthFrom=2 depthTo=6 orderedList=false} –&gt;</a></li>
+<li><a href="#nullable-columns-1">Nullable columns</a></li>
+<li><a href="#default-values-1">Default values</a></li>
+<li><a href="#primary-keys-1">Primary keys</a></li>
+<li><a href="#unique-values-1">Unique values</a></li>
+<li><a href="#refactor-for-data-integrity-1">Refactor for data integrity</a></li>
+<li><a href="#order-of-table-declarations-1">Order of table declarations</a></li>
+<li><a href="#what-youve-done-3">What you’ve done</a></li>
+</ul></li>
+<li><a href="#database-management-project">Database Management Project</a>
+<ul>
+<li><a href="#instructions">Instructions</a></li>
+</ul></li>
+</ul>
+<h1 id="make-it-pretty-learning-objectives">Make It Pretty Learning Objectives</h1>
+<h2 id="portfolio-quality">Portfolio Quality</h2>
+<p>It is really important that you make the best impression that you can with the projects that you will soon start. To that end, the objectives for your learning with this section should allow you to</p>
+<ul>
+<li>Recall the items recruiters are most interested</li>
+<li>Explain the aspects of good looking Web application</li>
+<li>Identify App Academy’s expectations of your projects for after you graduate</li>
+<li>Practice good code hygiene when making projects live</li>
+</ul>
+<h1 id="rdbms-and-database-entity-learning-objectives">RDBMS And Database Entity Learning Objectives</h1>
+<p>Databases are an essential part of many Web applications. There are lots of things we could store in a database and use in a Web app, including user information, product information, review information, and more. Learning how to create databases and retrieve information stored in a database to display in a Web app is a foundational development skill.</p>
+<p>In this section, you will be able to:</p>
+<ul>
+<li>Define what a relational database management system is</li>
+<li>Describe what relational data is</li>
+<li>Define what a database is</li>
+<li>Define what a database table is</li>
+<li>Describe the purpose of a primary key</li>
+<li>Describe the purpose of a foreign key</li>
+<li>Describe how to properly name things in PostgreSQL</li>
+<li>Install and configure PostgreSQL 12, its client tools, and a GUI client for it named Postbird</li>
+<li>Connect to an instance of PostgreSQL with the command line tool <code>psql</code></li>
+<li>Identify whether a user is a normal user or a superuser by the prompt in the <code>psql</code> shell</li>
+<li>Create a user for the relational database management system</li>
+<li>Create a database in the database management system</li>
+<li>Configure a database so that only the owner (and superusers) can connect to it</li>
+<li>View a list of databases in an installation of PostgreSQL</li>
+<li>Create tables in a database</li>
+<li>View a list of tables in a database</li>
+<li>Identify and describe the common data types used in PostgreSQL</li>
+<li>Describe the purpose of the UNIQUE and NOT NULL constraints, and create columns in database tables that have them</li>
+<li>Create a primary key for a table</li>
+<li>Create foreign key constraints to relate tables</li>
+<li>Explain that SQL is not case sensitive for its keywords but is for its entity names</li>
+</ul>
+<h1 id="make-it-pretty-practice">Make It Pretty Practice</h1>
+<p>Your portfolio projects are the first impression that a company has of you. Imagine you are a non-technical person looking to hire a developer to build your website. What would you think if you reviewed a site that looked unfinished, or poorly styled, even if the functionality worked perfectly? Would you have the perspective to tell the difference from a poorly implemented site and one that is robust, but not visually polished?</p>
+<p>Non-technical people will be looking at your projects before engineers, and they can’t see the amount of work it takes to get a backend up and running. All they see is the visual appearance, so unless you take care of your frontend you’ll never even get the chance to talk about the backend work you did.</p>
+<p>This material should make it so that you can</p>
+<ul>
+<li>Evaluate your site against industry-standard visual styles</li>
+<li>Identify the attributes of current trends in website presentation</li>
+<li>Identify gaps that can cause a website to be perceived as incomplete</li>
+</ul>
+<h2 id="what-recruiters-are-looking-for">What Recruiters Are Looking For</h2>
+<p>Recruiters expect professionalism and good design (we’ll discuss more about what good design means below). A good litmus test is: if you were to stumble upon your portfolio sight unexpectedly, would you be able to tell that this wasn’t done by a professional dev? In other words, does your website look on par with the millions of other production sites that exist on the internet?</p>
+<p>In response to what recruiters and interviewers might ask about how you choose different styles for your Web applications, review TopTal’s [12 Essential Web Interview Questions].</p>
+<h2 id="attributes-of-great-looking-websites">Attributes of Great Looking Websites</h2>
+<p>Unless you know exactly what you are doing when deciding on a visual approach, you should select and follow a modern design framework, or use a template.</p>
+<p>The first thing to pay attention to is padding and margin. Every element should have padding so that its inner contents are not butting up against its edges and margin so that the element itself is not butting up against any other elements. In general sibling elements should NOT touch or overlap. A good way to estimate the correct amount is to imagine a lower-case <code>a</code> in the same size and font of nearby text. You should be able to fit this <code>a</code> in both the padding and the margin such that it just barely touches the edge/text on each side.</p>
+<p>Be sure to balance whitespace when laying out your elements and adding margin/padding. If you have 20px of whitespace to the left of the element you should probably have 20px to the right as well. Make sure things are centered correctly (horizontally and vertically) and be consistent! I.E. If you have a row of buttons in the header they should all be aligned vertically with consistent margin and padding.</p>
+<p>Use a [color palette] to determine your website’s themes and avoid color clashes. You should have a primary color, a secondary color, and 1 or 2 accent colors. Your primary color is going to be the most abundant on the site followed by your secondary color. The accent color is used for things like buttons, tools, and other areas that you want to draw the user’s eye to. Use it sparingly!</p>
+<p>Use [Google Font Pairing] recommendations to find good fonts. In general, you should not have more than 2 fonts in a web app and you should avoid mixing serif and sans-serif fonts.</p>
+<p>Pay attention to font-size and weight! You should use [textual hierarchies] to break up your text and make it easier to read. Prefer multiple short lines to fewer long lines of text when displaying info to the user. Your headers should be large and paragraphs should be slightly smaller font size. Having widely varying and inconsistent font sizes is one of the surest signs that a website was designed by a beginner. When in doubt, simplify.</p>
+<p>Make sure your color and text choices pass [contrast requirements].</p>
+<p>Most modern websites slightly round the corners of buttons and background cards/modals. [You should, too]. Also, take advantage of advanced CSS features like transitions and shadows to make your site pop. Make sure you let your user know what parts of the site are alive through affordances.</p>
+<h2 id="additional-requirements">Additional requirements</h2>
+<p>In addition to the above recommendations, App Academy also expects your projects to include the following:</p>
+<ul>
+<li>-Seed Data–: Make sure your seeds are plentiful and appropriate. Even an excellently designed site will fail to impress if you don’t have a good seed data.</li>
+<li>Favicon–: Make sure your website has a [favicon].</li>
+<li>Demo Login–: Make sure your website has a demo login. Most recruiters will not sign up for your website with their own email address as the chance for misuse of said email address is too high. C onsole output–: Be sure that your console is free of logs and error messages. Nothing screams amateur more than seeing a ton of console.logs when visiting a potential candidate’s website.</li>
+<li>Personal Links–: Any links to your GitHub, LinkedIn, or Angel List should open in a new tab.</li>
+<li>Scorecard–: After you graduate, you’ll stop using Progress Tracker and start using InterviewDB, another one of our applications. When you go to turn in your project on InterviewDB, be sure to include the scorecard so that your advisor can grade your work. Note that you’ll need to make your own copy and save it to your google drive before adding the link to InterviewDB.</li>
+</ul>
+<h2 id="avoid-these-things">Avoid these things</h2>
+<p>We have collected a lot of feedback from recruiters and hiring managers over the years. These are the tips and tricks that they tell us will turn them off to reviewing a student’s project.</p>
+<ul>
+<li>Avoid fonts that look like handwriting</li>
+<li>Avoid over using accent colors</li>
+<li>Avoid themes that relate to specific holidays (ie. don’t make a Christmas themed app)</li>
+<li>Dead Links. If you didn’t implement a feature then don’t put a link to it. If you do, then you’re forcing recruiters to find the needle of implemented features in a haystack of unimplemented features. Your site will be perceived as incomplete or broken</li>
+<li>Avoid linking to the actual site that you are cloning</li>
+<li>Avoid neon, bright, or crazy colors</li>
+<li>Avoid having too many different colors in your app.</li>
+<li>Avoid putting affordances on things that can’t be clicked or interacted with</li>
+<li>Avoid blinking, spinning or flashing images</li>
+<li>Avoid busy tiled background images with any color text</li>
+<li>Avoid having everything centered. When in doubt, do not center. Do not center more than three lines of text</li>
+<li>Avoid too many images or huge images. Minify all images that are not of a product and do not need to be examined closely</li>
+<li>Avoid long lists of links</li>
+<li>Avoid too many headlines</li>
+<li><p>Do not use blinking or flashing text, images, or transitions ## Exercise Select three sites from [Product Hunt]. For each site, list the:</p></li>
+<li>Fonts Used</li>
+<li>Colors in Palette</li>
+<li>Contrast ratio of the main text and it’s background ([Use the contrast checker])</li>
+<li>The size of padding/margins compared to a lowercase ‘a’</li>
+<li>The maximum number of lines in a row center-justified anywhere on the site</li>
+<li>Load Time</li>
+<li>Theme or style based on (Bootstrap, Material, etc.)</li>
+<li><p>Number of broken or under construction pages [color palette]: <a href="https://99designs.com/blog/tips/the-7-step-guide-to-understanding-color-theory/" class="uri">https://99designs.com/blog/tips/the-7-step-guide-to-understanding-color-theory/</a> [Google Font Pairing]: https://fonts.google.com/ [textual hierarchies]: <a href="https://blog.designcrowd.com/article/867/understanding-the-hierarchy-of-text" class="uri">https://blog.designcrowd.com/article/867/understanding-the-hierarchy-of-text</a> [You should, too]: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius" class="uri">https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius</a> [affordances]: <a href="https://uxplanet.org/ux-design-glossary-how-to-use-affordances-in-user-interfaces-393c8e9686e4" class="uri">https://uxplanet.org/ux-design-glossary-how-to-use-affordances-in-user-interfaces-393c8e9686e4</a> [favicon]: <a href="https://www.abeautifulsite.net/what-are-favicons" class="uri">https://www.abeautifulsite.net/what-are-favicons</a> [12 Essential Web Interview Questions]: https://www.toptal.com/designers/web/interview-questions [Product Hunt]: https://www.producthunt.com/ [contrast requirements]: https://webaim.org/resources/contrastchecker/ [Use the contrast checker]: https://webaim.org/resources/contrastchecker/</p></li>
+</ul>
+<hr />
+<h1 id="database-lingo-the-relational-database-management-system-">Database Lingo-The Relational Database Management System-</h1>
+<p>Databases are an essential part of many Web applications. There are lots of things we could store in a database and use in a Web app, including user information, product information, review information, and more. Learning how to create databases and retrieve information stored in a database to display in a Web app is a foundational development skill.</p>
+<p>The most popular kind of database is called a <em>relational database</em>. That’s what you’ll primarily use in this course. There are other databases called “document databases”, “non-relational databases”, or “NoSQL databases” that have become popular since the mid-2000s. They serve a different purpose that relational databases by storing data in ways that are different than the way relational databases store their data.</p>
+<p>In this reading, you will learn about –relational database management systems–. Then, you will install one. Then, you will start using it!</p>
+<h2 id="rdbms">RDBMS</h2>
+<p>That’s quite an ugly acronym, but it’s what developers have when referring to the software application that manages databases for us. Here’s an important difference for you to understand.</p>
+<p>The –RDBMS– is a software application that you run that your programs can connect to that they can store, modify, and retrieve data. The RDBS that you will use in this course is called <a href="https://www.postgresql.org/">PostgreSQL</a>, often shortened to just “postgres”, pronounced like it’s spelled. It is an “open-source” RDBMS which means that you can go read the source code for it, copy it, modify it, and make your own specialized version of an RDBMS. Often, developers will talk about the “database server”. That is the computer on which the RDBMS is running.</p>
+<p>A –database– (or more properly –relational database–) is a collection of structured data that the RDBMS manages for you. A single running RDBMS can have hundreds of databases in it that it manages.</p>
+<p>Software developers will often use the term “database” to refer to the RDBMS. They will also say that “the data is in postgres” or “the data is in Oracle” which is terribly ambiguous because those are the names of the RDBMSes, not a database where the data is stored. That’d be like asking someone their address and them replying “Chicago”.</p>
+<p>Just be aware that the language around these terms is loose.</p>
+<h2 id="what-is-postgresql">What is PostgreSQL?</h2>
+<p>Again, PostgreSQL is software. Specifically, it is an open-source, relational database management system. It is derived from the POSTGRES package written at UC Berkeley. The specific name “PostgreSQL” was coined in 1996, after SQL was implemented as its core query language. PostgreSQL provided a new program (new for 1996) for interactive SQL queries called <code>[psql]</code>, which is terminal-based front-end to PostgreSQL that lets you to type in queries interactively, issue them to PostgreSQL, and see the query results.</p>
+<p>You install PostgreSQL onto a computer. It then runs as a “service”, that is, a program that runs in the background that should not stop until the machine does. You will install it on your computer. It will quietly run in the background, eagerly awaiting for you to connect to it and interact with it from the command line, from a GUI tool, or from your application.</p>
+<p>When you do connect with it, you will interact with it through a small set of its own commands and SQL.</p>
+<h2 id="what-is-sql">What is SQL?</h2>
+<p>SQL (pronounced “sequel” or “s-q-l”) stands for “Structured Query Language”. It is not a programming language like JavaScript. JavaScript, as you well know, has <em>control flow</em>, with <code>for</code> loops and <code>if</code> statements. Most SQL that you write doesn’t have all that. Instead, it is a <em>declarative</em> programming language. You tell the database what computation you want it to do, and it does it. In that way, SQL is more like CSS than JavaScript.</p>
+<p>Whereas JavaScript works on variables and arrays of single values, most SQL works on <em>sets</em> of records. You’ll see more what that means later, but just know that in the SQL that you learn, you won’t declare a single variable in that SQL.</p>
+<p>SQL, the language, is the primary way that you will interact with the RDBMS to affect the data in a single database or the structure of the database itself. The process of using SQL takes two steps:</p>
+<ol type="1">
+<li>Connect to an RDBMS specifying
+<ul>
+<li>credentials, user name and password</li>
+<li>the name of the database that you want to use</li>
+</ul></li>
+<li>Issue one or more SQL statements to interact with
+<ul>
+<li>the structure of the database</li>
+<li>the data in the database</li>
+</ul></li>
+</ol>
+<p>Some vendor-specific variants of SQL <em>do</em> have loops and if-statements. However, you will be learning the general kind of SQL, the one managed by the American National Standards Institute, called ANSI SQL which defines the way that we get data out of, put data into, modify data in, and remove data from a database. This type of SQL is <em>portable</em> between different types of database management systems. That means most of what you learn in this course, you will be able to use on <em>any</em> relational database management system that supports ANSI SQL, RDBMSes such as</p>
+<ul>
+<li>–Informix–, a commercial RDBMS from IBM intended to run on servers and mainframes</li>
+<li>–Microsoft Access–, a commercial RDBMS from Microsoft intended for personal use</li>
+<li>–Microsoft SQL Server–, a commercial RDBMS from Microsoft intended to run on servers</li>
+<li>–MySQL–, an open-source RDBMS comparable to PostgreSQL</li>
+<li>–Oracle DB–, a commercial RDBMS from Microsoft intended to run on servers</li>
+<li>–SQLite–, an open-source RDBMS that many applications <em>embed</em> into the program to efficiently store the application’s data relational data</li>
+</ul>
+<p>Now that this preamble is out of the way, the next step is to install PostgreSQL!</p>
+<ul>
+<li>A <em>relational database management</em> system is software that usually runs as a service that manages collections of structured data called databases.</li>
+<li>PostgreSQL is one of many relational database management systems and the one that you will mostly use in this course</li>
+<li>A <em>database</em> is a collection of structured data that an RDBMS manages for you.</li>
+<li>The Structured Query Language (SQL) is a programming language that allows you to interact with the structure of the database and the actual data that’s stored in it.</li>
+</ul>
+<hr />
+<h1 id="installing-postgresql-12-and-postbird-on-windows">Installing PostgreSQL 12 and Postbird on Windows</h1>
+<p>You will install three pieces of software so that you can start using PostgreSQL. You will install PostgreSQL itself on your Windows installation. Then, you will install <code>psql</code> in your Ubuntu installation. Then you will also install Postbird, a cross-platform graphical user interface that makes working with SQL and PostgreSQL better than just using the command line tool <code>psql</code>.</p>
+<p>When you read “installation”, that means the actual OS that’s running on your machine. So, you have a Windows installation, Windows 10, that’s running when you boot your computer. Then, when you start the Ubuntu installation, it’s as if there’s a completely separate computer running inside your computer. It’s like having two completely different laptops.</p>
+<h2 id="installing-postgresql-12">Installing PostgreSQL 12</h2>
+<p>To install PostgreSQL 12, you need to download the installer from the Internet. PostgreSQL’s commercial company, Enterprise DB, offers installers for PostgreSQL for every major platform.</p>
+<p>Open <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads" class="uri">https://www.enterprisedb.com/downloads/postgres-postgresql-downloads</a>. Click the link for PostgreSQL 12 for Windows x86-64.</p>
+<figure>
+<img src="download-postgresql.png" alt="Download PostgreSQL" /><figcaption>Download PostgreSQL</figcaption>
+</figure>
+<p>Once that installer downloads, run it. You need to go through the normal steps of installing software.</p>
+<ul>
+<li>Yes, Windows, let the installer make changes to <em>my</em> device.</li>
+<li>Thanks for the welcome. Next.</li>
+<li>Yeah, that’s a good place to install it. Next.</li>
+<li><p>I don’t want that pgAdmin nor the Stack Builder things. Uncheck. Uncheck. Next. <img src="postgresql-installation-uncheck-components.png" alt="Download PostgreSQL" /></p></li>
+<li>Also, great looking directory. Thanks. Next.</li>
+<li>Oooh! A password! I’ll enter ——–. I sure won’t forget that because, if I do, I’ll have to uninstall and reinstall PostgreSQL and lose all of my hard work. –Seriously, write down this password or use one you will not forget.– Next.</li>
+<li>Sure. 5432. Good to go. Next.</li>
+<li>Not even sure what that means. Default! Next.</li>
+<li>Yep. Looks good. Next.</li>
+<li>Geez. Really? Thanks. Next.</li>
+<li><em>Time to get a tea.</em></li>
+<li><p>All right! All done. Finish!</p></li>
+</ul>
+<h2 id="installing-postgresql-client-tools-on-ubuntu">Installing PostgreSQL Client Tools on Ubuntu</h2>
+<p>Now, to install the PostgreSQL Client tools for Ubuntu. You need to do this so that the Node.js (and later Python) programs running on your Ubuntu installation can access the PostgreSQL server running on your Windows installation. You need to tell <code>apt</code>, the package manager, that you want it to go find the PostgreSQL 12 client tools from PostgreSQL itself rather than the common package repositories. You do that by issuing the following two commands. Copy and paste them one at a time into your shell. (If your Ubuntu shell isn’t running, start one.)</p>
+<p>–Pro-tip–: Copy those commands because you’re not going to type them, right? After you copy one of them, you can just right-click on the Ubuntu shell. That should paste them in there for you.</p>
+<pre class="shell"><code>wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -</code></pre>
+<p>If prompted for your password, type it.</p>
+<pre class="shell"><code>echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main&quot; | sudo tee  /etc/apt/sources.list.d/pgdg.list</code></pre>
+<p>The last line of output of those two commands running should read “OK”. If it does not, try copying and pasting them one at a time.</p>
+<p>Now that you’ve registered the PostgreSQL repositories as a source to look for PostgreSQL, you need to update the <code>apt</code> registry. You should do this before you install <em>any</em> software on Ubuntu.</p>
+<pre class="shell"><code>sudo apt update</code></pre>
+<p>Once that’s finished running, the new entries for PostgreSQL 12 should be in the repository. Now, you can install them with the following command.</p>
+<pre class="shell"><code>sudo apt install postgresql-client-12 postgresql-common</code></pre>
+<p>If it asks you if you want to install them, please tell it “Y”.</p>
+<p>Test that it installed by typing <code>psql --version</code>. You should see it print out information about the version of the installed tools. If it tells you that it can’t find the command, try these instructions over.</p>
+<h2 id="configuring-the-client-tools">Configuring the client tools</h2>
+<p>Since you’re going to be accessing the PosgreSQL installation from your Ubuntu installation on your Windows installation, you’re going to have to type that you want to access it over and over, which means extra typing. To prevent you from having to do this, you can customize your shell to always add the extra commands for you.</p>
+<p>This assumes you’re still using Bash. If you changed the shell that your Ubuntu installation uses, please follow that shell’s directions for adding an alias to its startup file.</p>
+<p>Make sure you’re in your Ubuntu home directory. You can do that by typing <code>cd</code> and hitting enter. Use <code>ls</code> to find out if you have a <code>.bashrc</code> file. Type <code>ls .bashrc</code>. If it shows you that one exists, that’s the one you will add the alias to. If it tells you that there is no file named that, then type <code>ls .profile</code>. If it shows you that one exists, that’s the one you will add the alias to. If it shows you that it does not exist, then use the file name <code>.bashrc</code> in the following section.</p>
+<p>Now that you know which profile file to use, type <code>code «profile file name»</code> where “profile file name” is the name of the file you determined from the last section. Once Visual Studio Code starts up with your file, at the end of it (or if you’ve already added aliases, in that section), type the following.</p>
+<pre class="shell"><code>alias psql=&quot;psql -h localhost&quot;</code></pre>
+<p>When you run <code>psql</code> from the command line, it will now always add the part about wanting to connect to <em>localhost</em> every time. You would have to type that each time, otherwise.</p>
+<p>To make sure that you set that up correctly, type <code>psql -U postgres postgres</code>. This tells the <code>psql</code> client that you want to connect as the user “postgres” (<code>-U postgres</code>) to the database postgres (<code>postgres</code> at the end), which is the default database created when PostgreSQL is installed. It will prompt you for a password. Type the password that you used when you installed PostgrSQL, earlier. If the alias works correctly and you type the correct password, then you should see something like the following output.</p>
+<pre class="shell"><code>psql (12.2 (Ubuntu 12.2-2.pgdg18.04+1))
+Type &quot;help&quot; for help.
+
+postgres=#</code></pre>
+<p>Type <code>\q</code> and hit Enter to exit the PostgreSQL client tool.</p>
+<p>Now, you will add a user for your Ubuntu identity so that you don’t have to specify it all the time. Then, you will create a file that PostgreSQL will use to automatically send your password every time.</p>
+<p>Copy and paste the following into your Ubuntu shell. Think of a password that you want to use for your user. –Replace the password in the single quotes in the command with the password that you want.– It <em>has</em> to be a non-empty string. PostgreSQL doesn’t like it when it’s not.</p>
+<pre class="shell"><code>psql -U postgres -c &quot;CREATE USER `whoami` WITH PASSWORD &#39;password&#39; SUPERUSER&quot;</code></pre>
+<p>It should prompt you for a password. Type the password that you created when you installed PostgreSQL. Once you type the correct password, you should see “CREATE ROLE”.</p>
+<p>Now you will create your PostgreSQL password file. Type the following into your Ubuntu shell to open Visual Studio Code and create a new file.</p>
+<pre class="shell"><code>code ~/.pgpass</code></pre>
+<p>In that file, you will add this line, which tells it that on localhost for port 5432 (where PostgreSQL is running), for all databases (-), –use your Ubuntu user name and the password that you just created for that user with the <code>psql</code> command you just typed.– (If you have forgotten your Ubuntu user name, type <code>whoami</code> on the command line.) Your entry in the file should have this format.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1">localhost<span class="ch">:5432</span>:<span class="op">-</span>:«your Ubuntu <span class="fu">user</span> name»:«the <span class="kw">password</span> you just used»</a></code></pre></div>
+<p>For the curriculum writers’ systems, it looks like this in Visual Studio Code.</p>
+<figure>
+<img src="../../../0-images/png/windows-pgpass-configuration.png" alt="pgpass" /><figcaption>pgpass</figcaption>
+</figure>
+<p>Once you have that information in the file, save it, and close Visual Studio Code.</p>
+<p>The last step you have to take is change the permission on that file so that it is only readable by your user. PostgreSQL will ignore it if just anyone can read and write to it. This is for <em>your</em> security. Change the file permissions so only you can read and write to it. You did this once upon a time. Here’s the command.</p>
+<pre class="shell"><code>chmod go-rw ~/.pgpass</code></pre>
+<p>You can confirm that only you have read/write permission by typing <code>ls -al ~/.pgpass</code>. That should return output that looks like this, –with your Ubuntu user name instead of “appacademy”.–</p>
+<pre class="shell"><code>-rw------- 1 appacademy appacademy 37 Mar 28 21:20 /home/appacademy/.pgpass</code></pre>
+<p>Now, try connecting to PostreSQL by typing <code>psql postgres</code>. Because you added the alias to your startup script, and because you created your –.pgpass– file, it should now connect without prompting you for any credentials! Type <code>\q</code> and press Enter to exit the PostgreSQL command line client.</p>
+<h2 id="installing-postbird">Installing Postbird</h2>
+<p>Head over to the <a href="https://github.com/Paxa/postbird/releases">Postbird releases page on GitHub</a>. Click the installer for Windows which you can recognize because it’s the only file in the list that ends with “.exe”.</p>
+<figure>
+<img src="download-postbird.png" alt="Download Postbird" /><figcaption>Download Postbird</figcaption>
+</figure>
+<p>After that installer downloads, run it. You will get a warning from Windows that this is from an unidentified developer. If you don’t want to install this, find a PostgreSQL GUI client that you do trust and install it or do everything from the command line.</p>
+<figure>
+<img src="postbird-installation-unidentified-developer.png" alt="Postbird installation warning" /><figcaption>Postbird installation warning</figcaption>
+</figure>
+<p>You should get used to seeing this because many open-source applications aren’t signed with the Microsoft Store for monetary and philosophical reasons.</p>
+<p>Otherwise, if you trust Paxa like App Academy and tens of thousands of other developers do, then click the link that reads “More info” and the “Run anyway” button.</p>
+<figure>
+<img src="postbird-installation-run-anyway.png" alt="Postbird run anyway" /><figcaption>Postbird run anyway</figcaption>
+</figure>
+<p>When it’s done installing, it will launch itself. Test it out by typing the “postgres” into the “Username” field and the password from your installation in the “Password” field. Click the Connect button. It should properly connect to the running</p>
+<p>You can close it for now. It also installed an icon on your desktop. You can launch it from there or your Start Menu at any time.</p>
+<p>You installed and configured PosgreSQL 12, a relational database management system, and tools to use it! Well done!</p>
+<hr />
+<h1 id="installing-postgresql-12-and-postbird-on-macos">Installing PostgreSQL 12 and Postbird on macOS</h1>
+<p>You will install two pieces of software so that you can start using PostgreSQL. You sill install PostgreSQL itself along with all of its tools. Then you will also install Postbird, a cross-platform graphical user interface that makes working with SQL and PostgreSQL better than just using the command line tool <code>psql</code>.</p>
+<p>You can install both of these products using Homebrew. Your Windows-using classmates don’t have this convenience, so pretend you’re having a hard time doing this. 😉</p>
+<p>First, update your Homebrew installation. You should do this before each thing that you install using Homebrew.</p>
+<p><code>shell brew update</code>shell</p>
+<p>Now, make sure that you have the correct Homebrew recipe. Type the following and make sure that the first line of the output contains some version of “12”.</p>
+<pre class="shell"><code>brew info postgresql</code></pre>
+<p>You should see something like this in the output.</p>
+<p>postgresql: stable 12.2 (bottled), HEAD</p>
+<p>Now, launch the installation.</p>
+<p>brew install postgresql</p>
+<p>This may take a while. Have a tea.</p>
+<h2 id="configuring-postgresql-12">Configuring PostgreSQL 12</h2>
+<p>When that completes, you can read the –Caveats– <strong>section</strong> from the installation output. You should do this with <em>everything</em> that you install using Homebrew.</p>
+<p>To migrate existing data from a previous major version of PostgreSQL run: brew postgresql-upgrade-database</p>
+<p>To have launchd start postgresql now and restart at login: brew services start postgresql Or, if you don’t want/need a background service you can just run: pg_ctl -D /usr/local/var/postgres start</p>
+<p>You definitely want PostgreSQL to run now and every time you log in. Otherwise you’d have to start it every time you reboot your computer which can be a hassle. Following the instructions, please type the following into the command line.</p>
+<pre class="shell"><code>brew services start postgresql</code></pre>
+<p>That should report that PostgreSQL is now started.</p>
+<h2 id="connecting-to-postgresql">Connecting to PostgreSQL</h2>
+<p>To make sure your client tools are configured properly, type the following in a Terminal. This tells the <code>psql</code> client that you want to connect to the “postgres” database, which is the default database created when PostgreSQL is installed.</p>
+<pre class="shell"><code>psql postgres</code></pre>
+<p>That will connect to the “postgres” database as your user that you’re logged in as, which the installer configured for you during the installation. It’s the same as specifying your user name by using the “-U” command line parameter and typing.</p>
+<pre class="psql"><code>psql -U «your user name» postgres</code></pre>
+<p>When you successfully log in, it should show you the following output.</p>
+<pre class="shell"><code>psql (12.2)
+Type &quot;help&quot; for help.
+
+postgres=#</code></pre>
+<p>Type <code>\q</code> and hit Return to quit the PostgreSQL client.</p>
+<h2 id="installing-postbird-1">Installing Postbird</h2>
+<p>Make sure that your Homebrew can find Postbird. Search for it using the <code>brew search</code> command.</p>
+<pre class="shell"><code>brew search postbird</code></pre>
+<p>You should get something back that looks like this.</p>
+<pre class="shell"><code>==&gt; Casks
+postbird</code></pre>
+<p>That means it could find it. Since it’s a –Cask–, that means it’s an application that is meant to be used as a graphical user interface rather than on the command line. To install it, you need to include “cask” in the command.</p>
+<pre class="shell"><code>brew cask install postbird</code></pre>
+<p>Once it installs, try starting it. It’s in your Applications directory. You can use Spotlight to launch it by pressing Command+Space. In the Spotlight window, type “postbird”. It should show you the recently-installed application’s logo in the list as a white circle with a blue elephant. Select that and press Enter (or click it, if you’re the touchpad/mouse kind of person).</p>
+<p>The first time it starts, you may get this error.</p>
+<figure>
+<img src="postbird-installation-unidentified-developer.png" alt="Postbird unidentified developer" /><figcaption>Postbird unidentified developer</figcaption>
+</figure>
+<p>You should get used to seeing this because many open-source applications aren’t signed with an Apple Developer Certificate yet. Click “Cancel”. We will need to tell macOS we would like to run this application despite it not being signed.</p>
+<p>Open up your Applications directory by clicking on the shortcut in the left bar of Finder.</p>
+<figure>
+<img src="finder-applications-shortcut.png" alt="Finder Applications shortcut" /><figcaption>Finder Applications shortcut</figcaption>
+</figure>
+<p>Find the Postbird application in there. Hold down the Option key and left-click the icon. (If you’re using the touchpad, this probably means two-finger tap.) Once the context menu shows up, you can let go of the Option key. Then, click the “Open” menu item. You will now see a new version of the popup from before with an extra button.</p>
+<figure>
+<img src="postbird-installation-open-confirmation" alt="Postbird open confirmation" /><figcaption>Postbird open confirmation</figcaption>
+</figure>
+<p>Click the “Open” button. That will let Postbird run. Now that you’ve done that once, you won’t have to do it again for Postbird. This is valuable knowledge about how to run open-source software on macOS that isn’t signed by the developers. However, it is a good security practice to only run applications from developers that you trust. The Postbird application is used by tens of thousands of software developers and is something that you can trust.</p>
+<p>In fact, the developer of Postbird has an <a href="https://github.com/Paxa/postbird/issues/16">‘issue’ on github</a> about this very thing. So hopefully they will get the signing of the app fixed in a future version.</p>
+<p>When Postbird starts, type “postgres” into the database field. Then, click the “Connect” button. It should open a new tab and show you basically a blank page. That means everything worked! Exit Postbird by pressing Command+Q or selecting Postbird &gt; “Quit Postbird” from the menu.</p>
+<p>You installed and configured PosgreSQL 12, a relational database management system, and tools to use it! Well done!</p>
+<hr />
+<h1 id="user-management-walk-through">User Management Walk-Through</h1>
+<p>–This is a walk-through–: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Create superusers with full access to the system,</li>
+<li>Create normal users,</li>
+<li>Delete users from the system, and,</li>
+<li>See how SQL is not case sensitive</li>
+</ul>
+<p>It’s good practice to create a different database user for each application that you will have connect to an RDBMS. This prevents applications from reading and changing data in <em>other</em> databases that they should not have access to.</p>
+<p>The “User” in PostgreSQL is a –database entity– that represents a person or system that will connect to the RDBMS and access data from one or more databases. This is the first entity that you will create, modify, and destroy.</p>
+<p>All user management is beyond the scope of the ANSI SQL standard. That means each relational database management system has its own vendor-specific extensions about how to do this. When working with a new RDBMS, check out its documentation about how to create users, groups, and other security entities.</p>
+<h2 id="naming-a-user">Naming a user</h2>
+<p>Names of users should not create spaces or dashes. They should contain only lower case letters, numbers, and underscores.</p>
+<ul>
+<li>Good user names
+<ul>
+<li>appacademy</li>
+<li>patel_kush_112</li>
+<li>bdorsey</li>
+</ul></li>
+<li>Bad (incorrect) user names
+<ul>
+<li>Ned Ruggeri</li>
+<li>melvin-howard-tormé</li>
+<li>b.d.o.r.s.e.y</li>
+</ul></li>
+</ul>
+<h2 id="creating-a-superuser">Creating a superuser</h2>
+<p>On Windows, open your Ubuntu shell. On macOS, open your Terminal. Start the PostgreSQL command line client with the command <code>psql postgres</code>.</p>
+<p>You should see some information about the version of the database and the command line tool, plus a helpful hint to type “help” if you need help. Then, you will see the <code>psql</code> prompt:</p>
+<pre class="shell"><code>postgres=#</code></pre>
+<p>The value “postgres” means that you’re currently connected to the “postgres” database. More on that in the next article.</p>
+<p>To create a user in PostgreSQL you will use the following command. It creates a user with the name “test_superuser” and the password “test”. <em>Type</em> that command (please don’t copy and paste it) and run it by hitting Enter (or Return).</p>
+<p><code>sql CREATE USER test_superuser WITH PASSWORD 'test' SUPERUSER;</code>shell</p>
+<p>Note that this SQL statement ends with a semicolon. All SQL statements in PostgreSQL do. Don’t forget it. If you do forget it, just type it on an empty line. The above statement, for example, can also be entered as the following where the semicolon is on a line all its own.</p>
+<p><code>sql CREATE USER test_superuser WITH PASSWORD 'test' SUPERUSER ;</code>shell</p>
+<p>If you typed it correctly, you will see the message <code>CREATE ROLE</code>. Because you created test_superuser as a super user, when a person or application uses that login, they can do whatever they want. You will test out that fact, now.</p>
+<p>Quit your current session by typing <code>\q</code> and hitting Enter (or Return). Now type the following command to connect to PostgreSQL with the newly-created user. It instructs the client to connect as the user “test_superuser” (<code>-U test_superuser</code>) to the database named “postgres” (<code>postgres</code>) and prompt for the password (<code>-W</code>) for the user.</p>
+<p><code>shell psql -W -U test_superuser postgres</code>shell</p>
+<p>At the prompt, type the password <em>test</em> that you used when you created the user. If everything went well, then you will find yourself at the SQL prompt just like before. To prove to you that you’re now the “test_superuser”, type the following command.</p>
+<p><code>sql SELECT CURRENT_USER;</code>shell</p>
+<p>It should respond with the following output:</p>
+<p><code>shell   current_user ----------------  test_superuser (1 row)</code>shell</p>
+<h2 id="creating-a-limited-user">Creating a limited user</h2>
+<p>You’re logged in as a super user that can do anything. Use that power! Create another user that does not have such amazing power. You will rarely create super users in real life. The following user creation is more appropriate. It creates just a normal user that can log in. Then, you can assign that user specific access to specific databases.</p>
+<p><code>sql CREATE USER test_normal_user WITH PASSWORD 'test';</code>shell</p>
+<p>That should also give you the <code>CREATE ROLE</code> message that means everything went ok.</p>
+<p>Quit the session by typing <code>\q</code> and pressing Enter (or Return). Start another as the new user.</p>
+<p><code>psql psql -U test_normal_user -W postgres</code>shell</p>
+<p>Type the password <em>test</em> for this user. Confirm that you are now that new user by using the <code>SELECT CURRENT_USER;</code> command. Once confirmed, try to create a user named <em>hacking_the_planet</em> with a password of <em>pwned!</em>. What happens?</p>
+<p>That’s right. This user doesn’t have the security privileges to create users.</p>
+<p>Create users to do the job you want them to do. Then, give the appropriate permissions to that user. This will make a safe and secure application development world for you and your team.</p>
+<h2 id="removing-a-user">Removing a user</h2>
+<p>Time to remove both of these users. The opposite of <code>CREATE USER</code> is <code>DROP USER</code>. To drop a user, you just type <code>DROP USER «user name»;</code>.</p>
+<p>Connect again as just you, the OG super user. (Once again, that’s with the command <code>psql postgres</code>.)</p>
+<p>Drop the normal user with the command</p>
+<p><code>shell DROP USER test_normal_user;</code>shell</p>
+<p>Then, drop the user with the name “test_superuser”. You should receive the message “DROP ROLE” for each of your commands.</p>
+<h2 id="case-sensitivity">Case sensitivity</h2>
+<p>Unlike JavaScript, the keywords in SQL are case insensitive. that means you can type any of the following and they’ll all work.</p>
+<p><code>sql DROP USER test_user; Drop User test_user; drop user test_user;</code>shell</p>
+<p>Notice that entity names like user names <em>are</em> case sensitive.</p>
+<p>SQL is conventionally written in all uppercase to distinguish the commands from the names that you will have for your entities and their properties.</p>
+<h2 id="what-you-learned">What you learned</h2>
+<ul>
+<li>That a user is a <em>database entity</em> in PostgreSQL</li>
+<li>That it is best practice to create a user for each application that you will create</li>
+<li>How to create a super user with the <code>CREATE USER ... SUPERUSER</code> command</li>
+<li>How to create a restricted (normal) user with the <code>CREATE USER</code> command</li>
+<li>How to remove a user with the <code>DROP USER</code> command</li>
+<li>SQL keywords are not sensitive to case, but are conventionally written in uppercase</li>
+</ul>
+<hr />
+<h1 id="database-management-walk-through">Database Management Walk-Through</h1>
+<p>–This is a walk-through–: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Create a database for your user,</li>
+<li>Create databases for other users,</li>
+<li>Apply security to the databases to prevent access,</li>
+<li>See the first example of “relational data” in the RDBMS, and,</li>
+<li>Create other databases and apply security to them.</li>
+</ul>
+<p>Now that you can create users for each of your applications, it’s time for you to be able to create a –database–. The database is where you will store the data for your application.</p>
+<p>You’ve been using the following command to log in as your superuser to the “postgres” database. This works because if you don’t specify a user with the <code>-U</code> command line parameter, it just uses the name of the currently logged in user, your user name.</p>
+<p><code>sql psql postgres</code>shell</p>
+<p>That’s because if you don’t specify a database, then PostgreSQL will try to connect you to a database that has the same name as your user. Try it, now.</p>
+<p><code>sql psql</code>shell</p>
+<p>When you run this, if there is no database with your user name, then you will receive an error message that reads like the following. (The text has been wrapped in the example for readability.)</p>
+<p><code>shell psql: error: could not connect to server:       FATAL:  database "appacademy" does not exist</code>shell</p>
+<h2 id="naming-a-database">Naming a database</h2>
+<p>Names of databases should not create spaces or dashes. They should contain only lower case letters, numbers, and underscores.</p>
+<ul>
+<li>Good database names
+<ul>
+<li>appacademydata</li>
+<li>financials2020</li>
+<li>chicago_office</li>
+</ul></li>
+<li>Bad (incorrect) database names
+<ul>
+<li>App Academy Data</li>
+<li>financials-2020</li>
+<li>chicago.office</li>
+</ul></li>
+</ul>
+<h2 id="creating-a-database-for-your-user">Creating a database for your user</h2>
+<p>So that you don’t have to type “postgres” every time you want to connect on the command line, you can create a database with your user name so that one will exist. To determine your user name, type the following command at your shell, <em>not</em> in PostgreSQL.</p>
+<p><code>shell whoami</code>shell</p>
+<p>That will show you the name of your user. Remember that name. Now, start your PostgreSQL command line as your superuser.</p>
+<p><code>shell psql postgres</code>shell</p>
+<p>That should result in the <code>psql</code> command prompt of <code>postgres=#</code>. Again, that means that you are currently connected to the “postgres” database.</p>
+<p>Once you’re greeted by the <code>postgres=#</code> command prompt, you can create a database for your user by typing the following command. Don’t copy and paste, here. Type it out.</p>
+<p><code>sql CREATE DATABASE «your user name» WITH OWNER «your user name»;</code>shell</p>
+<p>By making yourself the owner of that database, then your user can do anything with it.</p>
+<p>For the examples in these articles, the user name is “appacademy”, so the authors typed</p>
+<p><code>sql CREATE DATABASE appacademy WITH OWNER appacademy;</code>shell</p>
+<p>If the command succeeds, you will see the message “CREATE DATABASE”. Now, quit the client using <code>\q</code>. Now, connect, again, to PostgreSQL by just typing the following.</p>
+<p><code>shell psql</code>shell</p>
+<p>Now, when you log in, you will be greeted by a command prompt that reads</p>
+<p><code>shell «your user name»=#</code>shell</p>
+<p>You’re connected to your very own database! And, now, you have less to type when you want to start <code>psql</code>! Yay for less typing!</p>
+<h2 id="creating-other-users-and-databases">Creating other users and databases</h2>
+<p>Create two normal users with the following user names and passwords using the <code>CREATE USER</code> command from the last article.</p>
+<table>
+<thead>
+<tr class="header">
+<th>User name</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ada</td>
+<td>ada1234</td>
+</tr>
+<tr class="even">
+<td>odo</td>
+<td>ODO!!!1</td>
+</tr>
+</tbody>
+</table>
+<p>Now, create two databases, each named for a user with that user as the owner. Again, type these rather than copying and pasting.</p>
+<p><code>sql CREATE DATABASE ada WITH OWNER ada; CREATE DATABASE odo WITH OWNER odo;</code>shell</p>
+<p>Now that you have new users and databases for them, it’s time to test out that you can connect to PostgreSQL with those users. Quit your current session by typing <code>\q</code> and pressing Enter (or Return). Then, start a new session for “ada” by using the following <code>psql</code> command that will prompt for the user’s password (<code>-W</code>) and connect as the specified user (<code>-U ada</code>).</p>
+<p><code>shell psql -W -U ada</code>shell</p>
+<p>–Note–: Those command line parameters can come in any order, usually. The above statement can also be written as <code>psql -U ada -W</code>, for example.</p>
+<p>When you enter that and type the password for “ada” which is “ada1234” from the table above, you should see that you are now connected to the “ada” database in the prompt.</p>
+<p><code>shell ada=&gt;</code>shell</p>
+<p>Notice that the character at the end is now a “&gt;” rather than the “#” that you’re used to seeing. That’s because “ada” is a normal user. Normal user prompts end with “&gt;”. Your user, the one tied to your user name, is a super user. That results in a “#”</p>
+<p>Quit this session and connect as the “odo” user, now. You will notice that because “odo” is a normal user, that you will see this prompt, too.</p>
+<p><code>shell odo=&gt;</code>shell</p>
+<h2 id="applying-security-to-databases">Applying security to databases</h2>
+<p>You’ve created a database for “odo”. Type the following command which will try to connect as the user “ada” (<code>-U ada</code>) to the database “odo” (<code>odo</code>).</p>
+<p><code>shell psql -W -U ada odo</code>shell</p>
+<p>After you type the password, you may be surprised to find out that “ada” can connect to the database “odo” that’s owned by the user “odo”! That’s because all databases, when they’re created, by default allow access to what is known as the “PUBLIC” schema, a kind of group that everyone belongs to. You sure don’t want that if you want to prevent the user “ada” from messing up the data in the database “odo”, and the user “odo” from messing up the data in the database “ada”.</p>
+<p>To do that, you have to revoke connection privileges to “PUBLIC”. That’s like putting a biometric lock on a bank safety deposit box so that only the owner of that deposit box (and bank officials) can get into it and do stuff with its contents.</p>
+<p>To do that, quit the current <code>psql</code> session if you’re in one. Connect to PostgreSQL as your user, a superuser. Again, now that you have your own database, you can just type <code>psql</code> at your macOS Terminal command line or Ubuntu shell command line. Once you have your prompt</p>
+<p><code>shell «your user name»=#</code>shell</p>
+<p>you want to type a command that will revoke all privileges from the databases named “odo” and “ada” the connection privileges of the entire “PUBLIC” group. To do that, you write the command with the form:</p>
+<p><code>sql REVOKE CONNECT ON DATABASE «database name» FROM PUBLIC;</code>shell</p>
+<p>Do that for both databases. Each time you run it, you should see the message “REVOKE” showing that it worked.</p>
+<p>Now, quit your session (<code>\q</code>). With the connection privilege revoked, “ada” can no longer connect to database “odo” and vice versa. Try typing the following.</p>
+<p><code>shell psql -W -U ada odo</code>shell</p>
+<p>You should see an error message similar to the following.</p>
+<p><code>shell psql: error: could not connect to server:       FATAL:  permission denied for database "odo" DETAIL:  User does not have CONNECT privilege.</code>shell</p>
+<p>Try connecting with the user “odo” to the database named “ada”. You should see the same error message except with the database named “ada” in it.</p>
+<p>But, your superuser status will not be thwarted! You can still connect to either of those because of your superuser privileges. Neither of the following commands should fail.</p>
+<p><code>shell # Connect to the database "odo" as your superuser psql odo</code>shell</p>
+<p><code>shell # Connect to the database "ada" as your superuser psql ada</code>shell</p>
+<p>Superusers can connect to any and all databases. Because <em>superuser</em>!</p>
+<p>Remember you created a database for your user? Now, revoke connection privileges from it for “PUBLIC”, too.</p>
+<h2 id="listing-databases-and-granting-privileges">Listing databases and granting privileges</h2>
+<p>Now, say the user “ada” needs another database, one that will contain data that “ada” wants to keep separate from the data in the database “ada”. Connect to PostgreSQL as your user. Create a new database without specifying the owner.</p>
+<p><code>sql CREATE DATABASE hr_data;</code>shell</p>
+<p>Now, type the command to list databases on your installation of PostgreSQL.</p>
+<p><code>sql \list</code>shell</p>
+<p>You will see something akin to the following. The entries in the “Collate”, “Cypte”, and “Access privileges” columns may differ. That’s fine and can be ignored. Also, where you see “appacademy”, you’ll probably see your user name.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Owner</th>
+<th>Encoding</th>
+<th>Collate</th>
+<th>Ctype</th>
+<th>Access privileges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ada</td>
+<td>ada</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=T/ada +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ada=CTc/ada</td>
+</tr>
+<tr class="odd">
+<td>appacademy</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>hr_data</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>odo</td>
+<td>odo</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=T/odo +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>odo=CTc/odo</td>
+</tr>
+<tr class="odd">
+<td>postgres</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>template0</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=c/appacademy +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>appacademy=CTc/appacademy</td>
+</tr>
+<tr class="even">
+<td>template1</td>
+<td>appacademy</td>
+<td>UTF8</td>
+<td>C</td>
+<td>C</td>
+<td>=c/appacademy +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>appacademy=CTc/appacademy</td>
+</tr>
+</tbody>
+</table>
+<p>You will see that for the database that you just created, “hr_data”, that the owner is you. Go ahead and revoke all access to it from “PUBLIC” like you did in the last section. Once you’ve done that, no one but you (and other superusers) can connect to the “hr_data” database. (You may want to exit the <code>psql</code> shell and try connecting with the credentials for the “ada” user just to make sure. If you do that, reconnect as your user so you can continue with the security management.)</p>
+<p>Now, you need to add “ada” back to it so that user can connect to the database. The opposite of <code>REVOKE ... FROM ...</code> is <code>GRANT ... TO ...</code>. So, you will type the following:</p>
+<p><code>sql GRANT CONNECT ON DATABASE hr_data TO ada;</code>shell</p>
+<p>Now, if you exit the <code>psql</code> shell and connect as “ada”, you will see that user can connect. Make sure that’s true.</p>
+<p><code>shell psql -U ada hr_data</code>shell</p>
+<p>Once you have confirmed that “ada” can connect, make sure that user “odo” cannot connect.</p>
+<p><code>shell psql -U odo hr_data</code>shell</p>
+<p>That command should return the error message that reads that the user “does not have CONNECT privilege.”</p>
+<h2 id="time-to-clean-up">Time to clean up</h2>
+<p>Time to clean up the entities that you’ve created in this walk-through. You already know how to delete a user by using the <code>DROP USER</code> statement. Log in as your superuser and try to drop the “ada” user. You should see an error message similar to the following.</p>
+<p><code>shell ERROR:  role "ada" cannot be dropped because some objects depend on it DETAIL:  owner of database ada privileges for database hr_data</code>shell</p>
+<p>This tells you that you can’t drop that user because database objects in the system rely on the existence of the user “ada”. This is the first example that you’ve seen of <em>relational data</em>. The database “ada” is related to the user “ada” because user “ada” owns the database “ada”. The database “hr_data” is related to the user “ada” because the user “ada” has access privileges for the database “hr_data”.</p>
+<p>This is one of the primary reasons that relational databases provide such an important role in application design and development. If you or your application puts data into the database that relates to other data, you can’t just remove it without removing <em>all of the related data, too</em>!</p>
+<p>To remove the related data from user “ada”, you need to revoke the connect privilege on “hr_data” for user “ada”. Then, you need to delete the database “ada” that user “ada” owns. You’ve seen some <code>REVOKE</code> statements in this article that revoke the connect privilege from “PUBLIC”. It’s the same for an individual user, too, just replace “PUBLIC” with the name of the user.</p>
+<p>Then, the opposite of <code>CREATE DATABASE</code> is <code>DROP DATABASE</code> just like the opposite of <code>CREATE USER</code> is <code>DROP USER</code>.</p>
+<p>Putting together those two hints, you can type commands like this to get the job done.</p>
+<p><code>sql REVOKE CONNECT ON DATABASE hr_data FROM ada; DROP DATABASE ada; DROP USER ada;</code>shell</p>
+<p>Run in that order, the first two statements remove the data <em>related</em> to the user “ada”. Once that’s gone, you can finally remove the user “ada” itself.</p>
+<p>Do the same for the user “odo”, deleting the related data, first. Remember, you can run the <code>DROP</code> statement for the user “odo” to see what data relates to that user.</p>
+<p>–Note–: When you run a statement in PostgreSQL that results in an error message, do not worry! You have not corrupted anything! These are helpful statements to let you know that the state of the database won’t allow you to perform the requested operation. These kinds of error statements are guideposts for you to follow to get to the place you want to be.</p>
+<h2 id="what-youve-done">What you’ve done</h2>
+<p>You have successfully created databases for yourself and other users. You have created a database with you as the owner and given access to it to another user. You have locked down databases so only owners (and superusers) can access them. You know how to see the owner of a database. You know how to remove a user from a database after removing all data related to the user.</p>
+<p>This is the start of a lovely secure set of databases.</p>
+<hr />
+<h1 id="table-management---part-i">Table Management - Part I</h1>
+<p>–This is a walk-through–: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Learn about what a table is,</li>
+<li>How to create and delete tables,</li>
+<li>Who owns a table, and,</li>
+<li>Learn about different data types that you can use when defining a table.</li>
+</ul>
+<p>You can now create users that can connect to the relational database management system. You can now create databases and secure them so only certain users can connect to them. Now, it’s time to get into the part where you define the entities that actually hold the data: –tables–!</p>
+<h2 id="what-is-a-table">What is a table?</h2>
+<p>A table is a “logical” structure that defines how data is stored and contains that data that meets the definition. Most people think about tables like spreadsheets that have a specific number of columns and rows that contain the data.</p>
+<p>It is called a “logical” structure because we reason about it in terms of columns and rows; however, the RDMBS is in charge of how the data is actually stored on disk and, quite often, for performance reasons, it does <em>not</em> look like rows and columns. The way it is stored on disk is called the “physical” structure because that’s what is the actual physical representation of it. We do not cover physical structures because they vary by RDBMS. If you become a –database administrator– in the future, you may have to learn such things.</p>
+<p>Here is a spreadsheet that contains some data about puppies.</p>
+<figure>
+<img src="images/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<p>You can see that the columns are</p>
+<ul>
+<li>name</li>
+<li>age_yrs</li>
+<li>breed</li>
+<li>weight_lbs</li>
+<li>microchipped</li>
+</ul>
+<p>Now, look at the data each column contains. You can guess at what kind of data type is in each of them by their values. If you were to write that out using the data types that you know from JavaScript, you might come up with the following table.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+</tr>
+</tbody>
+</table>
+<p>In table definitions, you have to be more specific, unfortunately. This is so the database can know things like “the maximum length of the string” or “will the number have decimal points”? This is important information so that database can know how to store it most efficiently. The following table shows you the corresponding ANSI SQL data types for the JavaScript types from before.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>JavaScript data type</th>
+<th>Max length</th>
+<th>ANSI SQL data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>50</td>
+<td>VARCHAR(50)</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+<td></td>
+<td>NUMERIC(3,1)</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+<td>100</td>
+<td>VARCHAR(100)</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+<td></td>
+<td>INTEGER</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+<td></td>
+<td>BOOLEAN</td>
+</tr>
+</tbody>
+</table>
+<p>You can see that “string” values map to something called a “VARCHAR” with a maximum length.</p>
+<p>You can see that “number” values map to something called a “NUMERIC” with some numbers, or an INTEGER which is just a whole number.</p>
+<p>You can see that “Boolean” values map to something called a “BOOLEAN” which is nice because that’s convenient.</p>
+<h2 id="defining-tables">Defining tables</h2>
+<p>To define a table, you need to know what the different pieces of related data it will store. Then, you need to know what kind each of those pieces are. Once you have that, you can create a table with an ANSI SQL statement.</p>
+<h3 id="string-types">String types</h3>
+<p>There are three kinds of commonly used string types that databases support based on the ANSI SQL standard. This section talks about them.</p>
+<p>The most commonly used type is known as the –CHARACTER VARYING– type. It means that it can contain text of varying lengths up to a specified maximum. That maximum is provided when you define the table. Instead of having to type <em>CHARACTER VARYING</em> all the time, you can use its weirdly named alias –VARCHAR–, (pronounced “var-car” or “var-char” where each part rhymes with “car”). So, to specify that a column can hold up to 50 characters, you would write <code>VARCHAR(50)</code> in the table definition. (Remember, SQL is case insensitive for its keywords. You can also write <code>varchar(50)</code> or <code>VarChar(50)</code> if you so desired. Just be consistent.)</p>
+<p>Another commonly used type is known simply as –TEXT–. This is a column that can contain an “unlimited” number of characters. You may ask yourself, “Why don’t I just always use TEXT, then?” Performance is the reason. Columns with the <em>TEXT</em> type are notoriously slower than those with other string types. Use them judiciously.</p>
+<p>Purposefully left out from this discussion is a type named –CHARACTER– or –CHAR–. It is like the –VARCHAR–, except that it is a fixed-width character field. This author has <em>never</em> seen it used in a production system except for Oracle DB which did not, at one time, support a Boolean type. Other than that, it was only useful back in the 1970s - 1990s when computer disk space and speed were slow and expensive.</p>
+<h3 id="numeric-types">Numeric types</h3>
+<p>ANSI SQL (and PostgreSQL) supports –INTEGER–, –NUMERIC–, and floating-point numbers.</p>
+<p>The <em>INTEGER</em> should be familiar. It’s just a number. In PostgreSQL, it can hold almost all values that your application can handle. That’s from -2,147,483,648 to +2,147,483,647. If, for some reason, you were writing a database that would contain a record for every person in the world, you would need integers bigger than that. To solve that problem, ANSI SQL (and PostgreSQL) supports the –BIGINT– type that will hold values between -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. If your application needs bigger integers, there are extensions available.</p>
+<p>The –NUMERIC– type is a fixed-point number. When you specify it, it takes up to two arguments. The first number is the total number of digits that a number can have in that column. The second number is the number of digits after the decimal point that you want to track. The specification <em>NUMERIC(4,2)</em> will hold the number <em>23.22</em>, but not the numbers <em>123.22</em> (too many total digits) or <em>23.222</em> (which it will just ignore the extra decimal places and store <em>23.22</em>). These exact numbers are important for things like storing values of money, where rounding errors could cause significant errors in calculations.</p>
+<p>If you don’t care about rounding errors, you can use the –DOUBLE PRECISION–. There is no short alias for it. You can just put decimal numbers in there and they will come out pretty much the same. Don’t use this kind of data type for columns that contain values of money because they will round and someone will get in trouble, eventually.</p>
+<h2 id="other-data-types">Other data types</h2>
+<p>PostgreSQL supports a lot of other data types, as well. It has specialized data types for money, dates and times, geometric types, network addresses, and JSON! Ones that you will use a lot in this course are the ones for dates and times, as well as the one for JSON.</p>
+<p>Here’s the link to the documentation on <a href="https://www.postgresql.org/docs/current/datatype.html">PostgreSQL data types</a>. Go review the documentation for the types that support dates and times as you will need to know the –TIMESTAMP– and –DATE– types.</p>
+<h2 id="naming-a-table">Naming a table</h2>
+<p>Names of tables should not create spaces or dashes. They should contain only lower case letters, numbers, and underscores.</p>
+<p>Conventionally, many software developers name their database table names as the plural form of the data that it holds. More importantly, many software libraries known as ORMs (which you will cover, this week) use the plural naming convention. You should use the plural naming convention while here at App Academy.</p>
+<ul>
+<li>Good table names
+<ul>
+<li>student_grades</li>
+<li>office_locations</li>
+<li>people</li>
+</ul></li>
+<li>Bad (incorrect) table names
+<ul>
+<li>Student Grades</li>
+<li>office-locations</li>
+<li>person</li>
+</ul></li>
+</ul>
+<p>–Note–: The opinion that database table names should be plural is the subject of heated debate among many software developers. We don’t argue about it at App Academy. We acknowledge that it <em>really doesn’t matter</em> how they’re named. You should just be consistent in the way they’re named. Because our tools will use the plural forms, we use the plural forms.</p>
+<h2 id="writing-the-sql">Writing the SQL</h2>
+<p>Creating a table with SQL has this general syntax.</p>
+<p><code>sql CREATE TABLE «table name» (   «column name» «data type»,   «column name» «data type»,   ...   «column name» «data type» );</code>shell</p>
+<p>A couple of things to note. First, it uses parentheses, not curly braces. Many developers that use curly brace languages like JavaScript will eventually, out of habit, put curly braces instead of parentheses. If you were to do that, the RDBMS will tell you that you have a syntax error. Just grin and replace the curly braces with parentheses.</p>
+<p>Another thing to note is that the last column specification <em>cannot</em> have a comma after it. In JavaScript, we can have commas after the last entry in an array or in a literal object definition. Not so in SQL. Again, the RDBMS will tell you that there is a syntax error. Just delete that last comma.</p>
+<p>Here’s the table that contains the column definitions for the “puppies” spreadsheet from before.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>JavaScript data type</th>
+<th>Max length</th>
+<th>ANSI SQL data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>50</td>
+<td>VARCHAR(50)</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+<td></td>
+<td>NUMERIC(3,1)</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+<td>100</td>
+<td>VARCHAR(100)</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+<td></td>
+<td>INTEGER</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+<td></td>
+<td>BOOLEAN</td>
+</tr>
+</tbody>
+</table>
+<p>To write that as SQL, you would just put in the table name, column names, and data types in the syntax from above. You would get the following.</p>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50),   age_yrs NUMERIC(3,1),   breed VARCHAR(100),   weight_lbs INTEGER,   microchipped BOOLEAN );</code>shell</p>
+<p>Log into your database, if you’re not already. (Make sure you’re in <em>your</em> database by looking at the prompt. It should read <code>«your user name»=#</code>.) Type in the SQL statement from above. If you do it correctly, PostgreSQL will return the message “CREATE TABLE”.</p>
+<h2 id="listing-tables-and-table-definitions">Listing tables and table definitions</h2>
+<p>You can see the tables in your database by typing <code>\dt</code> at the <code>psql</code> shell prompt. The <code>\dt</code> command means “describe tables”. If you do that now, assuming that you’ve only created the “puppies” table, you should see the following with your user name, of course.</p>
+<p><code>shell            List of relations  Schema |  Name   | Type  |   Owner --------+---------+-------+------------  public | puppies | table | appacademy</code>shell</p>
+<p>The user that runs the SQL statement that creates the table is the owner of that table. Table owners, like database owners, will always be able to access the table and its data. If you want a user other than the one that you’re logged in as to own the table, you have two ways of doing that.</p>
+<ul>
+<li>Log out and log in as the user that you want to own the table and run the <code>CREATE TABLE</code> statement as that user.</li>
+<li>As the superuser, run the <code>SET ROLE «user name»</code> command to switch the current user and run the <code>CREATE TABLE</code> statement as that user.</li>
+</ul>
+<p>To see the definition of a particular table table, type <code>\d «table name»</code>. For puppies, type <code>\d puppies</code>. You should see the following output.</p>
+<p><code>shell                          Table "public.puppies"     Column    |          Type          | Collation | Nullable | Default --------------+------------------------+-----------+----------+---------  name         | character varying(50)  |           |          |  age_yrs      | numeric(3,1)           |           |          |  breed        | character varying(100) |           |          |  weight_lbs   | integer                |           |          |  microchipped | boolean                |           |          |</code>shell</p>
+<p>For now, ignore the “Collation”, “Nullable”, and “Default” columns in that output. The next article will address “Nullable” and “Default”.</p>
+<p>You can see that the data types that you provided have been translated into their ANSI SQL full name equivalents.</p>
+<p>Now, connect to the “postgres” database using the <code>\c postgres</code> command. It should give you a message that you’re now connected to the “postgres” database as your user. The prompt should change from one that has your name to <code>postgres=#</code>. Now, type <code>\dt</code> to list the tables in the “postgres” database. If you haven’t created any tables there, it will read “Did not find any relations.” If you type <code>\d puppies</code>, it will report that it can’t find a relation named “puppies”.</p>
+<p>This is because you’re in a different database than the one in which you created the “puppies” table. You just don’t see the “puppies” table, here, because it doesn’t exit. That table is in another database, your user database. That’s how databases work: they provide an area where you can create tables in which you’ll store data. Different databases have different tables. You can’t easily get at tables in another database from the one that you’re currently in. And, really, you don’t want to. Databases provide the storage and security boundaries for data.</p>
+<p>Change back to your user database by executing the command <code>\c «your user name»</code>.</p>
+<h2 id="deleting-a-table">Deleting a table</h2>
+<p>In the same way that you can delete users and databases by using the <code>DROP</code> command, you can do the same for tables. To get rid of the “puppies” table, execute the following SQL command.</p>
+<p><code>sql DROP TABLE puppies;</code>shell</p>
+<p>It should tell you that it dropped the table. You can confirm that it is no longer there by executing the <code>\dt</code> command.</p>
+<h2 id="what-youve-done-1">What you’ve done</h2>
+<p>In this section, you learned the basics about creating database entities called “tables” and their ownership. You learned that tables are where you store data. You discovered that the data that you store is defined by the columns and their data types. You can now write SQL to create and drop tables.</p>
+<p>Next up, you will learn about special kinds of columns, column constraints, and building relations between tables.</p>
+<hr />
+<h1 id="table-management---part-ii">Table Management - Part II</h1>
+<p>–This is a walk-through–: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Learn about nullable columns,</li>
+<li>Learn about default values for columns,</li>
+<li>Learn how to make columns have unique values,</li>
+<li>Learn about primary keys, and,</li>
+<li>Learn about relating tables through foreign keys to maintain data and referential integrity.</li>
+</ul>
+<p>Here is the “puppies” spreadsheet, table definition, and the SQL to create it from the last article.</p>
+<figure>
+<img src="images/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>JavaScript data type</th>
+<th>Max length</th>
+<th>ANSI SQL data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>50</td>
+<td>VARCHAR(50)</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+<td></td>
+<td>NUMERIC(3,1)</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+<td>100</td>
+<td>VARCHAR(100)</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+<td></td>
+<td>INTEGER</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+<td></td>
+<td>BOOLEAN</td>
+</tr>
+</tbody>
+</table>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50),   age_yrs NUMERIC(3,1),   breed VARCHAR(100),   weight_lbs INTEGER,   microchipped BOOLEAN );</code>shell</p>
+<p>In this article, you will add more specifications to this table so that you can properly use it. Then, you will refactor it into two tables that relate to one another.</p>
+<h2 id="nullable-columns">Nullable columns</h2>
+<p>By default, when you define a table, each column does not require a value when you create a record (row). Look at the spreadsheet. You can see all of the rows in it have data in every column. The SQL that you wrote does not enforce that.</p>
+<p>The value <code>NULL</code> is a strange value because it means <em>the absence of a value</em>. When a value in a row is <code>NULL</code>, that means that it didn’t get entered. Many database administrators, experts in databases and the models of data in them, detest the value <code>NULL</code> for one reason: it adds a weird state.</p>
+<p>Think about a Boolean value in JavaScript. It can one of two values: <code>true</code> or <code>false</code>. In databases, a “nullable” <code>BOOLEAN</code> column, that is a <code>BOOLEAN</code> column that can hold <code>NULL</code> values, can have <em>three</em> values in it: <code>TRUE</code>, <code>FALSE</code>, and <code>NULL</code>. What does that mean to you as a software developer? It is this weird third state that leads to a strange offshoot of mathematics named [three-valued logic]. To prevent that, you should (nearly) always put the <code>NOT NULL</code> constraint on each of your column definitions. That will make your previous SQL statement look like this.</p>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL );</code>shell</p>
+<p>Type that SQL into your <code>psql</code> shell and execute it. (If you already have a “puppies” table, drop the existing one first.) Then, run <code>\d puppies</code>. You will see, now, that the column “Nullable” reads “not null” for every single one.</p>
+<p><code>shell                          Table "public.puppies"     Column    |          Type          | Collation | Nullable | Default --------------+------------------------+-----------+----------+---------  name         | character varying(50)  |           | not null |  age_yrs      | numeric(3,1)           |           | not null |  breed        | character varying(100) |           | not null |  weight_lbs   | integer                |           | not null |  microchipped | boolean                |           | not null |</code>shell</p>
+<p>Now, when someone tries to add data to the table, they must provide a value for every single column.</p>
+<p>–Note–: An empty string is <em>not</em> a <code>NULL</code> value. It is still possible for someone to insert the string "" into the “name” column, for example. There are ways to prevent that, but you should check it in your JavaScript code before actually inserting the data.</p>
+<h2 id="default-values">Default values</h2>
+<p>Sometimes, you just want a column to have a default value. When there is a default value, the applications that insert data into the table can just rely on the default value and not have to specify it.</p>
+<p>For the “puppies” table, a reasonable default value for the “microchipped” column would be <code>FALSE</code>. You can add that to your SQL using the <code>DEFAULT</code> keyword.</p>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE );</code>shell</p>
+<p>Drop the existing “puppies” table and type in that SQL. Then, run <code>\d puppies</code> to see how it shows up in the table definition.</p>
+<h2 id="primary-keys">Primary keys</h2>
+<p>Being able to identify a single row in a table is <em>very</em> important. Here’s the screenshot of the spreadsheet, again.</p>
+<figure>
+<img src="images/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<p>Let’s say that the puppy named “Max” gains a couple of pounds. You want to update the spreadsheet. You scan through the list of names and find it on row 11. Then, you update the weight to be 69 pounds.</p>
+<p>Now, what happens when you are tracking 300 dogs in the spreadsheet? What happens when your spreadsheet has 17 dogs named “Max”? It is helpful to have some way to uniquely identify a row in the spreadsheet. This is the idea behind a –primary key–. You can specify a column to be the primary key with the keywords <code>PRIMARY KEY</code>. A column that acts as a primary key cannot be <code>NULL</code>, so that is implied.</p>
+<p>Here’s the spreadsheet with a new column in it named “id” that just contains numbers to uniquely identify each row.</p>
+<p>[Puppies spreadsheet with primary key]</p>
+<p>You may ask yourself, “Why can’t I just use the row number as each row’s identifier?” That’s a very valid question! Here is the reason why. You can see that “Max” has an “id” of 10 on row 11. What happens if you wanted to look at the data differently, say sorted by name? Here’s what that spreadsheet looks like.</p>
+<p>[Puppies spreadsheet with primary key sorted by name]</p>
+<p>You can see that when you sort them by name, if you relied on row number, “Max” now lives on row 10 rather than row 11. That changes the unique identifer of “Max” based on the way that you view the data. You want the unique identifier to <em>be part of the row definition</em> so that the number always stays with the row no matter how you’ve sorted the data. You will always know that the row with “id” value of 10 is “Max”.</p>
+<p>Keeping track of what the next number would be in that column could cause you a lot or headaches. What if two people (or applications) were entering data at the same time? Who would get the correct “next id” and still have it be unique? The answer to that is to let the database handle it. All databases have some way of specifying that you want to set the column to a special data type that will auto-assign and auto-increment an integer value for the column. In PostgreSQL, that special data type is called <code>SERIAL</code>.</p>
+<p>Putting that all together, you would add a new column definition to your table with the name of “id” and the type <code>SERIAL</code>. Then, to specify that it is the primary key, you can do it one of two ways. The following example shows it as part of the column definition.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL PRIMARY KEY,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE );</code>shell</p>
+<p>Or, you can put it in what is known as –constraint syntax– after the columns specifications but before the close parenthesis.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE,   PRIMARY KEY(id) );</code>shell</p>
+<p>Either way you do it, when you view the output of <code>\d puppies</code>, you see some new things in the output.</p>
+<p><code>shell                                       Table "public.puppies"     Column    |          Type          | Collation | Nullable |               Default --------------+------------------------+-----------+----------+-------------------------------------  id           | integer                |           | not null | nextval('puppies_id_seq'::regclass)  name         | character varying(50)  |           | not null |  age_yrs      | numeric(3,1)           |           | not null |  breed        | character varying(100) |           | not null |  weight_lbs   | integer                |           | not null |  microchipped | boolean                |           | not null | false Indexes:     "puppies_pkey" PRIMARY KEY, btree (id)</code>shell</p>
+<p>First, you’ll notice that there is a weird default value for the “id” column. That’s the way that PostgreSQL populates it with a new integer value every time you add a new row.</p>
+<p>You will also see that that there is a section named “Indexes” after the column specifications. This shows that there is a thing named “puppies_pkey” which is the primary key on the column “id”.</p>
+<h2 id="unique-values">Unique values</h2>
+<p>Sometimes, you want all of the data in a column to be unique. For example, if you a table of people records. You want to collect their email address for them to sign up for your Web site. In general, people don’t share email addresses (although it has been known to happen). You can put a constraint on a column by putting <code>UNIQUE</code> in the column’s definition. For example, here’s a sample “people” table with a unique constraint on the email column.</p>
+<p><code>sql CREATE TABLE people (   id SERIAL,   first_name VARCHAR(50) NOT NULL,   last_name VARCHAR(50) NOT NULL,   email VARCHAR(250) NOT NULL UNIQUE,   PRIMARY KEY (id) );</code>shell</p>
+<p>When you use the <code>\d people</code> command to view the definition of the table, you will see this.</p>
+<p><code>shell                                       Table "public.people"    Column   |          Type          | Collation | Nullable |              Default ------------+------------------------+-----------+----------+------------------------------------  id         | integer                |           | not null | nextval('people_id_seq'::regclass)  first_name | character varying(50)  |           | not null |  last_name  | character varying(50)  |           | not null |  email      | character varying(250) |           | not null | Indexes:     "people_pkey" PRIMARY KEY, btree (id)     "people_email_key" UNIQUE CONSTRAINT, btree (email)</code>shell</p>
+<p>Down there at the bottom, you see that PostgreSQL has added a <code>UNIQUE CONSTRAINT</code> to the list of indexes for the “email” field. Now, if someone tried to put an email address into the table that someone had previously used, then the database would return an error.</p>
+<p><code>shell ERROR:  duplicate key value violates unique constraint "people_email_key" DETAIL:  Key (email)=(a) already exists.</code>shell</p>
+<h2 id="refactor-for-data-integrity">Refactor for data integrity</h2>
+<p>Now is the time for thinking about the nature of the data. When you create database tables, you need to ask yourself about the data that you’re going to store in them. One of the first questions that you should ask yourself is, “Do any of the columns have values that come from a list?” Or, another way to ask that is, “Do any of the columns come from a set of predefined values?” If you look at this data, does anything seem like it comes from a list, or that the data could repeat itself?</p>
+<p>Take a look, again, at the spreadsheet. Does anything jump out at you?</p>
+<p>[Puppies spreadsheet with primary key sorted by name]</p>
+<p>If you looked at it and answered “the breed column”, that’s the ticket! The values that go into the breed column is finite. You don’t want one person typing “Corgi” and another person typing “CORGI” and another “corgi” because, as you know, those are <em>three different values</em>! You want them all to be the same value! Supporting this is the primary reason that relational databases exist.</p>
+<p>Instead of having just one table, you could have two tables. One that contains the puppy information and another that contains the breed information. Then, using the magic of relational databases, you can create a relation between the two tables so that the “puppies” table will reference entries in the “breeds” table.</p>
+<p>This process is called –normalization–. It’s a <em>really big deal</em> in database communities. And, it’s a really big deal for application developers to maintain the integrity of the data. Bad data leads to bad applications.</p>
+<p>To do this follows a fairly simple set of steps.</p>
+<ol type="1">
+<li>Figure out what related data repeats itself. In this case, it is only the single column that contains the –breed– names.</li>
+<li>Create a new table to hold that data. Make sure it has a primary key. In this case, you can create a “breeds” table that contains an “id” the name of the breed.</li>
+<li>Replace all of the columns in the original table that you extracted with a single value that will contain the corresponding “id” value from the new table. In this case, you will replace the “breed” column with a column named “breed_id” because it will have the id of the specific breed from the “breeds” table.</li>
+</ol>
+<p>Here’s what that would look like with two spreadsheets.</p>
+<p>[Puppies and breed spreadsheets normalized]</p>
+<p>You might think to yourself, “That’s not simpler! That’s … that’s harder!” From a human perspective looking at the two separate tables and associating the id in the “breed_id” column with the value in the “id” column of the “breeds” table to lookup the name of the breed <em>is</em> harder. But, SQL provides tools to make this <em>very easy</em>. You will learn about that in the homework, tonight, and in all of the database work that you’ll be doing from here on out. Eventually, thinking this way about data will become second nature.</p>
+<p>To represent this in SQL, you will need two SQL statements. The first one, the one for the “breeds” table, you should be able to construct that already with the knowledge that you have. It would look like this. Type this into your <code>plsql</code> shell.</p>
+<p><code>sql CREATE TABLE breeds (   id SERIAL,   name VARCHAR(50) NOT NULL,   PRIMARY KEY (id) );</code>shell</p>
+<p>Now, here’s the new thing. You want the database to make sure that the value in the “breed_id” column of the “puppies” table references the value in the “id” table of the “breeds” table. This reference is called a –foreign key–. That means that the value in the column <em>must exist</em> as the value of a primary key in the table that it references. This –referential integrity– is the backbone of relational databases. It prevents bad data from getting put into those foreign key columns.</p>
+<p>Here’s what the new “puppies” SQL looks like. Drop the old “puppies” table and type this SQL in there.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed_id INTEGER NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE,   PRIMARY KEY(id),   FOREIGN KEY (breed_id) REFERENCES breeds(id) );</code>shell</p>
+<p>That new thing at the bottom of the definition, that’s how you relate one table to another. If follows the syntax</p>
+<p><code>sql FOREIGN KEY («column name in this table»)   REFERENCES «other table name»(«primary key column in other table»)</code>shell</p>
+<p>Looking at the spreadsheets, again, the presence of the foreign key would make it <em>impossible</em> for someone to enter a value in the “breed_id” column that did not exist in the “id” column of the “breeds” table.</p>
+<p>[Puppies and breed spreadsheets normalized]</p>
+<p>You can see that the puppies with ids of 1 and 9, “Cooper” and “Leinni”, both have the “breed_id” of 8. That means they’re both “Miniature Schnauzers”. What if, originally, someone had misspelled “Schnauzers”? If it was still just a text column in the “puppies” sheet, you’d have to go find and replace every single instance of the misspelling. Now, because it’s only spelled once and then <em>referenced</em>, you would only need to update the misspelling in one place!</p>
+<h2 id="order-of-table-declarations">Order of table declarations</h2>
+<p>The order of running these table definitions is important. Because “puppies” now relies on “breeds” to exist for that foreign key relationship, you <em>must</em> create the “breeds” table first. If you had tried to create the “puppies” table first, you would see the following error message.</p>
+<p><code>shell ERROR: relation "breeds" does not exist</code>shell</p>
+<p>Now that you have both of those tables in your database, what do you think would happen if you tried to drop the “breeds” table? Another table depends on it. When you tried to drop a user that owned a database, you got an error because that database object depended on that user existing, the same things happens now.</p>
+<p>Type the SQL to drop the “breeds” table from the database. You should see the following error message.</p>
+<p><code>shell ERROR:  cannot drop table breeds because other objects depend on it DETAIL:  constraint puppies_breed_id_fkey on table puppies depends on table breeds HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code>shell</p>
+<p>You can see that PostgreSQL has told you that other things depend on the “breeds” table and, specifically, a thing called “puppies_breed_id_fkey” depends on it. That is the auto-generated name for the foreign key that you created in the “puppies” table. It took the name of the table, the name of the column, and the string “fkey” and joined them all together with underscores.</p>
+<p>In the homework for tomorrow, you will see how to <em>join</em> together two tables into one virtual table so that the breed names are right there along with the puppies data.</p>
+<h2 id="what-youve-done-2">What you’ve done</h2>
+<p>In this walk-through, you</p>
+<ul>
+<li>Learned about nullable columns and how to control that behavior by writing <code>NOT NULL</code> in your column specifications</li>
+<li>Learned that <code>NULL</code> means an “absence of a value” which makes database administrators groan with displeasure</li>
+<li>Learned about how to specify default values for a column</li>
+<li>Learned the purpose of and how to declare integer-valued primary keys for a table using the <code>PRIMARY KEY</code> constraint and <code>SERIAL</code> data type</li>
+<li>Learned about <em>normalization</em> and the steps to refactor a table to remove duplicated data</li>
+<li>Learned the purpose of and how to declare foreign keys to relate the column of one table to the primary key of another table <a href="images/tables-puppies-spreadsheet.png">Puppies spreadsheet</a>: images/tables-puppies-spreadsheet.png [three-valued logic]: https://en.wikipedia.org/wiki/Three-valued_logic [Puppies spreadsheet with primary key]: https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-with-primary-key.png [Puppies spreadsheet with primary key sorted by name]: images/spreadsheet-puppies-with-primary-key-sorted-by-name.png [Puppies and breed spreadsheets normalized]: images/spreadsheet-puppies-and-breeds-normalized.pngimages/spreadsheet-puppies-and-breeds-normalized.pngort “[TOC]” {cmd=“toc” depthFrom=2 depthTo=6 orderedList=false} –&gt; —</li>
+</ul>
+<p>–This is a walk-through–: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Learn about nullable columns,</li>
+<li>Learn about default values for columns,</li>
+<li>Learn how to make columns have unique values,</li>
+<li>Learn about primary keys, and,</li>
+<li>Learn about relating tables through foreign keys to maintain data and referential integrity.</li>
+</ul>
+<p>Here is the “puppies” spreadsheet, table definition, and the SQL to create it from the last article.</p>
+<figure>
+<img src="images/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>JavaScript data type</th>
+<th>Max length</th>
+<th>ANSI SQL data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>50</td>
+<td>VARCHAR(50)</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+<td></td>
+<td>NUMERIC(3,1)</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+<td>100</td>
+<td>VARCHAR(100)</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+<td></td>
+<td>INTEGER</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+<td></td>
+<td>BOOLEAN</td>
+</tr>
+</tbody>
+</table>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50),   age_yrs NUMERIC(3,1),   breed VARCHAR(100),   weight_lbs INTEGER,   microchipped BOOLEAN );</code>shell</p>
+<p>In this article, you will add more specifications to this table so that you can properly use it. Then, you will refactor it into two tables that relate to one another.</p>
+<h2 id="nullable-columns-1">Nullable columns</h2>
+<p>By default, when you define a table, each column does not require a value when you create a record (row). Look at the spreadsheet. You can see all of the rows in it have data in every column. The SQL that you wrote does not enforce that.</p>
+<p>The value <code>NULL</code> is a strange value because it means <em>the absence of a value</em>. When a value in a row is <code>NULL</code>, that means that it didn’t get entered. Many database administrators, experts in databases and the models of data in them, detest the value <code>NULL</code> for one reason: it adds a weird state.</p>
+<p>Think about a Boolean value in JavaScript. It can one of two values: <code>true</code> or <code>false</code>. In databases, a “nullable” <code>BOOLEAN</code> column, that is a <code>BOOLEAN</code> column that can hold <code>NULL</code> values, can have <em>three</em> values in it: <code>TRUE</code>, <code>FALSE</code>, and <code>NULL</code>. What does that mean to you as a software developer? It is this weird third state that leads to a strange offshoot of mathematics named [three-valued logic]. To prevent that, you should (nearly) always put the <code>NOT NULL</code> constraint on each of your column definitions. That will make your previous SQL statement look like this.</p>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL );</code>shell</p>
+<p>Type that SQL into your <code>psql</code> shell and execute it. (If you already have a “puppies” table, drop the existing one first.) Then, run <code>\d puppies</code>. You will see, now, that the column “Nullable” reads “not null” for every single one.</p>
+<p><code>shell                          Table "public.puppies"     Column    |          Type          | Collation | Nullable | Default --------------+------------------------+-----------+----------+---------  name         | character varying(50)  |           | not null |  age_yrs      | numeric(3,1)           |           | not null |  breed        | character varying(100) |           | not null |  weight_lbs   | integer                |           | not null |  microchipped | boolean                |           | not null |</code>shell</p>
+<p>Now, when someone tries to add data to the table, they must provide a value for every single column.</p>
+<p>–Note–: An empty string is <em>not</em> a <code>NULL</code> value. It is still possible for someone to insert the string "" into the “name” column, for example. There are ways to prevent that, but you should check it in your JavaScript code before actually inserting the data.</p>
+<h2 id="default-values-1">Default values</h2>
+<p>Sometimes, you just want a column to have a default value. When there is a default value, the applications that insert data into the table can just rely on the default value and not have to specify it.</p>
+<p>For the “puppies” table, a reasonable default value for the “microchipped” column would be <code>FALSE</code>. You can add that to your SQL using the <code>DEFAULT</code> keyword.</p>
+<p><code>sql CREATE TABLE puppies (   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE );</code>shell</p>
+<p>Drop the existing “puppies” table and type in that SQL. Then, run <code>\d puppies</code> to see how it shows up in the table definition.</p>
+<h2 id="primary-keys-1">Primary keys</h2>
+<p>Being able to identify a single row in a table is <em>very</em> important. Here’s the screenshot of the spreadsheet, again.</p>
+<figure>
+<img src="images/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<p>Let’s say that the puppy named “Max” gains a couple of pounds. You want to update the spreadsheet. You scan through the list of names and find it on row 11. Then, you update the weight to be 69 pounds.</p>
+<p>Now, what happens when you are tracking 300 dogs in the spreadsheet? What happens when your spreadsheet has 17 dogs named “Max”? It is helpful to have some way to uniquely identify a row in the spreadsheet. This is the idea behind a –primary key–. You can specify a column to be the primary key with the keywords <code>PRIMARY KEY</code>. A column that acts as a primary key cannot be <code>NULL</code>, so that is implied.</p>
+<p>Here’s the spreadsheet with a new column in it named “id” that just contains numbers to uniquely identify each row.</p>
+<p>[Puppies spreadsheet with primary key]</p>
+<p>You may ask yourself, “Why can’t I just use the row number as each row’s identifier?” That’s a very valid question! Here is the reason why. You can see that “Max” has an “id” of 10 on row 11. What happens if you wanted to look at the data differently, say sorted by name? Here’s what that spreadsheet looks like.</p>
+<p>[Puppies spreadsheet with primary key sorted by name]</p>
+<p>You can see that when you sort them by name, if you relied on row number, “Max” now lives on row 10 rather than row 11. That changes the unique identifer of “Max” based on the way that you view the data. You want the unique identifier to <em>be part of the row definition</em> so that the number always stays with the row no matter how you’ve sorted the data. You will always know that the row with “id” value of 10 is “Max”.</p>
+<p>Keeping track of what the next number would be in that column could cause you a lot or headaches. What if two people (or applications) were entering data at the same time? Who would get the correct “next id” and still have it be unique? The answer to that is to let the database handle it. All databases have some way of specifying that you want to set the column to a special data type that will auto-assign and auto-increment an integer value for the column. In PostgreSQL, that special data type is called <code>SERIAL</code>.</p>
+<p>Putting that all together, you would add a new column definition to your table with the name of “id” and the type <code>SERIAL</code>. Then, to specify that it is the primary key, you can do it one of two ways. The following example shows it as part of the column definition.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL PRIMARY KEY,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE );</code>shell</p>
+<p>Or, you can put it in what is known as –constraint syntax– after the columns specifications but before the close parenthesis.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed VARCHAR(100) NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE,   PRIMARY KEY(id) );</code>shell</p>
+<p>Either way you do it, when you view the output of <code>\d puppies</code>, you see some new things in the output.</p>
+<p><code>shell                                       Table "public.puppies"     Column    |          Type          | Collation | Nullable |               Default --------------+------------------------+-----------+----------+-------------------------------------  id           | integer                |           | not null | nextval('puppies_id_seq'::regclass)  name         | character varying(50)  |           | not null |  age_yrs      | numeric(3,1)           |           | not null |  breed        | character varying(100) |           | not null |  weight_lbs   | integer                |           | not null |  microchipped | boolean                |           | not null | false Indexes:     "puppies_pkey" PRIMARY KEY, btree (id)</code>shell</p>
+<p>First, you’ll notice that there is a weird default value for the “id” column. That’s the way that PostgreSQL populates it with a new integer value every time you add a new row.</p>
+<p>You will also see that that there is a section named “Indexes” after the column specifications. This shows that there is a thing named “puppies_pkey” which is the primary key on the column “id”.</p>
+<h2 id="unique-values-1">Unique values</h2>
+<p>Sometimes, you want all of the data in a column to be unique. For example, if you a table of people records. You want to collect their email address for them to sign up for your Web site. In general, people don’t share email addresses (although it has been known to happen). You can put a constraint on a column by putting <code>UNIQUE</code> in the column’s definition. For example, here’s a sample “people” table with a unique constraint on the email column.</p>
+<p><code>sql CREATE TABLE people (   id SERIAL,   first_name VARCHAR(50) NOT NULL,   last_name VARCHAR(50) NOT NULL,   email VARCHAR(250) NOT NULL UNIQUE,   PRIMARY KEY (id) );</code>shell</p>
+<p>When you use the <code>\d people</code> command to view the definition of the table, you will see this.</p>
+<p><code>shell                                       Table "public.people"    Column   |          Type          | Collation | Nullable |              Default ------------+------------------------+-----------+----------+------------------------------------  id         | integer                |           | not null | nextval('people_id_seq'::regclass)  first_name | character varying(50)  |           | not null |  last_name  | character varying(50)  |           | not null |  email      | character varying(250) |           | not null | Indexes:     "people_pkey" PRIMARY KEY, btree (id)     "people_email_key" UNIQUE CONSTRAINT, btree (email)</code>shell</p>
+<p>Down there at the bottom, you see that PostgreSQL has added a <code>UNIQUE CONSTRAINT</code> to the list of indexes for the “email” field. Now, if someone tried to put an email address into the table that someone had previously used, then the database would return an error.</p>
+<p><code>shell ERROR:  duplicate key value violates unique constraint "people_email_key" DETAIL:  Key (email)=(a) already exists.</code>shell</p>
+<h2 id="refactor-for-data-integrity-1">Refactor for data integrity</h2>
+<p>Now is the time for thinking about the nature of the data. When you create database tables, you need to ask yourself about the data that you’re going to store in them. One of the first questions that you should ask yourself is, “Do any of the columns have values that come from a list?” Or, another way to ask that is, “Do any of the columns come from a set of predefined values?” If you look at this data, does anything seem like it comes from a list, or that the data could repeat itself?</p>
+<p>Take a look, again, at the spreadsheet. Does anything jump out at you?</p>
+<p>[Puppies spreadsheet with primary key sorted by name]</p>
+<p>If you looked at it and answered “the breed column”, that’s the ticket! The values that go into the breed column is finite. You don’t want one person typing “Corgi” and another person typing “CORGI” and another “corgi” because, as you know, those are <em>three different values</em>! You want them all to be the same value! Supporting this is the primary reason that relational databases exist.</p>
+<p>Instead of having just one table, you could have two tables. One that contains the puppy information and another that contains the breed information. Then, using the magic of relational databases, you can create a relation between the two tables so that the “puppies” table will reference entries in the “breeds” table.</p>
+<p>This process is called –normalization–. It’s a <em>really big deal</em> in database communities. And, it’s a really big deal for application developers to maintain the integrity of the data. Bad data leads to bad applications.</p>
+<p>To do this follows a fairly simple set of steps.</p>
+<ol type="1">
+<li>Figure out what related data repeats itself. In this case, it is only the single column that contains the –breed– names.</li>
+<li>Create a new table to hold that data. Make sure it has a primary key. In this case, you can create a “breeds” table that contains an “id” the name of the breed.</li>
+<li>Replace all of the columns in the original table that you extracted with a single value that will contain the corresponding “id” value from the new table. In this case, you will replace the “breed” column with a column named “breed_id” because it will have the id of the specific breed from the “breeds” table.</li>
+</ol>
+<p>Here’s what that would look like with two spreadsheets.</p>
+<p>[Puppies and breed spreadsheets normalized]</p>
+<p>You might think to yourself, “That’s not simpler! That’s … that’s harder!” From a human perspective looking at the two separate tables and associating the id in the “breed_id” column with the value in the “id” column of the “breeds” table to lookup the name of the breed <em>is</em> harder. But, SQL provides tools to make this <em>very easy</em>. You will learn about that in the homework, tonight, and in all of the database work that you’ll be doing from here on out. Eventually, thinking this way about data will become second nature.</p>
+<p>To represent this in SQL, you will need two SQL statements. The first one, the one for the “breeds” table, you should be able to construct that already with the knowledge that you have. It would look like this. Type this into your <code>plsql</code> shell.</p>
+<p><code>sql CREATE TABLE breeds (   id SERIAL,   name VARCHAR(50) NOT NULL,   PRIMARY KEY (id) );</code>shell</p>
+<p>Now, here’s the new thing. You want the database to make sure that the value in the “breed_id” column of the “puppies” table references the value in the “id” table of the “breeds” table. This reference is called a –foreign key–. That means that the value in the column <em>must exist</em> as the value of a primary key in the table that it references. This –referential integrity– is the backbone of relational databases. It prevents bad data from getting put into those foreign key columns.</p>
+<p>Here’s what the new “puppies” SQL looks like. Drop the old “puppies” table and type this SQL in there.</p>
+<p><code>sql CREATE TABLE puppies (   id SERIAL,   name VARCHAR(50) NOT NULL,   age_yrs NUMERIC(3,1) NOT NULL,   breed_id INTEGER NOT NULL,   weight_lbs INTEGER NOT NULL,   microchipped BOOLEAN NOT NULL DEFAULT FALSE,   PRIMARY KEY(id),   FOREIGN KEY (breed_id) REFERENCES breeds(id) );</code>shell</p>
+<p>That new thing at the bottom of the definition, that’s how you relate one table to another. If follows the syntax</p>
+<p><code>sql FOREIGN KEY («column name in this table»)   REFERENCES «other table name»(«primary key column in other table»)</code>shell</p>
+<p>Looking at the spreadsheets, again, the presence of the foreign key would make it <em>impossible</em> for someone to enter a value in the “breed_id” column that did not exist in the “id” column of the “breeds” table.</p>
+<p>[Puppies and breed spreadsheets normalized]</p>
+<p>You can see that the puppies with ids of 1 and 9, “Cooper” and “Leinni”, both have the “breed_id” of 8. That means they’re both “Miniature Schnauzers”. What if, originally, someone had misspelled “Schnauzers”? If it was still just a text column in the “puppies” sheet, you’d have to go find and replace every single instance of the misspelling. Now, because it’s only spelled once and then <em>referenced</em>, you would only need to update the misspelling in one place!</p>
+<h2 id="order-of-table-declarations-1">Order of table declarations</h2>
+<p>The order of running these table definitions is important. Because “puppies” now relies on “breeds” to exist for that foreign key relationship, you <em>must</em> create the “breeds” table first. If you had tried to create the “puppies” table first, you would see the following error message.</p>
+<p><code>shell ERROR: relation "breeds" does not exist</code>shell</p>
+<p>Now that you have both of those tables in your database, what do you think would happen if you tried to drop the “breeds” table? Another table depends on it. When you tried to drop a user that owned a database, you got an error because that database object depended on that user existing, the same things happens now.</p>
+<p>Type the SQL to drop the “breeds” table from the database. You should see the following error message.</p>
+<p><code>shell ERROR:  cannot drop table breeds because other objects depend on it DETAIL:  constraint puppies_breed_id_fkey on table puppies depends on table breeds HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code>shell</p>
+<p>You can see that PostgreSQL has told you that other things depend on the “breeds” table and, specifically, a thing called “puppies_breed_id_fkey” depends on it. That is the auto-generated name for the foreign key that you created in the “puppies” table. It took the name of the table, the name of the column, and the string “fkey” and joined them all together with underscores.</p>
+<p>In the homework for tomorrow, you will see how to <em>join</em> together two tables into one virtual table so that the breed names are right there along with the puppies data.</p>
+<h2 id="what-youve-done-3">What you’ve done</h2>
+<p>In this walk-through, you</p>
+<ul>
+<li>Learned about nullable columns and how to control that behavior by writing <code>NOT NULL</code> in your column specifications</li>
+<li>Learned that <code>NULL</code> means an “absence of a value” which makes database administrators groan with displeasure</li>
+<li>Learned about how to specify default values for a column</li>
+<li>Learned the purpose of and how to declare integer-valued primary keys for a table using the <code>PRIMARY KEY</code> constraint and <code>SERIAL</code> data type</li>
+<li>Learned about <em>normalization</em> and the steps to refactor a table to remove duplicated data</li>
+<li>Learned the purpose of and how to declare foreign keys to relate the column of one table to the primary key of another table <a href="images/tables-puppies-spreadsheet.png">Puppies spreadsheet</a>: images/tables-puppies-spreadsheet.png [three-valued logic]: https://en.wikipedia.org/wiki/Three-valued_logic [Puppies spreadsheet with primary key]: https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-with-primary-key.png [Puppies spreadsheet with primary key sorted by name]: images/spreadsheet-puppies-with-primary-key-sorted-by-name.png [Puppies and breed spreadsheets normalized]: images/spreadsheet-puppies-and-breeds-normalized.png</li>
+</ul>
+<hr />
+<h1 id="database-management-project">Database Management Project</h1>
+<p>This project asks you to write some SQL to make some tests pass. You must do them in order of the file name.</p>
+<p>You’ll be writing your SQL in -.sql files. This is just like writing it in the <code>psql</code> client. You put semicolons after each statement. But, you don’t have to worry about silly mistakes because it’s in a file and they’re easy to fix.</p>
+<h2 id="instructions">Instructions</h2>
+<ul>
+<li>Clone the project from https://github.com/appacademy-starters/sql-database-management-starter.</li>
+<li><code>cd</code> into the project folder</li>
+<li><code>npm install</code> to install dependencies in the project root directory</li>
+<li><code>npm test</code> to run the specs</li>
+<li>You can view the test cases in <code>test</code>. Your job is to write code in
+<ul>
+<li>–01-create-users.sql– to write statements that will create users</li>
+<li>–01-create-databases.sql– to write statements that will create databases</li>
+<li>–01-create-aa-times-tables.sql– will create related tables in a database</li>
+</ul></li>
+</ul>

@@ -1,0 +1,25 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:event-delete-dialog', location = 'com/atlassian/confluence/extra/calendar3/components/event-delete-dialog/event-delete-dialog.less' */
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel p {
+  margin: 0;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel .tc-delete-recurring-event-options {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel .tc-delete-recurring-event-options li {
+  margin-bottom: 15px;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel .tc-delete-recurring-event-options .tc-last-delete-option {
+  margin-bottom: 0;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel .tc-delete-recurring-event-options .tc-delete-button {
+  width: 165px;
+}
+.aui-dialog .dialog-page-body .tc-delete-event-confirmation-panel .tc-delete-recurring-event-options .tc-delete-description {
+  padding-left: 10px;
+}

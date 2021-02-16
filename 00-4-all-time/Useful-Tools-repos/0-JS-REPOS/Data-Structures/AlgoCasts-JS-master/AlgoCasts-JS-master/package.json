@@ -1,0 +1,17 @@
+{
+  "name": "dsa-in-javascript",
+  "version": "1.0.0",
+  "description": "Data Structure and Algorithms in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts": "ts-node",
+    "js": "node"
+  },
+  "author": "yogendra saxena",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}

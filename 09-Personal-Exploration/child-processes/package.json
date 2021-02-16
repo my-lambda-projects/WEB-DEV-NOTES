@@ -1,0 +1,16 @@
+{
+  "name": "child-processes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "child-process-exec.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cassandra-driver": "^4.6.1",
+    "shelljs": "^0.8.4"
+  }
+}

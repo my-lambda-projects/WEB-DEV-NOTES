@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.drag-and-drop:drag-and-drop-tip', location = 'js/drag-and-drop-tip.js' */
+define("confluence-drag-and-drop/drag-and-drop-tip","confluence/legacy-editor-global-AVOID-IF-POSSIBLE jquery confluence/confluence-storage-manager confluence/templates confluence/api/constants confluence/meta".split(" "),function(d,b,h,k,f,l){return function(){function m(c){if(l.getBoolean("can-attach-files")){var a=e.getItem("show-drag-and-drop-tip");null===a?b.ajax({url:f.CONTEXT_PATH+"/rest/drag-and-drop/1/tip/setting",contentType:"application/json",dataType:"json",success:function(b){a=(!1!==
+b).toString();e.setItem("show-drag-and-drop-tip",a);g(c,a)}}):g(c,a)}}function g(c,a){"true"===a&&(c.append(k.DragAndDrop.dragAndDropTip()),c.find(".attach-tip-discovery .close-tip").on("click",function(a){a.preventDefault();b(this).closest(".attach-tip-discovery").remove();c.sizeToFit();n()}))}function n(){b.ajax({url:f.CONTEXT_PATH+"/rest/drag-and-drop/1/tip/disable",type:"POST",contentType:"application/json",dataType:"json",success:function(){e.setItem("show-drag-and-drop-tip",!1)}})}var e=h("confluence-editor");
+d.ImageDialog.beforeShowListeners.push(function(){m(b("#attached-files"))})}});require("confluence/module-exporter").safeRequire("confluence-drag-and-drop/drag-and-drop-tip",function(d){require("ajs").toInit(d)});
+}catch(e){WRMCB(e)};

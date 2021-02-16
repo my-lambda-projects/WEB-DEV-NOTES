@@ -1,0 +1,387 @@
+{
+	"name": "vscode-javascript-repl",
+	"displayName": "JavaScript REPL",
+	"description": "Interactive Javascript Playground",
+	"version": "0.6.5",
+	"publisher": "achil",
+	"author": {
+		"email": "akiritsakas@gmail.com",
+		"name": "Achilleas Kiritsakas"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/axilleasiv/vscode-javascript-repl-docs"
+	},
+	"keywords": [
+		"javascript",
+		"typescript",
+		"coffeescript",
+		"playground",
+		"repl",
+		"node",
+		"vue",
+		"react",
+		"angular",
+		"svelte",
+		"interactive",
+		"expressjs"
+	],
+	"categories": [
+		"Debuggers",
+		"Programming Languages",
+		"Other"
+	],
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/axilleasiv/vscode-javascript-repl-docs/issues"
+	},
+	"homepage": "https://github.com/axilleasiv/vscode-javascript-repl-docs",
+	"icon": "images/icon.png",
+	"engines": {
+		"vscode": "^1.21.0"
+	},
+	"activationEvents": [
+		"onCommand:achil.repl.runNew",
+		"onCommand:achil.repl.runNewReact",
+		"onCommand:achil.repl.runNewCoffee",
+		"onCommand:achil.repl.runNewTypeScript",
+		"onCommand:achil.repl.runNewTypeScriptReact",
+		"onCommand:achil.repl.runCurrent",
+		"onCommand:achil.repl.stopCurrent",
+		"onCommand:achil.repl.stopAll",
+		"onCommand:achil.repl.showActiveLog",
+		"onCommand:achil.repl.openLogsFolder"
+	],
+	"main": "./dist/main/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "achil.repl.runNew",
+				"title": "JS Repl: New Javascript File (.js)"
+			},
+			{
+				"command": "achil.repl.runNewReact",
+				"title": "JS Repl: New React File (.jsx)"
+			},
+			{
+				"command": "achil.repl.runNewCoffee",
+				"title": "JS Repl: New CoffeeScript File (.coffee)"
+			},
+			{
+				"command": "achil.repl.runNewTypeScript",
+				"title": "JS Repl: New TypeScript File (.ts)"
+			},
+			{
+				"command": "achil.repl.runNewTypeScriptReact",
+				"title": "JS Repl: New TypeScript React File (.tsx)"
+			},
+			{
+				"command": "achil.repl.runCurrent",
+				"title": "JS Repl: Run",
+				"icon": {
+					"dark": "images/dark/play.svg",
+					"light": "images/light/play.svg"
+				}
+			},
+			{
+				"command": "achil.repl.stopCurrent",
+				"title": "JS Repl: Stop on Current File",
+				"enablement": "javascript-repl.started",
+				"icon": {
+					"dark": "images/dark/stop.svg",
+					"light": "images/light/stop.svg"
+				}
+			},
+			{
+				"command": "achil.repl.stopAll",
+				"title": "JS Repl: Stop for all files"
+			},
+			{
+				"command": "achil.repl.showActiveLog",
+				"title": "JS Repl: Show log file of active session"
+			},
+			{
+				"command": "achil.repl.openLogsFolder",
+				"title": "JS Repl: Open folder of log files"
+			},
+			{
+				"command": "achil.repl.copyValue",
+				"title": "JS Repl: Copy Value",
+				"enablement": "javascript-repl.started"
+			},
+			{
+				"command": "achil.repl.showValue",
+				"title": "JS Repl: Show Value",
+				"enablement": "javascript-repl.started"
+			},
+			{
+				"command": "achil.repl.goToLog",
+				"title": "JS Repl: Show Log",
+				"enablement": "javascript-repl.expl && javascript-repl.started",
+				"when": "editorLangId == markdown"
+			},
+			{
+				"command": "achil.repl.reveal",
+				"title": "JS Repl: Reveal in explorer",
+				"enablement": "javascript-repl.expl && javascript-repl.started"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "logs-explorer",
+					"title": "Logs Explorer",
+					"icon": "images/explorer/explorer.svg",
+					"when": "javascript-repl.expl && javascript-repl.started"
+				}
+			]
+		},
+		"views": {
+			"logs-explorer": [
+				{
+					"id": "logsExplorer",
+					"name": "Show logs",
+					"when": "javascript-repl.expl && javascript-repl.started"
+				}
+			]
+		},
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "achil.repl.copyValue",
+					"when": "view == logsExplorer && viewItem != rel",
+					"group": "navigation"
+				},
+				{
+					"command": "achil.repl.goToLog",
+					"when": "view == logsExplorer && viewItem != rel",
+					"group": "navigation"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "achil.repl.runCurrent",
+					"group": "navigation",
+					"when": "!javascript-repl.started && resourceExtname =~ /(js|jsx|ts|tsx|vue|coffee)$/i"
+				},
+				{
+					"command": "achil.repl.stopCurrent",
+					"group": "navigation",
+					"when": "javascript-repl.started"
+				},
+				{
+					"command": "achil.repl.showValue",
+					"group": "navigation",
+					"when": "javascript-repl.started"
+				},
+				{
+					"command": "achil.repl.copyValue",
+					"group": "navigation",
+					"when": "javascript-repl.started"
+				},
+				{
+					"command": "achil.repl.reveal",
+					"group": "navigation",
+					"when": "javascript-repl.expl && javascript-repl.started"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "achil.repl.runCurrent",
+					"group": "navigation",
+					"when": "!javascript-repl.started && resourceExtname =~ /(js|jsx|ts|tsx|vue|coffee)$/i"
+				},
+				{
+					"command": "achil.repl.stopCurrent",
+					"group": "navigation",
+					"when": "javascript-repl.started"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "achil.repl.runCurrent",
+				"key": "ctrl+shift l",
+				"mac": "ctrl+shift+l",
+				"when": "!terminalFocus"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Javascript REPL configuration",
+			"properties": {
+				"javascript-repl.applyResults": {
+					"type": "string",
+					"enum": [
+						"onEdit",
+						"onSave"
+					],
+					"default": "onEdit",
+					"description": "Apply results on activity",
+					"scope": "resource"
+				},
+				"javascript-repl.coverage": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show the coverage",
+					"scope": "resource"
+				},
+				"javascript-repl.coverageTimes": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show the number of times that lines has been executed during runtime (coverage option above must be true)",
+					"scope": "resource"
+				},
+				"javascript-repl.explorer": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show logs on the explorer window",
+					"scope": "resource"
+				},
+				"javascript-repl.explorerFocus": {
+					"type": "boolean",
+					"default": true,
+					"description": "Focus on explorer window, on a reveal of a log in the editor",
+					"scope": "resource"
+				},
+				"javascript-repl.explorerReveal": {
+					"type": "boolean",
+					"default": true,
+					"description": "Reveal explorer view window, on start automatically",
+					"scope": "resource"
+				},
+				"javascript-repl.outputChannel": {
+					"type": "boolean",
+					"default": false,
+					"description": "Output all result to an output channel",
+					"scope": "resource"
+				},
+				"javascript-repl.outputChannelClear": {
+					"type": "boolean",
+					"default": true,
+					"description": "Clear the previous results on the output channel",
+					"scope": "resource"
+				},
+				"javascript-repl.context": {
+					"type": "string",
+					"enum": [
+						"VM",
+						"Node"
+					],
+					"default": "VM",
+					"description": "The way that the results received. The Node option evaluates the results to separate child_process, so use this option if you have any problems with the VM option",
+					"scope": "resource"
+				},
+				"javascript-repl.useWorkers": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use parcel workers for faster results in bigger projects",
+					"scope": "resource"
+				},
+				"javascript-repl.usageEmptyContent": {
+					"type": "boolean",
+					"default": false,
+					"description": "If checked, 'JS Repl: New' commands will not contain any usage examples",
+					"scope": "resource"
+				},
+				"javascript-repl.gutters": {
+					"description": "Change colors of coverage gutters",
+					"type": "object",
+					"default": {
+						"covered": "#2ecc40",
+						"uncovered": "#dddddd",
+						"error": "#ff4136",
+						"partially": "#ffb90f"
+					}
+				},
+				"javascript-repl.logs": {
+					"description": "Change colors of log messages or errors",
+					"type": "object",
+					"default": {
+						"log": "#2ecc40",
+						"error": "#ff4136"
+					}
+				},
+				"javascript-repl.detectInfiniteLoops": {
+					"description": "When infinite loops are detected, shows error and breaks the loop. This indicates the number of iterations that are allowed per loop statement(for, while, do-while). Use zero or negative value to deactivate infinite loops detection.",
+					"type": "integer",
+					"default": 10000,
+					"scope": "resource"
+				},
+				"javascript-repl.rootPathOnMultiRootWorkspace": {
+					"description": "Set root path, when multiple project folders exist in a workspace, during the initialization of a repl new session",
+					"type": "string",
+					"default": "",
+					"scope": "resource"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./test/runTest.js",
+		"test:unit": "jest ./test/jest/unit --watchAll",
+		"test:update": "jest -u",
+		"precommit": "npm run lint && lint-staged",
+		"lint": "eslint .",
+		"format": "prettier --write './{src,bin,test}/**/*.{js,json,md}'",
+		"build": "node ./scripts/build.js",
+		"build:webpack": "webpack --mode development && yarn move",
+		"move": "mv dist/main/utils.js dist/main/utils.js.map dist/shared && cp src/shared/constants.js dist/shared",
+		"clean": "rm -rf node_modules && yarn"
+	},
+	"lint-staged": {
+		"*.{js,json,md}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"devDependencies": {
+		"@achil/async-run-ended": "^1.1.0",
+		"@types/jest": "^24.0.15",
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^7.0.43",
+		"@zeit/ncc": "^0.20.4",
+		"chai": "^4.2.0",
+		"debug": "^4.1.1",
+		"eslint": "^5.15.1",
+		"eslint-config-prettier": "^4.0.0",
+		"eslint-config-standard": "^12.0.0",
+		"eslint-plugin-import": "^2.16.0",
+		"eslint-plugin-node": "^8.0.1",
+		"eslint-plugin-prettier": "^3.0.1",
+		"eslint-plugin-promise": "^4.0.1",
+		"eslint-plugin-standard": "^4.0.0",
+		"husky": "^0.14.3",
+		"jest": "^24.8.0",
+		"jest-environment-vscode": "^1.0.0",
+		"lint-staged": "^7.0.5",
+		"pino-debug": "^1.3.0",
+		"prettier": "^1.16.4",
+		"prettier-eslint": "^9.0.1",
+		"sinon": "^7.3.2",
+		"sinon-chai": "^3.3.0",
+		"vm2": "^3.8.3",
+		"vscode": "^1.1.34",
+		"webpack": "^4.39.1",
+		"webpack-cli": "^3.3.6"
+	},
+	"dependencies": {
+		"@achil/babel-plugin-console": "^1.1.18",
+		"@achil/babel-plugin-istanbul": "^5.1.8",
+		"@achil/npm-programmatic": "^0.0.12",
+		"@achil/parcel-bundler": "^1.12.30",
+		"@babel/plugin-proposal-class-properties": "^7.3.3",
+		"cross-spawn": "^6.0.5",
+		"stack-trace": "0.0.10",
+		"v8-compile-cache": "^2.1.0"
+	},
+	"directories": {
+		"dist": "dist"
+	},
+	"__metadata": {
+		"id": "e1586f32-279f-4bd6-92a4-ce65b2f03789",
+		"publisherId": "a5d9012c-88d3-4338-ab8b-9c427d8e8328",
+		"publisherDisplayName": "Achilleas Kiritsakas"
+	}
+}

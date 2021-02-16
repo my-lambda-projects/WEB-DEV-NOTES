@@ -1,0 +1,155 @@
+<h2 id="options">Options</h2>
+<p>The manuals will show all the flags and options which are available for the respective tasks. If you find yourself in a situation where you always define certain flags in order to make the CLI compliant to your project, you can move those definitions also into a file called <code>.sequelizerc</code>. The file will get required if available and can therefore be either a JSON file or a Node.JS script that exports a hash. You can also use the <code>--options-path</code> option to declare a path to another configuration file.</p>
+<h3 id="example-for-a-node.js-script">Example for a Node.JS script</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">var</span> path <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;path&#39;</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="st">&#39;config&#39;</span><span class="op">:</span>          <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;config&#39;</span><span class="op">,</span> <span class="st">&#39;database.json&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="st">&#39;migrations-path&#39;</span><span class="op">:</span> <span class="va">path</span>.<span class="at">resolve</span>(<span class="st">&#39;db&#39;</span><span class="op">,</span> <span class="st">&#39;migrate&#39;</span>)</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span></a></code></pre></div>
+<p>This will configure the CLI to always treat <code>config/database.json</code> as config file and <code>db/migrate</code> as the directory for migrations.</p>
+<h3 id="configuration-file">Configuration file</h3>
+<p>By default the CLI will try to use the file <code>config/config.js</code> and <code>config/config.json</code>. You can modify that path either via the <code>--config</code> flag or via the option mentioned earlier. Here is how a configuration file might look like (this is the one that <code>sequelize init</code> generates):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-16" title="16">  <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-17" title="17">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-18" title="18">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-19" title="19">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_production&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-20" title="20">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-21" title="21">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb2-22" title="22">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="fu">}</span></a></code></pre></div>
+<p>The properties can also be combined to a <code>url</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span>  <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql://root:password@mysql_host.com/database_name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="fu">}</span></a></code></pre></div>
+<p>In case of a JS file it obviously needs to <code>module.exports</code> the object. Optionally, it’s possible to put all the configuration to the <code>url</code> option. The format is explained in the section below.</p>
+<h3 id="configuration-connection-string">Configuration Connection String</h3>
+<p>As an alternative to the <code>--config</code> option with configuration files defining your database, you can use the <code>--url</code> option to pass in a connection string. For example:</p>
+<p><code>sequelize db:migrate --url 'mysql://root:password@mysql_host.com/database_name'</code></p>
+<h3 id="configuration-connection-environment-variable">Configuration Connection Environment Variable</h3>
+<p>Another possibility is to store the URL in an environment variable and to tell the CLI to lookup a certain variable during runtime. Let’s assume you have an environment variable called <code>DB_CONNECTION_STRING</code> which stores the value <code>mysql://root:password@mysql_host.com/database_name</code>. In order to make the CLI use it, you have to use declare it in your config file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">        <span class="dt">&quot;use_env_variable&quot;</span><span class="fu">:</span> <span class="st">&quot;DB_CONNECTION_STRING&quot;</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<p>With v2.0.0 of the CLI you can also just directly access the environment variables inside the <code>config/config.js</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="st">&quot;production&quot;</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">        <span class="st">&quot;hostname&quot;</span><span class="op">:</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">DB_HOSTNAME</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a></code></pre></div>
+<h3 id="configuration-for-connecting-over-ssl">Configuration for connecting over SSL</h3>
+<p>Ensure ssl is specified in both <code>dialectOptions</code> and in the base config.</p>
+<pre><code>{
+    &quot;production&quot;: {
+        &quot;use_env_variable&quot;:&quot;DB_CONNECTION_STRING&quot;,
+        &quot;dialect&quot;:&quot;postgres&quot;,
+        &quot;ssl&quot;: true,
+        &quot;dialectOptions&quot;: {
+            &quot;ssl&quot;: true
+        }
+    }
+}</code></pre>
+<h3 id="storage">Storage</h3>
+<p>There are three types of storage that you can use: <code>sequelize</code>, <code>json</code>, and <code>none</code>.</p>
+<ul>
+<li><code>sequelize</code> : stores migrations and seeds in a table on the sequelize database</li>
+<li><code>json</code> : stores migrations and seeds on a json file</li>
+<li><code>none</code> : does not store any migration/seed</li>
+</ul>
+<h4 id="migration">Migration</h4>
+<p>By default the CLI will create a table in your database called <code>SequelizeMeta</code> containing an entry for each executed migration. To change this behavior, there are three options you can add to the configuration file. Using <code>migrationStorage</code>, you can choose the type of storage to be used for migrations. If you choose <code>json</code>, you can specify the path of the file using <code>migrationStoragePath</code> or the CLI will write to the file <code>sequelize-meta.json</code>. If you want to keep the information in the database, using <code>sequelize</code>, but want to use a different table, you can change the table name using <code>migrationStorageTableName</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="st">&quot;development&quot;</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="st">&quot;username&quot;</span><span class="op">:</span> <span class="st">&quot;root&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="st">&quot;password&quot;</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="st">&quot;database&quot;</span><span class="op">:</span> <span class="st">&quot;database_development&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="st">&quot;host&quot;</span><span class="op">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="st">&quot;dialect&quot;</span><span class="op">:</span> <span class="st">&quot;mysql&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="co">// Use a different storage type. Default: sequelize</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="st">&quot;migrationStorage&quot;</span><span class="op">:</span> <span class="st">&quot;json&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="co">// Use a different file name. Default: sequelize-meta.json</span></a>
+<a class="sourceLine" id="cb7-13" title="13">    <span class="st">&quot;migrationStoragePath&quot;</span><span class="op">:</span> <span class="st">&quot;sequelizeMeta.json&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-14" title="14"></a>
+<a class="sourceLine" id="cb7-15" title="15">    <span class="co">// Use a different table name. Default: SequelizeMeta</span></a>
+<a class="sourceLine" id="cb7-16" title="16">    <span class="st">&quot;migrationStorageTableName&quot;</span><span class="op">:</span> <span class="st">&quot;sequelize_meta&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-17" title="17"></a>
+<a class="sourceLine" id="cb7-18" title="18">    <span class="co">// Use a different schema (Postgres-only). Default: undefined</span></a>
+<a class="sourceLine" id="cb7-19" title="19">    <span class="st">&quot;migrationStorageTableSchema&quot;</span><span class="op">:</span> <span class="st">&quot;sequelize_schema&quot;</span></a>
+<a class="sourceLine" id="cb7-20" title="20">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="op">}</span></a></code></pre></div>
+<p>NOTE: The <code>none</code> storage is not recommended as a migration storage. If you decide to use it, be aware of the implications of having no record of what migrations did or didn’t run.</p>
+<h4 id="seed">Seed</h4>
+<p>By default the CLI will not save any seed that is executed. If you choose to change this behavior (!), you can use <code>seederStorage</code> in the configuration file to change the storage type. If you choose <code>json</code>, you can specify the path of the file using <code>seederStoragePath</code> or the CLI will write to the file <code>sequelize-data.json</code>. If you want to keep the information in the database, using <code>sequelize</code>, you can specify the table name using <code>seederStorageTableName</code>, or it will default to <code>SequelizeData</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="st">&quot;development&quot;</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="st">&quot;username&quot;</span><span class="op">:</span> <span class="st">&quot;root&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="st">&quot;password&quot;</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="st">&quot;database&quot;</span><span class="op">:</span> <span class="st">&quot;database_development&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="st">&quot;host&quot;</span><span class="op">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="st">&quot;dialect&quot;</span><span class="op">:</span> <span class="st">&quot;mysql&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="co">// Use a different storage. Default: none</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="st">&quot;seederStorage&quot;</span><span class="op">:</span> <span class="st">&quot;json&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-10" title="10">    <span class="co">// Use a different file name. Default: sequelize-data.json</span></a>
+<a class="sourceLine" id="cb8-11" title="11">    <span class="st">&quot;seederStoragePath&quot;</span><span class="op">:</span> <span class="st">&quot;sequelizeData.json&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="co">// Use a different table name. Default: SequelizeData</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="st">&quot;seederStorageTableName&quot;</span><span class="op">:</span> <span class="st">&quot;sequelize_data&quot;</span></a>
+<a class="sourceLine" id="cb8-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="op">}</span></a></code></pre></div>
+<h3 id="dialect-specific-options">Dialect specific options</h3>
+<p>In order to pass options to the underlying database connectors, you can add the property <code>dialectOptions</code> to your configuration like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">var</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">development</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mysql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-7" title="7">      <span class="dt">ssl</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-8" title="8">        <span class="dt">ca</span><span class="op">:</span> <span class="va">fs</span>.<span class="at">readFileSync</span>(__dirname <span class="op">+</span> <span class="st">&#39;/mysql-ca.crt&#39;</span>)</a>
+<a class="sourceLine" id="cb9-9" title="9">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="op">};</span></a></code></pre></div>
+<h3 id="schema-migration">Schema migration</h3>
+<p>Sequelize CLI continue to use schema from <code>v2</code> and fully compatible with <code>v2</code>. If you are still using old schema from pre <code>v2</code>, use <code>v2</code> to upgrade to current schema with <code>db:migrate:old_schema</code></p>
+<h4 id="timestamps">Timestamps</h4>
+<p>Since v2.8.0 the CLI supports a adding timestamps to the schema for saving the executed migrations. You can opt-in for timestamps by running the following command:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="ex">sequelize</span> db:migrate:schema:timestamps:add</a></code></pre></div>
+<h3 id="the-migration-schema">The migration schema</h3>
+<p>The CLI uses <a href="https://github.com/sequelize/umzug">umzug</a> and its migration schema. This means a migration has to look like this:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="st">&quot;use strict&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="dt">up</span><span class="op">:</span> <span class="kw">function</span>(queryInterface<span class="op">,</span> Sequelize<span class="op">,</span> done) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="at">done</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8">  <span class="dt">down</span><span class="op">:</span> <span class="kw">function</span>(queryInterface) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-9" title="9">    <span class="cf">return</span> <span class="kw">new</span> <span class="at">Promise</span>(<span class="kw">function</span> (resolve<span class="op">,</span> reject) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-10" title="10">      <span class="at">resolve</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-11" title="11">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="op">};</span></a></code></pre></div>
+<p>Please note that you can either return a Promise or call the third argument of the function once your asynchronous logic was executed. If you pass something to the callback function (the <code>done</code> function) it will be treated as erroneous execution.</p>
+<p>Additional note: If you need to access the sequelize instance, you can easily do that via <code>queryInterface.sequelize</code>. For example <code>queryInterface.sequelize.query('CREATE TABLE mytable();')</code>.</p>

@@ -1,0 +1,6 @@
+[submodule "postgres-docker"]
+	path = postgres-docker
+	url = https://github.com/appacademy-starters/postgres-docker.git
+[submodule "w10-d2-projects"]
+	path = w10-d2-projects
+	url = https://github.com/bgoonz/w10-d2-projects.git

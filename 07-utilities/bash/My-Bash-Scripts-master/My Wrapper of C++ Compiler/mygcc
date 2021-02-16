@@ -1,0 +1,64 @@
+#! /bin/bash
+#
+# My wrapper of C++ compiler.
+# You can create aliases like gcccc, gccccc, etc, all pointing to this file, in case you typed more than three 'c'.
+# Written by davidhcefx, edited in 2018.11.20
+
+CPP="c++ -Wall -Wextra"
+GRAY=$'\E[2;38m'
+RESET=$'\E[m'
+
+
+help() {
+    echo "Syntax: $(basename $0) [file] (options)"
+}
+
+guess_name() {
+    if [ -f "$1".cpp ]; then
+        echo "$1".cpp
+    elif [ -f "$1".c ]; then
+        echo "$1".c
+    else
+        echo "$1"
+    fi
+}
+
+main() {
+    name="$1"
+    shift
+    if ! [ -f "$name" ]; then
+        name=$(guess_name "${name%.}")  # remove '.' if exists
+    fi
+
+    CPP="$CPP $@"   # remaining options
+    obj_file=/tmp/"${name%.*}".o
+    out_name="${name%.*}".out
+
+    echo "${GRAY}================== Compiler ==================${RESET}"
+    $CPP  -c "$name" -o "$obj_file"
+    if [[ $? != 0 ]]; then
+        exit 1
+    fi
+
+    echo "${GRAY}=================== Linker ===================${RESET}"
+    $CPP  "$obj_file" -o "$out_name"
+    if [[ $? != 0 ]]; then
+        exit 1
+    fi
+
+    printf "${GRAY}> Hit enter to run '$out_name' ${RESET}"
+    read -n 1 ch
+
+    if [ -z "$ch" ]; then
+        ./"$out_name"
+    else
+        echo ""
+    fi
+}
+
+
+if [[ $# == 0 ]]; then
+    help
+else
+    main "$@"
+fi

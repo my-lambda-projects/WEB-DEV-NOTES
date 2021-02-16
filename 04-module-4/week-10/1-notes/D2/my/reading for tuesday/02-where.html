@@ -1,0 +1,364 @@
+<p>In the last reading, we learned how to create a simple SQL query using SELECT. In this reading, we’ll be adding a <a href="http://www.postgresqltutorial.com/postgresql-where/">WHERE clause</a> to our SELECT statement to further filter a database table and get specific rows back.</p>
+<h2 id="using-select-and-where">Using SELECT and WHERE</h2>
+<p>Previously, we covered how to use SELECT queries to fetch all of a table’s rows or specified table rows by column(s). We can filter information returned by our query by using a WHERE clause in our SELECT statement.</p>
+<p>Let’s look at some examples of adding a WHERE clause using our <code>puppies</code> table from before:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age_yrs</th>
+<th>breed</th>
+<th>weight_lbs</th>
+<th>microchipped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cooper</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>18</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Indie</td>
+<td>0.5</td>
+<td>Yorkshire Terrier</td>
+<td>13</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Kota</td>
+<td>0.7</td>
+<td>Australian Shepherd</td>
+<td>26</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Zoe</td>
+<td>0.8</td>
+<td>Korean Jindo</td>
+<td>32</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Charley</td>
+<td>1.5</td>
+<td>Basset Hound</td>
+<td>25</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+<td>0.6</td>
+<td>Labradoodle</td>
+<td>20</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Callie</td>
+<td>0.9</td>
+<td>Corgi</td>
+<td>16</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Jaxson</td>
+<td>0.4</td>
+<td>Beagle</td>
+<td>19</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Leinni</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>25</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+<td>1.6</td>
+<td>German Shepherd</td>
+<td>65</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h3 id="where-clause-for-a-single-value">WHERE clause for a single value</h3>
+<p>The simplest WHERE clause finds a row by a single column value. See the example below, which finds the rows where the breed equals ‘Corgi’:</p>
+<pre><code>SELECT name, breed FROM puppies
+  WHERE breed = &#39;Corgi&#39;;</code></pre>
+<p><code>SELECT</code>, <code>FROM</code>, and <code>WHERE</code> are capitalized. Notice that the string must use single quotation marks. <em>Note: PostgreSQL converts all names of tables, columns, functions, etc. to lowercase unless they’re double quoted.</em> For example: <code>create table Foo()</code> will create a table called <code>foo</code>, and <code>create table "Bar"()</code> will create a table called <code>Bar</code>. If you use double quotation marks in the query above, you’ll get an error that says <code>column "Corgi" does not exist</code> because it thinks you’re searching for the capitalized column name <code>Corgi</code>.</p>
+<p>Use the command <code>psql -U postgres</code> in the terminal, and type in your ‘postgres’ user password to connect to the PostgreSQL server. You should have a puppies table in your postgres database from the last reading. Once you’re in psql, enter the query above into the terminal and press Enter. You should get back one result for Callie the Corgi.</p>
+<pre><code>  name  | breed
+--------+-------
+ Callie | Corgi</code></pre>
+<h3 id="where-clause-for-a-list-of-values">WHERE clause for a list of values</h3>
+<p>We can also add a WHERE clause to check for a list of values. The syntax is <code>WHERE [column] IN ('value1', 'value2', 'value3')</code>. Let’s say we wanted to find the name and breed of the puppies who are Corgis, Beagles, or Yorkshire Terriers. We could do so with the query below:</p>
+<pre><code>SELECT name, breed FROM puppies
+  WHERE breed IN (&#39;Corgi&#39;, &#39;Beagle&#39;, &#39;Yorkshire Terrier&#39;);</code></pre>
+<p>Entering this query into psql should yield the following results:</p>
+<pre><code>  name  |       breed
+--------+-------------------
+ Indie  | Yorkshire Terrier
+ Callie | Corgi
+ Jaxson | Beagle</code></pre>
+<h3 id="where-clause-for-a-range-of-values">WHERE clause for a range of values</h3>
+<p>In addition to checking for string values, we can use the WHERE clause to check for a range of numeric/integer values. This time, let’s find the name, breed, and age of the puppies who are between 0 to 6 months old.</p>
+<pre><code>SELECT name, breed, age_yrs FROM puppies
+  WHERE age_yrs BETWEEN 0 AND 0.6;</code></pre>
+<p>Entering this query into psql should yield the following results:</p>
+<pre><code>   name   |       breed       | age_yrs
+----------+-------------------+---------
+ Indie    | Yorkshire Terrier |     0.5
+ Ladybird | Labradoodle       |     0.6
+ Jaxson   | Beagle            |     0.4</code></pre>
+<h2 id="order-by">ORDER BY</h2>
+<p>Getting the values back from a database in any order it wants to give them to you is ludicrous. Instead, you will often want to specify the order in which you get them back. Say you wanted them in alphabetical order by their name. Then, you would write</p>
+<pre><code>SELECT name, breed
+FROM puppies
+ORDER BY name;</code></pre>
+<p>Say you wanted that returned from oldest dog to youngest dog. You would write</p>
+<pre><code>SELECT name, breed
+FROM puppies
+ORDER BY age_yrs DESC;</code></pre>
+<p>where <code>DESC</code> means in descending order. Note that the column that you order on does not have to appear in the column list of the <code>SELECT</code> statement.</p>
+<h2 id="limit-and-offset">LIMIT and OFFSET</h2>
+<p>Say your query would return one million rows because you’ve cataloged every puppy in the world. That would be a lot for any application to handle. Instead, you may want to limit the number of rows returned. You can do that with the <code>LIMIT</code> keyword.</p>
+<pre><code>SELECT name, breed
+FROM puppies
+ORDER BY age_yrs
+LIMIT 100;</code></pre>
+<p>That would return the name and breed of the 100 youngest puppies. (Why?) That is, of the million rows that the statement would find, it <em>limits</em> the number to only 100.</p>
+<p>Let’s say you want to see the <em>next</em> 100 puppies after the first hundred. You can do that with the <code>OFFSET</code> keyword which comes after the <code>LIMIT</code> clause.</p>
+<pre><code>SELECT name, breed
+FROM puppies
+ORDER BY age_yrs
+LIMIT 100 OFFSET 100;</code></pre>
+<p>That will return only rows 101 - 200 of the result set. It <em>limits</em> the total number of records to return to 100. Then, it starts at the 100th row and counts 100 records. Those are the records returned.</p>
+<h2 id="sql-operators">SQL operators</h2>
+<p>A SQL operator is a word or character that is used inside a WHERE clause to perform comparisons or arithmetic operations. In the three examples above, we used SQL operators inside of WHERE clauses to filter table rows – <code>=</code>, <code>IN</code>, <code>BETWEEN</code>, and <code>AND</code>.</p>
+<p>The following is a listing of SQL operators. We can combine any of these operators in our query or use a single operator by itself.</p>
+<h3 id="logical-operators">Logical operators</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ALL</td>
+<td>TRUE if all of the subquery values meet the condition.</td>
+</tr>
+<tr class="even">
+<td>AND</td>
+<td>TRUE if all the conditions separated by AND are TRUE.</td>
+</tr>
+<tr class="odd">
+<td>ANY</td>
+<td>TRUE if any of the subquery values meet the condition.</td>
+</tr>
+<tr class="even">
+<td>BETWEEN</td>
+<td>TRUE if the operand is within the range of comparisons.</td>
+</tr>
+<tr class="odd">
+<td>EXISTS</td>
+<td>TRUE if the subquery returns one or more records.</td>
+</tr>
+<tr class="even">
+<td>IN</td>
+<td>TRUE if the operand is equal to one of a list of expressions.</td>
+</tr>
+<tr class="odd">
+<td>LIKE</td>
+<td>TRUE if the operand matches a pattern (accepts “wildcards”).</td>
+</tr>
+<tr class="even">
+<td>NOT</td>
+<td>Displays a record if the condition(s) is NOT TRUE.</td>
+</tr>
+<tr class="odd">
+<td>OR</td>
+<td>TRUE if any of the conditions separated by OR is TRUE.</td>
+</tr>
+<tr class="even">
+<td>SOME</td>
+<td>TRUE if any of the subquery values meet the condition.</td>
+</tr>
+</tbody>
+</table>
+<p>Here is another example query with a WHERE clause using several logical operators: <code>NOT</code>, <code>IN</code>, <code>AND</code>, and <code>LIKE</code>.</p>
+<pre><code>SELECT name, breed FROM puppies
+  WHERE breed NOT IN (&#39;Miniature Schnauzer&#39;, &#39;Basset Hound&#39;, &#39;Labradoodle&#39;)
+    AND breed NOT LIKE &#39;%Shepherd&#39;;</code></pre>
+<p><strong>Note</strong>: Pay attention to that <code>LIKE</code> operator. You will use it more than you want to. The wildcard it uses is the percent sign. Here’s a table to help you understand.</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>LIKE</code></th>
+<th>Matches “dog”</th>
+<th>Matches “hotdog”</th>
+<th>Matches “dog-tired”</th>
+<th>Matches “ordogordo”</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>'dog'</code></td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td><code>'%dog'</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td><code>'dog%'</code></td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td><code>'%dog%'</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Entering this query into psql should yield the following results:</p>
+<pre><code>  name  |       breed
+--------+-------------------
+ Indie  | Yorkshire Terrier
+ Zoe    | Korean Jindo
+ Callie | Corgi
+ Jaxson | Beagle</code></pre>
+<p>With the query above, we filtered out six puppies: two Miniature Schnauzers, one Basset Hound, one Labradoodle, and two Shepherds. We started with ten puppies in the table, so we’re left with four table rows. There are two puppies who are Shepherd breeds: an Australian Shepherd and a German Shepherd. We used the <code>LIKE</code> operator to filter these. In <code>'%Shepherd</code>, the <code>%</code> matches any substring value before the substring ‘Shepherd’.</p>
+<h3 id="arithmetic-operators">Arithmetic operators</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Meaning</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>+</td>
+<td>Addition</td>
+<td>a + b</td>
+</tr>
+<tr class="even">
+<td>-</td>
+<td>Subtraction</td>
+<td>a - b</td>
+</tr>
+<tr class="odd">
+<td>*</td>
+<td>Multiplication</td>
+<td>a * b</td>
+</tr>
+<tr class="even">
+<td>/</td>
+<td>Division</td>
+<td>a / b</td>
+</tr>
+<tr class="odd">
+<td>%</td>
+<td>Modulus (returns remainder)</td>
+<td>a % b</td>
+</tr>
+</tbody>
+</table>
+<p>Here is an example query with a WHERE clause using the multiplication operator to find puppies that are 6 months old:</p>
+<pre><code>SELECT name, breed, age_yrs FROM puppies
+  WHERE age_yrs * 10 = 6;</code></pre>
+<p>Entering the above query into psql will yield one result:</p>
+<pre><code>   name   |    breed    | age_yrs
+----------+-------------+---------
+ Ladybird | Labradoodle |     0.6</code></pre>
+<h3 id="comparison-operators">Comparison operators</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Meaning</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>=</td>
+<td>Equals</td>
+<td>a = b</td>
+</tr>
+<tr class="even">
+<td>!=</td>
+<td>Not equal to</td>
+<td>a != b</td>
+</tr>
+<tr class="odd">
+<td>&lt;&gt;</td>
+<td>Not equal to</td>
+<td>a &lt;&gt; b</td>
+</tr>
+<tr class="even">
+<td>&gt;</td>
+<td>Greater than</td>
+<td>a &gt; b</td>
+</tr>
+<tr class="odd">
+<td>&lt;</td>
+<td>Less than</td>
+<td>a &lt; b</td>
+</tr>
+<tr class="even">
+<td>&gt;=</td>
+<td>Greater than or equal to</td>
+<td>a &gt;= b</td>
+</tr>
+<tr class="odd">
+<td>&lt;=</td>
+<td>Less than or equal to</td>
+<td>a &lt;= b</td>
+</tr>
+<tr class="even">
+<td>!&lt;</td>
+<td>Not less than</td>
+<td>a !&lt; b</td>
+</tr>
+<tr class="odd">
+<td>!&gt;</td>
+<td>Not greater than</td>
+<td>a !&gt; b</td>
+</tr>
+</tbody>
+</table>
+<p>Here is an example query with a WHERE clause using the <code>&gt;</code> comparison operator:</p>
+<pre><code>SELECT name, breed, weight_lbs FROM puppies
+  WHERE weight_lbs &gt; 50;</code></pre>
+<p>Entering the above query into psql will yield one result:</p>
+<pre><code> name |      breed      | weight_lbs
+------+-----------------+------------
+ Max  | German Shepherd |         65</code></pre>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>How to use a WHERE clause in a SELECT query</li>
+<li>How to construct WHERE clauses matching a single value, a list of values, and a range of values</li>
+<li>What SQL operators are</li>
+<li>How to use logical operators, arithmetic operators, and comparison operators</li>
+</ul>
+<p>Did you find this lesson helpful?</p>
+<p><a href="https://open.appacademy.io/learn/js-py---oct-2020-online/week-10-oct-2020-online/using-where">Source</a></p>

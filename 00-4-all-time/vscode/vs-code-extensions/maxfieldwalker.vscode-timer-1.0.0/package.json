@@ -1,0 +1,67 @@
+{
+	"name": "vscode-timer",
+	"displayName": "vscode-timer",
+	"description": "A timer for VSCode",
+	"version": "1.0.0",
+	"publisher": "MaxfieldWalker",
+	"galleryBanner": {
+		"color": "#000",
+		"theme": "dark"
+	},
+	"icon": "icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MaxfieldWalker/vscode-timer"
+	},
+	"bugs": {
+		"url": "https://github.com/MaxfieldWalker/vscode-timer/issues"
+	},
+	"homepage": "",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.vscode-timer.reset",
+				"title": "Reset timer",
+				"category": "vscode-timer"
+			},
+			{
+				"command": "extension.vscode-timer.setTimer",
+				"title": "Set timer",
+				"category": "vscode-timer"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.32",
+		"@types/node": "^6.0.40",
+		"mocha": "^2.3.3",
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0"
+	},
+	"dependencies": {
+		"moment": "^2.17.1",
+		"moment-duration-format": "^1.3.0"
+	},
+	"__metadata": {
+		"id": "c6f2d4ea-5f3c-4fea-ab2f-4d3443b81cf5",
+		"publisherId": "94e58d16-b7a3-4498-be7b-a0da453a8ba8",
+		"publisherDisplayName": "Maxfield Walker"
+	}
+}

@@ -1,0 +1,45 @@
+.basket-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	height: 600px;
+	width: 600px;
+	margin: 0 auto;
+	background-color: whitesmoke;
+}
+
+.basket {
+	height: 400px;
+	width: 400px;
+	border: 5px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	transition: background-color 2s, border 1s 2s;
+	overflow: auto;
+}
+
+.basket--full {
+	background-color: red;
+	border: 15px solid green;
+}
+
+.basket__fruit {
+	font-size: 50px;
+	margin: 10px;
+}
+
+.basket-controls {
+	width: 70%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.basket-controls__add-apple--full,
+.basket-controls__add-orange--full,
+.basket-controls__remove-oldest--empty,
+.basket-controls__remove-newest--empty {
+	cursor: not-allowed;
+}

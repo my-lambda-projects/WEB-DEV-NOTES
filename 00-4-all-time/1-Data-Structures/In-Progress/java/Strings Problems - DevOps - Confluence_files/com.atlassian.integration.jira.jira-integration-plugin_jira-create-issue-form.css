@@ -1,0 +1,5 @@
+/* module-key = 'com.atlassian.integration.jira.jira-integration-plugin:jira-create-issue-form', location = '/jira-create-issue-form/jira-create-issue-form.less' */
+
+.jira-interation-create-issue-form .aui-icon-required {
+  position: absolute;
+}

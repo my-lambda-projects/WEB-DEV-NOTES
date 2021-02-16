@@ -1,0 +1,133 @@
+<h1 id="postgresql-indexes">PostgreSQL Indexes</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#postgresql-indexes">PostgreSQL Indexes</a>
+<ul>
+<li><a href="#what-is-a-postgresql-index">What is a PostgreSQL index?</a></li>
+<li><a href="#how-to-create-an-index">How to create an index</a>
+<ul>
+<li><a href="#types-of-indexes">Types of indexes</a></li>
+</ul></li>
+<li><a href="#when-to-use-an-index">When to use an index</a></li>
+<li><a href="#helpful-links">Helpful links:</a></li>
+<li><a href="#what-we-learned">What we learned:</a></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>PostgreSQL indexes can help us optimize our queries for faster performance. In this reading, we’ll learn how to create an index, when to use an index, and when to avoid using them.</p>
+<h2 id="what-is-a-postgresql-index">What is a PostgreSQL index?</h2>
+<p>A PostgreSQL index works like an index in the back of a book. It points to information contained elsewhere and can be a faster method of looking up the information we want.</p>
+<p>A book index contains a list of references with page numbers. Instead of having to scan all the pages of the book to find the places where specific information appears, a reader can simply check the index. In similar fashion, PostgreSQL indexes, which are special lookup tables, let us make faster database queries.</p>
+<p>Let’s say we had the following table:</p>
+<table>
+<thead>
+<tr class="header">
+<th>addresses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>address_id</td>
+</tr>
+<tr class="even">
+<td>address</td>
+</tr>
+<tr class="odd">
+<td>address2</td>
+</tr>
+<tr class="even">
+<td>city_id</td>
+</tr>
+<tr class="odd">
+<td>postal_code</td>
+</tr>
+<tr class="even">
+<td>phone_number</td>
+</tr>
+</tbody>
+</table>
+<p>And we made a query to the database like the following:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> addresses <span class="kw">WHERE</span> phone_number <span class="op">=</span> <span class="st">&#39;5556667777&#39;</span>;</a></code></pre></div>
+<p>The above query would scan every row of the “addresses” table to find matching rows based on the given phone number. If “addresses” is a large table (let’s say with millions of entries), and we only expect to get a small number of results back (one row, or a few rows), then such a query would be an inefficient way to retrieve data. Instead of scanning every row, we could create an index for the phone column for faster data retrieval.</p>
+<h2 id="how-to-create-an-index">How to create an index</h2>
+<p>To create a <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">PostgreSQL index</a>, use the following syntax:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (column_name);</a></code></pre></div>
+<p>We can create a phone number index for the above “addresses” table with the following:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number);</a></code></pre></div>
+<p>You can delete an index using the <code>DROP INDEX</code> command:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">DROP</span> <span class="kw">INDEX</span> addresses_phone_index;</a></code></pre></div>
+<p>After an index has been created, the system will take care of the rest – it will update an index when the table is modified and use the index in queries when it improves performance over a full table scan.</p>
+<h3 id="types-of-indexes">Types of indexes</h3>
+<p>PostgreSQL provides several index types: B-tree, Hash, GiST and GIN. The CREATE INDEX command creates B-tree indexes by default, which fit the most common situations. While it’s good to know other index types exist, you’ll probably find yourself using the default B-tree most often.</p>
+<p><strong>Single-Column Indexes</strong> Uses only one table column.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (column_name);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number);</a></code></pre></div>
+<p><strong>Multiple-Column Indexes</strong> Uses more than one table column.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (col1_name, col2_name);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_addresses_city_post_code <span class="kw">ON</span> addresses (city_id, postal_code);</a></code></pre></div>
+<p><strong>Partial Indexes</strong> Uses subset of a table defined by a conditional expression.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name <span class="kw">WHERE</span> (conditional_expression);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number) <span class="kw">WHERE</span> (city_id <span class="op">=</span> <span class="dv">2</span>);</a></code></pre></div>
+<p><strong>Note</strong>: Check out <a href="https://www.postgresql.org/docs/9.1/indexes.html">Chapter 11 on Indexes</a> in the PostgreSQL docs for more about types of indexes.</p>
+<h2 id="when-to-use-an-index">When to use an index</h2>
+<p>Indexes are intended to enhance database performance and are generally thought to be a faster data retrieval method than a sequential (or row-by-row) table scan. However, there are instances where using an index would not improve efficiency, such as the following:</p>
+<ul>
+<li>When working with a relatively small table (i.e. not a lot of rows)</li>
+<li>When a table has frequent, large-batch update or insert operations</li>
+<li>When working with columns that contain many NULL values</li>
+<li>When working with columns that are frequently manipulated</li>
+</ul>
+<p>An important thing to note about indexes is that, while they can optimize READ (i.e. table query) speed, they can also hamper WRITE (i.e. table updates/insertions) speed. The latter’s performance is affected due to the system having to spend time updating indexes whenever a change or insertion is made to the table.</p>
+<p>The system optimizes database performance and decides whether to use an index in a query or to perform a sequential table scan, but we can analyze query performance ourselves to debug slow queries using <code>EXPLAIN</code> and <code>EXPLAIN ANALYZE</code>.</p>
+<p>Here is an example of using <code>EXPLAIN</code> from the <a href="https://www.postgresql.org/docs/9.1/using-explain.html">PostgreSQL docs</a>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> tenk1;</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3">                         <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">-------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb11-5" title="5"> Seq <span class="kw">Scan</span> <span class="kw">on</span> tenk1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">458.00</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">10000</span> width<span class="op">=</span><span class="dv">244</span>)</a></code></pre></div>
+<p>In the QUERY PLAN above, we can see that a sequential table scan (<code>Seq Scan</code>) was performed on the table called “tenk1”. In parentheses, we see performance information:</p>
+<ul>
+<li>Estimated start-up cost (or time expended before the scan can start): 0.00</li>
+<li>Estimated total cost: 458.00</li>
+<li>Estimated number of rows output: 10000</li>
+<li>Estimated average width (in bytes) of rows: 244</li>
+</ul>
+<p>It’s important to note that, although we might mistake the number next to <code>cost</code> for milliseconds, <code>cost</code> is not measured in any particular unit and is an arbitrary measurement relatively based on other query costs.</p>
+<p>If we use the <code>ANALYZE</code> keyword after <code>EXPLAIN</code> on a <code>SELECT</code> statement, we can get more information about query performance:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">FROM</span> tenk1 t1, tenk2 t2</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">WHERE</span> t1.unique1 <span class="op">&lt;</span> <span class="dv">100</span> <span class="kw">AND</span> t1.unique2 <span class="op">=</span> t2.unique2;</a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5">                                                            <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">----------------------------------------------------------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-7" title="7"> <span class="kw">Nested</span> <span class="cf">Loop</span>  (<span class="kw">cost</span><span class="op">=</span><span class="dv">2</span>.<span class="dv">37</span><span class="op">..</span><span class="fl">553.11</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">488</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">1</span>.<span class="dv">392</span><span class="op">..</span><span class="fl">12.700</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-8" title="8">   <span class="op">-&gt;</span>  <span class="kw">Bitmap</span> <span class="kw">Heap</span> <span class="kw">Scan</span> <span class="kw">on</span> tenk1 t1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">2</span>.<span class="dv">37</span><span class="op">..</span><span class="fl">232.35</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">244</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">878</span><span class="op">..</span><span class="fl">2.367</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-9" title="9">         Recheck Cond: (unique1 <span class="op">&lt;</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb12-10" title="10">         <span class="op">-&gt;</span>  <span class="kw">Bitmap</span> <span class="kw">Index</span> <span class="kw">Scan</span> <span class="kw">on</span> tenk1_unique1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">2.37</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">0</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">546</span><span class="op">..</span><span class="fl">0.546</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-11" title="11">               <span class="kw">Index</span> Cond: (unique1 <span class="op">&lt;</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb12-12" title="12">   <span class="op">-&gt;</span>  <span class="kw">Index</span> <span class="kw">Scan</span> <span class="kw">using</span> tenk2_unique2 <span class="kw">on</span> tenk2 t2  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">3.01</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">1</span> width<span class="op">=</span><span class="dv">244</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">067</span><span class="op">..</span><span class="fl">0.078</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">1</span> loops<span class="op">=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb12-13" title="13">         <span class="kw">Index</span> Cond: (unique2 <span class="op">=</span> t1.unique2)</a>
+<a class="sourceLine" id="cb12-14" title="14"> Total runtime: <span class="fl">14.452</span> ms</a></code></pre></div>
+<p>We can see in the QUERY PLAN above that there are other types of scans happening: Bitmap Heap Scan, Bitmap Index Scan, and Index Scan. We know that an index has been created, and the system is using it to scan for results instead of performing a sequential scan. At the bottom, we also have a total runtime of 14.42 ms, which is pretty fast.</p>
+<h2 id="helpful-links">Helpful links:</h2>
+<ul>
+<li><a href="https://www.postgresql.org/docs/9.1/indexes.html">PostgreSQL docs: Indexes</a></li>
+<li><a href="https://www.postgresql.org/docs/8.1/performance-tips.html">PostgreSQL docs: Performance Tips</a></li>
+<li><a href="https://devcenter.heroku.com/articles/postgresql-indexes">Heroku DevCenter: Efficient Use of PostgreSQL Indexes</a></li>
+</ul>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>How to create a PostgreSQL index</li>
+<li>Types of indexes</li>
+<li>Use cases for indexes and when to avoid them</li>
+<li>How to use <code>EXPLAIN</code> to analyze query performance</li>
+</ul>

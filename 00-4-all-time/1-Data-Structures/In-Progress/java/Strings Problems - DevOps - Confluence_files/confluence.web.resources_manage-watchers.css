@@ -1,0 +1,101 @@
+/* module-key = 'confluence.web.resources:manage-watchers', location = 'includes/css/manage-watchers.css' */
+#manage-watchers-dialog .user-list,
+#manage-watchers-dialog li {
+  margin: 0;
+  padding: 0;
+  list-style: none
+}
+
+#manage-watchers-dialog .user-list {
+  margin: 10px 0
+}
+
+#manage-watchers-dialog li {
+  line-height: 24px
+}
+
+#manage-watchers-dialog .loading {
+  background: url(//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1000.0.0-da105be110ec/_/download/resources/confluence.web.resources:manage-watchers/../../images/icons/wait.gif) no-repeat left 50%;
+  color: #666;
+  padding-left: 20px
+}
+
+#manage-watchers-dialog .no-users {
+  font-style: italic
+}
+
+#manage-watchers-dialog .watch-user {
+  overflow: hidden;
+  margin-bottom: 5px
+}
+
+#manage-watchers-dialog li.removing,
+#manage-watchers-dialog ul.updating {
+  opacity: .5
+}
+
+#manage-watchers-dialog .watch-user a {
+  color: #333;
+  float: left;
+  text-decoration: none;
+  cursor: default;
+  max-width: 360px;
+  overflow: hidden
+}
+
+#manage-watchers-dialog .watch-user .username {
+  color: #666;
+  font-size: 12px
+}
+
+#manage-watchers-dialog .profile-picture {
+  height: 24px;
+  width: 24px;
+  margin-right: 10px;
+  float: left;
+  border-radius: 2px
+}
+
+#manage-watchers-dialog .remove-watch {
+  float: right;
+  background: url(//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1000.0.0-da105be110ec/_/download/resources/confluence.web.resources:manage-watchers/../../images/icons/trash_16.gif) no-repeat 50% 50%;
+  text-indent: -9999px;
+  height: 24px;
+  width: 24px;
+  cursor: pointer
+}
+
+#manage-watchers-dialog form .status {
+  margin-top: 5px
+}
+
+#manage-watchers-dialog form .error {
+  background-color: transparent;
+  color: #900
+}
+
+#manage-watchers-dialog form {
+  position: relative;
+  overflow: visible;
+  margin: 10px 0 5px
+}
+
+#manage-watchers-dialog #add-page-watcher-user,
+#manage-watchers-dialog #add-space-watcher-user {
+  margin-top: 10px;
+  margin-right: 10px
+}
+
+#manage-watchers-dialog .aui-dd-parent .aui-dropdown {
+  width: 18em
+}
+
+#manage-watchers-dialog .aui-dropdown em {
+  font-style: normal;
+  color: #666
+}
+
+#manage-watchers-dialog .aui-dropdown li.active em,
+#manage-watchers-dialog .aui-dropdown li:hover em {
+  color: #fff
+}

@@ -1,0 +1,46 @@
+{
+	"name": "js-jsx-snippets",
+	"displayName": "JS JSX Snippets",
+	"description": "Simple extensions for React, Redux in JS with babel and ES6 syntax",
+	"version": "10.1.0",
+	"publisher": "skyran",
+	"icon": "images/react-logo.png",
+	"galleryBanner": {
+		"theme": "light"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/skyran1278/js-jsx-snippets"
+	},
+	"engines": {
+		"vscode": "^1.16.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "javascript",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "javascriptreact",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/snippets.json"
+			},
+			{
+				"language": "typescriptreact",
+				"path": "./snippets/snippets.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "083bb726-3bae-44b6-88c6-8164f2c3e632",
+		"publisherId": "2092ae9c-57f4-43b0-b131-3b321d9ade73",
+		"publisherDisplayName": "sky ran"
+	}
+}

@@ -1,0 +1,50 @@
+<h1 id="querying-using-models">Querying Using Models</h1>
+<h2 id="model.findone">Model.findOne</h2>
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/models-usage.html#-find-search-for-one-specific-element-in-the-database">Official Docs</a></p>
+<p>Finds a single instance that matches the search criteria (even if there are more than one that match the search criteria - it will return the first it finds)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> foundPug <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span><span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Cody&#39;</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="va">console</span>.<span class="at">log</span>(foundPug)</a></code></pre></div>
+<h2 id="model.findbyid">Model.findById</h2>
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/models-usage.html#-find-search-for-one-specific-element-in-the-database">Official Docs</a></p>
+<p>Finds the instance with the specified id.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1">pugWithIdOne <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findById</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">console</span>.<span class="at">log</span>(pugWithIdOne)</a></code></pre></div>
+<h2 id="model.findall">Model.findAll</h2>
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/models-usage.html#-findall-search-for-multiple-elements-in-the-database">Official Docs</a></p>
+<p>Finds all instances that match the search criteria. If no criteria are given, it returns all the instances in the table.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> allPugs <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>() <span class="co">// will find ALL the pugs!</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  </a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="va">console</span>.<span class="at">log</span>(allPugs)  </a></code></pre></div>
+<h3 id="select-clauses-attributes">“Select” Clauses (“attributes”)</h3>
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/querying.html#attributes">Official Docs</a></p>
+<p>You can select specific columns to be included in the returned instance by specifying an “attributes” array.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> allPugs <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">attributes</span><span class="op">:</span> [<span class="st">&#39;id&#39;</span><span class="op">,</span> <span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="st">&#39;age&#39;</span>] <span class="co">// like saying: SELECT id, name, age from pugs;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4">  </a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">console</span>.<span class="at">log</span>(allPugs) <span class="co">// [{id: 1, name: &#39;Cody&#39;, age: 7}, {id: 2, name: &quot;Murphy&quot;, age: 4}]</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">// note that all the pugs only have key-value pairs for id, name and age included</span></a></code></pre></div>
+<h3 id="where-clauses">“Where” Clauses</h3>
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/querying.html#where">Official Docs</a></p>
+<p>You can narrow down the search in a <code>findAll</code> by specifying a <code>where</code> clause</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> sevenYearOldPugs <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="co">// like saying: SELECT * from pugs WHERE age = 7;</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">age</span><span class="op">:</span> <span class="dv">7</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="va">console</span>.<span class="at">log</span>(sevenYearOldPugs)</a></code></pre></div>
+<p>Specifying multiple options uses “AND” logic</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> sevenYearOldBlackPugs <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="co">// like saying: SELECT * from pugs WHERE age = 7 AND color = &#39;black&#39;;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="dt">age</span><span class="op">:</span> <span class="dv">7</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="dt">color</span><span class="op">:</span> <span class="st">&#39;black&#39;</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-7" title="7"></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="va">console</span>.<span class="at">log</span>(sevenYearOldBlackPugs)</a></code></pre></div>
+<p><strong>Note</strong>: To specify comparisons like “greater than” and “less than”, Check out <a href="/search-operators">Search Operators</a>.</p>

@@ -1,0 +1,25 @@
+/* module-key = 'confluence.macros.advanced:common-resources', location = 'com/atlassian/confluence/plugins/macros/advanced/css/common.less' */
+.macro-blank-experience {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  min-height: 125px;
+  padding: 15px 200px 20px 20px
+}
+
+.macro-blank-experience p {
+  color: #707070
+}
+
+.macro-blank-experience .create-post {
+  margin-top: 15px
+}
+
+.columnLayout .cell.aside .macro-blank-experience,
+.columnLayout.threeColumns .macro-blank-experience,
+.columnLayout.three-equal .macro-blank-experience,
+.columnLayout .sidebars .macro-blank-experience {
+  background: none;
+  padding: 15px 20px 20px 20px
+}

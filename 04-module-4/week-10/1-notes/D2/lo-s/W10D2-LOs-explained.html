@@ -1,0 +1,137 @@
+<h2 id="sql-w10d2---learning-objectives">SQL (W10D2) - Learning Objectives</h2>
+<h3 id="sql">SQL</h3>
+<ol type="1">
+<li>How to use the <code>SELECT ... FROM ...</code> statement to select data from a single table</li>
+</ol>
+<ul>
+<li>Supply the column names in the <code>SELECT</code> clause. If we want all columns, we can also use <code>*</code></li>
+<li>Supply the table names in the <code>FROM</code> clause</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="co">-- Selects all columns from the friends table</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="op">*</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  friends;</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">-- Selects the first_name column from the friends table (remember whitespace is ignored)</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">SELECT</span> name, age</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw">FROM</span> friends;</a></code></pre></div>
+<ul>
+<li>Sometimes we may need to specify what table we are selecting a column from, particulurly if we had joined multiple tables together.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="co">-- Notice here we are indicating that we want the &quot;name&quot; field from the &quot;friends&quot; table as well as the &quot;name&quot; field from the &quot;puppies&quot; table. We indicate the table name by table.column</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">-- We are also aliasing these fields with the AS keyword so that our returned results have friend_name and puppy_name as field headers</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  friends.name <span class="kw">AS</span> friend_name, puppies.name <span class="kw">AS</span> puppy_name</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  friends</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="kw">JOIN</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  puppies <span class="kw">ON</span> friends.puppy_id <span class="op">=</span> puppies.<span class="kw">id</span></a></code></pre></div>
+<ol start="2" type="1">
+<li>How to use the <code>WHERE</code> clause on <code>SELECT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements to narrow the scope of the command</li>
+</ol>
+<ul>
+<li>The <code>WHERE</code> clause allows us to select or apply actions to records that match specific criteria instead of to a whole table.</li>
+<li><p>We can use <code>WHERE</code> with a couple of different operators when making our comparison</p>
+<ul>
+<li><code>WHERE {column} = {value}</code> provides an exact comparison</li>
+<li><code>WHERE {column} IN ({value1}, {value2}, {value3}, etc.)</code> matches any provided value in the <code>IN</code> statement. We can make this more complex by having a subquery inside of the parentheses, having our column match any values within the returned results.</li>
+<li><code>WHERE {column} BETWEEN {value1} AND {value2}</code> can check for matches between two values (numeric ranges)</li>
+<li><code>WHERE {column} LIKE {pattern}</code> can check for matches to a string. This is most useful when we use the wildcard <code>%</code>, such as <code>WHERE breed LIKE '%Shepherd'</code>, which will match any breed that ends in “Shepherd”</li>
+<li>The <code>NOT</code> operator can also be used for negation in the checks.</li>
+<li>Mathematical operators can be used when performing calculations or comparisons within a query as well, such as</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">SELECT</span> name, breed, weight_lbs <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">WHERE</span> weight_lbs <span class="op">&gt;</span> <span class="dv">50</span>;</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">-- OR</span></a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="kw">SELECT</span> name, breed, age_yrs <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">WHERE</span> age_yrs <span class="op">*</span> <span class="dv">10</span> <span class="op">=</span> <span class="dv">5</span>;</a></code></pre></div></li>
+</ul>
+<ol start="3" type="1">
+<li>How to use the <code>JOIN</code> keyword to join two (or more) tables together into a single virtual table</li>
+</ol>
+<ul>
+<li>When we want to get information from a related table or do querying based on related table values, we can join the connected table by comparing the foreign key to where it lines up on the other table:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="co">-- Here we are joining the puppies table on to the friends table. We are specifying that the comparison we should make is the foreign key puppy_id on the friends table should line up with the primary key id on the puppies table.</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  friends.<span class="op">*</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  friends</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">JOIN</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  puppies <span class="kw">ON</span> friends.puppy_id <span class="op">=</span> puppies.<span class="kw">id</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  puppies.breed <span class="op">=</span> <span class="st">&#39;German Shepherd&#39;</span>;</a></code></pre></div>
+<ol start="4" type="1">
+<li>How to use the <code>INSERT</code> statement to insert data into a table</li>
+</ol>
+<ul>
+<li>When a table is already created we can then insert records into it using the <code>INSERT INTO</code> keywords.</li>
+<li>We provide the name of the table that we would like to add records to, followed by the <code>VALUES</code> keyword and each record we are adding. Here’s an example:</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="co">-- We are providing the table name, then multiple records to insert</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">-- The values are listed in the order that they are defined on the table</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  (column1_value, column2_value, column3_value),</a>
+<a class="sourceLine" id="cb5-6" title="6">  (column1_value, column2_value, column3_value),</a>
+<a class="sourceLine" id="cb5-7" title="7">  (column1_value, column2_value, column3_value);</a></code></pre></div>
+<ul>
+<li>We can also specify columns when we are inserting data. This makes it clear which fields we are providing data for and allows us to provide them out of order, skip null or default values, etc.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="co">-- In this example, we want to use the default value for id since it is autoincremented, so we provide DEFAULT for this field</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">INSERT</span> <span class="kw">INTO</span> friends (<span class="kw">id</span>, first_name, last_name)</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  (<span class="kw">DEFAULT</span>, <span class="st">&#39;Amy&#39;</span>, <span class="st">&#39;Pond&#39;</span>);</a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">-- Alternatively, we can leave it out completely, since the default value will be used if none is provided</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">INSERT</span> <span class="kw">INTO</span> friends (first_name, last_name)</a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb6-9" title="9">  (<span class="st">&#39;Rose&#39;</span>, <span class="st">&#39;Tyler&#39;</span>),</a>
+<a class="sourceLine" id="cb6-10" title="10">  (<span class="st">&#39;Martha&#39;</span>, <span class="st">&#39;Jones&#39;</span>),</a>
+<a class="sourceLine" id="cb6-11" title="11">  (<span class="st">&#39;Donna&#39;</span>, <span class="st">&#39;Noble&#39;</span>),</a>
+<a class="sourceLine" id="cb6-12" title="12">  (<span class="st">&#39;River&#39;</span>, <span class="st">&#39;Song&#39;</span>);</a></code></pre></div>
+<ol start="5" type="1">
+<li>How to use an <code>UPDATE</code> statement to update data in a table</li>
+</ol>
+<ul>
+<li>The <code>UPDATE</code> keyword can be used to find records and change their values in our database.</li>
+<li>We generally follow the pattern of <code>UPDATE {table} SET {column} = {new value} WHERE {match condition};</code>.</li>
+<li>Without a condition to narrow our records down, we will update every record in the table, so this is an important thing to double check!</li>
+<li>We can update multiple fields as well by specifying each column in parentheses and their associated new values: <code>UPDATE {table} SET ({column1}, {column2}) = ({value1}, {value2}) WHERE {match condition};</code></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="co">-- Updates the pet with id of 4 to change their name and breed</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">UPDATE</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  pets</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">SET</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  (name, breed) <span class="op">=</span> (<span class="st">&#39;Floofy&#39;</span>, <span class="st">&#39;Fluffy Dog Breed&#39;</span>)</a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="kw">id</span> <span class="op">=</span> <span class="dv">4</span>;</a></code></pre></div>
+<ol start="6" type="1">
+<li>How to use a <code>DELETE</code> statement to remove data from a table</li>
+</ol>
+<ul>
+<li>Similar to selecting records, we can delete records from a table by specifying what table we are deleting from and what criteria we would like to match in order to delete.</li>
+<li>We follow the general structure <code>DELETE FROM {table} WHERE {condition};</code></li>
+<li>The condition here is also very important! Without a condition, all records match and will be deleted.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="co">-- Deletes from the pets table any record that either has a name Floofy, a name Doggo, or an id of 3.</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">DELETE</span> <span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  pets</a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  name <span class="kw">IN</span> (<span class="st">&#39;Floofy&#39;</span>, <span class="st">&#39;Doggo&#39;</span>) <span class="kw">OR</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">3</span>;</a></code></pre></div>
+<ol start="7" type="1">
+<li>How to use a seed file to populate data in a database</li>
+</ol>
+<ul>
+<li>Seed files are a great way for us to create records that we want to start our database out with.</li>
+<li>Instead of having to individually add records to our tables or manually entering them in psql or postbird, we can create a file that has all of these records and then just pass this file to psql to run.</li>
+<li>Seed files are also great if we ever need to reset our database. We can clear out any records that we have by dropping all of our tables, then just run our seed files to get it into a predetermined starting point. This is great for our personal projects, testing environments, starting values for new tables we create, etc.</li>
+<li>There are two main ways we can use a seed file with psql, the <code>&lt;</code> and the <code>|</code> operators. They perform the same function for us, just in slightly different orders, taking the content of a .sql file and executing in within the psql environment:
+<ul>
+<li><code>psql -d {database} &lt; {sql filepath}</code></li>
+<li><code>cat {sql filepath} | psql -d {database}</code></li>
+</ul></li>
+</ul>

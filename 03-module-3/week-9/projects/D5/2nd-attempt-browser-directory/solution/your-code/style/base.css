@@ -1,0 +1,64 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  line-height: 1em;
+}
+
+button {
+  background-color: darkslategrey;
+  color: white;
+  margin: .5em;
+  padding: .5em 1em;
+  text-transform: capitalize;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: gray;
+  color: lightgray;
+}
+
+main {
+  display: flex;
+}
+
+.file-section {
+  flex: 1 0 300px;
+}
+
+.file-section__text {
+  width: 440pd;
+}
+
+.tree-section {
+  box-sizing: border-box;
+  padding: 1em;
+  width: 400px;
+}
+
+@media screen and (max-width: 700px) {
+  main {
+    display: block;
+  }
+
+  .file-section {
+    background-color: white;;
+    bottom: 0;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, .3);
+    left: 0;
+    margin-left: -110vw;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: margin-left .5s;
+    width: 100%;
+  }
+
+  .file-section--show {
+    margin-left: 0;
+  }
+
+  .tree-section {
+    width: auto;
+  }
+}

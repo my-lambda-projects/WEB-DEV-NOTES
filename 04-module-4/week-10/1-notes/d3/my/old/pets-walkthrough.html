@@ -1,0 +1,358 @@
+<h1 id="pets-walkthrough">Pets Walkthrough</h1>
+<p><a href="https://drawsql.app/app-academy/diagrams/pets#">Database Schema Diagram</a></p>
+<p><strong>MAKE SURE TO WRITE OUT ALL THE COMMANDS AND DO NOT COPY PASTE!</strong></p>
+<ol type="1">
+<li>Initialize <code>package.json</code> to be able to install node packages.</li>
+</ol>
+<pre><code>npm init --y</code></pre>
+<ol type="1">
+<li>Install the following node packages:</li>
+</ol>
+<ul>
+<li><code>pg</code></li>
+<li><code>sequelize</code></li>
+<li><code>sequelize-cli</code></li>
+</ul>
+<p>This will install sequelize version 6:</p>
+<pre><code>npm install pg sequelize sequelize-cli</code></pre>
+<p>If you want, you can install <code>sequelize</code> and <code>sequelize-cli</code> version 5, which is the version in the videos, by saying:</p>
+<pre><code>npm install pg sequelize@5 sequelize-cli@5</code></pre>
+<ol type="1">
+<li><p>Run <code>npx sequelize-cli init</code> to initialize sequelize.</p></li>
+<li><p>Create a database username and password and set those in the <code>config/config.json</code> file.</p></li>
+</ol>
+<p>It should look something like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;FILL IN WITH YOUR USERNAME&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;FILL IN WITH THE PASSWORD&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;pets_dev&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;FILL IN WITH YOUR USERNAME&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;FILL IN WITH THE PASSWORD&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;pets_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-14" title="14">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb4-17" title="17">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="fu">}</span></a></code></pre></div>
+<ol type="1">
+<li>Create the database configured by <code>config/config.json</code> by running</li>
+</ol>
+<pre><code>npx sequelize-cli db:create</code></pre>
+<ol type="1">
+<li>Run the following to generate the migration for creating the PetType table:</li>
+</ol>
+<pre><code>npx sequelize-cli model:generate --name PetType --attributes type:string</code></pre>
+<ol type="1">
+<li>Edit the migration file generated to make database level validations (constraints).</li>
+</ol>
+<ul>
+<li>Change the <code>type</code> of <code>type</code> to have a maximum of 50 characters</li>
+<li>Make a NON NULL constraint on the <code>type</code> column</li>
+<li>Make a UNIQUE constraint on the <code>type</code> column</li>
+</ul>
+<p><code>type</code> should look like this:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">type</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span>(<span class="dv">50</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Run the migration with:</li>
+</ol>
+<pre><code>npx sequelize-cli db:migrate</code></pre>
+<p>Check that the migration ran successfully either in <code>psql</code> or in Postbird.</p>
+<ol type="1">
+<li>Make validations on the model for the <code>type</code> column.</li>
+</ol>
+<p>We need to make sure that the <code>type</code> column on <code>PetTypes</code> is a non-empty string.</p>
+<p>Initial model validations in <code>models/pettype.js</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>Should turn into:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">type</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">      <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Create migration and model files for <code>Owner</code> with attributes of:</li>
+</ol>
+<ul>
+<li><code>firstName</code>:<code>string</code></li>
+<li><code>lastName</code>:<code>string</code></li>
+</ul>
+<pre><code>npx sequelize-cli model:generate \
+  --name Owner \
+  --attributes firstName:string,lastName:string</code></pre>
+<ol type="1">
+<li>Make database level validations and constraints for <code>firstName</code> and <code>lastName</code>. Both need to be NON NULL with a maximum of 50 characters.</li>
+</ol>
+<p><code>firstName</code> and <code>lastName</code> should look like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span>(<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-6" title="6">  <span class="dt">lastName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-8" title="8">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span>(<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb12-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Run the migration with:</li>
+</ol>
+<pre><code>npx sequelize-cli db:migrate</code></pre>
+<p>Check that the migration ran successfully either in <code>psql</code> or in Postbird.</p>
+<ol type="1">
+<li>Create model level validations for <code>Owner</code> in the <code>models/owner.js</code> file.</li>
+</ol>
+<p>Validate that the string for <code>firstName</code> and <code>lastName</code> can’t be empty.</p>
+<p>Validations should look like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">String</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-5" title="5">      <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">String</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-10" title="10">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-11" title="11">      <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb14-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-13" title="13">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Generate migration and model files for <code>Pet</code>.</li>
+</ol>
+<pre><code>npx sequelize-cli model:generate \
+--name Pet \
+--attributes name:string,petTypeId:integer,age:integer</code></pre>
+<ol type="1">
+<li>Make database level validations and constraints in the migrations file</li>
+</ol>
+<ul>
+<li><code>name</code>, <code>petTypeId</code>, and <code>age</code> are NON NULL</li>
+<li><code>name</code> has max characters of 150</li>
+<li><code>petTypeId</code> has a foreign key constraint and references <code>"PetTypes"</code></li>
+</ul>
+<p>Validations should look like this:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span>(<span class="dv">150</span>)</a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="dt">petTypeId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-8" title="8">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-9" title="9">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;PetTypes&quot;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-10" title="10">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-11" title="11">  <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-12" title="12">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-13" title="13">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb16-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li><p>Migrate the migration</p></li>
+<li><p>Make model level validations in the <code>models/pet.js</code> file</p></li>
+</ol>
+<ul>
+<li><code>name</code> cannot be empty</li>
+</ul>
+<p>Validations should look like this:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">String</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-4" title="4">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-5" title="5">      <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb17-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-7" title="7">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-8" title="8">  <span class="dt">petTypeId</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-9" title="9">  <span class="dt">age</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Make the relationship between <code>Pet</code> and <code>PetType</code>.</li>
+</ol>
+<p>Because <code>Pet</code> has a foreign key of <code>PetType</code>, it belongs to <code>PetType</code>. That means <code>PetType</code> has many <code>Pet</code>s.</p>
+<p>In the static method <code>associate</code> on <code>Pet</code> model, define a <code>belongsTo</code> association with <code>PetType</code> using the <code>petTypeId</code>.</p>
+<p>In the static method <code>associate</code> on <code>PetType</code> model, define a <code>hasMany</code> association with <code>Pet</code> using the <code>petTypeId</code>.</p>
+<p><code>Pet</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">Pet</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">PetType</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;petTypeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>PetType</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="va">PetType</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Pet</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;petTypeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ol type="1">
+<li>Do the following for <code>PetOwner</code></li>
+</ol>
+<ul>
+<li>Generate the migration and model files
+<ul>
+<li>attributes: <code>petId</code> and <code>ownerId</code></li>
+</ul></li>
+<li>Make database level validations and constraints on the migration file
+<ul>
+<li>references to <code>Pets</code> and <code>Owners</code> and NON NULL foreign keys</li>
+</ul></li>
+<li>Migrate</li>
+<li>No model level validations necessary because only foreign keys on this joins table</li>
+</ul>
+<pre><code>npx sequelize-cli model:generate \
+--name PetOwner \
+--attributes petId:integer,ownerId:integer</code></pre>
+<p>Database level validations:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">petId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-5" title="5">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;Pets&quot;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb21-7" title="7">  <span class="dt">ownerId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-9" title="9">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-10" title="10">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;Owners&quot;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb21-11" title="11">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb21-12" title="12"><span class="op">}</span></a></code></pre></div>
+<ol type="1">
+<li>Make the appropriate <code>belongsTo</code> and <code>hasMany</code> relationships between <code>Pet</code> and <code>PetOwner</code> and between <code>PetOwner</code> and <code>PetOwner</code>.</li>
+</ol>
+<p><code>PetOwner</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">PetOwner</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Pet</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;petId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>Pet</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="va">Pet</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">PetOwner</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;petId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>PetOwner</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="va">PetOwner</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Owner</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;ownerId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>Owner</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="va">Owner</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">PetOwner</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;ownerId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ol type="1">
+<li>Create a <code>belongsToMany</code> association between <code>Pet</code> and <code>Owner</code> through <code>PetOwner</code>.</li>
+</ol>
+<p><code>Pet</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="va">Pet</span>.<span class="at">belongsToMany</span>(<span class="va">models</span>.<span class="at">Owner</span><span class="op">,</span> <span class="op">{</span> </a>
+<a class="sourceLine" id="cb26-2" title="2">  <span class="dt">through</span><span class="op">:</span> <span class="va">models</span>.<span class="at">PetOwner</span><span class="op">,</span> </a>
+<a class="sourceLine" id="cb26-3" title="3">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;petId&#39;</span><span class="op">,</span> </a>
+<a class="sourceLine" id="cb26-4" title="4">  <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;ownerId&#39;</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>Owner</code> model’s <code>associate</code> static method should have this in it:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="va">Owner</span>.<span class="at">belongsToMany</span>(<span class="va">models</span>.<span class="at">Pet</span><span class="op">,</span> <span class="op">{</span> </a>
+<a class="sourceLine" id="cb27-2" title="2">  <span class="dt">through</span><span class="op">:</span> <span class="va">models</span>.<span class="at">PetOwner</span><span class="op">,</span> </a>
+<a class="sourceLine" id="cb27-3" title="3">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;ownerId&#39;</span><span class="op">,</span> </a>
+<a class="sourceLine" id="cb27-4" title="4">  <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;petId&#39;</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ol type="1">
+<li>Generate a seeder file that will seed the <code>PetType</code>s.</li>
+</ol>
+<pre><code>npx sequelize-cli seed:generate --name add-pet-types</code></pre>
+<ol type="1">
+<li>Create <code>PetType</code>s with the following <code>types</code> in the <code>add-pet-types</code> seeder generated:</li>
+</ol>
+<ul>
+<li><code>Bird</code></li>
+<li><code>Cat</code></li>
+<li><code>Dog</code></li>
+<li><code>Elephant</code></li>
+</ul>
+<p>Inside of the <code>up</code> callback function:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(<span class="st">&#39;PetTypes&#39;</span><span class="op">,</span> [</a>
+<a class="sourceLine" id="cb29-2" title="2">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;Bird&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb29-3" title="3">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb29-4" title="4">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;Dog&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb29-5" title="5">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;Elephant&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">}</span></a>
+<a class="sourceLine" id="cb29-6" title="6">])</a></code></pre></div>
+<p>Inside of the <code>down</code> callback function (usually optional step):</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">bulkDelete</span>(<span class="st">&#39;PetTypes&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-2" title="2">  <span class="dt">type</span><span class="op">:</span> [<span class="st">&#39;Bird&#39;</span><span class="op">,</span> <span class="st">&#39;Cat&#39;</span><span class="op">,</span> <span class="st">&#39;Dog&#39;</span><span class="op">,</span> <span class="st">&#39;Elephant&#39;</span>]</a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="op">}</span>)</a></code></pre></div>
+<ol type="1">
+<li>Create a <code>Pet</code> manually (without a seeder).</li>
+</ol>
+<p>Create a file called <code>insert.js</code> and fill it with the following:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pet<span class="op">,</span> Owner<span class="op">,</span> sequelize <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./models/index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-2" title="2"></a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">insertNewPetUsingBuild</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-4" title="4">  <span class="kw">const</span> fido <span class="op">=</span> <span class="va">Pet</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb31-5" title="5">    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Fido&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-7" title="7">    <span class="dt">petTypeId</span><span class="op">:</span> <span class="dv">3</span> <span class="co">// or whatever id PetType with &quot;Dog&quot; type is</span></a>
+<a class="sourceLine" id="cb31-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-9" title="9"></a>
+<a class="sourceLine" id="cb31-10" title="10">  <span class="cf">await</span> <span class="va">fido</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-11" title="11"></a>
+<a class="sourceLine" id="cb31-12" title="12">  <span class="kw">const</span> zaphox <span class="op">=</span> <span class="va">Owner</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb31-13" title="13">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&quot;Zaphox&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb31-14" title="14">    <span class="dt">lastName</span><span class="op">:</span> <span class="st">&quot;Beeblebrox&quot;</span></a>
+<a class="sourceLine" id="cb31-15" title="15">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-16" title="16"></a>
+<a class="sourceLine" id="cb31-17" title="17">  <span class="cf">await</span> <span class="va">zaphox</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-18" title="18"></a>
+<a class="sourceLine" id="cb31-19" title="19">  <span class="cf">await</span> <span class="va">zaphox</span>.<span class="at">addPet</span>(fido)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-20" title="20">  <span class="co">// await fido.addOwner(zaphox);</span></a>
+<a class="sourceLine" id="cb31-21" title="21"></a>
+<a class="sourceLine" id="cb31-22" title="22">  <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-23" title="23"><span class="op">}</span></a>
+<a class="sourceLine" id="cb31-24" title="24"></a>
+<a class="sourceLine" id="cb31-25" title="25"><span class="co">// async function insertNewPetUsingCreate() {</span></a>
+<a class="sourceLine" id="cb31-26" title="26"><span class="co">//   const fido = await Pet.create({</span></a>
+<a class="sourceLine" id="cb31-27" title="27"><span class="co">//     name: &#39;Fido&#39;,</span></a>
+<a class="sourceLine" id="cb31-28" title="28"><span class="co">//     age: 4,</span></a>
+<a class="sourceLine" id="cb31-29" title="29"><span class="co">//     petTypeId: 3 // or whatever id PetType with &quot;Dog&quot; type is</span></a>
+<a class="sourceLine" id="cb31-30" title="30"><span class="co">//   });</span></a>
+<a class="sourceLine" id="cb31-31" title="31"></a>
+<a class="sourceLine" id="cb31-32" title="32"><span class="co">//   const zaphox = await Owner.create({</span></a>
+<a class="sourceLine" id="cb31-33" title="33"><span class="co">//     firstName: &quot;Zaphox&quot;,</span></a>
+<a class="sourceLine" id="cb31-34" title="34"><span class="co">//     lastName: &quot;Beeblebrox&quot;</span></a>
+<a class="sourceLine" id="cb31-35" title="35"><span class="co">//   });</span></a>
+<a class="sourceLine" id="cb31-36" title="36"></a>
+<a class="sourceLine" id="cb31-37" title="37"><span class="co">//   await zaphox.addPet(fido);</span></a>
+<a class="sourceLine" id="cb31-38" title="38"><span class="co">//   await fido.addOwner(zaphox);</span></a>
+<a class="sourceLine" id="cb31-39" title="39"></a>
+<a class="sourceLine" id="cb31-40" title="40"><span class="co">//   sequelize.close();</span></a>
+<a class="sourceLine" id="cb31-41" title="41"><span class="co">// }</span></a>
+<a class="sourceLine" id="cb31-42" title="42"></a>
+<a class="sourceLine" id="cb31-43" title="43"><span class="at">insertNewPetUsingBuild</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-44" title="44"><span class="co">// insertNewPetUsingCreate();</span></a></code></pre></div>
+<p>To create a pet, you can either run the <code>insertNewPetUsingBuild</code> function, or the <code>insertNewPetUsingCreate</code> function.</p>
+<p>Run <code>node insert.js</code></p>
+<ol type="1">
+<li>Update <code>PetType</code>’s <code>type</code> of <code>Elephant</code> to be <code>Hamster</code>:</li>
+</ol>
+<p>Create a file called <code>update.js</code> and insert the following:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">const</span> <span class="op">{</span> PetType<span class="op">,</span> sequelize <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./models/index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-2" title="2"></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">updateElephant</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb32-4" title="4">  <span class="kw">const</span> petType <span class="op">=</span> <span class="cf">await</span> <span class="va">PetType</span>.<span class="at">findByPk</span>(<span class="dv">4</span>)<span class="op">;</span> <span class="co">// or whatever id type of Elephant is</span></a>
+<a class="sourceLine" id="cb32-5" title="5"></a>
+<a class="sourceLine" id="cb32-6" title="6">  <span class="va">petType</span>.<span class="at">type</span> <span class="op">=</span> <span class="st">&quot;Hamster&quot;</span> <span class="co">// set it to have a new type</span></a>
+<a class="sourceLine" id="cb32-7" title="7"></a>
+<a class="sourceLine" id="cb32-8" title="8">  <span class="cf">await</span> <span class="va">pettype</span>.<span class="at">save</span>()<span class="op">;</span> <span class="co">// save the changes</span></a>
+<a class="sourceLine" id="cb32-9" title="9"></a>
+<a class="sourceLine" id="cb32-10" title="10">  <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb32-12" title="12"></a>
+<a class="sourceLine" id="cb32-13" title="13"><span class="at">updateElephant</span>()<span class="op">;</span></a></code></pre></div>
+<ol type="1">
+<li>Delete the type of <code>Bird</code> and <code>Cat</code> in <code>PetType</code>:</li>
+</ol>
+<div class="sourceCode" id="cb33"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> <span class="op">{</span> PetType<span class="op">,</span> sequelize <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./models/index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">deleteBirdAndCat</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-4" title="4">  <span class="cf">await</span> <span class="va">PetType</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb33-5" title="5">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-6" title="6">      <span class="dt">type</span><span class="op">:</span> [<span class="st">&#39;Bird&#39;</span><span class="op">,</span> <span class="st">&#39;Cat&#39;</span>]</a>
+<a class="sourceLine" id="cb33-7" title="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-9" title="9"></a>
+<a class="sourceLine" id="cb33-10" title="10">  <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb33-12" title="12"></a>
+<a class="sourceLine" id="cb33-13" title="13"><span class="at">deleteBirdAndCat</span>()<span class="op">;</span></a></code></pre></div>

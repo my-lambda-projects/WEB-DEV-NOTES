@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Language="en-US" Id="useful-react-snippets" Version="3.0.0" Publisher="igorming"/>
+    <DisplayName>Useful React Snippets</DisplayName>
+    <Description xml:space="preserve">Snippets for VSCode to help you to code faster! Either you&#39;re using Javascript or Typescript for writing it.</Description>
+    <Tags>snippets,react,redux,es6,javascript,typescript,snippet</Tags>
+    <Categories>Snippets</Categories>
+    <GalleryFlags>Public</GalleryFlags>
+    <Badges><Badge Link="https://marketplace.visualstudio.com/items?itemName=igorming.useful-react-snippets" ImgUri="https://vsmarketplacebadge.apphb.com/version-short/igorming.useful-react-snippets.svg" Description="Version" /><Badge Link="https://marketplace.visualstudio.com/items?itemName=igorming.useful-react-snippets" ImgUri="https://vsmarketplacebadge.apphb.com/installs-short/igorming.useful-react-snippets.svg" Description="Install Count" /><Badge Link="https://marketplace.visualstudio.com/items?itemName=igorming.useful-react-snippets" ImgUri="https://vsmarketplacebadge.apphb.com/rating-short/igorming.useful-react-snippets.svg" Description="Rating" /></Badges>
+    <Properties>
+      <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^0.10.5" />
+      <Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="" />
+      <Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
+      <Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+      
+        <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/IgorMing/vscode-react-snippets.git.git" />
+        <Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/IgorMing/vscode-react-snippets.git.git" />
+        
+          <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/IgorMing/vscode-react-snippets.git.git" />
+        
+      
+      
+      
+      
+      
+      <Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+      
+      
+    </Properties>
+    
+    <Icon>extension/images/react.png</Icon>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+  </Installation>
+  <Dependencies/>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/react.png" Addressable="true" />
+  </Assets>
+</PackageManifest>

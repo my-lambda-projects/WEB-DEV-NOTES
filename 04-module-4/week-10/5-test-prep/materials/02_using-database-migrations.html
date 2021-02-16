@@ -1,0 +1,224 @@
+<h1 id="using-database-migrations">Using Database Migrations</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#sequelize-migration-files">Sequelize Migration Files</a></li>
+<li><a href="#running-a-migration">Running A Migration</a></li>
+<li><a href="#rolling-back-a-migration">Rolling Back A Migration</a></li>
+<li><a href="#editing-a-migration-file">Editing A Migration File</a></li>
+<li><a href="#up-and-down-are-asynchronous"><code>up</code> And <code>down</code> are Asynchronous</a></li>
+<li><a href="#writing-a-down-method">Writing A <code>down</code> Method</a></li>
+<li><a href="#advantages-of-migrations">Advantages Of Migrations</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>We’ve seen how to use an ORM like Sequelize to fetch and store data in a SQL database using JavaScript classes and methods. Sequelize also lets you write JavaScript code that creates, modifies, or drops SQL tables. The JavaScript code that does this is called a <em>migration</em>. A migration “moves” the database from an old schema to a new schema.</p>
+<p>When you finish this reading you will be able to:</p>
+<ul>
+<li>Describe advantages to using migrations over raw SQL commands to create and drop tables.</li>
+<li>Write migrations that create and drop tables.</li>
+<li>Undo incorrect migrations, fix them, and rerun them.</li>
+</ul>
+<h2 id="sequelize-migration-files">Sequelize Migration Files</h2>
+<p>In the prior reading we assumed that a <code>Cats</code> table already existed in our <code>catsdb</code> database. In this reading, we will presume that the <code>Cats</code> table does not exist, and that we have to create the table ourselves. This is the typical case when you aren’t merely interacting with a preexisting database. When you develop your own application, the database will start out empty and with a blank schema.</p>
+<p>We previously used the Sequelize CLI tool to autogenerate a <code>Cat</code> model file like so:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Oops, forgot age:integer!</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ex">npx</span> sequelize model:generate --name Cat --attributes <span class="st">&quot;firstName:string,specialSkill:string&quot;</span></a></code></pre></div>
+<p>We noted that this creates <em>two</em> files. We’ve already examined the model file <code>./models/cat.js</code>. We will now look at the auto-generated <em>migration</em> file <code>./migrations/20200203211508-create-cat.js</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// ./migrations/20200203211508-create-cat.js</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Cats&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-8" title="8">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-10" title="10">        <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-11" title="11">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-17" title="17">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb2-18" title="18">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-19" title="19">      <span class="dt">createdAt</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-20" title="20">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-21" title="21">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb2-22" title="22">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-23" title="23">      <span class="dt">updatedAt</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-24" title="24">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-25" title="25">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb2-26" title="26">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-27" title="27">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-28" title="28">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-29" title="29">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-30" title="30">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Cats&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-31" title="31">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-32" title="32"><span class="op">};</span></a></code></pre></div>
+<p>The migration file exports two functions: <code>up</code> and <code>down</code>. The <code>up</code> function tells Sequelize how to create a <code>Cats</code> table. The <code>down</code> function tells Sequelize how to “undo” the <code>up</code> function. The <code>down</code> function drops the <code>Cats</code> table.</p>
+<p>We will examine these functions more closely, but let’s first see how to use a migration.</p>
+<blockquote>
+<p>Note: The timestamp <code>20200203211508</code> preceding <code>-create-cat.js</code> represents February 2, 2020. It gives the time and day that the migration was generated. (Your date should be when you generated your migration) By using the date and time as part of the filename, all migration files will have unique names. Also, alphabetical sorting will order the files from oldest to most recent migration.</p>
+</blockquote>
+<h2 id="running-a-migration">Running A Migration</h2>
+<p>To create the <code>Cats</code> table, we must run our migration code. Having generated the <code>20200203211508-create-cat.js</code> migration file, we will use the Sequelize CLI tool to run the migration. We may do this like so:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Run the migration&#39;s `up` method.</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">npx</span> sequelize db:migrate</a></code></pre></div>
+<p>By giving Sequelize the <code>db:migrate</code> subcommand, it will know that we are asking it to run any new migrations. To run a migration, Sequelize will call the <code>up</code> method defined in the migration file. The <code>up</code> method will run the necessary <code>CREATE TABLE ...</code> SQL command for us. Sequelize will record (in a special <code>catsdb</code> table called <code>SequelizeMeta</code>) that the migration has been run. The next time we call <code>npx sequelize db:migrate</code>, Sequelize will not try to “redo” this already performed migration. It will do nothing the second time.</p>
+<p>Having run the migration, we can verify that the <code>Cats</code> table looks like it should (with the exception of the <code>age</code> column):</p>
+<p>Note that we we are using the table name in quotes here in <code>psql</code>.</p>
+<pre><code>catsdb=&gt; \d &quot;Cats&quot;;
+                                         Table &quot;public.Cats&quot;
+    Column    |           Type           | Collation | Nullable
+--------------+--------------------------+-----------+----------
+ id           | integer                  |           | not null
+ firstName    | character varying(255)   |           |
+ specialSkill | character varying(255)   |           |
+ createdAt    | timestamp with time zone |           | not null
+ updatedAt    | timestamp with time zone |           | not null
+Indexes:
+    &quot;Cats_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
+<h2 id="rolling-back-a-migration">Rolling Back A Migration</h2>
+<p>We made a mistake when generating our <code>Cat</code> migration. We forgot to include the <code>age</code> column.</p>
+<p>One way to fix this is to generate a <em>second</em> migration that adds the forgotten <code>age</code> column. If we have already pushed our migration code to a remote git server, we should opt for this option.</p>
+<p>If the migration has not yet been pushed, we can fix the migration directly. We will “undo” (AKA <em>rollback</em>) the migration that created the <code>Cats</code> table (dropping the table), fix the <code>up</code> method so that the <code>age</code> column is included, and finally rerun the migration.</p>
+<blockquote>
+<p>Note: this is not the same as the SQL command ROLLBACK.</p>
+</blockquote>
+<p>To undo the migration, we run:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">npx</span> sequelize db:migrate:undo</a></code></pre></div>
+<p>Sequelize will call the <code>down</code> method for us, and the <code>Cats</code> table is dropped.</p>
+<p>Why should you not use the <code>db:migrate:undo</code> way when the migration file has already been pushed to a remote git server? The reason is this: you can easily tell other developers to fix a broken migration by writing a second fixup migration (for instance, that adds the <code>age</code> column). All you need to do is check this new migration file into source control and push it. When another developer pulls your new migration code, the next time they run <code>npx sequelize db:migrate</code>, your fixup migration will be run on their local machine.</p>
+<p>When rolling back already-checked-in migrations, there is no way to easily communicate to other developers that they should (1) rollback your migration and (2) rerun the newly corrected version of this migration. To avoid this communication problem, you should only rollback commits if you haven’t already pushed them to a remote git server.</p>
+<h2 id="editing-a-migration-file">Editing A Migration File</h2>
+<p>Let’s examine the <code>up</code> and <code>down</code> methods more closely. Let’s start with the <code>up</code> method:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Cats&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">      <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="dt">autoIncrement</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-7" title="7">        <span class="dt">primaryKey</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-8" title="8">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb6-9" title="9">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-11" title="11">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb6-12" title="12">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-13" title="13">      <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-14" title="14">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb6-15" title="15">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="dt">createdAt</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-17" title="17">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-18" title="18">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb6-19" title="19">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-20" title="20">      <span class="dt">updatedAt</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-21" title="21">        <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-22" title="22">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb6-23" title="23">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-24" title="24">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-25" title="25">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-26" title="26">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="op">};</span></a></code></pre></div>
+<p>The <code>up</code> method will be passed a QueryInterface (<a href="https://sequelize.org/master/class/lib/query-interface.js~QueryInterface.html">documentation</a>) object. This object provides a number of commands for modifying the SQL database schema. The <code>createTable</code> method is amongst the most important.</p>
+<p>We pass the table name (<code>'Cats'</code>) along with an object mapping column names to column attributes. Every column must have a specified <code>type</code>. This is similar to what we saw when we generated a model file. Note that we <strong>do not</strong> take <code>id</code>, <code>createdAt</code>, or <code>updatedAt</code> for granted. We need to include those columns. Luckily, everything has been auto-generated for us!</p>
+<p>We will talk about <code>allowNull</code> and <code>primaryKey</code> in a later reading. These attributes ask Sequelize to add database constraints to a column. Likewise we will ignore <code>autoIncrement</code> for the moment (this allows a unique <code>id</code> to be auto-generated by the database for each saved row in the <code>Cats</code> table).</p>
+<p>We fix the <code>up</code> method like so:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Cats&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">      <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb7-5" title="5">      <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-6" title="6">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-8" title="8">      <span class="dt">specialSkill</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-9" title="9">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb7-10" title="10">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-11" title="11">      <span class="co">// Here we add the `age` column.</span></a>
+<a class="sourceLine" id="cb7-12" title="12">      <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-13" title="13">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-14" title="14">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-15" title="15">      <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb7-16" title="16">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-17" title="17">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-18" title="18">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="op">};</span></a></code></pre></div>
+<p>Adding the <code>age</code> column to the migration is a lot like how we added <code>age</code> to our model file.</p>
+<p>Having fixed our migration, we may now “rerun” it the same way we ran it the first time:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">npx</span> sequelize db:migrate</a></code></pre></div>
+<p>We may now behold the fixed table:</p>
+<pre><code>catsdb=&gt; \d &quot;Cats&quot;
+                                         Table &quot;public.Cats&quot;
+    Column    |           Type           | Collation | Nullable
+--------------+--------------------------+-----------+----------
+ id           | integer                  |           | not null
+ firstName    | character varying(255)   |           |
+ specialSkill | character varying(255)   |           |
+ age          | integer                  |           |
+ createdAt    | timestamp with time zone |           | not null
+ updatedAt    | timestamp with time zone |           | not null
+Indexes:
+    &quot;Cats_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
+<h2 id="up-and-down-are-asynchronous"><code>up</code> And <code>down</code> are Asynchronous</h2>
+<p>A final note about <code>up</code> (and also <code>down</code>). Sequelize expects <code>up</code> to be <em>asynchronous</em>. That is, Sequelize expects <code>up</code> to return a <code>Promise</code> object. Sequelize will wait for the <code>Promise</code> to be resolved. When the <code>Promise</code> is resolved, Sequelize will know the work of the <code>up</code> method is complete.</p>
+<p>The <code>createTable</code> method is also asynchronous (returns a <code>Promise</code>). The promise resolves when <code>createTable</code> is done creating the table. This is why <code>up</code> is written as:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="co">// up returns Promise returned by `createTable`.</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Cats&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">      <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="op">};</span></a></code></pre></div>
+<p>Sequelize is able to autogenerate a migration to create a <code>Cats</code> table, but many other migrations (for instance, to add an <code>age</code> column to our <code>Cats</code> table) must be written by hand. When writing your own migrations, you may prefer using <code>async</code>/<code>await</code>, which is clearer:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="co">// Note the addition of the `async` keyword</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="dt">up</span><span class="op">:</span> <span class="kw">async</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="co">// await `createTable` to finish its work.</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Cats&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-6" title="6">      <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-8" title="8"></a>
+<a class="sourceLine" id="cb11-9" title="9">    <span class="co">// No need to return anything. An `async` method always returns a</span></a>
+<a class="sourceLine" id="cb11-10" title="10">    <span class="co">// Promise that waits for all `await`ed work to be performed.</span></a>
+<a class="sourceLine" id="cb11-11" title="11">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-12" title="12">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="op">};</span></a></code></pre></div>
+<h2 id="writing-a-down-method">Writing A <code>down</code> Method</h2>
+<p>A <code>down</code> method is written just like an <code>up</code> method. In the <code>down</code> method we “undo” what has been performed by the <code>up</code> method. We call <code>QueryInterface</code>’s <code>dropTable</code> method to drop the <code>Cats</code> table we created in <code>up</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Cats&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="op">};</span></a>
+<a class="sourceLine" id="cb12-7" title="7"></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">// OR, async/await way:</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-10" title="10">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb12-11" title="11">  <span class="dt">down</span><span class="op">:</span> <span class="kw">async</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-12" title="12">    <span class="cf">await</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="st">&#39;Cats&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="op">};</span></a></code></pre></div>
+<p><strong>Imagine we had forgotten to drop the <code>Cats</code> table in the <code>down</code> method.</strong> That is: imagine the <code>down</code> method was somehow left empty. If we rollback the migration nothing will be done by the empty <code>down</code> method. Thus the incorrect <code>Cats</code> table we created will not have been dropped. The wrong <code>Cats</code> table would still exist.</p>
+<p>Imagine we next fix the migration’s <code>up</code> method. We want to rerun the migration now and create the corrected <code>Cats</code> table. But when try to do this, Sequelize will hit an error! Rerunning the migration will try to <code>CREATE TABLE "Cats"</code> again, but SQL will complain because a <code>Cats</code> table already exists. It was created the first time we ran the migration, but never dropped when we tried to rollback the migration!</p>
+<p>Inevitably all programmers will sometimes make mistakes like this. In these circumstances, you will probably have to open <code>psql</code> and write a SQL <code>DROP TABLE</code> command to fix things. Having manually corrected things, you can finally rerun the corrected migration.</p>
+<p>You should <strong>never</strong> manually drop a table on a production database. That is incredibly dangerous, and typically cannot be undone. Even if database backups do not exist, recently inserted data will be lost forever. This is yet another reason why you ought not rollback migrations that have been pushed from your local development environment!</p>
+<h2 id="advantages-of-migrations">Advantages Of Migrations</h2>
+<p>Having seen how to <em>use</em> Sequelize migrations, we can discuss their benefits versus writing SQL commands like <code>CREATE TABLE ...</code> yourself.</p>
+<p>The first advantage is that Sequelize migration code is written in JavaScript, which you may find simpler to write/read than the corresponding SQL code. Most programmers write more JavaScript than SQL, so they are typically better at remembering how to do things in JavaScript than in SQL.</p>
+<p>A second advantage is that migration files store SQL schema change code permanently. The migration files can be checked into git, so that you don’t ever forget how your database was configured.</p>
+<p>A third (related) advantage comes when another developer wants to collaborate on your JavaScript program. By cloning your git repository, they get all the migration files, too. To setup their own copy of your database, a collaborator can run the migration files on their own computer, playing back the schema changes one-by-one. Because they apply the same migrations as you, they end up with the same schema as you.</p>
+<p>Last, by using migrations you are able to rollback database changes to fix bugs. This can be helpful in a local development environment where it is typical to make mistakes. Remember though: you should <strong>never</strong> rollback migrations that have been run on a production server.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Having completed this reading, you now are able to:</p>
+<ul>
+<li>Describe advantages to using migrations over raw SQL commands to create, modify, and drop tables.</li>
+<li>Generate (and modify as needed)) migrations that create and drop tables.</li>
+<li>Run migrations to change the database schema.</li>
+<li>Undo incorrect migrations, fix them, and rerun them.</li>
+</ul>

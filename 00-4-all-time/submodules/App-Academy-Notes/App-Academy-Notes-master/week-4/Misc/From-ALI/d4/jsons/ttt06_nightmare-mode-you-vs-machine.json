@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "3273bbba-fd5d-430d-9adf-9eb7f1e85fb6",
+    "name": "TTT: Nightmare Mode: You vs. Machine",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-07-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--nightmare-mode--you-vs--machine"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Bonus Requirement: Make The Computer Play\n\nWhen you click \"New Game\", randomly assign the computer as Player X or Player O.\nThen, have the computer play automatically in response to its turn.\n\nFor example, if you click \"New Game\" and the computer becomes Player X, then it\nwill play an \"X\" on the board. Then, you will play an \"O\". After you click your\nsquare, the computer will automatically play its \"X\". And, so on.\n\nIf the computer is Player O, then it will play after you play your first \"X\".\n"
+  },
+  "success": true
+}

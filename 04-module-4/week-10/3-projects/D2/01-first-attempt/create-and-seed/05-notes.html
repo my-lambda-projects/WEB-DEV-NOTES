@@ -1,0 +1,92 @@
+<h1 id="notes"><strong>Notes</strong></h1>
+<h2 id="for-the-love-of-data"><strong>For the Love of Data</strong></h2>
+<h3 id="users">- <strong><code>Users</code></strong></h3>
+<ul>
+<li><em><strong>Software Apps</strong></em> connect to Databases so that the users of those apps can access data. —</li>
+</ul>
+<p>### - <strong>Types of Users</strong>:</p>
+<ul>
+<li><strong>Normal Users</strong>: Those who can just access data.</li>
+<li><strong>Super Users</strong>: Can create and manipulate aspects of your database.
+<ul>
+<li>Keep as few Super Users as possible.</li>
+</ul></li>
+</ul>
+<h3 id="tables">- <strong>Tables</strong></h3>
+<ul>
+<li>Contains an ID column (that provides a unique IQ for every row of the table)</li>
+<li>Contains a Type column that indicates the data type that is being stored.</li>
+</ul>
+<hr />
+<p>### - Every row is a <strong>record</strong> in the database.</p>
+<h2 id="section">——</h2>
+<hr />
+<h4 id="creating-database-entities">- <strong>Creating Database Entities</strong></h4>
+<ol type="1">
+<li>Log into PSQL <code>psql</code></li>
+</ol>
+<hr />
+<ol start="2" type="1">
+<li>Create a Super User named Berber <code>create user berber with superuser password 'good-cat';</code></li>
+</ol>
+<hr />
+<ol start="3" type="1">
+<li>Quit SQL <code>\q</code></li>
+</ol>
+<hr />
+<ol start="4" type="1">
+<li>Log-in as your Super User <code>psql -U berber postgres</code> <code>good-cat</code></li>
+</ol>
+<hr />
+<ol start="5" type="1">
+<li>See who you are <code>select current_user</code></li>
+</ol>
+<hr />
+<ol start="6" type="1">
+<li>Create a normal user <code>user alycia with password 'good-cat-mom';</code></li>
+</ol>
+<hr />
+<ol start="7" type="1">
+<li>Quit and log-in with your normal user <code>\q</code> <code>psql -U alycia postgres</code>
+<ul>
+<li><h2 id="normal-users-cannot-create-databases-they-can-only-view-select-and-insert-data.">Normal Users cannot create databases, they can only view, select and insert data.</h2></li>
+</ul></li>
+<li>Log back in as yourself, and drop normal user and super user. <code>psql</code> (default user is a super) <code>drop user alycia</code> <code>drop user berber</code> —</li>
+<li>Create a database <code>create database cat_database</code> —</li>
+<li>View all databases in your RDBMS <code>\list</code> 1</li>
+<li>Create database for a normal user as your super user. <code>create database berber_db with owner berber;</code>.
+<ul>
+<li>The normal user will have full control over this granted DB.</li>
+<li>Can’t create duplicate usernames.</li>
+</ul></li>
+<li>Get rid of database <code>drop database</code></li>
+<li>See all the users in your database <code>\du</code></li>
+<li>See all tables in your database <code>\dt</code></li>
+<li>Create a table in your database</li>
+</ol>
+<pre><code>---
+sql
+    create table people (
+      first_name varchar(50),
+      last_name varchar(50),
+      age smallint
+    );</code></pre>
+<p>sql create table people ( id serial, first_name varchar(50), last_name varchar(50), primary key (id) );</p>
+<pre><code>---
+19. Create Pet Table w/ references to people table</code></pre>
+<h3 id="data-types-text-unlimited-varcharlimit-always-user-vc-if-there-can-be-a-character-limit.">- <strong>Data Types</strong>: Text (unlimited) VARCHAR(limit), always user VC if there can be a character limit.</h3>
+<ul>
+<li>Always pick the smallest value type in your database.</li>
+<li>End all SQL commands with a semi-colon. ### - <strong>Serial</strong> datatype creates a unique serial number.</li>
+<li>Primary Key indicates the most significant way to identify each row of data.</li>
+<li>References keep our database clean, using foreign keys maintains our database integrity. ## <strong>Database Lingo</strong> ### - <strong><code>RDBMS</code></strong> : Software application that you can run so that your programs can connect and store, modify, and retrieve data. (We will be using PostgreSQL) ### - <strong><code>Database or Relational Database</code></strong> : Collection of structures data that the RDBMS manages for you. (One RDBMS can have hundreds of Databases!) ### - <strong><code>SQL</code></strong> : Structured Query Language, which is a declarative programming language.
+<ul>
+<li>SQL works on <em>sets</em> of records.</li>
+<li>Using SQL takes two steps:
+<ul>
+<li>Connect to an RDBMS with a user acccess.</li>
+<li>Issue SQL Statements to alter structure of DB or data inside those DB’s.</li>
+</ul></li>
+</ul></li>
+<li><h2 id="some-popular-rdbms-include-informix-microsoft-access-microsoft-sql-server-mysql-oracle-db-sqlite.">Some popular RDBMS include: Informix, Microsoft Access, Microsoft SQL Server, MySQL, Oracle DB, SQLite.</h2></li>
+</ul>

@@ -1,0 +1,99 @@
+<h1 id="query-interface">Query Interface</h1>
+<p>An instance of Sequelize uses something called <strong>Query Interface</strong> to communicate to the database in a dialect-agnostic way. Most of the methods you’ve learned in this manual are implemented with the help of several methods from the query interface.</p>
+<p>The methods from the query interface are therefore lower-level methods; you should use them only if you do not find another way to do it with higher-level APIs from Sequelize. They are, of course, still higher-level than running raw queries directly (i.e., writing SQL by hand).</p>
+<p>This guide shows a few examples, but for the full list of what it can do, and for detailed usage of each method, check the <a href="../class/lib/dialects/abstract/query-interface.js~QueryInterface.html">QueryInterface API</a>.</p>
+<h2 id="obtaining-the-query-interface">Obtaining the query interface</h2>
+<p>From now on, we will call <code>queryInterface</code> the singleton instance of the <a href="../class/lib/dialects/abstract/query-interface.js~QueryInterface.html">QueryInterface</a> class, which is available on your Sequelize instance:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="co">/* ... */</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">const</span> queryInterface <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">getQueryInterface</span>()<span class="op">;</span></a></code></pre></div>
+<h2 id="creating-a-table">Creating a table</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">isBetaMember</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL (using SQLite):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> `Person` (</a>
+<a class="sourceLine" id="cb3-2" title="2">  `name` <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</a>
+<a class="sourceLine" id="cb3-3" title="3">  `isBetaMember` TINYINT(<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-4" title="4">);</a></code></pre></div>
+<p><strong>Note:</strong> Consider defining a Model instead and calling <code>YourModel.sync()</code> instead, which is a higher-level approach.</p>
+<h2 id="adding-a-column-to-a-table">Adding a column to a table</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">queryInterface</span>.<span class="at">addColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL (using SQLite):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">ALTER</span> <span class="kw">TABLE</span> `Person` <span class="kw">ADD</span> `petName` <span class="dt">VARCHAR</span>(<span class="dv">255</span>);</a></code></pre></div>
+<h2 id="changing-the-datatype-of-a-column">Changing the datatype of a column</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">queryInterface</span>.<span class="at">changeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">FLOAT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">defaultValue</span><span class="op">:</span> <span class="fl">3.14</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL (using MySQL):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">ALTER</span> <span class="kw">TABLE</span> `Person` <span class="kw">CHANGE</span> `foo` `foo` <span class="dt">FLOAT</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fl">3.14</span>;</a></code></pre></div>
+<h2 id="removing-a-column">Removing a column</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">queryInterface</span>.<span class="at">removeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;petName&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="co">/* query options */</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Generated SQL (using PostgreSQL):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">ALTER</span> <span class="kw">TABLE</span> <span class="ot">&quot;public&quot;</span>.<span class="ot">&quot;Person&quot;</span> <span class="kw">DROP</span> <span class="kw">COLUMN</span> <span class="ot">&quot;petName&quot;</span>;</a></code></pre></div>
+<h2 id="changing-and-removing-columns-in-sqlite">Changing and removing columns in SQLite</h2>
+<p>SQLite does not support directly altering and removing columns. However, Sequelize will try to work around this by recreating the whole table with the help of a backup table, inspired by <a href="https://www.sqlite.org/lang_altertable.html#otheralter">these instructions</a>.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// Assuming we have a table in SQLite created as follows:</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">isBetaMember</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-9" title="9">  <span class="dt">petName</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="dt">foo</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-12" title="12"></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">// And we change a column:</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="va">queryInterface</span>.<span class="at">changeColumn</span>(<span class="st">&#39;Person&#39;</span><span class="op">,</span> <span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-15" title="15">  <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">FLOAT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-16" title="16">  <span class="dt">defaultValue</span><span class="op">:</span> <span class="fl">3.14</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-17" title="17">  <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The following SQL calls are generated for SQLite:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1">PRAGMA TABLE_INFO(`Person`);</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> `Person_backup` (</a>
+<a class="sourceLine" id="cb11-4" title="4">  `name` <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</a>
+<a class="sourceLine" id="cb11-5" title="5">  `isBetaMember` TINYINT(<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb11-6" title="6">  `foo` <span class="dt">FLOAT</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">&#39;3.14&#39;</span>,</a>
+<a class="sourceLine" id="cb11-7" title="7">  `petName` <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb11-8" title="8">);</a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="kw">INSERT</span> <span class="kw">INTO</span> `Person_backup`</a>
+<a class="sourceLine" id="cb11-11" title="11">  <span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb11-12" title="12">    `name`,</a>
+<a class="sourceLine" id="cb11-13" title="13">    `isBetaMember`,</a>
+<a class="sourceLine" id="cb11-14" title="14">    `foo`,</a>
+<a class="sourceLine" id="cb11-15" title="15">    `petName`</a>
+<a class="sourceLine" id="cb11-16" title="16">  <span class="kw">FROM</span> `Person`;</a>
+<a class="sourceLine" id="cb11-17" title="17"></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="kw">DROP</span> <span class="kw">TABLE</span> `Person`;</a>
+<a class="sourceLine" id="cb11-19" title="19"></a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> `Person` (</a>
+<a class="sourceLine" id="cb11-21" title="21">  `name` <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</a>
+<a class="sourceLine" id="cb11-22" title="22">  `isBetaMember` TINYINT(<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb11-23" title="23">  `foo` <span class="dt">FLOAT</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">&#39;3.14&#39;</span>,</a>
+<a class="sourceLine" id="cb11-24" title="24">  `petName` <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb11-25" title="25">);</a>
+<a class="sourceLine" id="cb11-26" title="26"></a>
+<a class="sourceLine" id="cb11-27" title="27"><span class="kw">INSERT</span> <span class="kw">INTO</span> `Person`</a>
+<a class="sourceLine" id="cb11-28" title="28">  <span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb11-29" title="29">    `name`,</a>
+<a class="sourceLine" id="cb11-30" title="30">    `isBetaMember`,</a>
+<a class="sourceLine" id="cb11-31" title="31">    `foo`,</a>
+<a class="sourceLine" id="cb11-32" title="32">    `petName`</a>
+<a class="sourceLine" id="cb11-33" title="33">  <span class="kw">FROM</span> `Person_backup`;</a>
+<a class="sourceLine" id="cb11-34" title="34"></a>
+<a class="sourceLine" id="cb11-35" title="35"><span class="kw">DROP</span> <span class="kw">TABLE</span> `Person_backup`;</a></code></pre></div>
+<h2 id="other">Other</h2>
+<p>As mentioned in the beginning of this guide, there is a lot more to the Query Interface available in Sequelize! Check the <a href="../class/lib/dialects/abstract/query-interface.js~QueryInterface.html">QueryInterface API</a> for a full list of what can be done.</p>

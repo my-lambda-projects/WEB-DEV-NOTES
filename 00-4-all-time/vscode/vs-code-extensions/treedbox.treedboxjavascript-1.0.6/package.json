@@ -1,0 +1,35 @@
+{
+	"name": "treedboxjavascript",
+	"displayName": "Treedbox JavaScript",
+	"description": "JavaScript Snippets for fast development",
+	"publisher": "treedbox",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/treedbox/treedboxjavascript"
+	},
+	"icon": "icon.png",
+	"version": "1.0.6",
+	"engines": {
+		"vscode": "^1.37.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "javascript",
+				"path": "./snippets/js.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/ts.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "6629d4ff-5569-462f-9801-b436b308329d",
+		"publisherDisplayName": "Treedbox",
+		"publisherId": "5f4ac0ab-a9db-41a7-8429-356bf2eab497"
+	}
+}

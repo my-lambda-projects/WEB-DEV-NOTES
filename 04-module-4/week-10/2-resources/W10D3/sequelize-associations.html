@@ -1,0 +1,48 @@
+<h1 id="sequelize-associations">Sequelize Associations</h1>
+<h2 id="docs">Docs</h2>
+<ul>
+<li>https://sequelize.org/master/manual/assocs.html</li>
+</ul>
+<h2 id="types-of-associations">Types of Associations</h2>
+<p>Sequelize provides four types of associations that should be combined to create them:</p>
+<ul>
+<li>The HasOne association</li>
+<li>The BelongsTo association</li>
+<li>The HasMany association</li>
+<li>The BelongsToMany association</li>
+</ul>
+<h2 id="defining-the-sequelize-associations">Defining the Sequelize Associations</h2>
+<p>Given two models, <code>A</code> and <code>B</code>, we can create the following relations. The first three calls (hasOne, belongsTo, and hasMany) will cause Sequelize to automatically add foreign keys to the appropriate models (unless they are already present).</p>
+<ol type="1">
+<li>hasOne: The A.hasOne(B) association means that a One-To-One relationship exists between A and B, with the foreign key being defined in the target model (B).</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">A</span>.<span class="at">hasOne</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// A HasOne B</span></a></code></pre></div>
+<ol type="1">
+<li>belongsTo: The A.belongsTo(B) association means that a One-To-One relationship exists between A and B, with the foreign key being defined in the source model (A).</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">A</span>.<span class="at">belongsTo</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// A BelongsTo B</span></a></code></pre></div>
+<ol type="1">
+<li>hasMany The A.hasMany(B) association means that a One-To-Many relationship exists between A and B, with the foreign key being defined in the target model (B).</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">A</span>.<span class="at">hasMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// A HasMany B</span></a></code></pre></div>
+<ol type="1">
+<li>belongsToMany: This signifies a many-to-many relationship between models <code>A</code> and <code>B</code>. Note: This association MUST have a <code>through:</code> property to signify a joins (junction) table. Sequelize will automatically create this model <code>C</code> (unless it already exists) and define the appropriate foreign keys on it.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">A</span>.<span class="at">belongsToMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;C&#39;</span> <span class="co">/*, options */</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// A BelongsToMany B through the junction table C</span></a></code></pre></div>
+<h1 id="how-to-create-standard-relationships">How to Create Standard Relationships</h1>
+<p>Sequelize associations are defined in pairs</p>
+<ul>
+<li>To create a One-To-One relationship, the hasOne and belongsTo associations are used together.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="va">A</span>.<span class="at">hasOne</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="va">B</span>.<span class="at">belongsTo</span>(A<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ul>
+<li>To create a One-To-Many relationship, the hasMany and belongsTo associations are used together.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">A</span>.<span class="at">hasMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="va">B</span>.<span class="at">belongsTo</span>(A<span class="op">,</span> <span class="op">{</span> <span class="co">/* options */</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<ul>
+<li>To create a Many-To-Many relationship, two belongsToMany calls are used together.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">A</span>.<span class="at">belongsToMany</span>(B<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;C&#39;</span> <span class="co">/*, options */</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">B</span>.<span class="at">belongsToMany</span>(A<span class="op">,</span> <span class="op">{</span> <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;C&#39;</span> <span class="co">/*, options */</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>

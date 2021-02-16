@@ -1,0 +1,470 @@
+/* module-key = 'confluence.web.components:macro-browser-resources', location = '/includes/css/sprites/macro-browser-icons-sprite.css' */
+/*************************************************************
+ * NOTE: Smartsprites used to generate sprites automatically *
+ *************************************************************/
+
+#macro-browser-dialog .icon-content-by-user {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -0px top;
+}
+#macro-browser-dialog .icon-children {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -80px top;
+}
+#macro-browser-dialog .icon-search {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -160px top;
+}
+#macro-browser-dialog .icon-index {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -240px top;
+}
+#macro-browser-dialog .icon-blog-posts {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -320px top;
+}
+#macro-browser-dialog .icon-excerpt {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -400px top;
+}
+#macro-browser-dialog .icon-excerpt-include {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -480px top;
+}
+#macro-browser-dialog .icon-include {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -560px top;
+}
+#macro-browser-dialog .icon-gallery {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -640px top;
+}
+#macro-browser-dialog .icon-change-history {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -720px top;
+}
+#macro-browser-dialog .icon-popular-labels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -800px top;
+}
+#macro-browser-dialog .icon-contentbylabel {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -880px top;
+}
+#macro-browser-dialog .icon-favpages {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -960px top;
+}
+#macro-browser-dialog .icon-related-labels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1040px top;
+}
+#macro-browser-dialog .icon-recently-updated {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1120px top;
+}
+#macro-browser-dialog .icon-navmap {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1200px top;
+}
+#macro-browser-dialog .icon-listlabels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1280px top;
+}
+#macro-browser-dialog .icon-anchor {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1360px top;
+}
+#macro-browser-dialog .icon-quote {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1440px top;
+}
+#macro-browser-dialog .icon-noformat {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1520px top;
+}
+#macro-browser-dialog .icon-panel {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1600px top;
+}
+#macro-browser-dialog .icon-color {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1680px top;
+}
+#macro-browser-dialog .icon-cheese {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1760px top;
+}
+#macro-browser-dialog .icon-jiraissues {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1840px top;
+}
+#macro-browser-dialog .icon-note {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1920px top;
+}
+#macro-browser-dialog .icon-warning {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2000px top;
+}
+#macro-browser-dialog .icon-info {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2080px top;
+}
+#macro-browser-dialog .icon-tip {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2160px top;
+}
+#macro-browser-dialog .icon-pagetree {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2240px top;
+}
+#macro-browser-dialog .icon-pagetreesearch {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2320px top;
+}
+#macro-browser-dialog .icon-web-widget,
+#macro-browser-dialog .icon-widget {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2400px top;
+}
+#macro-browser-dialog .icon-section {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2480px top;
+}
+#macro-browser-dialog .icon-column {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2560px top;
+}
+#macro-browser-dialog .icon-livesearch {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2640px top;
+}
+#macro-browser-dialog .icon-code {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2720px top;
+}
+#macro-browser-dialog .icon-html {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2800px top;
+}
+#macro-browser-dialog .icon-rss {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2880px top;
+}
+#macro-browser-dialog .icon-bookmarks {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -2960px top;
+}
+#macro-browser-dialog .icon-toc {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3040px top;
+}
+#macro-browser-dialog .icon-spaces {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3120px top;
+}
+#macro-browser-dialog .icon-space-details {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3200px top;
+}
+#macro-browser-dialog .icon-network {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3280px top;
+}
+#macro-browser-dialog .icon-profile {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3360px top;
+}
+#macro-browser-dialog .icon-status-list {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3440px top;
+}
+#macro-browser-dialog .icon-chart {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3520px top;
+}
+#macro-browser-dialog .icon-viewdoc {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3600px top;
+}
+#macro-browser-dialog .icon-viewpdf {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3680px top;
+}
+#macro-browser-dialog .icon-viewppt {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3760px top;
+}
+#macro-browser-dialog .icon-viewxls {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3840px top;
+}
+#macro-browser-dialog .icon-contributors {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -3920px top;
+}
+#macro-browser-dialog .icon-contributors-summary {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4000px top;
+}
+#macro-browser-dialog .icon-multimedia {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4080px top;
+}
+#macro-browser-dialog .icon-details {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4160px top;
+}
+#macro-browser-dialog .icon-detailssummary {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4240px top;
+}
+#macro-browser-dialog .icon-content-report-table {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4320px top;
+}
+#macro-browser-dialog .icon-marketplace {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -4400px top;
+}
+
+/* module-key = 'confluence.web.components:macro-browser-resources', location = '/includes/css/sprites/macro-browser-icons-dropdown-sprite.css' */
+/*************************************************************
+ * NOTE: Smartsprites used to generate sprites automatically *
+ *************************************************************/
+
+#autocomplete-dropdown .autocomplete-macros .icon {
+    padding: 0;
+}
+
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-blank .icon {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -0px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-placeholder .icon {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -20px top;
+}
+
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-content-by-user .icon, .macro-placeholder-icon-content-by-user {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -40px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-children .icon, .macro-placeholder-icon-children {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -60px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-search .icon, .macro-placeholder-icon-search {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -80px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-index .icon, .macro-placeholder-icon-index {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -100px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-blog-posts .icon, .macro-placeholder-icon-blog-posts {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -120px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-excerpt .icon, .macro-placeholder-icon-excerpt {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -140px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-excerpt-include .icon, .macro-placeholder-icon-excerpt-include {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -160px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-include .icon, .macro-placeholder-icon-include {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -180px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-gallery .icon, .macro-placeholder-icon-gallery {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -200px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-change-history .icon, .macro-placeholder-icon-change-history {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -220px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-popular-labels .icon, .macro-placeholder-icon-popular-labels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -240px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-contentbylabel .icon, .macro-placeholder-icon-contentbylabel {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -260px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-favpages .icon, .macro-placeholder-icon-favpages {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -280px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-related-labels .icon, .macro-placeholder-icon-related-labels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -300px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-recently-updated .icon, .macro-placeholder-icon-recently-updated {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -320px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-navmap .icon, .macro-placeholder-icon-navmap {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -340px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-listlabels .icon, .macro-placeholder-icon-listlabels {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -360px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-anchor .icon, .macro-placeholder-icon-anchor {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -380px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-quote .icon, .macro-placeholder-icon-quote {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -400px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-noformat .icon, .macro-placeholder-icon-noformat {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -420px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-panel .icon, .macro-placeholder-icon-panel {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -440px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-color .icon, .macro-placeholder-icon-color {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -460px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-cheese .icon, .macro-placeholder-icon-cheese {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -480px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-jiraissues .icon, .macro-placeholder-icon-jiraissues {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -500px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-note .icon, .macro-placeholder-icon-note {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -520px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-warning .icon, .macro-placeholder-icon-warning {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -540px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-info .icon, .macro-placeholder-icon-info {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -560px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-tip .icon, .macro-placeholder-icon-tip {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -580px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-pagetree .icon, .macro-placeholder-icon-pagetree {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -600px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-pagetreesearch .icon, .macro-placeholder-icon-pagetreesearch {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -620px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-web-widget,
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-widget .icon, .macro-placeholder-icon-widget {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -640px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-section .icon, .macro-placeholder-icon-section {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -660px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-column .icon, .macro-placeholder-icon-column {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -680px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-livesearch .icon, .macro-placeholder-icon-livesearch {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -700px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-code .icon, .macro-placeholder-icon-code {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -720px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-html .icon, .macro-placeholder-icon-html {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -740px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-rss .icon, .macro-placeholder-icon-rss {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -760px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-bookmarks .icon, .macro-placeholder-icon-bookmarks {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -780px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-toc .icon, .macro-placeholder-icon-toc {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -800px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-spaces .icon, .macro-placeholder-icon-spaces {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -820px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-space-details .icon, .macro-placeholder-icon-space-details {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -840px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-network .icon, .macro-placeholder-icon-network {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -860px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-profile .icon, .macro-placeholder-icon-profile {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -880px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-status-list .icon, .macro-placeholder-icon-status-list {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -900px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-chart .icon, .macro-placeholder-icon-chart {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -920px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-viewdoc .icon, .macro-placeholder-icon-viewdoc {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -940px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-viewpdf .icon, .macro-placeholder-icon-viewpdf {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -960px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-viewdppt .icon, .macro-placeholder-icon-viewdppt {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -980px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-viewxls .icon, .macro-placeholder-icon-viewxls {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1000px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-contributors .icon, .macro-placeholder-icon-contributors {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1020px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-contributors-summary .icon, .macro-placeholder-icon-contributors-summary {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1040px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-multimedia .icon, .macro-placeholder-icon-multimedia {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1060px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-details .icon, .macro-placeholder-icon-details {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1080px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-detailssummary .icon, .macro-placeholder-icon-detailssummary {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1096px top;
+}
+#autocomplete-dropdown .autocomplete-macros li.autocomplete-macro-content-report-table .icon, .macro-placeholder-icon-content-report-table {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1.0/_/download/resources/confluence.web.components:macro-browser-resources/../../../images/sprites/macro-icons-dropdown.png');
+  background-position: -1096px top;
+}

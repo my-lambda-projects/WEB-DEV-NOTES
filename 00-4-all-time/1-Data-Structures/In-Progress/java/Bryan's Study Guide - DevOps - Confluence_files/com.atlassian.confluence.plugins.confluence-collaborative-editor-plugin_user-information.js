@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-collaborative-editor-plugin:user-information', location = '/js/user-information.js' */
+define("confluence-collaborative-editor-plugin/user-information",["jquery","confluence/meta","confluence/api/constants"],function(i,b,j){function e(a){return a.map(function(a){a=d[a]||k;return{avatarURL:a.avatarURL,displayName:a.displayName,fullname:a.fullname,sub:a.sub}})}var g=b.get("static-resource-url-prefix")+"/images/icons/profilepics/default.png",f=[],l=b.get("atlassian-account-id"),h=b.get("current-user-fullname"),b={displayName:h,fullname:h,avatarURL:b.get("current-user-avatar-uri-reference"),
+sub:0},d={};d[l]=b;var k={avatarURL:g,displayName:"Current User",fullname:"Current User",sub:0};return function(a){if(!a)return Promise.resolve([]);Array.isArray(a)||(a=[a]);return new Promise(function(b){var c=a.filter(function(a){return a&&"anonymous"!==a&&!d[a]});if(!c.length)return b(e(a));c="?accountId="+c.join(",");i.ajax({url:j.CONTEXT_PATH+"/rest/api/user/bulk"+c,dataType:"json",type:"GET",contentType:"application/json",success:function(c){(c.results||[]).forEach(function(a){if(a){var b=f.indexOf(a.accountId);
+-1===b&&(f.push(a.accountId),b=f.length-1);b={sub:b,displayName:a.displayName||"anonymous",fullname:a.displayName||"anonymous",avatarURL:(a.profilePicture||{}).path||g};a.accountId&&"anonymous"!==a.accountId&&(d[a.accountId]=b)}});b(e(a))},error:function(c){console.error("Failed to fetch user data: "+c.statusText);b(e(a))}})})}});
+}catch(e){WRMCB(e)};

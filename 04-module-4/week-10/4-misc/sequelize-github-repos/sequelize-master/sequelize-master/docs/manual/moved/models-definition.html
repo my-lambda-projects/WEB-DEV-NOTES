@@ -1,0 +1,35 @@
+<h1 id="moved-models-definition">[MOVED] Models Definition</h1>
+<p>The contents of this page were moved to <a href="model-basics.html">Model Basics</a>.</p>
+<p>The only exception is the guide on <code>sequelize.import</code>, which is deprecated and was removed from the docs. However, if you really need it, it was kept here.</p>
+<hr />
+<h2 id="deprecated-sequelize.import">Deprecated: <code>sequelize.import</code></h2>
+<blockquote>
+<p><em><strong>Note:</strong> You should not use <code>sequelize.import</code>. Please just use <code>require</code> instead.</em></p>
+<p><em>This documentation has been kept just in case you really need to maintain old code that uses it.</em></p>
+</blockquote>
+<p>You can store your model definitions in a single file using the <code>sequelize.import</code> method. The returned object is exactly the same as defined in the imported file’s function. The import is cached, just like <code>require</code>, so you won’t run into trouble if importing a file more than once.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// in your server file - e.g. app.js</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> Project <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">import</span>(__dirname <span class="op">+</span> <span class="st">&quot;/path/to/models/project&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">// The model definition is done in /path/to/models/project.js</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="cf">return</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;project&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="dt">description</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="op">};</span></a></code></pre></div>
+<p>The <code>import</code> method can also accept a callback as an argument.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">sequelize</span>.<span class="at">import</span>(<span class="st">&#39;project&#39;</span><span class="op">,</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="cf">return</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;project&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">description</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This extra capability is useful when, for example, <code>Error: Cannot find module</code> is thrown even though <code>/path/to/models/project</code> seems to be correct. Some frameworks, such as Meteor, overload <code>require</code>, and might raise an error such as:</p>
+<pre class="text"><code>Error: Cannot find module &#39;/home/you/meteorApp/.meteor/local/build/programs/server/app/path/to/models/project.js&#39;</code></pre>
+<p>This can be worked around by passing in Meteor’s version of <code>require</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// If this fails...</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> AuthorModel <span class="op">=</span> <span class="va">db</span>.<span class="at">import</span>(<span class="st">&#39;./path/to/models/project&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// Try this instead!</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">const</span> AuthorModel <span class="op">=</span> <span class="va">db</span>.<span class="at">import</span>(<span class="st">&#39;project&#39;</span><span class="op">,</span> <span class="at">require</span>(<span class="st">&#39;./path/to/models/project&#39;</span>))<span class="op">;</span></a></code></pre></div>

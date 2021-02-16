@@ -1,0 +1,223 @@
+<h1 id="transactions">Transactions</h1>
+<p>Sequelize does not use <a href="https://en.wikipedia.org/wiki/Database_transaction">transactions</a> by default. However, for production-ready usage of Sequelize, you should definitely configure Sequelize to use transactions.</p>
+<p>Sequelize supports two ways of using transactions:</p>
+<ol type="1">
+<li><p><strong>Unmanaged transactions:</strong> Committing and rolling back the transaction should be done manually by the user (by calling the appropriate Sequelize methods).</p></li>
+<li><p><strong>Managed transactions</strong>: Sequelize will automatically rollback the transaction if any error is thrown, or commit the transaction otherwise. Also, if CLS (Continuation Local Storage) is enabled, all queries within the transaction callback will automatically receive the transaction object.</p></li>
+</ol>
+<h2 id="unmanaged-transactions">Unmanaged transactions</h2>
+<p>Let’s start with an example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// First, we start a transaction and save it into a variable</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> t <span class="op">=</span> <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co">// Then, we do some calls passing this transaction as an option:</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">const</span> user <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;Bart&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Simpson&#39;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="cf">await</span> <span class="va">user</span>.<span class="at">addSibling</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;Lisa&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Simpson&#39;</span></a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-17" title="17"></a>
+<a class="sourceLine" id="cb1-18" title="18">  <span class="co">// If the execution reaches this line, no errors were thrown.</span></a>
+<a class="sourceLine" id="cb1-19" title="19">  <span class="co">// We commit the transaction.</span></a>
+<a class="sourceLine" id="cb1-20" title="20">  <span class="cf">await</span> <span class="va">t</span>.<span class="at">commit</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-21" title="21"></a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="op">}</span> <span class="cf">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-23" title="23"></a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="co">// If the execution reaches this line, an error was thrown.</span></a>
+<a class="sourceLine" id="cb1-25" title="25">  <span class="co">// We rollback the transaction.</span></a>
+<a class="sourceLine" id="cb1-26" title="26">  <span class="cf">await</span> <span class="va">t</span>.<span class="at">rollback</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-27" title="27"></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="op">}</span></a></code></pre></div>
+<p>As shown above, the <em>unmanaged transaction</em> approach requires that you commit and rollback the transaction manually, when necessary.</p>
+<h2 id="managed-transactions">Managed transactions</h2>
+<p>Managed transactions handle committing or rolling back the transaction automatically. You start a managed transaction by passing a callback to <code>sequelize.transaction</code>. This callback can be <code>async</code> (and usually is).</p>
+<p>The following will happen in this case:</p>
+<ul>
+<li>Sequelize will automatically start a transaction and obtain a transaction object <code>t</code></li>
+<li>Then, Sequelize will execute the callback you provided, passing <code>t</code> into it</li>
+<li>If your callback throws, Sequelize will automatically rollback the transaction</li>
+<li>If your callback succeeds, Sequelize will automatically commit the transaction</li>
+<li>Only then the <code>sequelize.transaction</code> call will settle:
+<ul>
+<li>Either resolving with the resolution of your callback</li>
+<li>Or, if your callback throws, rejecting with the thrown error</li>
+</ul></li>
+</ul>
+<p>Example code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="kw">const</span> result <span class="op">=</span> <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (t) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="kw">const</span> user <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;Abraham&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Lincoln&#39;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10">    <span class="cf">await</span> <span class="va">user</span>.<span class="at">setShooter</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-11" title="11">      <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;John&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Boothe&#39;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-14" title="14"></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="cf">return</span> user<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-16" title="16"></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-18" title="18"></a>
+<a class="sourceLine" id="cb2-19" title="19">  <span class="co">// If the execution reaches this line, the transaction has been committed successfully</span></a>
+<a class="sourceLine" id="cb2-20" title="20">  <span class="co">// `result` is whatever was returned from the transaction callback (the `user`, in this case)</span></a>
+<a class="sourceLine" id="cb2-21" title="21"></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="op">}</span> <span class="cf">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-23" title="23"></a>
+<a class="sourceLine" id="cb2-24" title="24">  <span class="co">// If the execution reaches this line, an error occurred.</span></a>
+<a class="sourceLine" id="cb2-25" title="25">  <span class="co">// The transaction has already been rolled back automatically by Sequelize!</span></a>
+<a class="sourceLine" id="cb2-26" title="26"></a>
+<a class="sourceLine" id="cb2-27" title="27"><span class="op">}</span></a></code></pre></div>
+<p>Note that <code>t.commit()</code> and <code>t.rollback()</code> were not called directly (which is correct).</p>
+<h3 id="throw-errors-to-rollback">Throw errors to rollback</h3>
+<p>When using the managed transaction you should <em>never</em> commit or rollback the transaction manually. If all queries are successful (in the sense of not throwing any error), but you still want to rollback the transaction, you should throw an error yourself:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(t <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">const</span> user <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;Abraham&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;Lincoln&#39;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="co">// Woops, the query was successful but we still want to roll back!</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="co">// We throw an error manually, so that Sequelize handles everything automatically.</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="automatically-pass-transactions-to-all-queries">Automatically pass transactions to all queries</h3>
+<p>In the examples above, the transaction is still manually passed, by passing <code>{ transaction: t }</code> as the second argument. To automatically pass the transaction to all queries you must install the <a href="https://github.com/Jeff-Lewis/cls-hooked">cls-hooked</a> (CLS) module and instantiate a namespace in your own code:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> cls <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;cls-hooked&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> namespace <span class="op">=</span> <span class="va">cls</span>.<span class="at">createNamespace</span>(<span class="st">&#39;my-very-own-namespace&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>To enable CLS you must tell sequelize which namespace to use by using a static method of the sequelize constructor:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> Sequelize <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="va">Sequelize</span>.<span class="at">useCLS</span>(namespace)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">new</span> <span class="at">Sequelize</span>(....)<span class="op">;</span></a></code></pre></div>
+<p>Notice, that the <code>useCLS()</code> method is on the <em>constructor</em>, not on an instance of sequelize. This means that all instances will share the same namespace, and that CLS is all-or-nothing - you cannot enable it only for some instances.</p>
+<p>CLS works like a thread-local storage for callbacks. What this means in practice is that different callback chains can access local variables by using the CLS namespace. When CLS is enabled sequelize will set the <code>transaction</code> property on the namespace when a new transaction is created. Since variables set within a callback chain are private to that chain several concurrent transactions can exist at the same time:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">sequelize</span>.<span class="at">transaction</span>((t1) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="va">namespace</span>.<span class="at">get</span>(<span class="st">&#39;transaction&#39;</span>) <span class="op">===</span> t1<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">sequelize</span>.<span class="at">transaction</span>((t2) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="va">namespace</span>.<span class="at">get</span>(<span class="st">&#39;transaction&#39;</span>) <span class="op">===</span> t2<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>In most case you won’t need to access <code>namespace.get('transaction')</code> directly, since all queries will automatically look for a transaction on the namespace:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">sequelize</span>.<span class="at">transaction</span>((t1) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="co">// With CLS enabled, the user will be created inside the transaction</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="cf">return</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Alice&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="concurrentpartial-transactions">Concurrent/Partial transactions</h2>
+<p>You can have concurrent transactions within a sequence of queries or have some of them excluded from any transactions. Use the <code>transaction</code> option to control which transaction a query belongs to:</p>
+<p><strong>Note:</strong> <em>SQLite does not support more than one transaction at the same time.</em></p>
+<h3 id="with-cls-enabled">With CLS enabled</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">sequelize</span>.<span class="at">transaction</span>((t1) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="cf">return</span> <span class="va">sequelize</span>.<span class="at">transaction</span>((t2) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="co">// With CLS enabled, queries here will by default use t2.</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="co">// Pass in the `transaction` option to define/alter the transaction they belong to.</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="cf">return</span> <span class="va">Promise</span>.<span class="at">all</span>([</a>
+<a class="sourceLine" id="cb8-6" title="6">        <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Bob&#39;</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> <span class="kw">null</span> <span class="op">}</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Mallory&#39;</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t1 <span class="op">}</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">        <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;John&#39;</span> <span class="op">}</span>) <span class="co">// this would default to t2</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="passing-options">Passing options</h2>
+<p>The <code>sequelize.transaction</code> method accepts options.</p>
+<p>For unmanaged transactions, just use <code>sequelize.transaction(options)</code>.</p>
+<p>For managed transactions, use <code>sequelize.transaction(options, callback)</code>.</p>
+<h2 id="isolation-levels">Isolation levels</h2>
+<p>The possible isolations levels to use when starting a transaction:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> Transaction <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">// The following are valid isolation levels:</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">READ_UNCOMMITTED</span> <span class="co">// &quot;READ UNCOMMITTED&quot;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">READ_COMMITTED</span> <span class="co">// &quot;READ COMMITTED&quot;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">REPEATABLE_READ</span>  <span class="co">// &quot;REPEATABLE READ&quot;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">SERIALIZABLE</span> <span class="co">// &quot;SERIALIZABLE&quot;</span></a></code></pre></div>
+<p>By default, sequelize uses the isolation level of the database. If you want to use a different isolation level, pass in the desired level as the first argument:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> <span class="op">{</span> Transaction <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">isolationLevel</span><span class="op">:</span> <span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">SERIALIZABLE</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="op">},</span> <span class="kw">async</span> (t) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="co">// Your code</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>You can also overwrite the <code>isolationLevel</code> setting globally with an option in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> Transaction <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;sqlite::memory:&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="dt">isolationLevel</span><span class="op">:</span> <span class="va">Transaction</span>.<span class="va">ISOLATION_LEVELS</span>.<span class="at">SERIALIZABLE</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><strong>Note for MSSQL:</strong> <em>The <code>SET ISOLATION LEVEL</code> queries are not logged since the specified <code>isolationLevel</code> is passed directly to <code>tedious</code>.</em></p>
+<h2 id="usage-with-other-sequelize-methods">Usage with other sequelize methods</h2>
+<p>The <code>transaction</code> option goes with most other options, which are usually the first argument of a method.</p>
+<p>For methods that take values, like <code>.create</code>, <code>.update()</code>, etc. <code>transaction</code> should be passed to the option in the second argument.</p>
+<p>If unsure, refer to the API documentation for the method you are using to be sure of the signature.</p>
+<p>Examples:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="cf">await</span> <span class="va">User</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Foo Bar&#39;</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> t <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="cf">await</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-5" title="5">    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;Foo Bar&#39;</span></a>
+<a class="sourceLine" id="cb12-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb12-7" title="7">  <span class="dt">transaction</span><span class="op">:</span> t</a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="the-aftercommit-hook">The <code>afterCommit</code> hook</h2>
+<p>A <code>transaction</code> object allows tracking if and when it is committed.</p>
+<p>An <code>afterCommit</code> hook can be added to both managed and unmanaged transaction objects:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="co">// Managed transaction:</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (t) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-3" title="3">  <span class="va">t</span>.<span class="at">afterCommit</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="co">// Your logic</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-7" title="7"></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">// Unmanaged transaction:</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="kw">const</span> t <span class="op">=</span> <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="va">t</span>.<span class="at">afterCommit</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-11" title="11">  <span class="co">// Your logic</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="cf">await</span> <span class="va">t</span>.<span class="at">commit</span>()<span class="op">;</span></a></code></pre></div>
+<p>The callback passed to <code>afterCommit</code> can be <code>async</code>. In this case:</p>
+<ul>
+<li>For a managed transaction: the <code>sequelize.transaction</code> call will wait for it before settling;</li>
+<li>For an unmanaged transaction: the <code>t.commit</code> call will wait for it before settling.</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>The <code>afterCommit</code> hook is not raised if the transaction is rolled back;</li>
+<li>The <code>afterCommit</code> hook does not modify the return value of the transaction (unlike most hooks)</li>
+</ul>
+<p>You can use the <code>afterCommit</code> hook in conjunction with model hooks to know when a instance is saved and available outside of a transaction</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">User</span>.<span class="at">afterSave</span>((instance<span class="op">,</span> options) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="cf">if</span> (<span class="va">options</span>.<span class="at">transaction</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">// Save done within a transaction, wait until transaction is committed to</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="co">// notify listeners the instance has been saved</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="va">options</span>.<span class="va">transaction</span>.<span class="at">afterCommit</span>(() <span class="kw">=&gt;</span> <span class="co">/* Notify */</span>)</a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="co">// Save done outside a transaction, safe for callers to fetch the updated model</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="co">// Notify</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="locks">Locks</h2>
+<p>Queries within a <code>transaction</code> can be performed with locks:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="cf">return</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb15-2" title="2">  <span class="dt">limit</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="dt">lock</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="dt">transaction</span><span class="op">:</span> t1</a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Queries within a transaction can skip locked rows:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="cf">return</span> <span class="va">User</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="dt">limit</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-3" title="3">  <span class="dt">lock</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="dt">skipLocked</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="dt">transaction</span><span class="op">:</span> t2</a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>

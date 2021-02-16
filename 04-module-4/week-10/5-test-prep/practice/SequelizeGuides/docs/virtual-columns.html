@@ -1,0 +1,24 @@
+<p>“Virtual” columns are columns that <em>do not</em> get saved in your database - they are calculated on the fly based on the values of other columns. They are helpful for saving space if there are values we want to use on our instances that can be easily calculated.</p>
+<p>Virtual columns always have the data type of Sequelize.VIRTUAL.</p>
+<p>Virtual columns must have <em>at least</em> one custom ‘getter’ or ‘setter’ to be useful. This does not mean that getters and setters can <em>only</em> be used with virtual columns though (see above).</p>
+<p>Virtual columns are similar to instance methods. The difference is you access virtual columns the same way you access a regular property (via the ‘get’ and ‘set’ meta-operation), whereas instance methods are functions that you must invoke.</p>
+<h5 id="definition">Definition</h5>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">firstName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">lastName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">fullName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">VIRTUAL</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="at">get</span> () <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="cf">return</span> <span class="kw">this</span>.<span class="at">getDataValue</span>(<span class="st">&#39;firstName&#39;</span>) <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> <span class="kw">this</span>.<span class="at">getDataValue</span>(<span class="st">&#39;lastName&#39;</span>)</a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="op">}</span>)</a></code></pre></div>
+<h5 id="usage">Usage</h5>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> pug <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">create</span>(<span class="op">{</span><span class="dt">firstName</span><span class="op">:</span> <span class="st">&#39;Cody&#39;</span><span class="op">,</span> <span class="dt">lastName</span><span class="op">:</span> <span class="st">&#39;McPug&#39;</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2">  </a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">console</span>.<span class="at">log</span>(<span class="va">pug</span>.<span class="at">fullName</span>) <span class="co">// &quot;Cody McPug&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">// however, if you look inside your database, there won&#39;t be a &quot;fullName&quot; column!</span></a></code></pre></div>

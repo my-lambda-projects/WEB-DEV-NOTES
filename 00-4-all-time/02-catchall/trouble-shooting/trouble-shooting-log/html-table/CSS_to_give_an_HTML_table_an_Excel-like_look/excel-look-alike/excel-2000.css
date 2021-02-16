@@ -1,0 +1,27 @@
+.ExcelTable2000 {
+	border: 0px;
+	background-color: #BDBDBD;
+	font-size: 10pt;
+	font-family: arial;
+	border-spacing: 1px;
+}
+
+.ExcelTable2000 TH {
+	background-color: #ECE9D8;
+	border: 0px;
+	font-weight: normal;
+	border-left: 1px solid white;
+}
+
+.ExcelTable2000 TD {
+	border: 0px;
+	background-color: white;
+	padding: 0px 4px 0px 2px;
+}
+
+.ExcelTable2000 TD.heading {
+	background-color: #ECE9D8;
+	text-align: center;
+	padding: 0px 0px 0px 0px;
+	border-top: 1px solid white;
+}

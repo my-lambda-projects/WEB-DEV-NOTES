@@ -1,0 +1,542 @@
+<h1 id="create-and-seed-a-database-project">Create And Seed A Database Project</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#project-overview">Project overview</a></li>
+<li><a href="#phase-1-create-a-new-database">Phase 1: Create a new database</a></li>
+<li><a href="#phase-2-create-a-seeds-seed-file">Phase 2: Create a seeds seed file</a></li>
+<li><a href="#phase-3-pipe-your-seed-file-into-your-new-database">Phase 3: Pipe your seed file into your new database</a>
+<ul>
+<li><a href="#method-1-seed-your-database-via-caret-method">Method 1. Seed your database via caret method</a></li>
+<li><a href="#method-2-seed-your-database-via-pipe-method">Method 2. Seed your database via pipe method</a></li>
+<li><a href="#if-you-want-to-seed-using-the-file-again-you-need-to-first-drop-the-tables">If you want to seed using the file again, you need to first drop the tables.</a></li>
+<li><a href="#check-to-make-sure-your-seed-file-has-actually-updated-the-farm-database">Check to make sure your seed file has actually updated the <code>farm</code> database</a></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>In our SQL readings, we installed PostgreSQL, and we learned how to create a new PostgreSQL database and how to create and run a seed file in our database.</p>
+<p>In this project, you’ll practice seeding your database with a seed file that’s full of, well, <em>seeds</em>! Hopefully when you’re done, you’ll have <em>grown</em> your SQL knowledge.</p>
+<h2 id="project-overview">Project overview</h2>
+<p>Practice creating a new database and piping a seed file into your database.</p>
+<ul>
+<li>In Phase 1, you’ll create a new database.</li>
+<li>In Phase 2, you’ll create a new seed data file.</li>
+<li>In Phase 3, you’ll pipe your seed data in your database via <code>psql</code> on the command line.</li>
+</ul>
+<h2 id="phase-1-create-a-new-database">Phase 1: Create a new database</h2>
+<p>First, log into <code>psql</code> on the command line as your user.</p>
+<p>Second, create a new database in PostgreSQL called <code>farm</code> by using the following syntax:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> [databasename];</a></code></pre></div>
+<p><em>Note:</em> You can check to make sure you’ve created a new database by viewing the list of databases with <code>\l</code>.</p>
+<h2 id="phase-2-create-a-seeds-seed-file">Phase 2: Create a seeds seed file</h2>
+<p>Create a seed file full of seeds! Set up a SQL file with seed data that will produce two tables: an “edible_seeds” with 40 rows and a “flower_seeds” table with 20 rows.</p>
+<p><strong>Edible Seeds</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+<th>type</th>
+<th>price_per_pound</th>
+<th>in_stock</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Chia</td>
+<td>Pseudocereal</td>
+<td>6.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Flax</td>
+<td>Pseudocereal</td>
+<td>6.90</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Amaranth</td>
+<td>Pseudocereal</td>
+<td>14.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Quinoa</td>
+<td>Pseudocereal</td>
+<td>12.49</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Sesame</td>
+<td>Pseudocereal</td>
+<td>13.49</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Hemp</td>
+<td>Other</td>
+<td>10.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Chickpea</td>
+<td>Legume</td>
+<td>7.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Pea</td>
+<td>Legume</td>
+<td>7.50</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Soybean</td>
+<td>Legume</td>
+<td>12.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Acorn</td>
+<td>Nut</td>
+<td>11.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Almond</td>
+<td>Nut</td>
+<td>13.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Beech</td>
+<td>Nut</td>
+<td>10.94</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Chestnut</td>
+<td>Nut</td>
+<td>13.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Water Chestnut</td>
+<td>Nut</td>
+<td>9.99</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Macadamia</td>
+<td>Nut</td>
+<td>25.00</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Pistachio</td>
+<td>Nut</td>
+<td>20.00</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>Pine nuts</td>
+<td>Nut-like gymnosperm</td>
+<td>23.00</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>Pecan</td>
+<td>Nut</td>
+<td>6.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>Juniper berries</td>
+<td>Nut-like gymnosperm</td>
+<td>11.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>Cashew</td>
+<td>Nut</td>
+<td>23.61</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>Hazelnut</td>
+<td>Nut</td>
+<td>25.49</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td>Sunflower seed</td>
+<td>Other</td>
+<td>9.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td>Poppy seed</td>
+<td>Other</td>
+<td>12.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td>Barley</td>
+<td>Cereal</td>
+<td>9.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>Maize</td>
+<td>Cereal</td>
+<td>6.98</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>Oats</td>
+<td>Cereal</td>
+<td>9.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>Rice</td>
+<td>Cereal</td>
+<td>7.90</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td>Rye</td>
+<td>Cereal</td>
+<td>9.87</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>29</td>
+<td>Spelt</td>
+<td>Cereal</td>
+<td>7.50</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td>Wheat berries</td>
+<td>Cereal</td>
+<td>2.50</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>31</td>
+<td>Buckwheat</td>
+<td>Pseudocereal</td>
+<td>5.60</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td>Jackfruit</td>
+<td>Other</td>
+<td>15.00</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>33</td>
+<td>Durian</td>
+<td>Other</td>
+<td>8.26</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td>Lotus seed</td>
+<td>Other</td>
+<td>12.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>35</td>
+<td>Ginko</td>
+<td>Nut-like gymnosperm</td>
+<td>12.80</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>36</td>
+<td>Peanut</td>
+<td>Legume</td>
+<td>5.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td>Pumpkin seed</td>
+<td>Other</td>
+<td>5.99</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>38</td>
+<td>Watermelon seed</td>
+<td>Other</td>
+<td>6.99</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>39</td>
+<td>Pomegranate seed</td>
+<td>Other</td>
+<td>27.63</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>40</td>
+<td>Cacao bean</td>
+<td>Other</td>
+<td>12.99</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Use the following data types for your “edible_seeds” columns:</p>
+<ul>
+<li>id - SERIAL</li>
+<li>name - VARCHAR that accepts 255 characters</li>
+<li>type - VARCHAR that accepts 255 characters</li>
+<li>price_per_pound - FLOAT or REAL</li>
+<li>in_stock - BOOLEAN</li>
+</ul>
+<p><strong>Flower Seeds</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+<th>main_color</th>
+<th>seeds_per_packet</th>
+<th>price_per_packet</th>
+<th>in_stock</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Begonia Fiona Red</td>
+<td>Red</td>
+<td>25</td>
+<td>4.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Moonflower Seeds</td>
+<td>White</td>
+<td>25</td>
+<td>2.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Easy Wave F1 Lavender Sky Blue Petunia Seeds</td>
+<td>Lavender</td>
+<td>10</td>
+<td>4.25</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Super Hero Spry Marigold Seeds</td>
+<td>Marigold</td>
+<td>50</td>
+<td>2.95</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Zinnia Zinderella Lilac</td>
+<td>Pink</td>
+<td>25</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Mini Ornamental Mint Seeds</td>
+<td>Green</td>
+<td>10</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Kabloom Light Pink Blast Calibrachoa</td>
+<td>Green</td>
+<td>10</td>
+<td>4.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Calibrachoa Kabloom Coral</td>
+<td>Coral</td>
+<td>10</td>
+<td>4.95</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Fiesta del Sol Mexican Sunflower Seeds</td>
+<td>Red</td>
+<td>30</td>
+<td>3.95</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Cosmos Apricot Lemonade</td>
+<td>Yellow</td>
+<td>25</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Zinderella Purple Zinnia Seeds</td>
+<td>Purple</td>
+<td>25</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Fireball Marigold Seeds</td>
+<td>Varies</td>
+<td>25</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Gerbera Revolution Bicolor Red Lemon</td>
+<td>Red</td>
+<td>10</td>
+<td>8.95</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Paradise Island Calibrachoa Fuseables Seeds</td>
+<td>Varies</td>
+<td>5</td>
+<td>6.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Cheyenne Spirit Coneflower Seeds</td>
+<td>Varies</td>
+<td>15</td>
+<td>7.95</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Leucanthemum Madonna</td>
+<td>White</td>
+<td>25</td>
+<td>4.95</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>Zinnia Zinderella Peach</td>
+<td>Peach</td>
+<td>25</td>
+<td>3.95</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>Kabloom Orange Calibrachoa</td>
+<td>Orange</td>
+<td>10</td>
+<td>4.95</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>Fountain Blue Lobelia Seeds</td>
+<td>Blue</td>
+<td>100</td>
+<td>2.50</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>Envy Zinnia Seeds</td>
+<td>Green</td>
+<td>50</td>
+<td>2.95</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Use the following data types for your “flower_seeds” columns:</p>
+<ul>
+<li>id - SERIAL</li>
+<li>name - VARCHAR that accepts 300 characters</li>
+<li>main_color - VARCHAR that accepts 100 characters</li>
+<li>seeds_per_packet - INT</li>
+<li>price_per_packet - FLOAT</li>
+<li>in_stock - BOOLEAN</li>
+</ul>
+<p><em>Note:</em> Make sure to save your seed file on your machine so that you can pipe it into your database in the next phase!</p>
+<h2 id="phase-3-pipe-your-seed-file-into-your-new-database">Phase 3: Pipe your seed file into your new database</h2>
+<p>After you’ve saved your seed file, use the caret and pipe methods to seed your <code>farm</code> database with the data from the “edible_seeds” table. (<em>Note: Make sure you’ve quit <code>psql</code> first with <code>\q</code>.</em>)</p>
+<p>There are two ways to seed your database:</p>
+<h3 id="method-1.-seed-your-database-via-caret-method">Method 1. Seed your database via caret method</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1">psql <span class="op">-</span>d [<span class="kw">database</span>] <span class="op">-</span>U [username] <span class="op">&lt;</span> [path_to_file<span class="op">/</span><span class="kw">file</span>.sql]</a></code></pre></div>
+<h3 id="method-2.-seed-your-database-via-pipe-method">Method 2. Seed your database via pipe method</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1">cat [path_to_file<span class="op">/</span><span class="kw">file</span>.sql] | psql <span class="op">-</span>d [<span class="kw">database</span>] <span class="op">-</span>U [username]</a></code></pre></div>
+<p>Try both of these methods.</p>
+<h3 id="if-you-want-to-seed-using-the-file-again-you-need-to-first-drop-the-tables.">If you want to seed using the file again, you need to first drop the tables.</h3>
+<p>Access the database by:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1">psql <span class="op">-</span>d [<span class="kw">database</span>] <span class="op">-</span>U [username]</a></code></pre></div>
+<p>Then drop the tables:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">DROP</span> <span class="kw">TABLE</span> [<span class="kw">table</span>];</a></code></pre></div>
+<p>Then you can run the seed file again using any of the two above methods.</p>
+<h3 id="check-to-make-sure-your-seed-file-has-actually-updated-the-farm-database">Check to make sure your seed file has actually updated the <code>farm</code> database</h3>
+<ul>
+<li>Log into <code>psql</code> again.</li>
+<li>Connect to the <code>farm</code> database (syntax: <code>\c [database]</code>).</li>
+<li>Make sure your “edible_seeds” table is filled with seeds: <code>SELECT * FROM «table name»;</code></li>
+<li>Make sure your “flower_seeds” table is filled with seeds: <code>SELECT * FROM «table name»;</code></li>
+</ul>

@@ -1,0 +1,626 @@
+<pre class="shell"><code>alias psql=&#39;psql -h localhost&#39;
+alias sc=&#39;npx sequelize-cli&#39;
+alias sc-init=&#39;npx sequelize-cli init&#39;
+alias sc-makedb=&#39;npx sequelize-cli db:create&#39;
+alias sc-makemodel=&#39;npx sequelize-cli model:generate&#39;
+alias sc-migrate=&#39;npx sequelize-cli db:migrate&#39;
+alias sc-genseed=&#39;npx sequelize-cli seed:generate&#39;
+alias sc-seed=&#39;npm sequelize-cli db:seed:all&#39;</code></pre>
+<h1 id="sequelize-cheatsheet">Sequelize Cheatsheet</h1>
+<h2 id="command-line">Command Line</h2>
+<p>Sequelize provides utilities for generating migrations, models, and seed files. They are exposed through the <code>sequelize-cli</code> command. ### Init Project</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="ex">npx</span> sequelize-cli init</a></code></pre></div>
+<p>You must create a database user, and update the <code>config/config.json</code> file to match your database settings to complete the initialization process. ### Create Database</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">npx</span> sequelize-cli db:create</a></code></pre></div>
+<h3 id="generate-a-model-and-its-migration">Generate a model and its migration</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">npx</span> sequelize-cli model:generate --name <span class="op">&lt;</span>ModelName<span class="op">&gt;</span> --attributes <span class="op">&lt;</span>column1<span class="op">&gt;</span>:<span class="op">&lt;</span>type<span class="op">&gt;</span>,<span class="op">&lt;</span>column2<span class="op">&gt;</span>:<span class="op">&lt;</span>type<span class="op">&gt;</span>,...</a></code></pre></div>
+<h3 id="run-pending-migrations">Run pending migrations</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate</a></code></pre></div>
+<h3 id="rollback-one-migration">Rollback one migration</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate:undo</a></code></pre></div>
+<h3 id="rollback-all-migrations">Rollback all migrations</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate:undo:all</a></code></pre></div>
+<h3 id="generate-a-new-seed-file">Generate a new seed file</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">npx</span> sequelize-cli seed:generate --name <span class="op">&lt;</span>descriptiveName<span class="op">&gt;</span></a></code></pre></div>
+<h3 id="run-all-pending-seeds">Run all pending seeds</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">npx</span> sequelize-cli db:seed:all</a></code></pre></div>
+<h3 id="rollback-one-seed">Rollback one seed</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">npx</span> sequelize-cli db:seed:undo</a></code></pre></div>
+<h3 id="rollback-all-seeds">Rollback all seeds</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">npx</span> sequelize-cli db:seed:undo:all</a></code></pre></div>
+<h2 id="migrations">Migrations</h2>
+<h3 id="create-table-usually-used-in-the-up-method">Create Table (usually used in the up() method)</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// This uses the short form for references</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="op">&lt;</span>TableName<span class="op">&gt;,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-3" title="3">    <span class="op">&lt;</span>columnName<span class="op">&gt;:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="op">&lt;</span>type<span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-5" title="5">        <span class="dt">allowNull</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-6" title="6">        <span class="dt">unique</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-7" title="7">        <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="op">&lt;</span>TableName<span class="op">&gt;</span> <span class="op">},</span> <span class="co">// This is the plural table name</span></a>
+<a class="sourceLine" id="cb12-8" title="8">                                            <span class="co">// that the column references.</span></a>
+<a class="sourceLine" id="cb12-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">// This the longer form for references that is less confusing</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">createTable</span>(<span class="op">&lt;</span>TableName<span class="op">&gt;,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-13" title="13">    <span class="op">&lt;</span>columnName<span class="op">&gt;:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-14" title="14">        <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="op">&lt;</span>type<span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-15" title="15">        <span class="dt">allowNull</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-16" title="16">        <span class="dt">unique</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb12-17" title="17">        <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-18" title="18">            <span class="dt">model</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-19" title="19">                <span class="dt">tableName</span><span class="op">:</span> <span class="op">&lt;</span>TableName<span class="op">&gt;</span> <span class="co">// This is the plural table name</span></a>
+<a class="sourceLine" id="cb12-20" title="20">            <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-21" title="21">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-22" title="22">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-23" title="23"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="delete-table-usually-used-in-the-down-function">Delete Table (usually used in the down() function)</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">dropTable</span>(<span class="op">&lt;</span>TableName<span class="op">&gt;</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="adding-a-column">Adding a column</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="cf">return</span> <span class="va">queryInteface</span>.<span class="at">addColumn</span>(<span class="op">&lt;</span>TableName<span class="op">&gt;,</span> <span class="op">&lt;</span>columnName<span class="op">&gt;:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="op">&lt;</span>type<span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="dt">allowNull</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="dt">unique</span><span class="op">:</span> <span class="op">&lt;</span><span class="kw">true</span><span class="op">|</span><span class="kw">false</span><span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="op">&lt;</span>TableName<span class="op">&gt;</span> <span class="op">},</span> <span class="co">// This is the plural table name</span></a>
+<a class="sourceLine" id="cb14-6" title="6">                                        <span class="co">// that the column references.</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="removing-a-column">Removing a column</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">removeColumn</span>(<span class="op">&lt;</span>TableName<span class="op">&gt;,</span> <span class="op">&lt;</span>columnName<span class="op">&gt;</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="model-associations">Model Associations</h2>
+<h3 id="one-to-one-between-student-and-scholarship">One to One between Student and Scholarship</h3>
+<p><code>student.js</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1">    <span class="va">Student</span>.<span class="at">hasOne</span>(<span class="va">models</span>.<span class="at">Scholarship</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;studentId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>scholarship.js</code></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1">    <span class="va">Scholarship</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Student</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;studentId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="one-to-many-between-student-and-class">One to Many between Student and Class</h3>
+<p><code>student.js</code></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1">    <span class="va">Student</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Class</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;classId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p><code>class.js</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1">    <span class="va">Class</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Student</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;classId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="many-to-many-between-student-and-lesson-through-studentlessons-table">Many to Many between Student and Lesson through StudentLessons table</h3>
+<p><code>student.js</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">const</span> columnMapping <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">    <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;StudentLesson&#39;</span><span class="op">,</span> <span class="co">// This is the model name referencing the join table.</span></a>
+<a class="sourceLine" id="cb20-3" title="3">    <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;lessonId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;studentId&#39;</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="va">Student</span>.<span class="at">belongsToMany</span>(<span class="va">models</span>.<span class="at">Lesson</span><span class="op">,</span> columnMapping)<span class="op">;</span></a></code></pre></div>
+<p><code>lesson.js</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">const</span> columnMapping <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-2" title="2">    <span class="dt">through</span><span class="op">:</span> <span class="st">&#39;StudentLesson&#39;</span><span class="op">,</span> <span class="co">// This is the model name referencing the join table.</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="dt">otherKey</span><span class="op">:</span> <span class="st">&#39;studentId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;lessonId&#39;</span></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb21-6" title="6"><span class="va">Lesson</span>.<span class="at">belongsToMany</span>(<span class="va">models</span>.<span class="at">Student</span><span class="op">,</span> columnMapping)<span class="op">;</span></a></code></pre></div>
+<h2 id="inserting-a-new-item">Inserting a new item</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="co">// Way 1 - With build and save</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">const</span> pet <span class="op">=</span> <span class="va">Pet</span>.<span class="at">build</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Fido&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-4" title="4">    <span class="dt">petTypeId</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="cf">await</span> <span class="va">pet</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="co">// Way 2 - With create</span></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="kw">const</span> pet <span class="op">=</span> <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb22-9" title="9">    <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Fido&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-10" title="10">    <span class="dt">petTypeId</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="updating-an-item">Updating an item</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="co">// Find the pet with id = 1</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw">const</span> pet <span class="op">=</span> <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co">// Way 1</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="va">pet</span>.<span class="at">name</span> <span class="op">=</span> <span class="st">&quot;Fido, Sr.&quot;</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="cf">await</span> <span class="va">pet</span>.<span class="at">save</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="co">// Way 2</span></a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="cf">await</span> <span class="va">pet</span>.<span class="at">update</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb23-8" title="8">    <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Fido, Sr.&quot;</span></a>
+<a class="sourceLine" id="cb23-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="deleting-a-single-item">Deleting a single item</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="co">// Find the pet with id = 1</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="kw">const</span> pet <span class="op">=</span> <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co">// Notice this is an instance method</span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="va">pet</span>.<span class="at">destroy</span>()<span class="op">;</span></a></code></pre></div>
+<h2 id="deleting-multiple-items">Deleting multiple items</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="co">// Notice this is a static class method</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="cf">await</span> <span class="va">Pet</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb25-3" title="3">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-4" title="4">        <span class="dt">petTypeId</span><span class="op">:</span> <span class="dv">1</span> <span class="co">// Destorys all the pets where the petType is 1</span></a>
+<a class="sourceLine" id="cb25-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="query-format">Query Format</h2>
+<h3 id="findone">findOne</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="cf">await</span> <span class="op">&lt;</span>Model<span class="op">&gt;</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb26-2" title="2">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-3" title="3">        <span class="op">&lt;</span>column<span class="op">&gt;:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-4" title="4">            [<span class="va">Op</span>.<span class="op">&lt;</span>operator<span class="op">&gt;</span>]<span class="op">:</span> <span class="op">&lt;</span>value<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb26-5" title="5">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb26-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="findall">findAll</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="cf">await</span> <span class="op">&lt;</span>Model<span class="op">&gt;</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb27-2" title="2">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb27-3" title="3">        <span class="op">&lt;</span>column<span class="op">&gt;:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb27-4" title="4">            [<span class="va">Op</span>.<span class="op">&lt;</span>operator<span class="op">&gt;</span>]<span class="op">:</span> <span class="op">&lt;</span>value<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb27-5" title="5">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb27-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb27-7" title="7">    <span class="dt">include</span><span class="op">:</span> <span class="op">&lt;</span>include_specifier<span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb27-8" title="8">    <span class="dt">offset</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb27-9" title="9">    <span class="dt">limit</span><span class="op">:</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="findbypk">findByPk</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="cf">await</span> <span class="op">&lt;</span>Model<span class="op">&gt;</span>.<span class="at">findByPk</span>(<span class="op">&lt;</span>primary_key<span class="op">&gt;,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-2" title="2">    <span class="dt">include</span><span class="op">:</span> <span class="op">&lt;</span>include_specifier<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="eager-loading-associations-with-include">Eager loading associations with <code>include</code></h2>
+<p>Simple include of one related model.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1">    <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">findByPk</span>(<span class="dv">1</span><span class="op">,</span>  <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-2" title="2">        <span class="dt">include</span><span class="op">:</span> PetType</a>
+<a class="sourceLine" id="cb29-3" title="3">    <span class="op">}</span>)</a></code></pre></div>
+<p>Include can take an array of models if you need to include more than one.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1">    <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">findByPk</span>(<span class="dv">1</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-2" title="2">        <span class="dt">include</span><span class="op">:</span> [Pet<span class="op">,</span> Owner]</a>
+<a class="sourceLine" id="cb30-3" title="3">    <span class="op">}</span>)</a></code></pre></div>
+<p>Include can also take an object with keys <code>model</code> and <code>include</code>. This is in case you have nested associations. In this case Owner doesn’t have an association with PetType, but Pet does, so we want to include PetType onto the Pet Model.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1">    <span class="cf">await</span> <span class="va">Owner</span>.<span class="at">findByPk</span>(<span class="dv">1</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-2" title="2">        <span class="dt">include</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-3" title="3">            <span class="dt">model</span><span class="op">:</span> Pet</a>
+<a class="sourceLine" id="cb31-4" title="4">            <span class="dt">include</span><span class="op">:</span> PetType</a>
+<a class="sourceLine" id="cb31-5" title="5">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb31-6" title="6">    <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="tojson-method">toJSON method</h2>
+<p>The confusingly named toJSON() method does <strong>not</strong> return a JSON string but instead returns a POJO for the instance.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="co">// pet is an instance of the Pet class</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="kw">const</span> pet <span class="op">=</span> <span class="cf">await</span> <span class="va">Pet</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="va">console</span>.<span class="at">log</span>(pet) <span class="co">// prints a giant object with</span></a>
+<a class="sourceLine" id="cb32-4" title="4">                 <span class="co">// tons of properties and methods</span></a>
+<a class="sourceLine" id="cb32-5" title="5"><span class="co">// petPOJO is now just a plain old Javascript Object</span></a>
+<a class="sourceLine" id="cb32-6" title="6"><span class="kw">const</span> petPOJO <span class="op">=</span> <span class="va">pet</span>.<span class="at">toJSON</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-7" title="7"><span class="va">console</span>.<span class="at">log</span>(petPOJO)<span class="op">;</span> <span class="co">// { name: &quot;Fido&quot;, petTypeId: 1 }</span></a></code></pre></div>
+<h3 id="common-where-operators">Common Where Operators</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> Op <span class="op">=</span> <span class="va">Sequelize</span>.<span class="at">Op</span></a>
+<a class="sourceLine" id="cb33-2" title="2">[<span class="va">Op</span>.<span class="at">and</span>]<span class="op">:</span> [<span class="op">{</span><span class="dt">a</span><span class="op">:</span> <span class="dv">5</span><span class="op">},</span> <span class="op">{</span><span class="dt">b</span><span class="op">:</span> <span class="dv">6</span><span class="op">}</span>] <span class="co">// (a = 5) AND (b = 6)</span></a>
+<a class="sourceLine" id="cb33-3" title="3">[<span class="va">Op</span>.<span class="at">or</span>]<span class="op">:</span> [<span class="op">{</span><span class="dt">a</span><span class="op">:</span> <span class="dv">5</span><span class="op">},</span> <span class="op">{</span><span class="dt">a</span><span class="op">:</span> <span class="dv">6</span><span class="op">}</span>]  <span class="co">// (a = 5 OR a = 6)</span></a>
+<a class="sourceLine" id="cb33-4" title="4">[<span class="va">Op</span>.<span class="at">gt</span>]<span class="op">:</span> <span class="dv">6</span><span class="op">,</span>                <span class="co">// &gt; 6</span></a>
+<a class="sourceLine" id="cb33-5" title="5">[<span class="va">Op</span>.<span class="at">gte</span>]<span class="op">:</span> <span class="dv">6</span><span class="op">,</span>               <span class="co">// &gt;= 6</span></a>
+<a class="sourceLine" id="cb33-6" title="6">[<span class="va">Op</span>.<span class="at">lt</span>]<span class="op">:</span> <span class="dv">10</span><span class="op">,</span>               <span class="co">// &lt; 10</span></a>
+<a class="sourceLine" id="cb33-7" title="7">[<span class="va">Op</span>.<span class="at">lte</span>]<span class="op">:</span> <span class="dv">10</span><span class="op">,</span>              <span class="co">// &lt;= 10</span></a>
+<a class="sourceLine" id="cb33-8" title="8">[<span class="va">Op</span>.<span class="at">ne</span>]<span class="op">:</span> <span class="dv">20</span><span class="op">,</span>               <span class="co">// != 20</span></a>
+<a class="sourceLine" id="cb33-9" title="9">[<span class="va">Op</span>.<span class="at">eq</span>]<span class="op">:</span> <span class="dv">3</span><span class="op">,</span>                <span class="co">// = 3</span></a>
+<a class="sourceLine" id="cb33-10" title="10">[<span class="va">Op</span>.<span class="at">is</span>]<span class="op">:</span> <span class="kw">null</span>              <span class="co">// IS NULL</span></a>
+<a class="sourceLine" id="cb33-11" title="11">[<span class="va">Op</span>.<span class="at">not</span>]<span class="op">:</span> <span class="kw">true</span><span class="op">,</span>            <span class="co">// IS NOT TRUE</span></a>
+<a class="sourceLine" id="cb33-12" title="12">[<span class="va">Op</span>.<span class="at">between</span>]<span class="op">:</span> [<span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span>     <span class="co">// BETWEEN 6 AND 10</span></a>
+<a class="sourceLine" id="cb33-13" title="13">[<span class="va">Op</span>.<span class="at">notBetween</span>]<span class="op">:</span> [<span class="dv">11</span><span class="op">,</span> <span class="dv">15</span>]<span class="op">,</span> <span class="co">// NOT BETWEEN 11 AND 15</span></a>
+<a class="sourceLine" id="cb33-14" title="14">[<span class="va">Op</span>.<span class="at">in</span>]<span class="op">:</span> [<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span>           <span class="co">// IN [1, 2]</span></a>
+<a class="sourceLine" id="cb33-15" title="15">[<span class="va">Op</span>.<span class="at">notIn</span>]<span class="op">:</span> [<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span>        <span class="co">// NOT IN [1, 2]</span></a>
+<a class="sourceLine" id="cb33-16" title="16">[<span class="va">Op</span>.<span class="at">like</span>]<span class="op">:</span> <span class="st">&#39;%hat&#39;</span><span class="op">,</span>         <span class="co">// LIKE &#39;%hat&#39;</span></a>
+<a class="sourceLine" id="cb33-17" title="17">[<span class="va">Op</span>.<span class="at">notLike</span>]<span class="op">:</span> <span class="st">&#39;%hat&#39;</span>       <span class="co">// NOT LIKE &#39;%hat&#39;</span></a>
+<a class="sourceLine" id="cb33-18" title="18">[<span class="va">Op</span>.<span class="at">iLike</span>]<span class="op">:</span> <span class="st">&#39;%hat&#39;</span>         <span class="co">// ILIKE &#39;%hat&#39; (case insensitive) (PG only)</span></a>
+<a class="sourceLine" id="cb33-19" title="19">[<span class="va">Op</span>.<span class="at">notILike</span>]<span class="op">:</span> <span class="st">&#39;%hat&#39;</span>      <span class="co">// NOT ILIKE &#39;%hat&#39;  (PG only)</span></a>
+<a class="sourceLine" id="cb33-20" title="20">[<span class="va">Op</span>.<span class="at">startsWith</span>]<span class="op">:</span> <span class="st">&#39;hat&#39;</span>     <span class="co">// LIKE &#39;hat%&#39;</span></a>
+<a class="sourceLine" id="cb33-21" title="21">[<span class="va">Op</span>.<span class="at">endsWith</span>]<span class="op">:</span> <span class="st">&#39;hat&#39;</span>       <span class="co">// LIKE &#39;%hat&#39;</span></a>
+<a class="sourceLine" id="cb33-22" title="22">[<span class="va">Op</span>.<span class="at">substring</span>]<span class="op">:</span> <span class="st">&#39;hat&#39;</span>      <span class="co">// LIKE &#39;%hat%&#39;</span></a>
+<a class="sourceLine" id="cb33-23" title="23">[<span class="va">Op</span>.<span class="at">regexp</span>]<span class="op">:</span> <span class="st">&#39;^[h|a|t]&#39;</span>    <span class="co">// REGEXP/~ &#39;^[h|a|t]&#39; (MySQL/PG only)</span></a>
+<a class="sourceLine" id="cb33-24" title="24">[<span class="va">Op</span>.<span class="at">notRegexp</span>]<span class="op">:</span> <span class="st">&#39;^[h|a|t]&#39;</span> <span class="co">// NOT REGEXP/!~ &#39;^[h|a|t]&#39; (MySQL/PG only)</span></a>
+<a class="sourceLine" id="cb33-25" title="25">[<span class="va">Op</span>.<span class="at">iRegexp</span>]<span class="op">:</span> <span class="st">&#39;^[h|a|t]&#39;</span>    <span class="co">// ~* &#39;^[h|a|t]&#39; (PG only)</span></a>
+<a class="sourceLine" id="cb33-26" title="26">[<span class="va">Op</span>.<span class="at">notIRegexp</span>]<span class="op">:</span> <span class="st">&#39;^[h|a|t]&#39;</span> <span class="co">// !~* &#39;^[h|a|t]&#39; (PG only)</span></a>
+<a class="sourceLine" id="cb33-27" title="27">[<span class="va">Op</span>.<span class="at">like</span>]<span class="op">:</span> <span class="op">{</span> [<span class="va">Op</span>.<span class="at">any</span>]<span class="op">:</span> [<span class="st">&#39;cat&#39;</span><span class="op">,</span> <span class="st">&#39;hat&#39;</span>]<span class="op">}</span></a></code></pre></div>
+<h2 id="section">——</h2>
+<hr />
+<hr />
+<h1 id="recipe-box-with-sequelize">Recipe Box With Sequelize</h1>
+<p>In this project, you will build the Data Access Layer to power a Web application. Unlike previously, you will use the Sequelize library and tools to do this to build a more maintainable application.</p>
+<p>It has more steps than the SQL version, but it’s more maintainable in the long run. Also, the SQL version hid a lot of complexity from you with respect to the running of the SQL. Go look at the SQL version of the files in the <strong>controllers</strong> directory to see what we had to do to load the SQL and execute it.</p>
+<p>Now, compare the <em>simplicity</em> of those with the simplicity of the files in the <strong>controllers</strong> directory for <em>this</em> version of the application. It’s easier to understand <em>this</em> version. You want to know where to add a column to a table? Go to the migrations. You want to know where to fix a query? Go to the proper repository file.</p>
+<p>It’s just <em>so</em> much better organized.</p>
+<p>Quite often, you will see that you will have more files and, overall, more lines of code in well-organized, highly-maintainable software project. Remembering where code is <em>is hard</em>. That’s why having clearly-named files and directories is so very important.</p>
+<h2 id="the-data-model-analysis">The data model analysis</h2>
+<p>This looks no different because it’s the same application.</p>
+<p>What goes into a recipe box? Why, recipes, of course! Here’s an example recipe card.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/sql-recipe-card.jpeg" alt="Recipe card" /><figcaption>Recipe card</figcaption>
+</figure>
+<p>You can see that a recipe is made up of three basic parts:</p>
+<ul>
+<li>A title,</li>
+<li>A list of ingredients, and</li>
+<li>A list of instructions.</li>
+</ul>
+<p>You’re going to add a little more to that, too. It will also have</p>
+<ul>
+<li>The date/time that it was entered into the recipe box, and</li>
+<li>The date/time it was last updated in the recipe box.</li>
+</ul>
+<p>These are good pieces of data to have so that you can show them “most recent” for example.</p>
+<p>Ingredients themselves are complex data types and need their own structure. They “belong” to a recipe. That means they’ll need to reference that recipe. That means an ingredient is made up of:</p>
+<ul>
+<li>An amount (optional),</li>
+<li>A unit of measure (optional),</li>
+<li>The actual food stuff, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That unit of measure is a good candidate for normalization, don’t you think? It’s a predefined list of options that should not change and that you don’t want people just typing whatever they want in there, not if you want to maintain data integrity. Otherwise, you’ll end up with “C”, “c”, “cup”, “CUP”, “Cup”, and all the other permutations, each of which is a distinct value but means the same thing.</p>
+<p>Instructions are also complex objects, but not by looking at them. Initially, one might only see text that comprises an instruction. But, very importantly, instructions have <em>order</em>. They also <em>belong</em> to the recipe. With that in mind, an instruction is made up of:</p>
+<ul>
+<li>The text of the instruction,</li>
+<li>The order that it appears in the recipe, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That is enough to make a good model for the recipe box.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/sql-recipe-box-data-model.png" alt="recipe box data model" /><figcaption>recipe box data model</figcaption>
+</figure>
+<h2 id="the-application">The application</h2>
+<p>The application is a standard <a href="https://www.expressjs.com">express.js</a> application using the <a href="https://pugjs.org">pug</a> library to generate the HTML and the <a href="https://node-postgres.com">node-postgres</a> library to connect to the database.</p>
+<p>It already has <a href="https://www.npmjs.com/package/sequelize">sequelize</a> and <a href="https://www.npmjs.com/package/sequelize-cli">sequelize-cli</a> installed.</p>
+<h2 id="getting-started">Getting started</h2>
+<ul>
+<li>Download the starter project from https://github.com/appacademy-starters/sql-orm-recipe-box</li>
+<li>Run <code>npm install</code> to install the packages</li>
+<li>Run <code>npm run dev</code> to start the server on port 3000</li>
+</ul>
+<p>You’ll do all of your work in the <strong>data-access-layer</strong> directory. In there, you will find a series of JS files. Each of these will hold your JavaScript code rather than SQL code.</p>
+<p>In each, you will find instructions of what to do to make the user interface to work. They are numbered in an implied order for you to complete them. The only real requirement is that you finish the SQL for the <strong>00a-database.sql</strong> and <strong>00b-seed.sql</strong> files first. That way, as you make your way through the rest of the SQL files, the tables and some of the data will already exist for you. You can run the command <code>npm run seed</code> to run both of those files or pipe each it into <code>psql</code> as you’ve been doing.</p>
+<p>Either way that you decide to seed the database, you’ll need to stop your server. The seed won’t correctly run while the application maintains a connection to the application database. You may also need to exit all of the active <code>psql</code> instances that you have running to close out all of the active connections. When you run the seed, if it reports that it can’t do something because of active connections, look for a running instance of the server, Postbird, or <code>psql</code> with that connection.</p>
+<p><strong>Warning</strong>: running the seed files will destroy all data that you have in the database.</p>
+<h2 id="your-code">Your code</h2>
+<p>You’re going to be using JavaScript and the tools of Sequelize. Keep the <a href="https://sequelize.org/v5/">Sequelize documentation</a> open and handy. Even developers that use ORMs every day will keep the documentation open because there’s so much to know about them.</p>
+<h2 id="phase-1-initialize-the-sequelize-project">Phase 1: Initialize the Sequelize project</h2>
+<p>Because this project already has <a href="https://www.npmjs.com/package/sequelize-cli">sequelize-cli</a> installed, you can initialize the project by typing <code>npx sequelize-cli init</code>. The <code>npx</code> command runs locally-installed tools. That will create the project structure that Sequelize expects for us to continue to use its tools.</p>
+<h2 id="phase-2-create-a-database-user-for-the-project">Phase 2: Create a database user for the project</h2>
+<p>Using a PostgreSQL client like <code>psql</code> or Postbird, create a new user for this application named “sequelize_recipe_box_app” with the password “HfKfK79k” <em>and</em> the ability to create a database. Here’s the <a href="https://www.postgresql.org/docs/current/sql-createuser.html">link to the CREATE USER documentation</a> so that you can determine which options to give.</p>
+<h2 id="phase-2-change-the-connection-configuration">Phase 2: Change the connection configuration</h2>
+<p>The project contains a directory named <strong>config</strong>. Inside there, you will find a file named <strong>config.json</strong>. You need to make some configuration changes.</p>
+<ul>
+<li>Change all the “user” and “password” values to the information for the user that you created in Phase 2.</li>
+<li>Change the “database” values to be “recipe_box_development”, “recipe_box_test”, and “recipe_box_production”.</li>
+<li>Change all of the “dialect” values from “mysql” to “postgres”.</li>
+<li>Delete all of the “operatorAliases” entries. It’s to support earlier versions of the Sequelize library. Make sure to remove the comma from the preceding line so that it’s valid JSON.</li>
+<li>Because you’ll be using seed data in this project, add <code>"seederStorage": "sequelize"</code> to each of the different blocks so that Sequelize CLI won’t run a seeder more than once causing duplicate entries in the database.</li>
+</ul>
+<p>That will configure the application and the Sequelize tools to properly connect to your development database.</p>
+<h2 id="phase-3-create-your-database">Phase 3: Create your database</h2>
+<p>Rather than writing SQL to do this, you will use the tools. Run</p>
+<pre><code>npx sequelize-cli db:create</code></pre>
+<p>That runs the Sequelize CLI with the command <code>db:create</code>.</p>
+<p>When you run this, it will default to the “development” setting and read the information from the configuration file to create your database for you! It should print out something like</p>
+<pre><code>Sequelize CLI [Node: 10.19.0, CLI: 5.5.1, ORM: 5.21.5]
+
+Loaded configuration file &quot;config/config.json&quot;.
+Using environment &quot;development&quot;.
+Database recipe_box_development created.</code></pre>
+<p>You can also drop the database by typing … you guessed it! The Sequelize CLI with the command <code>db:drop</code>!</p>
+<pre><code>npx sequelize-cli db:drop</code></pre>
+<p>If you run that, run the “create” command, again, so the database exists.</p>
+<h2 id="phase-4-the-units-of-measurement-data">Phase 4: The units of measurement data</h2>
+<p>Just as a review, here is the specification for the table that holds units of measurement.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Column Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>SERIAL</td>
+<td>PK</td>
+</tr>
+<tr class="even">
+<td>name</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+</tr>
+</tbody>
+</table>
+<p>Luckily, the Sequelize models and migrations take care of the “id” property for you without you having to do anything. So, you can just focus on that “name” property.</p>
+<h3 id="create-a-migration">Create a migration</h3>
+<p>It’s time to create the first migration, the one that defines the table that will hold units of measure. You can use the Sequelize CLI to generate the migration for you. You can <em>also</em> tell it to create a model for you, and it will create a migration along <em>with</em> the model. You should do that to get the biggest return on investment for the characters that you will type.</p>
+<p>The command is <code>model:generate</code> and it takes a couple of arguments, “–name” which contains the name of the model (as a singular noun) to generate, and “–attributes” which has a comma-separated list of “property-name:data-type” pairs.</p>
+<pre><code>npx sequelize-cli model:generate \
+  --name MeasurementUnit \
+  --attributes name:string</code></pre>
+<p>That will create two files, if everything works well. (The name of your migration file will be different because it’s time-based.)</p>
+<pre><code>New model was created at models/measurementunit.js
+New migration was created at migrations/20200101012349-MeasurementUnit.js</code></pre>
+<p>The <strong>model</strong> file will be used by the application to query the database. It will be used by the express.js application. It is part of the running software.</p>
+<p>The <strong>migration</strong> file is used to construct the database. It is only used by the Sequelize CLI tool to build the database. Unlike those schema and seed files that you had in the SQL version of this project which destroyed <em>everything</em> when run, migrations are designed to change your database as your application grows. This is a much better strategy so that existing data in the databases that other people use aren’t damaged.</p>
+<p>Because the data model requires the “name” column to be both non-null <em>and</em> unique, you have to add some information to the migration file. Open it and, for the “name” property, make non-nullable by looking at how the other properties are configured. Then, add the “unique” property set to <code>true</code> to the “name” configuration, as well. That should be enough for Sequelize to create the table for you.</p>
+<p>The last thing to do is to change the length of the “name” property. By default, Sequelize will make it 255 characters long. The specification for the table says it should really only be 20 characters. To tell the migration that, change the type for “name” from <code>Sequelize.STRING</code> to <code>Sequelize.STRING(20)</code>.</p>
+<h2 id="run-your-migration">Run your migration</h2>
+<p>If you now run your migration with the Sequelize CLI, it will create the table for you.</p>
+<pre><code>npx sequelize-cli db:migrate</code></pre>
+<p>That should give you some output that looks similar to this.</p>
+<pre><code>Loaded configuration file &quot;config/config.json&quot;.
+Using environment &quot;development&quot;.
+== 20200101012349-create-measurement-unit: migrating =======
+== 20200101012349-create-measurement-unit: migrated (0.021s)</code></pre>
+<p>You can confirm that the table “MeasurementUnits” is created by using your PostgreSQL client. You’ll also see that another table is created, “SequelizeMeta”, which contains information about which migration has most recently been run. It contains a single column, “name”. Each row contains an entry of which migration file has run. Now that you’ve run your migration file, the table contains one entry, the name of your migration file. When you run more migrations, you will see more rows, each containing the name of the file that you’ve run.</p>
+<p><strong>psql Note</strong>: If you are using <code>psql</code> as you PostgreSQL command, be aware that it will lowercase any entity and column names you type in there. If you type <code>SELECT * FROM MeasurementUnits</code>, it converts that to <code>SELECT * FROM measurementunits</code> before running it. To prevent that from happening, use quotation marks around the table name. <code>SELECT * FROM "MeasurementUnits"</code> will do the trick.</p>
+<p>It’s important that you <em>never</em> change the name of a migration file after it’s been run.</p>
+<p>In the real world, you should <em>never</em> change the content of a migration file after it’s been committed and shared in your Git repository. Asking others to rollback their migrations just because you changed one of yours is bad manners. Instead, you should add a new migration that makes the change that you want.</p>
+<h2 id="create-the-seed-data">Create the seed data</h2>
+<p>You can create the seed data for the unit of measurements by creating a <strong>seeder</strong> as the Sequelize CLI calls them. You can create one using the Sequelize CLI tool. Run the following and make sure you don’t get any errors.</p>
+<pre><code>npx sequelize-cli seed:generate --name default-measurement-units</code></pre>
+<p>Now, you want to insert the seed data. You will do this by using the <code>bulkInsert</code> method of the object passed in through the <code>queryInterface</code> parameter of the <code>up</code> method. Feel free to delete the comment in the <code>up</code> method and replace it with this.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb42-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(<span class="st">&#39;MeasurementUnits&#39;</span><span class="op">,</span> [</a>
+<a class="sourceLine" id="cb42-2" title="2">  <span class="op">{</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;cups&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb42-3" title="3">])<span class="op">;</span></a></code></pre></div>
+<p>The <code>bulkInsert</code> method takes two parameters:</p>
+<ul>
+<li>The name of the table to insert into, and</li>
+<li>An array of objects that have property names that match the column names in the table.</li>
+</ul>
+<p>You can see that the first object has been provided by the example. Now, create objects for all of these values, as well. (The empty item in the list is an empty string and is intentional) Make sure you do them <strong>in this order,</strong> or when we get to the seed data for the other tables it won’t work. (We’ve supplied you with files for the seed data for the other tables because there is a lot of it)</p>
+<ul>
+<li>“fluid ounces”</li>
+<li>“gallons”</li>
+<li>“grams”</li>
+<li>“liters”</li>
+<li>“milliliters”</li>
+<li>“ounces”</li>
+<li>“pinch”</li>
+<li>“pints”</li>
+<li>“pounds”</li>
+<li>“quarts”</li>
+<li>“tablespoons”</li>
+<li>“teaspoons”</li>
+<li>""</li>
+<li>“cans”</li>
+<li>“slices”</li>
+<li>“splash”</li>
+</ul>
+<p>Now, run the Sequelize CLI with the command <code>db:seed:all</code>.</p>
+<p>After you get that done, you can confirm that all of the records (rows) were created in the “MeasurementUnits” table.</p>
+<h2 id="phase-5-the-recipe-table-model">Phase 5: The recipe table model</h2>
+<p>This will go much like the last one, except there’s no seed data. Just to refresh your memory, here’s the specification for the “recipes” table.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Column Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>SERIAL</td>
+<td>PK</td>
+</tr>
+<tr class="even">
+<td>title</td>
+<td>VARCHAR(200)</td>
+<td>NOT NULL</td>
+</tr>
+<tr class="odd">
+<td>created</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL, DEFAULT CURRENT_TIMESTAMP</td>
+</tr>
+<tr class="even">
+<td>updated</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL, DEFAULT CURRENT_TIMESTAMP</td>
+</tr>
+</tbody>
+</table>
+<p>As you’ve discovered, Sequelize takes care of the “id” for you <em>and</em> the columns to track when the recipe has been created and updated! Your job is to</p>
+<ul>
+<li>Generate a model for the “recipe”</li>
+<li>Customize the migration so the “title” column is not nullable</li>
+</ul>
+<p>Run your migration and confirm that you defined it correctly by checking the attributes in the description of the table. The important parts to check are that the “title” column is a VARCHAR(200) and is non-nullable. (The “Collation” column has been removed for brevity.)</p>
+<pre><code>                  Table &quot;public.Recipes&quot;
+  Column   |           Type           | Nullable |  Default
+-----------+--------------------------+----------+------------
+ id        | integer                  | not null | nextval(...
+ title     | character varying(200)   | not null |
+ createdAt | timestamp with time zone | not null |
+ updatedAt | timestamp with time zone | not null |
+Indexes:
+    &quot;Recipes_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
+<h2 id="phase-6-the-instruction-table-model">Phase 6: The instruction table model</h2>
+<p>Now, things get a little trickier because this model will reference the recipe model. Here’s the specification for the “instructions” table.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Column Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>SERIAL</td>
+<td>PK</td>
+</tr>
+<tr class="even">
+<td>specification</td>
+<td>TEXT</td>
+<td>NOT NULL</td>
+</tr>
+<tr class="odd">
+<td>listOrder</td>
+<td>INTEGER</td>
+<td>NOT NULL</td>
+</tr>
+<tr class="even">
+<td>recipeId</td>
+<td>INTEGER</td>
+<td>FK, NOT NULL</td>
+</tr>
+</tbody>
+</table>
+<p>When you type out your migration generation command, the “–attributes” parameter will look like this:</p>
+<pre><code>--attributes column1:type1,column2:type2,column3:type3</code></pre>
+<p>Instead of using “string” for the “specification” column of the table, use “text” to generate a TEXT column.</p>
+<p>After it generates the migration file, modify each of the column descriptors in the migration so that the columns are not nullable. Then, add a new property to the one for “recipeId” called “references” that is an object that contains a “model” property set to “Recipes”. It should look like this.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb45-1" title="1">recipeId<span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb45-2" title="2">  <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb45-3" title="3">  <span class="dt">references</span><span class="op">:</span> <span class="op">{</span> <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;Recipes&quot;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb45-4" title="4">  <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb45-5" title="5"><span class="op">},</span></a></code></pre></div>
+<p>With that in place, run the migration. Then, check the table definition in your PostgreSQL client.</p>
+<pre><code>                   Table &quot;public.Instructions&quot;
+    Column     |           Type           | Nullable |     Default
+---------------+--------------------------+----------+-----------------
+ id            | integer                  | not null | nextval(&#39;&quot;Ins...
+ specification | text                     | not null |
+ listOrder     | integer                  | not null |
+ recipeId      | integer                  | not null |
+ createdAt     | timestamp with time zone | not null |
+ updatedAt     | timestamp with time zone | not null |
+Indexes:
+    &quot;Instructions_pkey&quot; PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    &quot;Instructions_recipeId_fkey&quot; FOREIGN KEY (&quot;recipeId&quot;)
+                                 REFERENCES &quot;Recipes&quot;(id)</code></pre>
+<p>You should see all non-null columns and a foreign key between the “Instructions” table and the “Recipes” table.</p>
+<h2 id="phase-7-the-ingredients-model">Phase 7: The ingredients model</h2>
+<p>The model for ingredients has <em>two</em> foreign keys. Create the model and migration for it. Here’s the table specification.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Column Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>SERIAL</td>
+<td>PK</td>
+</tr>
+<tr class="even">
+<td>amount</td>
+<td>NUMERIC(5, 2)</td>
+<td>NOT NULL</td>
+</tr>
+<tr class="odd">
+<td>measurementUnitId</td>
+<td>INTEGER</td>
+<td>FK, NOT NULL</td>
+</tr>
+<tr class="even">
+<td>foodStuff</td>
+<td>VARCHAR(500)</td>
+<td>NOT NULL</td>
+</tr>
+<tr class="odd">
+<td>recipeId</td>
+<td>INTEGER</td>
+<td>FK, NOT NULL</td>
+</tr>
+</tbody>
+</table>
+<p>After you modify and run your migration, you should have a table in your database that looks like this, with two foreign keys, one to the “Recipes” table and the other to the “MeasurementUnits” table.</p>
+<pre><code>                       Table &quot;public.Ingredients&quot;
+      Column       |           Type           | Nullable |      Default
+-------------------+--------------------------+----------+-----------------
+ id                | integer                  | not null | nextval(&#39;&quot;Ing...
+ amount            | numeric(5,2)             | not null |
+ measurementUnitId | integer                  | not null |
+ foodStuff         | character varying(500)   | not null |
+ recipeId          | integer                  | not null |
+ createdAt         | timestamp with time zone | not null |
+ updatedAt         | timestamp with time zone | not null |
+Indexes:
+    &quot;Ingredients_pkey&quot; PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    &quot;Ingredients_measurementUnitId_fkey&quot;
+        FOREIGN KEY (&quot;measurementUnitId&quot;)
+        REFERENCES &quot;MeasurementUnits&quot;(id)
+    &quot;Ingredients_recipeId_fkey&quot;
+        FOREIGN KEY (&quot;recipeId&quot;)
+        REFERENCES &quot;Recipes&quot;(id)</code></pre>
+<h2 id="phase-8-seed-data-for-all-of-the-tables">Phase 8: Seed data for all of the tables</h2>
+<p>Now that you have tables in the database, it’s time to create some seed data for all of them. In the <strong>data-access-layer</strong> directory, you will find three text files each containing JavaScript objects on each row that match the tables in the previous three sections.</p>
+<p>If you didn’t seed the MeasurementUnits data in the correct order listed in the section above, you may have to redo that seed file, because the data from the text files depends on the ids of the data in the <code>MeasurementUnits</code> table being correct.</p>
+<p>There are three tables to seed: Ingredients, Instructions, and Recipes. It is important to note that you will need to seed them in the correct order due to foreign key dependencies.</p>
+<p>Look at the data model for the application, again.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/sql-recipe-box-data-model.png" alt="recipe box data model" /><figcaption>recipe box data model</figcaption>
+</figure>
+<p>You can see that the Instructions depends on Recipes because it has the foreign key “recipeId” to the Recipes table. You can also see that the Ingredients table has dependencies on the Recipes and MeasurementUnits tables because of its foreign keys “measurementUnitId” and “recipeId”. (You’ve already seeded the MeasurementUnits table in Phase 4, so that data exists for use by the Ingredients table.) Recipes does not have any foreign keys. You need to seed Recipes, first, because it does not have any foreign keys and, therefore, does not have any data dependencies. Then, you can seed the Instructions and Ingredients tables in either order because their data dependencies will have been met.</p>
+<p>Create seeder files for them in that order: Recipes, first, then Ingredients and Instructions. Use the contents of each of the text files in <strong>data-access-layer</strong> to do bulk inserts.</p>
+<p>After you create each seed file, run</p>
+<pre><code>npx sequelize-cli db:seed:all</code></pre>
+<p>to make sure you don’t have any errors. If you do, fix them before moving onto the next seed file.</p>
+<p>If you end up seeding the data in the wrong order and getting a foreign key constraint error, just use the CLI to drop the database, create the database, migrate the database, and then you can try running your seeders, again. You may need to rename your migration filenames to get your seeds running in the correct order.</p>
+<h2 id="phase-9-updating-models-with-references">Phase 9: Updating models with references</h2>
+<p>Now that you have all of the migrations set up correctly and a database defined, it is time for you to turn your attention to the model files that were generated in the previous phases.</p>
+<p>Consider the relationship between an Instruction and a Recipe. A Recipe <em>has many</em> Instructions. In the other direction, you would say that an Instruction <em>has one</em> Recipe, or that Instruction <em>belongs to</em> the Recipe. To set that up in your model, open the file <strong>models/recipe.js</strong>. In there, you will see the following.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb49-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-3" title="3">  <span class="kw">const</span> Recipe <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Recipe&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-4" title="4">    <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb49-5" title="5">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-6" title="6">  <span class="va">Recipe</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-7" title="7">    <span class="co">// associations can be defined here</span></a>
+<a class="sourceLine" id="cb49-8" title="8">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb49-9" title="9">  <span class="cf">return</span> Recipe<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-10" title="10"><span class="op">};</span></a></code></pre></div>
+<p>In the <code>associate</code> function is where you can define the association between the Recipe and the Instruction. Replace the comment with the following statement.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb50-1" title="1"><span class="va">Recipe</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Instruction</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This instructs Sequelize that Recipe should have a collection of Instruction objects associated with it. To insure that Sequelize uses the foreign key column that you created on the “Instructions” table in your migration, you must specify it as part of the collection definition.</p>
+<p>In the file <strong>models/instruction.js</strong>, replace the comment with the following to define the other side of the relationship.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb51-1" title="1"><span class="va">Instruction</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Recipe</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This instructs Sequelize that Instruction has a single Recipe object associated with it. Again, because of inconsistent naming conventions used by Sequelize, you must specify the foreign key column name in the “Instructions” table.</p>
+<p>Think about the many-to-one and one-to-many relationships between Ingredient, MeasurementUnit, and Recipe. Then, modify those model files accordingly with the <code>hasMany</code> and <code>belongsTo</code> associations, always specifying the name of the foreign key column that binds the two tables together.</p>
+<h2 id="phase-10-updating-models-with-validations">Phase 10: Updating models with validations</h2>
+<p>Now that you have seed data created, it will be important to prevent users from entering data that does not meet the expectations of the data model.</p>
+<p>Consider the content of <strong>models/instruction.js</strong></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb52-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb52-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-3" title="3">  <span class="kw">const</span> Instruction <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Instruction&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-4" title="4">    <span class="dt">specification</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb52-5" title="5">    <span class="dt">listOrder</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb52-6" title="6">    <span class="dt">recipeId</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb52-7" title="7">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-8" title="8">  <span class="va">Instruction</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-9" title="9">    <span class="va">Instruction</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Recipe</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-10" title="10">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb52-11" title="11">  <span class="cf">return</span> Instruction<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-12" title="12"><span class="op">};</span></a></code></pre></div>
+<p>It would be nice if the model could validate each of those properties to make sure that no one sets them to null and that <code>listOrder</code> is greater than 0, for example. You can do that with <a href="https://sequelize.org/master/manual/validations-and-constraints.html#per-attribute-validations">per-attribute validations</a>.</p>
+<p>For example, you can change the above code to the following to make sure that the “specification” property won’t get set to an empty string when someone tries to save the object.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb53-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb53-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb53-3" title="3">  <span class="kw">const</span> Instruction <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;Instruction&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb53-4" title="4">    <span class="dt">specification</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb53-5" title="5">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb53-6" title="6">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb53-7" title="7">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb53-8" title="8">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb53-9" title="9">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb53-10" title="10">    <span class="dt">listOrder</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb53-11" title="11">    <span class="dt">recipeId</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span></a>
+<a class="sourceLine" id="cb53-12" title="12">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb53-13" title="13">  <span class="va">Instruction</span>.<span class="at">associate</span> <span class="op">=</span> <span class="kw">function</span>(models) <span class="op">{</span></a>
+<a class="sourceLine" id="cb53-14" title="14">    <span class="va">Instruction</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Recipe</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb53-15" title="15">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb53-16" title="16">  <span class="cf">return</span> Instruction<span class="op">;</span></a>
+<a class="sourceLine" id="cb53-17" title="17"><span class="op">};</span></a></code></pre></div>
+<p>Make sure all of the other string properties in the models won’t allow the empty string to be set on them.</p>
+<h2 id="phase-11-cascade-delete-for-recipes">Phase 11: Cascade delete for recipes</h2>
+<p>The Recipe model has dependencies: the Instruction and the Ingredient both have <em>belongs to</em> relationships. This means that the row in the “Recipes” table must exist to have records in the “Ingredients” and “Instructions” table. If you try to delete a Recipe row from the database that has either Instructions or Ingredients, it won’t work due to referential integrity. You would have to delete all of the Ingredients and Instructions <em>before</em> being able to delete the Recipe.</p>
+<p>Sequelize provides a handy shortcut for that and will manage deleting the associated records for you when you delete a row from the Recipes table. It’s called a <em>cascading delete</em>. Open the <strong>models/recipe.js</strong> file. In there, modify the second argument of each of the <code>hasMany</code> calls to include two new property/value pairs:</p>
+<ul>
+<li><code>onDelete: 'CASCADE'</code></li>
+<li><code>hooks: true</code></li>
+</ul>
+<p>Refer to the documentation on <a href="https://sequelize.org/master/manual/hooks.html#associations">Associations</a> to see an example. But, don’t delete the <code>foreignKey</code> property that you put there in Phase 9.</p>
+<h2 id="phase-12-building-the-repositories">Phase 12: Building the repositories</h2>
+<p>Now that you have the seeds, models, and migrations out of the way, you can build the data access layer with a lot of speed. Sequelize will now handle all of the SQL generation for you. You can just use the models that you’ve painstakingly crafted.</p>
+<p>Because you are writing JavaScript files, you want the server to restart because it won’t automatically reload the changed JavaScript that you’re writing. To that end, you will use a different command while developing.</p>
+<pre><code>npm run dev</code></pre>
+<p>This runs a special script that will reload the JavaScript in the data access layer every time you make a change. You can see what’s run in the <strong>package.json</strong> file in this project in the “scripts” section for the “dev” property.</p>
+<p>You will work in the three files named</p>
+<ul>
+<li><strong>recipes-repository.js</strong>: The collection of functions needed to interact with recipes for the application</li>
+<li><strong>instructions-repository.js</strong>: The collection of functions needed to interact with the instructions for the application</li>
+<li><strong>ingredients-repository.js</strong>: The collection of functions needed to interact with the ingredients for the application</li>
+</ul>
+<p>Each of the files imports your models and makes them available to you. Then, you can use them in your querying. Follow the hints in each of the repository functions.</p>

@@ -1,0 +1,9 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:group', location = 'includes/js/group.js' */
+define("confluence/group",["confluence/control","confluence/api/logger","jquery"],function(d,e,c){return d.extend({init:function(){this.type=this.type||"Group";this.items=[];this.index=-1;this._assignEvents("instance",this)},addItem:function(a){this.items.push(a);this._assignEvents("item",a)},removeItem:function(a){var b=c.inArray(a,this.items);if(0>b)throw Error("Group: item ["+a+"] is not a member of this group");a.trigger("blur");b<this.index&&this.index--;this.items.splice(b,1);this._unassignEvents("item",
+a)},removeAllItems:function(){for(var a=0;a<this.items.length;a++)this._unassignEvents("item",this.items[a]),this.items[a].trigger("blur");this.index=-1;this.items.length=0;this._unassignEvents("keys",document)},shiftFocus:function(a){e.debug("Group.shiftFocus called with offset: "+a);-1===this.index&&1===a&&(a=0);0<this.items.length&&this.items[(Math.max(0,this.index)+this.items.length+a)%this.items.length].trigger("focus")},prepareForInput:function(){this._assignEvents("keys",document)},_events:{instance:{focus:function(){0!==
+this.items.length&&(0>this.index?this.items[0].trigger("focus"):this._assignEvents("keys",document))},blur:function(){0<=this.index?this.items[this.index].trigger("blur"):this._unassignEvents("keys",document)}},keys:{"keydown keypress":function(a){this._handleKeyEvent(a)}},item:{focus:function(a){var b=this.index;this.index=c.inArray(a.target,this.items);0>b?this.trigger("focus"):b!==this.index&&this.items[b].trigger("blur")},blur:function(a){this.index===c.inArray(a.target,this.items)&&(this.index=
+-1,this.trigger("blur"))},remove:function(a){this.removeItem(a.target)}}},keys:{}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence/group","AJS.Group");
+}catch(e){WRMCB(e)};

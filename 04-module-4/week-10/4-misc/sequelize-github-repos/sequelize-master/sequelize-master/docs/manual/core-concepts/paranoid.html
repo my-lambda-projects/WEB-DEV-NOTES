@@ -1,0 +1,71 @@
+<h1 id="paranoid">Paranoid</h1>
+<p>Sequelize supports the concept of <em>paranoid</em> tables. A <em>paranoid</em> table is one that, when told to delete a record, it will not truly delete it. Instead, a special column called <code>deletedAt</code> will have its value set to the timestamp of that deletion request.</p>
+<p>This means that paranoid tables perform a <em>soft-deletion</em> of records, instead of a <em>hard-deletion</em>.</p>
+<h2 id="defining-a-model-as-paranoid">Defining a model as paranoid</h2>
+<p>To make a model paranoid, you must pass the <code>paranoid: true</code> option to the model definition. Paranoid requires timestamps to work (i.e. it won’t work if you also pass <code>timestamps: false</code>).</p>
+<p>You can also change the default column name (which is <code>deletedAt</code>) to something else.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">class</span> Post <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">Post</span>.<span class="at">init</span>(<span class="op">{</span> <span class="co">/* attributes here */</span> <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  sequelize<span class="op">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">paranoid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co">// If you want to give a custom name to the deletedAt column</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">deletedAt</span><span class="op">:</span> <span class="st">&#39;destroyTime&#39;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="deleting">Deleting</h2>
+<p>When you call the <code>destroy</code> method, a soft-deletion will happen:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">id</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">// UPDATE &quot;posts&quot; SET &quot;deletedAt&quot;=[timestamp] WHERE &quot;deletedAt&quot; IS NULL AND &quot;id&quot; = 1</span></a></code></pre></div>
+<p>If you really want a hard-deletion and your model is paranoid, you can force it using the <code>force: true</code> option:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">destroy</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">id</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">force</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">// DELETE FROM &quot;posts&quot; WHERE &quot;id&quot; = 1</span></a></code></pre></div>
+<p>The above examples used the static <code>destroy</code> method as an example (<code>Post.destroy</code>), but everything works in the same way with the instance method:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> post <span class="op">=</span> <span class="cf">await</span> <span class="va">Post</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;test&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="va">console</span>.<span class="at">log</span>(post <span class="kw">instanceof</span> Post)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="cf">await</span> <span class="va">post</span>.<span class="at">destroy</span>()<span class="op">;</span> <span class="co">// Would just set the `deletedAt` flag</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="cf">await</span> <span class="va">post</span>.<span class="at">destroy</span>(<span class="op">{</span> <span class="dt">force</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// Would really delete the record</span></a></code></pre></div>
+<h2 id="restoring">Restoring</h2>
+<p>To restore soft-deleted records, you can use the <code>restore</code> method, which comes both in the static version as well as in the instance version:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// Example showing the instance `restore` method</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">// We create a post, soft-delete it and then restore it back</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">const</span> post <span class="op">=</span> <span class="cf">await</span> <span class="va">Post</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;test&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="va">console</span>.<span class="at">log</span>(post <span class="kw">instanceof</span> Post)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="cf">await</span> <span class="va">post</span>.<span class="at">destroy</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;soft-deleted!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="cf">await</span> <span class="va">post</span>.<span class="at">restore</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;restored!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">// Example showing the static `restore` method.</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">// Restoring every soft-deleted post with more than 100 likes</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">restore</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="dt">likes</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-15" title="15">      [<span class="va">Op</span>.<span class="at">gt</span>]<span class="op">:</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb5-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-17" title="17">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="behavior-with-other-queries">Behavior with other queries</h2>
+<p>Every query performed by Sequelize will automatically ignore soft-deleted records (except raw queries, of course).</p>
+<p>This means that, for example, the <code>findAll</code> method will not see the soft-deleted records, fetching only the ones that were not deleted.</p>
+<p>Even if you simply call <code>findByPk</code> providing the primary key of a soft-deleted record, the result will be <code>null</code> as if that record didn’t exist.</p>
+<p>If you really want to let the query see the soft-deleted records, you can pass the <code>paranoid: false</code> option to the query method. For example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">findByPk</span>(<span class="dv">123</span>)<span class="op">;</span> <span class="co">// This will return `null` if the record of id 123 is soft-deleted</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">findByPk</span>(<span class="dv">123</span><span class="op">,</span> <span class="op">{</span> <span class="dt">paranoid</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// This will retrieve the record</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">foo</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="op">}</span>)<span class="op">;</span> <span class="co">// This will not retrieve soft-deleted records</span></a>
+<a class="sourceLine" id="cb6-7" title="7"></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="cf">await</span> <span class="va">Post</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">foo</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="dt">paranoid</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="op">}</span>)<span class="op">;</span> <span class="co">// This will also retrieve soft-deleted records</span></a></code></pre></div>

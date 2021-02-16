@@ -1,0 +1,59 @@
+<p>One-One and One-Many associations are very similar. Many-Many associations are different! Instead of placing a foreign key in one table, they create a brand new “join” table where each row contains a foreign key for each entity in the relationship.</p>
+<p>For our example, let’s introduce a new table, Friend:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Friend <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;friends&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">}</span>)</a></code></pre></div>
+<p>A “friend” is a (human) person that is friends with pugs (but not necessarily a pug Owner themselves)! Any given “friend” may be a friend of many pugs. Likewise, any given pug will have many human friends! This is the nature of a many-to-many relationship.</p>
+<p>Here is how we define one:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">Friend</span>.<span class="at">belongsToMany</span>(Pug<span class="op">,</span> <span class="op">{</span><span class="dt">through</span><span class="op">:</span> <span class="st">&#39;friendship&#39;</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">Pug</span>.<span class="at">belongsToMany</span>(Friend<span class="op">,</span> <span class="op">{</span><span class="dt">through</span><span class="op">:</span> <span class="st">&#39;friendship&#39;</span><span class="op">}</span>)</a></code></pre></div>
+<p>The “through” parameter defines the name of the join table that gets created.</p>
+<p>By establishing the relation above, the following <em>four</em> things happen:</p>
+<ol type="1">
+<li>A brand new table called <code>"friendship"</code> is created.</li>
+</ol>
+<p><em>friendship</em></p>
+<pre><code>createdAt | updatedAt | pugId | pugFriendId</code></pre>
+<p>No changes occur to the <code>pug</code> or <code>friend</code> tables!</p>
+<ol start="2" type="1">
+<li>A new Sequelize model becomes automatically generated for the table:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> Friendship <span class="op">=</span> <span class="va">db</span>.<span class="at">model</span>(<span class="st">&#39;friendship&#39;</span>)</a></code></pre></div>
+<p>You can use this model the same way you use any other Sequelize model (you can query it, create instances, etc).</p>
+<ol start="3" type="1">
+<li>Sequelize automatically creates several instance methods for pugs and for friends, the same ones as created by <code>hasMany</code> above:</li>
+</ol>
+<pre><code>pug.getFriends() // returns a promise for the array of friends for that pug
+pug.addFriend(friend) // creates a new row in the friendship table for the pug and the friend, returns a promise for the friendship (NOT the pug OR the friend - the &quot;friendship&quot;)
+pug.addFriends(friendsArray) // creates a new row in the friendship table for each friend, returns a promise for the friendship
+pug.removeFriend(friend) // removes the row from the friendship table for that pug-friend, returns a promise for the number of affected rows (as if you&#39;d want to destroy any friendships...right?)
+pug.removeFriends(friendsArray) // removes the rows from the friendship table for those pug-friend pairs, returns a promise for the number affected rows
+
+// analogous to above ^
+friend.getPugs()
+friend.addPug(pug)
+friend.addPugs(pugsArray)
+friend.setPugs(pugsArray)
+friend.removePug(pug)
+friend.removePugs(pugsArray)</code></pre>
+<ol start="4" type="1">
+<li>Allows us to include a pug’s friends, or a friend’s pugs</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> pugsWithFriends <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">include</span><span class="op">:</span> [<span class="op">{</span><span class="dt">model</span><span class="op">:</span> Friend<span class="op">}</span>]</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">console</span>.<span class="at">log</span>(pugsWithFriends[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">// looks like this:</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">// {</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">//  id: 1,</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">//  name: &#39;Cody&#39;,</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">//  friends: [</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">//    {</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">//      id: 1,</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">//      name: &#39;CodyFan &lt;3&#39;</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">//    },</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">//    ....any many more!</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">//  ]</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">// }</span></a></code></pre></div>
+<p>The inverse also applies if we <code>Friend.findAll({include: [{model: Pug}]})</code></p>

@@ -1,0 +1,26 @@
+/* Write your CSS here. */
+
+.wgs {
+  position: relative;
+  display: inline-block;
+  height: 241px;
+  width: 310px;
+}
+
+.wgs__mole-head {
+  position: absolute;
+  left: 105px;
+}
+
+.wgs__mole-hill {
+  position: absolute;
+  top: 250px;
+}
+.gameSpace {
+  display: flex;
+  background-color: whitesmoke;
+}
+.container {
+  padding: 10px 200px;
+  display: flex;
+}

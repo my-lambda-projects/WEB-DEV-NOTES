@@ -1,0 +1,81 @@
+{
+	"name": "vscode-text-pastry",
+	"displayName": "Text Pastry",
+	"description": "Extend the power of multiple selections in VS Code. Modify selections, insert numeric sequences, incremental numbers, generate uuids, date ranges, insert continuously from a word list and more.",
+	"version": "1.2.0",
+	"publisher": "jkjustjoshing",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jkjustjoshing/vscode-text-pastry"
+	},
+	"bugs": {
+		"url": "https://github.com/jkjustjoshing/vscode-text-pastry/issues",
+		"email": "jkjustjoshing@gmail.com"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.textPastry.1toX",
+		"onCommand:extension.textPastry.0toX",
+		"onCommand:extension.textPastry.AtoX",
+		"onCommand:extension.textPastry.range",
+		"onCommand:extension.textPastry.paste",
+		"onCommand:extension.textPastry.uuid"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.textPastry.1toX",
+				"title": "Text Pastry: 1 to X"
+			},
+			{
+				"command": "extension.textPastry.0toX",
+				"title": "Text Pastry: 0 to X"
+			},
+			{
+				"command": "extension.textPastry.AtoX",
+				"title": "Text Pastry: A to X"
+			},
+			{
+				"command": "extension.textPastry.range",
+				"title": "Text Pastry: Range"
+			},
+			{
+				"command": "extension.textPastry.paste",
+				"title": "Text Pastry: Paste Lines"
+			},
+			{
+				"command": "extension.textPastry.uuid",
+				"title": "Text Pastry: uuid"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.32",
+		"@types/node": "^6.0.40",
+		"@types/uuid": "^2.0.29",
+		"mocha": "^2.3.3",
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0"
+	},
+	"dependencies": {
+		"copy-paste": "^1.3.0",
+		"lodash.sortby": "^4.7.0",
+		"uuid": "^2.0.3"
+	},
+	"__metadata": {
+		"id": "93642b4f-5149-4f0b-be9f-eaa0a554e03e",
+		"publisherId": "11cd09ab-69cd-4e6f-8e80-327820d9db3f",
+		"publisherDisplayName": "jkjustjoshing"
+	}
+}

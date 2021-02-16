@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "d2aee8d4-bb09-4c43-88a6-744b862f6263",
+    "name": "Brush Up On Your HTML",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/topics/browser-basics/readings/reading-mdn-html-guides-html.md",
+    "type": "Reading",
+    "timeEstimate": 5400,
+    "urls": [
+      "brush-up-on-your-html"
+    ],
+    "topic": "Homework for Tuesday",
+    "subtopic": "Homework",
+    "body": "# Brush Up On Your HTML\n\nYou'll be using a lot of HTML in the following days (weeks, months, years), so\nmight as well get a leg up by reacquainting yourself with HTML.\n\nThe definitive resource on the Internet for HTML, CSS, and JavaScript is the\nMozilla Developer Network. Go there and work through, at a minimum, the\nfollowing sections:\n\n* The following sections in [Introduction to HTML]\n  * [Getting started with HTML]\n  * [What's in the head? Metadata in HTML]\n  * [HTML text fundamentals]\n  * [Creating hyperlinks]\n* The following section in [Multimedia and embedding]\n  * [Images in HTML]\n* The following section in [HTML forms]\n  * [Your first HTML form]\n  * [How to structure an HTML form]\n  * [The native form widgets]\n  * [Client-side form validation]\n  * [Styling HTML forms]\n\n[Introduction to HTML]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML\n[Getting started with HTML]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started\n[What's in the head? Metadata in HTML]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML\n[HTML text fundamentals]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals\n[Creating hyperlinks]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks\n[Multimedia and embedding]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding\n[Images in HTML]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Images_in_HTML\n[HTML forms]: https://developer.mozilla.org/en-US/docs/Learn/Forms\n[Your first HTML form]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form\n[How to structure an HTML form]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/How_to_structure_an_HTML_form\n[The native form widgets]: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/The_native_form_widgets\n[Client-side form validation]: https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation\n[Styling HTML forms]: https://developer.mozilla.org/en-US/docs/Learn/Forms/Styling_web_forms\n"
+  },
+  "success": true
+}

@@ -1,0 +1,19 @@
+# Simple icons
+
+This is a simple icon theme for Visual Studio Code that strives to be simple, taking inspiration from official logos when possible.
+I often also take inspiration from other themes such as [VSCode icons](https://github.com/robertohuertasm/vscode-icons), [Material icon theme](https://github.com/PKief/vscode-extension-material-icon-theme), and [Nomo dark icons](https://github.com/be5invis/vscode-iconset).
+Thanks to Roberto Huertas, Philipp Kief and be5invis for these icon themes !
+
+Since version 1.1.0, a monochrome version of the theme is also available. This idea stems from [file-icons](https://github.com/file-icons/vscode) made by Daniel Brooker.
+
+Since version 1.8.0, the extension can be configured to show or hide rotating triangles/arrows near folders : just change `simpleIcons.hideArrows` to `true` or `false`.
+
+Since version 1.10.0, the standard folder color can be configured with the `simpleIcons.simple.folder.color` setting with a hex color code (e.g. `#bf9f7f`).
+
+Since version 1.12.0, the standard file color can be configured with the `simpleIcons.simple.file.color` setting with a hex color code (e.g. `#bf9f7f`).
+
+A preview of simple icons can be found in [ICONS.md](https://github.com/LaurentTreguier/vscode-simple-icons/blob/master/ICONS.md).
+
+## Contributing
+
+See CONTRIBUTING.md

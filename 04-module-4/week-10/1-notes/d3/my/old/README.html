@@ -1,0 +1,26 @@
+<h1 id="w10d3-sequelize-notes">W10D3 Sequelize Notes</h1>
+<p>ORM - Object Relational Mapping</p>
+<p>With sequelize and orms, we want to do something easily like: - instructions belongs to recipes - grab all the instructions for this particular recipe - create a new instruction and attach it to this recipe - Create a new recipe using these parameters - Have a method for getting all the instructions and ingredients of a recipe;</p>
+<p>Migration - anything that changes our database schema - handles database level validations and constraints</p>
+<p>Components of a Database Schema - tables - column names - constraints - indexes</p>
+<p>Model - handles associations, model level validations, and other methods we can define ourselves for a model</p>
+<p>packages: - sequelize - sequelize-cli - pg</p>
+<h2 id="sequelize-cli-cheatsheet">Sequelize-Cli CheatSheet</h2>
+<p><code>npx sequelize-cli init</code> - initialize sequelize tools in the project</p>
+<p><code>npx sequelize-cli db:create</code> - create database with configuration in <code>config/config.json</code> file</p>
+<p><code>npx sequelize-cli db:drop</code> - drop database with configuration in <code>config/config.json</code> file</p>
+<p><code>npx sequelize-cli model:generate</code> - creates a migration file and a model file to edit (does NOT create the table in the database!) - key-value arguments: - <code>--name</code>: Name of the model <strong>Needs to be singular, Capitalized, and CamelCase</strong> - will create a table name that is pluralized, Capitalized, and CamelCase - will create a model in the model file with a class that is singular, Capitalized, and CamelCase - e.g. <code>--name MeasurementUnit</code> - <code>--attributes</code>: List of table column and type pairs separated by commas. Table column and type separated by colon. - e.g. <code>--attributes name:string,order:int</code> cannot be separated by spaces - e.g. <code>--attributes column1:type1,column2:type2,column3:type3</code></p>
+<p><code>npx sequelize-cli migration:generate --name &lt;name of migration&gt;</code> - creates a migration file that isn’t for creating a table/model - Some common migrations: <a href="./sequelize-migrations.md">Sequelize Migrations Cheatsheet</a></p>
+<p><code>npx sequelize-cli db:migrate</code> - migrates any of the migrations files that haven’t been migrated to the database yet (creates/modifies tables in the database)</p>
+<p><code>npx sequelize-cli seed:generate</code>- creates a seeder file - key-value arguments: - <code>--name</code>: Name of the seed, eg. <code>--name seed-movies</code></p>
+<p><code>npx sequelize-cli db:seed:all</code> - runs the seed files that haven’t been run yet</p>
+<h2 id="sequelize-migrations">Sequelize Migrations</h2>
+<p><a href="https://sequelize.org/master/manual/query-interface.html">Sequelize Migrations Docs</a></p>
+<p><a href="./sequelize-migrations.md">Sequelize Migrations Cheatsheet</a></p>
+<h2 id="sequelize-associations">Sequelize Associations</h2>
+<p><a href="https://sequelize.org/master/manual/assocs.html">Sequelize Associations Docs</a></p>
+<p><a href="./sequelize-associations.md">Sequelize Associations Cheatsheet</a></p>
+<h2 id="pets-walkthrough"><a href="./pets-walkthrough.md">Pets Walkthrough</a></h2>
+<ul>
+<li>walkthrough with Migrations, Insertion, Updating, Deleting videos</li>
+</ul>

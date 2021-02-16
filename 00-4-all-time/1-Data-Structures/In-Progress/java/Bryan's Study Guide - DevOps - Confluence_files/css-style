@@ -1,0 +1,1 @@
+#insert-menu .macro-trello-board .icon {background-image: url(https://cello.atlassian.io/images/trello.png) !important; background-size:16px 16px !important;}

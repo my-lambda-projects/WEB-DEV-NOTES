@@ -1,0 +1,8 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:user-timezone-setup', location = 'com/atlassian/confluence/extra/calendar3/components/user-timezone-setup/user-timezone-setup.less' */
+.setup-calendar-panel .user-time-zone-select {
+  padding-top: 10px;
+  text-align: center;
+}
+.setup-calendar-panel .user-time-zone-select select {
+  width: 200px;
+}

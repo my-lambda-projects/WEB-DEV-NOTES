@@ -1,0 +1,307 @@
+<p><strong>This is a walk-through</strong>: Please type along as you read what’s going on in this article.</p>
+<p>In this walk-through, you will</p>
+<ul>
+<li>Learn about nullable columns,</li>
+<li>Learn about default values for columns,</li>
+<li>Learn how to make columns have unique values,</li>
+<li>Learn about primary keys, and,</li>
+<li>Learn about relating tables through foreign keys to maintain data and referential integrity.</li>
+</ul>
+<p>Here is the “puppies” spreadsheet, table definition, and the SQL to create it from the last article.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>JavaScript data type</th>
+<th>Max length</th>
+<th>ANSI SQL data type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>50</td>
+<td>VARCHAR(50)</td>
+</tr>
+<tr class="even">
+<td>age_yrs</td>
+<td>number</td>
+<td></td>
+<td>NUMERIC(3,1)</td>
+</tr>
+<tr class="odd">
+<td>breed</td>
+<td>string</td>
+<td>100</td>
+<td>VARCHAR(100)</td>
+</tr>
+<tr class="even">
+<td>weight_lbs</td>
+<td>number</td>
+<td></td>
+<td>INTEGER</td>
+</tr>
+<tr class="odd">
+<td>microchipped</td>
+<td>Boolean</td>
+<td></td>
+<td>BOOLEAN</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb1-2" title="2">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb1-3" title="3">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb1-4" title="4">      breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>),</a>
+<a class="sourceLine" id="cb1-5" title="5">      weight_lbs <span class="dt">INTEGER</span>,</a>
+<a class="sourceLine" id="cb1-6" title="6">      microchipped <span class="dt">BOOLEAN</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    );</a></code></pre></div>
+<p>In this article, you will add more specifications to this table so that you can properly use it. Then, you will refactor it into two tables that relate to one another.</p>
+<h2 id="nullable-columns">Nullable columns</h2>
+<p>By default, when you define a table, - <strong>each column does not require a value when you create a <em>record (row)</em></strong>.</p>
+<p>Look at the spreadsheet. You can see all of the rows in it have data in every column.</p>
+<ul>
+<li>The SQL that you wrote does not enforce that.</li>
+</ul>
+<h3 id="the-value-null-is-a-strange-value-because-it-means-the-absence-of-a-value.">The value <code>NULL</code> is a strange value because it means <em>the absence of a value</em>.</h3>
+<p>When a value in a row is <code>NULL</code>, that means that it didn’t get entered.</p>
+<p>Many database administrators, experts in databases and the models of data in them, detest the value <code>NULL</code> for one reason: it adds a weird state.</p>
+<p>Think about a Boolean value in JavaScript. It can one of two values: <code>true</code> or <code>false</code>.</p>
+<p>In databases, a “nullable” <code>BOOLEAN</code> column, that is a <code>BOOLEAN</code> column that can hold <code>NULL</code> values, can have <em>three</em> values in it: <code>TRUE</code>, <code>FALSE</code>, and <code>NULL</code>.</p>
+<p>What does that mean to you as a software developer?</p>
+<p>It is this weird third state that leads to a strange offshoot of mathematics named <a href="https://en.wikipedia.org/wiki/Three-valued_logic">three-valued logic</a>.</p>
+<ul>
+<li>To prevent that, you should (nearly) always put the <code>NOT NULL</code> constraint on each of your column definitions. That will make your previous SQL statement look like this.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb2-2" title="2">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb2-3" title="3">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb2-4" title="4">      breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb2-5" title="5">      weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb2-6" title="6">      microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    );</a></code></pre></div>
+<h2 id="why-is-age_yrs-31">? WHY IS age_yrs (3,1)?</h2>
+<p>Type that SQL into your <code>psql</code> shell and execute it. (If you already have a “puppies” table, drop the existing one first.) Then, run <code>\d puppies</code>. You will see, now, that the column “Nullable” reads “not null” for every single one.</p>
+<pre><code>                         Table &quot;public.puppies&quot;
+    Column    |          Type          | Collation | Nullable | Default
+--------------+------------------------+-----------+----------+---------
+ name         | character varying(50)  |           | not null |
+ age_yrs      | numeric(3,1)           |           | not null |
+ breed        | character varying(100) |           | not null |
+ weight_lbs   | integer                |           | not null |
+ microchipped | boolean                |           | not null |</code></pre>
+<p>Now, when someone tries to add data to the table, they must provide a value for every single column.</p>
+<p><strong>Note</strong>: An empty string is <em>not</em> a <code>NULL</code> value.</p>
+<p>It is still possible for someone to insert the string "" into the “name” column, .</p>
+<p>There are ways to prevent that, but you should check it in your JavaScript code before actually inserting the data.</p>
+<h2 id="default-values">Default values</h2>
+<p>Sometimes, you just want a column to have a default value. When there is a default value, the applications that insert data into the table can just rely on the default value and not have to specify it.</p>
+<p>For the “puppies” table, a reasonable default value for the “microchipped” column would be <code>FALSE</code>. You can add that to your <strong>SQL using the <code>DEFAULT</code> keyword</strong>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb4-2" title="2">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-3" title="3">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-4" title="4">      breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-5" title="5">      weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-6" title="6">      microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    );</a></code></pre></div>
+<p>Drop the existing “puppies” table and type in that SQL.</p>
+<p>Then, run <code>\d puppies</code> to see how it shows up in the table definition.</p>
+<h2 id="primary-keys">Primary keys</h2>
+<p>Being able to identify a single row in a table is <em>very</em> important.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/tables-puppies-spreadsheet.png" alt="Puppies spreadsheet" /><figcaption>Puppies spreadsheet</figcaption>
+</figure>
+<p>Let’s say that the puppy named “Max” gains a couple of pounds. You want to update the spreadsheet. You scan through the list of names and find it on row 11. Then, you update the weight to be 69 pounds.</p>
+<p>Now, what happens when you are tracking 300 dogs in the spreadsheet? What happens when your spreadsheet has 17 dogs named “Max”?</p>
+<p><strong>It is helpful to have some way to uniquely identify a row in the spreadsheet. This is the idea behind a <em>primary key</em></strong></p>
+<p>You can <strong>specify a column to be the primary key with the keywords <code>PRIMARY KEY</code></strong>.</p>
+<p>A column that acts as a primary key cannot be <code>NULL</code>, so that is implied.</p>
+<p>Here’s the spreadsheet with a new column in it named “id” that just contains numbers to uniquely identify each row.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-with-primary-key.png" alt="Puppies spreadsheet with primary key" /><figcaption>Puppies spreadsheet with primary key</figcaption>
+</figure>
+<pre><code> &quot;Why can&#39;t I just use the row number as each row&#39;s identifier?&quot; That&#39;s a very valid question! Here is the reason why.
+ You can see that &quot;Max&quot; has an &quot;id&quot; of 10 on row 11. 
+ What happens if you wanted to look at the data differently, say sorted by name? Here&#39;s what that spreadsheet looks like.
+</code></pre>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-with-primary-key-sorted-by-name.png" alt="Puppies spreadsheet with primary key sorted by name" /><figcaption>Puppies spreadsheet with primary key sorted by name</figcaption>
+</figure>
+<p>You can see that when you sort them by name, if you relied on row number, “Max” now lives on row 10 rather than row 11. That changes the unique identifer of “Max” based on the way that you view the data.</p>
+<p><strong>You want the unique identifier to <em>be part of the row definition</em></strong> so that the number always stays with the row no matter how you’ve sorted the data.</p>
+<p><strong>You will always know that the row with “id” value of 10 is “Max”.</strong></p>
+<p>Keeping track of what the next number would be in that column could cause you a lot or headaches. What if two people (or applications) were entering data at the same time? Who would get the correct “next id” and still have it be unique? The answer to that is to let the database handle it.</p>
+<ul>
+<li><p>All databases have some way of specifying that you want to set the column to a special data type that will auto-assign and auto-increment an integer value for the column.</p></li>
+<li><p>In <strong>PostgreSQL, that special data type is called <code>SERIAL</code></strong>.</p></li>
+</ul>
+<p>Putting that all together, <strong>you would add a new column definition to your table with the name of “id” and the type <code>SERIAL</code>.</strong></p>
+<p>Then, to specify that it is the primary key, you can do it one of two ways.</p>
+<ul>
+<li>The following example shows it as part of the column definition.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb6-3" title="3">      <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb6-4" title="4">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb6-5" title="5">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb6-6" title="6">      breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb6-7" title="7">      weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb6-8" title="8">      microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    );</a></code></pre></div>
+<p>Or, you can put it in what is known as <strong>constraint syntax</strong> after the columns specifications but before the close parenthesis.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb7-2" title="2">      <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb7-3" title="3">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb7-4" title="4">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb7-5" title="5">      breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb7-6" title="6">      weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb7-7" title="7">      microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span>,</a>
+<a class="sourceLine" id="cb7-8" title="8">      <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb7-9" title="9">    );</a></code></pre></div>
+<p>Either way you do it, when you view the output of <code>\d puppies</code>, you see some new things in the output.</p>
+<pre><code>                                      Table &quot;public.puppies&quot;
+    Column    |          Type          | Collation | Nullable |               Default
+--------------+------------------------+-----------+----------+-------------------------------------
+ id           | integer                |           | not null | nextval(&#39;puppies_id_seq&#39;::regclass)
+ name         | character varying(50)  |           | not null |
+ age_yrs      | numeric(3,1)           |           | not null |
+ breed        | character varying(100) |           | not null |
+ weight_lbs   | integer                |           | not null |
+ microchipped | boolean                |           | not null | false
+Indexes:
+    &quot;puppies_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
+<p>First, you’ll notice that there is a weird default value for the “id” column.</p>
+<p><strong>That’s the way that PostgreSQL populates it with a new integer value every time you add a new row.</strong></p>
+<p>You will also see that that there is a section named</p>
+<ul>
+<li>This shows that there is a <strong>thing named “puppies_pkey” which is the primary key on the column “id”.</strong></li>
+</ul>
+<h2 id="unique-values">Unique values</h2>
+<p>Sometimes, you want all of the data in a column to be unique.</p>
+<ul>
+<li><p>For example, if you a table of people records.</p></li>
+<li><p>You want to collect their email address for them to sign up for your Web site.</p></li>
+<li><p>In general, people don’t share email addresses (although it has been known to happen).</p></li>
+<li><p>You can put a constraint on a column by putting <code>UNIQUE</code> in the column’s definition.</p></li>
+</ul>
+<pre><code>For example, here&#39;s a sample &quot;people&quot; table with a unique constraint on the email column.</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> people (</a>
+<a class="sourceLine" id="cb10-2" title="2">      <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb10-3" title="3">      first_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb10-4" title="4">      last_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb10-5" title="5">      email <span class="dt">VARCHAR</span>(<span class="dv">250</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</a>
+<a class="sourceLine" id="cb10-6" title="6">      <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb10-7" title="7">    );</a></code></pre></div>
+<p>When you use the <code>\d people</code> command to view the definition of the table, you will see this.</p>
+<pre><code>                                      Table &quot;public.people&quot;
+   Column   |          Type          | Collation | Nullable |              Default
+------------+------------------------+-----------+----------+------------------------------------
+ id         | integer                |           | not null | nextval(&#39;people_id_seq&#39;::regclass)
+ first_name | character varying(50)  |           | not null |
+ last_name  | character varying(50)  |           | not null |
+ email      | character varying(250) |           | not null |
+Indexes:
+    &quot;people_pkey&quot; PRIMARY KEY, btree (id)
+    &quot;people_email_key&quot; UNIQUE CONSTRAINT, btree (email)</code></pre>
+<p>Down there at the bottom, you see that PostgreSQL has added a <code>UNIQUE CONSTRAINT</code> to the list of indexes for the “email” field.</p>
+<p>Now, <strong>if someone tried to put an email address into the table that someone had previously used, then the database would return an error.</strong></p>
+<pre><code>ERROR:  duplicate key value violates unique constraint &quot;people_email_key&quot;
+DETAIL:  Key (email)=(a) already exists.</code></pre>
+<h2 id="refactor-for-data-integrity">Refactor for data integrity</h2>
+<p><strong>One of the first questions that you should ask yourself is, “Do any of the columns have values that come from a list?”</strong></p>
+<ul>
+<li><p>Or, another way to ask that is, “Do any of the columns come from a set of predefined values?”</p></li>
+<li><p>If you look at this data, does anything seem like it comes from a list, or that the data could repeat itself?</p></li>
+</ul>
+<p>Take a look, again, at the spreadsheet. Does anything jump out at you?</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-with-primary-key-sorted-by-name.png" alt="Puppies spreadsheet with primary key sorted by name" /><figcaption>Puppies spreadsheet with primary key sorted by name</figcaption>
+</figure>
+<p>If you looked at it and answered “the breed column”, that’s the ticket!</p>
+<p>The values that go into the breed column is finite.</p>
+<p>You don’t want one person typing “Corgi” and another person typing “CORGI” and another “corgi” because, as you know, those are <em>three different values</em>!</p>
+<p>You want them all to be the same value! Supporting this is the primary reason that relational databases exist.</p>
+<p><strong>Instead of having just one table, you could have two tables. One that contains the puppy information and another that contains the breed information.</strong> T</p>
+<ul>
+<li><strong>Then, using the magic of relational databases, you can create a relation between the two tables so that the “puppies” table will reference entries in the “breeds” table</strong>.</li>
+</ul>
+<h1 id="this-process-is-called-normalization.">This process is called <strong>normalization</strong>.</h1>
+<p>It’s a <em>really big deal</em> in database communities. And, it’s a really big deal for application developers to maintain the integrity of the data. Bad data leads to bad applications.</p>
+<p>To do this follows a fairly simple set of steps.</p>
+<h2 id="figure-out-what-related-data-repeats-itself.">1. Figure out what related data repeats itself.</h2>
+<ul>
+<li>In this case, it is only the single column that contains the <strong>breed</strong> names.</li>
+</ul>
+<h2 id="create-a-new-table-to-hold-that-data.-make-sure-it-has-a-primary-key.">2. Create a new table to hold that data. Make sure it has a primary key.</h2>
+<ul>
+<li>In this case, you can create a “breeds” table that contains an “id” the name of the breed.</li>
+</ul>
+<h2 id="replace-all-of-the-columns-in-the-original-table-that-you-extracted-with-a-single-value-that-will-contain-the-corresponding-id-value-from-the-new-table.">3. Replace all of the columns in the original table that you extracted with a single value that will contain the corresponding “id” value from the new table.</h2>
+<ul>
+<li>In this case, you will replace the “breed” column with a column named “breed_id” because it will have the id of the specific breed from the “breeds” table.</li>
+</ul>
+<p>Here’s what that would look like with two spreadsheets.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-and-breeds-normalized.png" alt="Puppies and breed spreadsheets normalized" /><figcaption>Puppies and breed spreadsheets normalized</figcaption>
+</figure>
+<p>You might think to yourself, “That’s not simpler! That’s … that’s harder!”</p>
+<p>From a human perspective looking at the two separate tables and associating the id in the “breed_id” column with the value in the “id” column of the “breeds” table to lookup the name of the breed _is_ harder.</p>
+<p>But, SQL provides tools to make this <em>very easy</em>.</p>
+<p>To represent this in SQL, you will need two SQL statements.</p>
+<p>The first one, the one for the “breeds” table, you should be able to construct that already with the knowledge that you have.</p>
+<p>It would look like this. Type this into your <code>plsql</code> shell.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> breeds (</a>
+<a class="sourceLine" id="cb13-2" title="2">      <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb13-3" title="3">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb13-4" title="4">      <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb13-5" title="5">    );</a></code></pre></div>
+<p><strong>Now, here’s the new thing. You want the database to make sure that the value in the “breed_id” column of the “puppies” table references the value in the “id” table of the “breeds” table.</strong></p>
+<p>This reference is called a <strong>foreign key</strong>.</p>
+<p>That means that the value in the column _must exist_ as the value of a primary key in the table that it references.</p>
+<p>This <strong>referential integrity</strong> is the backbone of relational databases.</p>
+<p>It prevents bad data from getting put into those foreign key columns.</p>
+<p>Here’s what the new “puppies” SQL looks like.</p>
+<p>Drop the old “puppies” table and type this SQL in there.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1">    <span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb14-2" title="2">      <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb14-3" title="3">      name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb14-4" title="4">      age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb14-5" title="5">      breed_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb14-6" title="6">      weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb14-7" title="7">      microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span>,</a>
+<a class="sourceLine" id="cb14-8" title="8">      <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>),</a>
+<a class="sourceLine" id="cb14-9" title="9">      <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (breed_id) <span class="kw">REFERENCES</span> breeds(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb14-10" title="10">    );</a></code></pre></div>
+<p>That new thing at the bottom of the definition, that’s how you relate one table to another. If follows the syntax</p>
+<pre><code>FOREIGN KEY («column name in this table»)
+  REFERENCES «other table name»(«primary key column in other table»)</code></pre>
+<p>Looking at the spreadsheets, again, the presence of the foreign key would make it <em>impossible</em> for someone to enter a value in the “breed_id” column that did not exist in the “id” column of the “breeds” table.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/spreadsheet-puppies-and-breeds-normalized.png" alt="Puppies and breed spreadsheets normalized" /><figcaption>Puppies and breed spreadsheets normalized</figcaption>
+</figure>
+<p>You can see that the puppies with ids of 1 and 9, “Cooper” and “Leinni”, both have the “breed_id” of 8. That means they’re both “Miniature Schnauzers”. What if, originally, someone had misspelled “Schnauzers”? If it was still just a text column in the “puppies” sheet, you’d have to go find and replace every single instance of the misspelling. Now, because it’s only spelled once and then _referenced_, you would only need to update the misspelling in one place!</p>
+<h2 id="order-of-table-declarations">Order of table declarations</h2>
+<p>The order of running these table definitions is important. Because “puppies” now relies on “breeds” to exist for that foreign key relationship, you <em>must</em> create the “breeds” table first. If you had tried to create the “puppies” table first, you would see the following error message.</p>
+<pre><code>ERROR: relation &quot;breeds&quot; does not exist</code></pre>
+<p>Now that you have both of those tables in your database, what do you think would happen if you tried to drop the “breeds” table? Another table depends on it. When you tried to drop a user that owned a database, you got an error because that database object depended on that user existing, the same things happens now.</p>
+<p>Type the SQL to drop the “breeds” table from the database. You should see the following error message.</p>
+<pre><code>ERROR:  cannot drop table breeds because other objects depend on it
+DETAIL:  constraint puppies_breed_id_fkey on table puppies depends on table breeds
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
+<p>You can see that PostgreSQL has told you that other things depend on the “breeds” table and, specifically, a thing called “puppies_breed_id_fkey” depends on it. That is the auto-generated name for the foreign key that you created in the “puppies” table. It took the name of the table, the name of the column, and the string “fkey” and joined them all together with underscores.</p>
+<p>In the homework for tomorrow, you will see how to <em>join</em> together two tables into one virtual table so that the breed names are right there along with the puppies data.</p>
+<h2 id="what-youve-done">What you’ve done</h2>
+<p>In this walk-through, you</p>
+<ul>
+<li>Learned about nullable columns and how to control that behavior by writing <code>NOT NULL</code> in your column specifications</li>
+<li>Learned that <code>NULL</code> means an “absence of a value” which makes database administrators groan with displeasure</li>
+<li>Learned about how to specify default values for a column</li>
+<li>Learned the purpose of and how to declare integer-valued primary keys for a table using the <code>PRIMARY KEY</code> constraint and <code>SERIAL</code> data type</li>
+<li>Learned about <em>normalization</em> and the steps to refactor a table to remove duplicated data</li>
+<li>Learned the purpose of and how to declare foreign keys to relate the column of one table to the primary key of another table</li>
+</ul>

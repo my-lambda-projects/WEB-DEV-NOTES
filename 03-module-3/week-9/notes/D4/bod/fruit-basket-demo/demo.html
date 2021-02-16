@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="demo.css">
+  <script src="demo.js"></script>
+  <title>W09D4 Review</title>
+</head>
+<body>
+  <div class="basket-panel">
+    <h1 class="basket-panel__label">Fruit Basket</h1>
+    <p class="basket-panel__description">Add and remove fruits. Max of 8, please!</h1>
+    <div class="basket"></div>
+    <div class="basket-controls">
+      <button class="basket-controls__add-orange">Add Orange</button>
+      <button class="basket-controls__add-apple">Add Apple</button>
+
+      <!-- This implementation relies on the JavaScript to disable and set modifier classes on the "remove" buttons for their initial state -->
+      <button class="basket-controls__remove-oldest">Eat Oldest</button>
+      <button class="basket-controls__remove-newest">Eat Newest</button>
+
+      <!-- The below implementation would set the "remove" buttons to disabled and the empty modifier on initial load -->
+      <!-- <button disabled class="basket-controls__remove-oldest basket-controls__remove-oldest--empty">Eat Oldest</button>
+      <button disabled class="basket-controls__remove-newest basket-controls__remove-newest--empty">Eat Newest</button> -->
+    </div>
+  </div>
+</body>
+</html>

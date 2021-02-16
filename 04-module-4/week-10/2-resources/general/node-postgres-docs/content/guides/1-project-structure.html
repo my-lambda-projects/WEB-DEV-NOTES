@@ -1,0 +1,161 @@
+<p>Whenever I am writing a project &amp; using node-postgres I like to create a file within it and make all interactions with the database go through this file. This serves a few purposes:</p>
+<ul>
+<li>Allows my project to adjust to any changes to the node-postgres API without having to trace down all the places I directly use node-postgres in my application.</li>
+<li>Allows me to have a single place to put logging and diagnostics around my database.</li>
+<li>Allows me to make custom extensions to my database access code &amp; share it throughout the project.</li>
+<li>Allows a single place to bootstrap &amp; configure the database.</li>
+</ul>
+<h2 id="example">example</h2>
+<p><em>note: I am using callbacks in this example to introduce as few concepts as possible at a time, but the same is doable with promises or async/await</em></p>
+<p>The location doesn’t really matter - I’ve found it usually ends up being somewhat app specific and in line with whatever folder structure conventions you’re using. For this example I’ll use an express app structured like so:</p>
+<pre><code>- app.js
+- index.js
+- routes/
+  - index.js
+  - photos.js
+  - user.js
+- db/
+  - index.js &lt;--- this is where I put data access code</code></pre>
+<p>Typically I’ll start out my <code>db/index.js</code> file like so:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">query</span><span class="op">:</span> (text<span class="op">,</span> params<span class="op">,</span> callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="cf">return</span> <span class="va">pool</span>.<span class="at">query</span>(text<span class="op">,</span> params<span class="op">,</span> callback)</a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span></a></code></pre></div>
+<p>That’s it. But now everywhere else in my application instead of requiring <code>pg</code> directly, I’ll require this file. Here’s an example of a route within <code>routes/user.js</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// notice here I&#39;m requiring my database adapter file</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">// and not requiring node-postgres directly</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">const</span> db <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../db&#39;</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="va">app</span>.<span class="at">get</span>(<span class="st">&#39;/:id&#39;</span><span class="op">,</span> (req<span class="op">,</span> res<span class="op">,</span> next) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="va">db</span>.<span class="at">query</span>(<span class="st">&#39;SELECT * FROM users WHERE id = $1&#39;</span><span class="op">,</span> [<span class="va">req</span>.<span class="va">params</span>.<span class="at">id</span>]<span class="op">,</span> (err<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="cf">return</span> <span class="at">next</span>(err)</a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="va">res</span>.<span class="at">send</span>(<span class="va">res</span>.<span class="at">rows</span>[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">// ... many other routes in this file</span></a></code></pre></div>
+<p>Imagine we have lots of routes scattered throughout many files under our <code>routes/</code> directory. We now want to go back and log every single query that’s executed, how long it took, and the number of rows it returned. If we had required node-postgres directly in every route file we’d have to go edit every single route - that would take forever &amp; be really error prone! But thankfully we put our data access into <code>db/index.js</code>. Let’s go add some logging:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="dt">query</span><span class="op">:</span> (text<span class="op">,</span> params<span class="op">,</span> callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="kw">const</span> start <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>()</a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="cf">return</span> <span class="va">pool</span>.<span class="at">query</span>(text<span class="op">,</span> params<span class="op">,</span> (err<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-9" title="9">      <span class="kw">const</span> duration <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>() <span class="op">-</span> start</a>
+<a class="sourceLine" id="cb4-10" title="10">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;executed query&#39;</span><span class="op">,</span> <span class="op">{</span> text<span class="op">,</span> duration<span class="op">,</span> <span class="dt">rows</span><span class="op">:</span> <span class="va">res</span>.<span class="at">rowCount</span> <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb4-11" title="11">      <span class="at">callback</span>(err<span class="op">,</span> res)</a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="op">}</span></a></code></pre></div>
+<p>That was pretty quick! And now all of our queries everywhere in our application are being logged.</p>
+<p><em>note: I didn’t log the query parameters. Depending on your application you might be storing encrypted passwords or other sensitive information in your database. If you log your query parameters you might accidentally log sensitive information. Every app is different though so do what suits you best!</em></p>
+<p>Now what if we need to check out a client from the pool to run several queries in a row in a transaction? We can add another method to our <code>db/index.js</code> file when we need to do this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="dt">query</span><span class="op">:</span> (text<span class="op">,</span> params<span class="op">,</span> callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="kw">const</span> start <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>()</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="cf">return</span> <span class="va">pool</span>.<span class="at">query</span>(text<span class="op">,</span> params<span class="op">,</span> (err<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-9" title="9">      <span class="kw">const</span> duration <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>() <span class="op">-</span> start</a>
+<a class="sourceLine" id="cb5-10" title="10">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;executed query&#39;</span><span class="op">,</span> <span class="op">{</span> text<span class="op">,</span> duration<span class="op">,</span> <span class="dt">rows</span><span class="op">:</span> <span class="va">res</span>.<span class="at">rowCount</span> <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-11" title="11">      <span class="at">callback</span>(err<span class="op">,</span> res)</a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb5-14" title="14">  <span class="dt">getClient</span><span class="op">:</span> (callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="va">pool</span>.<span class="at">connect</span>((err<span class="op">,</span> client<span class="op">,</span> done) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-16" title="16">      <span class="at">callback</span>(err<span class="op">,</span> client<span class="op">,</span> done)</a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="op">}</span></a></code></pre></div>
+<p>Okay. Great - the simplest thing that could possibly work. It seems like one of our routes that checks out a client to run a transaction is forgetting to call <code>done</code> in some situation! Oh no! We are leaking a client &amp; have hundreds of these routes to go audit. Good thing we have all our client access going through this single file. Lets add some deeper diagnostic information here to help us track down where the client leak is happening.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="dt">query</span><span class="op">:</span> (text<span class="op">,</span> params<span class="op">,</span> callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    <span class="kw">const</span> start <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>()</a>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="cf">return</span> <span class="va">pool</span>.<span class="at">query</span>(text<span class="op">,</span> params<span class="op">,</span> (err<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-9" title="9">      <span class="kw">const</span> duration <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>() <span class="op">-</span> start</a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;executed query&#39;</span><span class="op">,</span> <span class="op">{</span> text<span class="op">,</span> duration<span class="op">,</span> <span class="dt">rows</span><span class="op">:</span> <span class="va">res</span>.<span class="at">rowCount</span> <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="at">callback</span>(err<span class="op">,</span> res)</a>
+<a class="sourceLine" id="cb6-12" title="12">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-13" title="13">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-14" title="14">  <span class="dt">getClient</span><span class="op">:</span> (callback) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-15" title="15">    <span class="va">pool</span>.<span class="at">connect</span>((err<span class="op">,</span> client<span class="op">,</span> done) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="kw">const</span> query <span class="op">=</span> <span class="va">client</span>.<span class="at">query</span></a>
+<a class="sourceLine" id="cb6-17" title="17"></a>
+<a class="sourceLine" id="cb6-18" title="18">      <span class="co">// monkey patch the query method to keep track of the last query executed</span></a>
+<a class="sourceLine" id="cb6-19" title="19">      <span class="va">client</span>.<span class="at">query</span> <span class="op">=</span> (...<span class="at">args</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="va">client</span>.<span class="at">lastQuery</span> <span class="op">=</span> args</a>
+<a class="sourceLine" id="cb6-21" title="21">        <span class="cf">return</span> <span class="va">query</span>.<span class="at">apply</span>(client<span class="op">,</span> args)</a>
+<a class="sourceLine" id="cb6-22" title="22">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-23" title="23"></a>
+<a class="sourceLine" id="cb6-24" title="24">      <span class="co">// set a timeout of 5 seconds, after which we will log this client&#39;s last query</span></a>
+<a class="sourceLine" id="cb6-25" title="25">      <span class="kw">const</span> timeout <span class="op">=</span> <span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-26" title="26">        <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;A client has been checked out for more than 5 seconds!&#39;</span>)</a>
+<a class="sourceLine" id="cb6-27" title="27">        <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`The last executed query on this client was: </span><span class="sc">${</span><span class="va">client</span>.<span class="at">lastQuery</span><span class="sc">}</span><span class="vs">`</span>)</a>
+<a class="sourceLine" id="cb6-28" title="28">      <span class="op">},</span> <span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb6-29" title="29"></a>
+<a class="sourceLine" id="cb6-30" title="30">      <span class="kw">const</span> release <span class="op">=</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-31" title="31">        <span class="co">// call the actual &#39;done&#39; method, returning this client to the pool</span></a>
+<a class="sourceLine" id="cb6-32" title="32">        <span class="at">done</span>(err)</a>
+<a class="sourceLine" id="cb6-33" title="33"></a>
+<a class="sourceLine" id="cb6-34" title="34">        <span class="co">// clear our timeout</span></a>
+<a class="sourceLine" id="cb6-35" title="35">        <span class="at">clearTimeout</span>(timeout)</a>
+<a class="sourceLine" id="cb6-36" title="36"></a>
+<a class="sourceLine" id="cb6-37" title="37">        <span class="co">// set the query method back to its old un-monkey-patched version</span></a>
+<a class="sourceLine" id="cb6-38" title="38">        <span class="va">client</span>.<span class="at">query</span> <span class="op">=</span> query</a>
+<a class="sourceLine" id="cb6-39" title="39">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-40" title="40"></a>
+<a class="sourceLine" id="cb6-41" title="41">      <span class="at">callback</span>(err<span class="op">,</span> client<span class="op">,</span> release)</a>
+<a class="sourceLine" id="cb6-42" title="42">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-43" title="43">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-44" title="44"><span class="op">}</span></a></code></pre></div>
+<p>Using async/await:</p>
+<pre><code>module.exports = {
+  async query(text, params) {
+    const start = Date.now()
+    const res = await pool.query(text, params)
+    const duration = Date.now() - start
+    console.log(&#39;executed query&#39;, { text, duration, rows: res.rowCount })
+    return res
+  },
+
+  async getClient() {
+    const client = await pool.connect()
+    const query = client.query
+    const release = client.release
+    // set a timeout of 5 seconds, after which we will log this client&#39;s last query
+    const timeout = setTimeout(() =&gt; {
+      console.error(&#39;A client has been checked out for more than 5 seconds!&#39;)
+      console.error(`The last executed query on this client was: ${client.lastQuery}`)
+    }, 5000)
+    // monkey patch the query method to keep track of the last query executed
+    client.query = (...args) =&gt; {
+      client.lastQuery = args
+      return query.apply(client, args)
+    }
+    client.release = () =&gt; {
+      // clear our timeout
+      clearTimeout(timeout)
+      // set the methods back to their old un-monkey-patched version
+      client.query = query
+      client.release = release
+      return release.apply(client)
+    }
+    return client
+  }
+}</code></pre>
+<p>That should hopefully give us enough diagnostic information to track down any leaks.</p>

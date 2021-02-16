@@ -1,0 +1,23 @@
+*,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.light {
+  background-color: rgb(210, 247, 189);
+  color: black;
+  height: 100vh;
+}
+
+.dark {
+  background-color: rgb(88, 8, 84);
+  color: white;
+  height: 100vh;
+}
+
+button {
+  width: 40px;
+  margin: 10px;
+}

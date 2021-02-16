@@ -1,0 +1,563 @@
+<!DOCTYPE html><html><head>
+      <title>03_subqueries-and-joins</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/mira/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.5.13/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="joins-vs-subqueries">Joins vs. Subqueries</h1>
+
+<hr>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="toc"><div class="input-div"><div class="btn-group"><div class="run-btn btn"><span>&#x25B6;&#xFE0E;</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><ul>
+<li><a href="#what-is-a-join">What is a JOIN?</a></li>
+<li><a href="#what-is-a-subquery">What is a subquery?</a>
+<ul>
+<li><a href="#single-value-subquery">Single-value subquery</a></li>
+<li><a href="#multiple-row-subquery">Multiple-row subquery</a></li>
+</ul>
+</li>
+<li><a href="#using-joins-vs-subqueries">Using joins vs. subqueries</a>
+<ul>
+<li><a href="#should-i-use-a-join-or-a-subquery">Should I use a JOIN or a subquery?</a></li>
+</ul>
+</li>
+<li><a href="#helpful-links">Helpful links:</a></li>
+</ul>
+<hr>
+<p>To select, or not to select? That is the query. We&#x2019;ve barely scratched the<br>
+surface of SQL queries. Previously, we went over how to write simple SQL<br>
+queries using the <code>SELECT</code> statement, and we learned how to incorporate a <code>WHERE</code> clause into our queries.</p>
+<p>There&#x2019;s a lot more we could add to our queries to get more refined results. In<br>
+this reading, we&#x2019;ll go over joins and subqueries and talk about when we would<br>
+use one over the other.</p>
+<h2 class="mume-header" id="what-is-a-join">What is a JOIN?</h2>
+
+<p>We briefly looked at the <code>JOIN</code> operation after we created foreign keys in a<br>
+previous reading. The <a href="https://www.postgresql.org/docs/8.3/tutorial-join.html">JOIN operation</a> allows us to retrieve rows from<br>
+multiple tables.</p>
+<p>To review, we had two tables: a &quot;breeds&quot; table and a &quot;puppies&quot; table. The two<br>
+tables shared information through a foreign key. The foreign key <code>breed_id</code><br>
+lives on the &quot;puppies&quot; table and is related to the primary key <code>id</code> of the<br>
+&quot;breeds&quot; table.</p>
+<p>We wrote the following <code>INNER JOIN</code> operation to get only the rows from the<br>
+&#x201C;puppies&#x201D; table with a matching <code>breed_id</code> in the &#x201C;friends&#x201D; table:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> puppies
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> breeds <span class="token keyword">ON</span> <span class="token punctuation">(</span>puppies<span class="token punctuation">.</span>breed_id <span class="token operator">=</span> breeds<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p><a href="http://www.postgresqltutorial.com/postgresql-inner-join/">INNER JOIN</a> can be represented as a Venn Diagram, which produces rows from<br>
+Table A that match some information in Table B.</p>
+<p><img src="images/inner-join-venn-diagram.png" alt="inner-join-venn-diagram"></p>
+<p>We got the following table rows back from our <code>INNER JOIN</code> on the &quot;puppies&quot;<br>
+table. These rows represent the center overlapping area of the two circles. We<br>
+can see that the data from &quot;puppies&quot; appears first, followed by the joined data<br>
+from the &quot;friends&quot; table.</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"> id <span class="token operator">|</span>   name   <span class="token operator">|</span> age_yrs <span class="token operator">|</span> breed_id <span class="token operator">|</span> weight_lbs <span class="token operator">|</span> microchipped <span class="token operator">|</span> id <span class="token operator">|</span>        name
+<span class="token comment">----+----------+---------+----------+------------+--------------+----+---------------------</span>
+  <span class="token number">1</span> <span class="token operator">|</span> Cooper   <span class="token operator">|</span>     <span class="token number">1.0</span> <span class="token operator">|</span>        <span class="token number">8</span> <span class="token operator">|</span>         <span class="token number">18</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">8</span> <span class="token operator">|</span> Miniature Schnauzer
+  <span class="token number">2</span> <span class="token operator">|</span> Indie    <span class="token operator">|</span>     <span class="token number">0.5</span> <span class="token operator">|</span>        <span class="token number">9</span> <span class="token operator">|</span>         <span class="token number">13</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">9</span> <span class="token operator">|</span> Yorkshire Terrier
+  <span class="token number">3</span> <span class="token operator">|</span> Kota     <span class="token operator">|</span>     <span class="token number">0.7</span> <span class="token operator">|</span>        <span class="token number">1</span> <span class="token operator">|</span>         <span class="token number">26</span> <span class="token operator">|</span> f            <span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span> Australian Shepherd
+  <span class="token number">4</span> <span class="token operator">|</span> Zoe      <span class="token operator">|</span>     <span class="token number">0.8</span> <span class="token operator">|</span>        <span class="token number">6</span> <span class="token operator">|</span>         <span class="token number">32</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">6</span> <span class="token operator">|</span> Korean Jindo
+  <span class="token number">5</span> <span class="token operator">|</span> Charley  <span class="token operator">|</span>     <span class="token number">1.5</span> <span class="token operator">|</span>        <span class="token number">2</span> <span class="token operator">|</span>         <span class="token number">25</span> <span class="token operator">|</span> f            <span class="token operator">|</span>  <span class="token number">2</span> <span class="token operator">|</span> Basset Hound
+  <span class="token number">6</span> <span class="token operator">|</span> Ladybird <span class="token operator">|</span>     <span class="token number">0.6</span> <span class="token operator">|</span>        <span class="token number">7</span> <span class="token operator">|</span>         <span class="token number">20</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">7</span> <span class="token operator">|</span> Labradoodle
+  <span class="token number">7</span> <span class="token operator">|</span> Callie   <span class="token operator">|</span>     <span class="token number">0.9</span> <span class="token operator">|</span>        <span class="token number">4</span> <span class="token operator">|</span>         <span class="token number">16</span> <span class="token operator">|</span> f            <span class="token operator">|</span>  <span class="token number">4</span> <span class="token operator">|</span> Corgi
+  <span class="token number">8</span> <span class="token operator">|</span> Jaxson   <span class="token operator">|</span>     <span class="token number">0.4</span> <span class="token operator">|</span>        <span class="token number">3</span> <span class="token operator">|</span>         <span class="token number">19</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">3</span> <span class="token operator">|</span> Beagle
+  <span class="token number">9</span> <span class="token operator">|</span> Leinni   <span class="token operator">|</span>     <span class="token number">1.0</span> <span class="token operator">|</span>        <span class="token number">8</span> <span class="token operator">|</span>         <span class="token number">25</span> <span class="token operator">|</span> t            <span class="token operator">|</span>  <span class="token number">8</span> <span class="token operator">|</span> Miniature Schnauzer
+ <span class="token number">10</span> <span class="token operator">|</span> Max      <span class="token operator">|</span>     <span class="token number">1.6</span> <span class="token operator">|</span>        <span class="token number">5</span> <span class="token operator">|</span>         <span class="token number">65</span> <span class="token operator">|</span> f            <span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span> German Shepherd
+</pre><p>There are different types of <code>JOIN</code> operations. The ones you&apos;ll use most often are:</p>
+<ol>
+<li><strong>Inner Join</strong> -- Returns a result set containing rows in the left table that<br>
+match rows in the right table.</li>
+<li><strong>Left Join</strong> --  Returns a result set containing all rows from the left<br>
+table with the matching rows from the right table. If there is no match, the<br>
+right side will have null values.</li>
+<li><strong>Right Join</strong> -- Returns a result set containing all rows from the right<br>
+table with matching rows from the left table. If there is no match, the left<br>
+side will have null values.</li>
+<li><strong>Full Outer Join</strong> -- Returns a result set containing all rows from both the<br>
+left and right tables, with the matching rows from both sides where<br>
+available. If there is no match, the missing side contains null values.</li>
+<li><strong>Self-Join</strong> -- A self-join is a query in which a table is joined to itself.<br>
+Self-joins are useful for comparing values in a column of rows within the<br>
+same table.</li>
+</ol>
+<p>(<em>See this tutorial doc on <a href="http://www.postgresqltutorial.com/postgresql-joins/">PostgreSQL Joins</a> for more information on the<br>
+different <code>JOIN</code> operations.</em>)</p>
+<h2 class="mume-header" id="what-is-a-subquery">What is a subquery?</h2>
+
+<p>A subquery is essentially a <code>SELECT</code> statement nested inside another <code>SELECT</code><br>
+statement. A subquery can return a single (&#x201C;scalar&#x201D;) value or multiple rows.</p>
+<h3 class="mume-header" id="single-value-subquery">Single-value subquery</h3>
+
+<p>Let&#x2019;s see an example of how to use a subquery to return a single value. Take<br>
+the &quot;puppies&quot; table from before. We had a column called <code>age_yrs</code> in that table<br>
+(see below).</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql">postgres<span class="token operator">=</span><span class="token comment"># SELECT * FROM puppies;</span>
+ id <span class="token operator">|</span>   name   <span class="token operator">|</span> age_yrs <span class="token operator">|</span> breed_id <span class="token operator">|</span> weight_lbs <span class="token operator">|</span> microchipped
+<span class="token comment">----+----------+---------+----------+------------+--------------</span>
+  <span class="token number">1</span> <span class="token operator">|</span> Cooper   <span class="token operator">|</span>     <span class="token number">1.0</span> <span class="token operator">|</span>        <span class="token number">8</span> <span class="token operator">|</span>         <span class="token number">18</span> <span class="token operator">|</span> t
+  <span class="token number">2</span> <span class="token operator">|</span> Indie    <span class="token operator">|</span>     <span class="token number">0.5</span> <span class="token operator">|</span>        <span class="token number">9</span> <span class="token operator">|</span>         <span class="token number">13</span> <span class="token operator">|</span> t
+  <span class="token number">3</span> <span class="token operator">|</span> Kota     <span class="token operator">|</span>     <span class="token number">0.7</span> <span class="token operator">|</span>        <span class="token number">1</span> <span class="token operator">|</span>         <span class="token number">26</span> <span class="token operator">|</span> f
+  <span class="token number">4</span> <span class="token operator">|</span> Zoe      <span class="token operator">|</span>     <span class="token number">0.8</span> <span class="token operator">|</span>        <span class="token number">6</span> <span class="token operator">|</span>         <span class="token number">32</span> <span class="token operator">|</span> t
+  <span class="token number">5</span> <span class="token operator">|</span> Charley  <span class="token operator">|</span>     <span class="token number">1.5</span> <span class="token operator">|</span>        <span class="token number">2</span> <span class="token operator">|</span>         <span class="token number">25</span> <span class="token operator">|</span> f
+  <span class="token number">6</span> <span class="token operator">|</span> Ladybird <span class="token operator">|</span>     <span class="token number">0.6</span> <span class="token operator">|</span>        <span class="token number">7</span> <span class="token operator">|</span>         <span class="token number">20</span> <span class="token operator">|</span> t
+  <span class="token number">7</span> <span class="token operator">|</span> Callie   <span class="token operator">|</span>     <span class="token number">0.9</span> <span class="token operator">|</span>        <span class="token number">4</span> <span class="token operator">|</span>         <span class="token number">16</span> <span class="token operator">|</span> f
+  <span class="token number">8</span> <span class="token operator">|</span> Jaxson   <span class="token operator">|</span>     <span class="token number">0.4</span> <span class="token operator">|</span>        <span class="token number">3</span> <span class="token operator">|</span>         <span class="token number">19</span> <span class="token operator">|</span> t
+  <span class="token number">9</span> <span class="token operator">|</span> Leinni   <span class="token operator">|</span>     <span class="token number">1.0</span> <span class="token operator">|</span>        <span class="token number">8</span> <span class="token operator">|</span>         <span class="token number">25</span> <span class="token operator">|</span> t
+ <span class="token number">10</span> <span class="token operator">|</span> Max      <span class="token operator">|</span>     <span class="token number">1.6</span> <span class="token operator">|</span>        <span class="token number">5</span> <span class="token operator">|</span>         <span class="token number">65</span> <span class="token operator">|</span> f
+<span class="token punctuation">(</span><span class="token number">10</span> <span class="token keyword">rows</span><span class="token punctuation">)</span>
+</pre><p>We&#x2019;ll use the <a href="https://www.postgresql.org/docs/8.2/functions-aggregate.html">PostgreSQL aggregate function</a> <code>AVG</code> to get an average puppy<br>
+age.</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span>
+  <span class="token function">AVG</span> <span class="token punctuation">(</span>age_yrs<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span>
+  puppies<span class="token punctuation">;</span>
+</pre><p>Assuming our previous &#x201C;puppies&#x201D; table still exists in our database, if we<br>
+entered the above statement into psql we&#x2019;d get an <em><strong>average age of 0.9</strong></em>.<br>
+(<em>Note: Try it out yourself in psql! Refer to the reading &quot;Retrieving Rows From<br>
+A Table Using SELECT&quot; if you need help remembering how we set up the &#x201C;puppies&#x201D;<br>
+table.</em>)</p>
+<p>Let&apos;s say that we wanted to find all of the puppies that are older than the<br>
+average age of 0.9. We could write the following query:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span>
+  name<span class="token punctuation">,</span>
+  age_yrs<span class="token punctuation">,</span>
+  breed
+<span class="token keyword">FROM</span>
+  puppies
+<span class="token keyword">WHERE</span>
+  age_yrs <span class="token operator">&gt;</span> <span class="token number">0.9</span><span class="token punctuation">;</span>
+</pre><p>In the above query, we compared <code>age_yrs</code> to an actual number (0.9). However, as<br>
+more puppies get added to our table, the average age could change at any time.<br>
+To make our statement more dynamic, we can plug in the query we wrote to find<br>
+the average age into another statement as a <em>subquery</em> (surrounded by<br>
+parentheses).</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span>
+  puppies<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+  age_yrs<span class="token punctuation">,</span>
+  breeds<span class="token punctuation">.</span>name
+<span class="token keyword">FROM</span>
+  puppies
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span>
+  breeds <span class="token keyword">ON</span> <span class="token punctuation">(</span>breeds<span class="token punctuation">.</span>id <span class="token operator">=</span> puppies<span class="token punctuation">.</span>breed_id<span class="token punctuation">)</span>
+<span class="token keyword">WHERE</span>
+  age_yrs <span class="token operator">&gt;</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span>
+      <span class="token function">AVG</span> <span class="token punctuation">(</span>age_yrs<span class="token punctuation">)</span>
+    <span class="token keyword">FROM</span>
+      puppies
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>We should get the following table rows, which include only the puppies older<br>
+than 9 months:</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">  name   <span class="token operator">|</span> age_yrs <span class="token operator">|</span>        breed
+---------+---------+---------------------
+ Cooper  <span class="token operator">|</span>     1.0 <span class="token operator">|</span> Miniature Schnauzer
+ Charley <span class="token operator">|</span>     1.5 <span class="token operator">|</span> Basset Hound
+ Leinni  <span class="token operator">|</span>     1.0 <span class="token operator">|</span> Miniature Schnauzer
+ Max     <span class="token operator">|</span>     1.6 <span class="token operator">|</span> German Shepherd
+</pre><h3 class="mume-header" id="multiple-row-subquery">Multiple-row subquery</h3>
+
+<p>We could also write a subquery that returns multiple rows.</p>
+<p>In the reading &quot;Creating A Table In An Existing PostgreSQL Database&quot;, we<br>
+created a &#x201C;friends&#x201D; table. In &quot;Foreign Keys And The JOIN Operation&quot;, we set up a<br>
+primary key in the &#x201C;puppies&#x201D; table that is a foreign key in the &#x201C;friends&#x201D; table<br>
+-- <code>puppy_id</code>. We&#x2019;ll use this ID in our subquery and outer query.</p>
+<p><strong>&quot;friends&quot; table</strong></p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell"><span class="token function">id</span> <span class="token operator">|</span> first_name <span class="token operator">|</span> last_name <span class="token operator">|</span> puppy_id
+----+------------+-----------+----------
+  1 <span class="token operator">|</span> Amy        <span class="token operator">|</span> Pond      <span class="token operator">|</span>        4
+  2 <span class="token operator">|</span> Rose       <span class="token operator">|</span> Tyler     <span class="token operator">|</span>        5
+  3 <span class="token operator">|</span> Martha     <span class="token operator">|</span> Jones     <span class="token operator">|</span>        6
+  4 <span class="token operator">|</span> Donna      <span class="token operator">|</span> Noble     <span class="token operator">|</span>        7
+  5 <span class="token operator">|</span> River      <span class="token operator">|</span> Song      <span class="token operator">|</span>        8
+</pre><p>Let&#x2019;s say we wanted to find all the puppies that are younger than 6 months old.</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> puppy_id
+<span class="token keyword">FROM</span> puppies
+<span class="token keyword">WHERE</span>
+  age_yrs <span class="token operator">&lt;</span> <span class="token number">0.6</span><span class="token punctuation">;</span>
+</pre><p>This would return two rows:</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">puppy_id
+----------
+        2
+        8
+<span class="token punctuation">(</span>2 rows<span class="token punctuation">)</span>
+</pre><p>Now we want to use the above statement as a subquery (inside parentheses) in<br>
+another query. You&#x2019;ll notice we&#x2019;re using a <code>WHERE</code> clause with the <a href="http://www.postgresqltutorial.com/postgresql-in/">IN</a><br>
+operator to check if the <code>puppy_id</code> from the &#x201C;friends&#x201D; table meets the<br>
+conditions in the subquery.</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> friends
+<span class="token keyword">WHERE</span>
+  puppy_id <span class="token operator">IN</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> puppy_id
+    <span class="token keyword">FROM</span> puppies
+    <span class="token keyword">WHERE</span>
+      age_yrs <span class="token operator">&lt;</span> <span class="token number">0.6</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>We should get just one row back. River Song has a puppy younger than 6 months<br>
+old.</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell"> <span class="token function">id</span> <span class="token operator">|</span> first_name <span class="token operator">|</span> last_name <span class="token operator">|</span> puppy_id
+----+------------+-----------+----------
+  5 <span class="token operator">|</span> River      <span class="token operator">|</span> Song      <span class="token operator">|</span>        8
+<span class="token punctuation">(</span>1 row<span class="token punctuation">)</span>
+</pre><h2 class="mume-header" id="using-joins-vs-subqueries">Using joins vs. subqueries</h2>
+
+<p>We can use either a <code>JOIN</code> operation or a subquery to filter for the same<br>
+information. Both methods can be used to get info from multiple tables. Take the query/subquery from above:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> friends
+<span class="token keyword">WHERE</span>
+  puppy_id <span class="token operator">IN</span>  <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> puppy_id
+    <span class="token keyword">FROM</span> puppies
+    <span class="token keyword">WHERE</span>
+      age_yrs <span class="token operator">&lt;</span> <span class="token number">0.6</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre><p>Which produced the following result:</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell"> <span class="token function">id</span> <span class="token operator">|</span> first_name <span class="token operator">|</span> last_name <span class="token operator">|</span> puppy_id
+----+------------+-----------+----------
+  5 <span class="token operator">|</span> River      <span class="token operator">|</span> Song      <span class="token operator">|</span>        8
+<span class="token punctuation">(</span>1 row<span class="token punctuation">)</span>
+</pre><p>Instead of using a <code>WHERE</code> clause with a subquery, we could use a <code>JOIN</code><br>
+operation:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> friends
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> puppies <span class="token keyword">ON</span> <span class="token punctuation">(</span>puppies<span class="token punctuation">.</span>puppy_id <span class="token operator">=</span> friends<span class="token punctuation">.</span>puppy_id<span class="token punctuation">)</span>
+<span class="token keyword">WHERE</span>
+  puppies<span class="token punctuation">.</span>age_yrs <span class="token operator">&lt;</span> <span class="token number">0.6</span><span class="token punctuation">;</span>
+</pre><p>Again, we&#x2019;d get back one result, but because we used an <code>INNER JOIN</code> we have<br>
+information from both the &#x201C;puppies&#x201D; and &#x201C;friends&#x201D; tables.</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell"><span class="token function">id</span> <span class="token operator">|</span> first_name <span class="token operator">|</span> last_name <span class="token operator">|</span> puppy_id <span class="token operator">|</span>  name  <span class="token operator">|</span> age_yrs <span class="token operator">|</span> breed  <span class="token operator">|</span> weight_lbs <span class="token operator">|</span> microchipped <span class="token operator">|</span> puppy_id
+----+------------+-----------+----------+--------+---------+--------+------------+--------------+----------
+  5 <span class="token operator">|</span> River      <span class="token operator">|</span> Song      <span class="token operator">|</span>        8 <span class="token operator">|</span> Jaxson <span class="token operator">|</span>     0.4 <span class="token operator">|</span> Beagle <span class="token operator">|</span>         19 <span class="token operator">|</span> t            <span class="token operator">|</span>        8
+<span class="token punctuation">(</span>1 row<span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="should-i-use-a-join-or-a-subquery">Should I use a JOIN or a subquery?</h3>
+
+<p>As stated earlier, we could use either a JOIN operation or a subquery to filter<br>
+for table rows. However, you might want to think about whether using a JOIN or a<br>
+subquery is more appropriate for retrieving data.</p>
+<p>A JOIN operation is ideal when you want to combine rows from one or more tables<br>
+based on a match condition. Subqueries work great when you&#x2019;re returning a single<br>
+value. When you&#x2019;re returning multiple rows, you could opt for a subquery or a<br>
+JOIN.</p>
+<p>Executing a query using a JOIN could potentially be faster than executing a<br>
+subquery that would return the same data. (A subquery will execute once for each<br>
+row returned in the outer query, whereas the <code>INNER JOIN</code> only has to make one<br>
+pass through the data.) However, this isn&#x2019;t always the case. Performance<br>
+depends on the size of your data, what you&#x2019;re filtering for, and how the server<br>
+optimizes the query. With smaller datasets, the difference in performance of a<br>
+JOIN and subquery is imperceptible. However, there are use cases where a<br>
+subquery would improve performance.</p>
+<p>(<em>See this article for more info: <a href="https://crate.io/a/sql-subquery-vs-left-join/">When is a SQL Subquery 260x Faster than a<br>
+Left Join?</a></em>)</p>
+<p>We can use the the <a href="http://www.postgresqltutorial.com/postgresql-explain/">EXPLAIN</a> statement to see runtime statistics of our<br>
+queries that help with debugging slow queries. (We&apos;ll get into this more later!)</p>
+<h2 class="mume-header" id="helpful-links">Helpful links:</h2>
+
+<ul>
+<li>PostgreSQL Tutorial: <a href="http://www.postgresqltutorial.com/postgresql-joins/">PostgreSQL Joins</a></li>
+<li>PostgreSQL Tutorial: <a href="http://www.postgresqltutorial.com/postgresql-subquery/">PostgreSQL Subquery</a></li>
+<li>PostgreSQL Docs: <a href="https://www.postgresql.org/docs/8.3/functions-subquery.html">Subquery Expressions</a></li>
+<li>Essential SQL: <a href="https://www.essentialsql.com/what-is-the-difference-between-a-join-and-subquery/">Subqueries versus Joins</a></li>
+<li>Essential SQL: <a href="https://www.essentialsql.com/get-ready-to-learn-sql-server-20-using-subqueries-in-the-select-statement/">Using Subqueries with the Select Statement</a></li>
+</ul>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#joins-vs-subqueries">Joins vs. Subqueries</a>
+<ul>
+<li><a href="#what-is-a-join">What is a JOIN?</a></li>
+<li><a href="#what-is-a-subquery">What is a subquery?</a>
+<ul>
+<li><a href="#single-value-subquery">Single-value subquery</a></li>
+<li><a href="#multiple-row-subquery">Multiple-row subquery</a></li>
+</ul>
+</li>
+<li><a href="#using-joins-vs-subqueries">Using joins vs. subqueries</a>
+<ul>
+<li><a href="#should-i-use-a-join-or-a-subquery">Should I use a JOIN or a subquery?</a></li>
+</ul>
+</li>
+<li><a href="#helpful-links">Helpful links:</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">&#x2261;</a>
+    
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  
+    </body></html>

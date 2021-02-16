@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<!--TODO: Clean up the notes so that the code examples are beside every example within the visible HTML elements, for easy live reference. -->
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chapter 15: Floating and Positioning</title>
+  <style>
+    @import "about_stylesheets.css";
+    
+    * {outline: red dotted 0px; }
+    
+    /* position */
+    #relative {
+      position: relative;
+      top: 2em;
+      left: 3em;
+      border: 1px midnightblue dashed;
+      background-color: lightblue;
+    }
+    #absolute {
+      position: absolute;
+      top: 2em;
+      left: 3em;
+      border: 1px seagreen dashed;
+      background-color: lightgreen;
+    }
+    #fixed {
+      position: fixed;
+      top: 2em;
+      left: 3em;
+      border: 1px goldenrod dashed;
+      background-color: yellow;
+    }
+    #sticky {
+      position: sticky;
+      top: 0;
+      border: 1px darkorange dashed;
+      background-color: sandybrown;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+<h2 id=#position>position</h2>
+<ul>
+  <li class="box">This is an example of a <i>[<span style="border: black 1px dashed; background-color: white">static</span>]</i> position element. This is the default position, and it behaves within the normal flow.</li>
+  <li class="box">This is an example of a <i>[<span id="sticky">sticky</span> ]</i> position element. This functions like a combination of relative and fixed positions. It behaved as though relatively positioned, until it is scrolled into a specified position relative to the viewport. It then remains fixed. If it is contained within another element, the sticky will die once the user scrolls out of the container as well. Test it out here by squishing the page, then scrolling down.</li>
+  <li class="box">This is an example of a <i>[<span id="fixed">fixed</span>]</i> position element. It stays on one 'fixed' point in the viewport no matter the place the user is scrolled to in the window.</li>
+  <li class="box">This is an example of a <i>[<span id="relative">relative</span>]</i> positioned inline element. The element is moved relative to its original position, from the top-left corner. Note that the space it originally occupied is still 'occupied' in that nothing else can move in to fill up the space left behind. These relatively positioned elements can also overlap other elements.</li>
+  <li class="box">This is an example of an <i>[<span id="absolute">absolute</span>]</i> positioned inline element. The element is moved relative to its 'containing block', which in here is the viewport. It works a bit more flexibly than relative positioning. The space originally occupied is now filled in. In addition to that, the positioning originates from the top-left of relative to its nearest <em>containing block</em>, not 'relative' to the element's original position.</li>
+  <li class="box" style="position: relative">This is an example of an <i>[<span id="absolute">absolute</span>]</i> positioned inline element within a containing block set to 'position: relative', and it is not the viewport. An element functions as a containing block if its position property is set to relative, absolute, or fixed but <strong>not</strong> when it is the default 'static' property.</li>
+</ul>
+
+</body>
+</html>

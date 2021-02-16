@@ -1,0 +1,12 @@
+{
+  "name": "selection-event-handling-storage-solution",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Assessment for element selection, event handling, and local storage",
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^3.7.0"
+  },
+  "author": "curriculum@appacademy.io",
+  "license": "ISC"
+}

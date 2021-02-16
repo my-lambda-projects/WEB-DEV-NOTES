@@ -1,0 +1,805 @@
+<p><a name="top"><img height="100px" src="photos/sequelize-101.png" href/></a></p>
+<h1 id="sequelize-tutorial-for-beginners">SEQUELIZE TUTORIAL FOR BEGINNERS</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Contributors <span class="op">=</span></a>
+<a class="sourceLine" id="cb1-2" title="2">[ <span class="op">{</span> <span class="dt">Name</span><span class="op">:</span> <span class="st">&quot;Richard Lorenzini&quot;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">{</span> <span class="dt">Name</span><span class="op">:</span> <span class="st">&quot;Jaclyn Legacion&quot;</span> <span class="op">}</span> ]</a></code></pre></div>
+<p><br/></p>
+<h1 id="updates">UPDATES</h1>
+<p>Hey, everyone. Updates coming soon. I think I will start with deleting information from the database with the built-in function <strong>destroy()</strong>. Then, I’ll go more into associations. The basic associations I covered should work most of the time, but they are not always the <em>best</em> way. I definitely feel deleting data is the most important to add next. Thoughts?</p>
+<p>If you want, feel free to create a bug report. Tell me what you think I can update, what should be added, or if any information in my tutorial is inaccurate. Constructive criticism is welcome and has helped make this guide what it is today!</p>
+<p><strong>THIS IS A WORK IN PROGRESS</strong></p>
+<p><strong>KNOWN MOBILE ISSUE:</strong> Search links may not work or will only send you to the beginning of the document when using a GitHub application. Issue does not persist when using mobile web browsers.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SEARCH OPTIONS</th>
+<th style="text-align: left;">WHAT IT’S FOR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="#and-so-it-begins">DOC#START</a></td>
+<td style="text-align: left;">BEGINNING OF DOCUMENTATION</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#setting-up">SQLZ#START</a></td>
+<td style="text-align: left;">SETTING UP FROM SCRATCH</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#npm-time">SQLZ#NPM</a></td>
+<td style="text-align: left;">SEQUELIZE INSTALLATION</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#database-setup">SQLZ#DB</a></td>
+<td style="text-align: left;">SETTING UP THE DATABASE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#first-migration">SQLZ#MIG</a></td>
+<td style="text-align: left;">FIRST MIGRATION</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#forms-and-posts">SQLZ#FORMS</a></td>
+<td style="text-align: left;">FORMS AND POSTS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#using-seeders">SQLZ#SEEDS</a></td>
+<td style="text-align: left;">USING SEEDERS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#display-data">SQLZ#DISP</a></td>
+<td style="text-align: left;">DISPLAYING DATA FROM DATABASE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#user-update">SQLZ#UPD</a></td>
+<td style="text-align: left;">UPDATE DATABASE DATA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#add-del-data">SQLZ#ADDEL</a></td>
+<td style="text-align: left;">ADDING AND DELETING DATA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#associations">SQLZ#ASSOC</a></td>
+<td style="text-align: left;">ASSOCIATING TABLES AND DATA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#one-to-many">SQLZ#OTOM</a></td>
+<td style="text-align: left;">ONE TO MANY ASSOCIATIONS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#one-to-one">SQLZ#OTOO</a></td>
+<td style="text-align: left;">ONE TO ONE ASSOCIATIONS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="#many-to-many">SQLZ#MTOM</a></td>
+<td style="text-align: left;">MANY TO MANY ASSOCIATIONS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="#del-assoc">ASSOC#DEL</a></td>
+<td style="text-align: left;">DELETING ASSOCIATIONS</td>
+</tr>
+</tbody>
+</table>
+<p><br/> <br/> <br/></p>
+<p><a name="and-so-it-begins"><img height="100px" src="photos/and-so-it-begins.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<h2 id="so-what-is-sequelize">So what is Sequelize?</h2>
+<p><strong>Sequelize</strong> is a tool used in a <strong>Node.js</strong> environment to make the connection between your <em>backend</em> and your <em>database</em> simpler, specifically when working with <strong>multiple developers with different SQL backgrounds</strong>. For example, if one developer has coded in mySQL, another in SQLite, and a third in postgreSQL, all developers will be able to use a <strong>single query syntax</strong>. In either small or large applications this can be beneficial. Sequelize <strong>normalizes</strong> the way you interact with your databaes by having one function work across multiple SQL commands. Whether you are using mySQL, SQLite, or postgreSQL, <strong>.findOne(), .build(), .create(), etc</strong> all work the same <em>in your code</em>.</p>
+<p>Sequelize’s greatest strength comes from normalizing all the SQL languages, but it is also its greatest weakness. Due to creating generic functions, Sequelize cannot optimize queries as well as the native language. This is a whole topic in and of itself, which is not the focus of this tutorial. Let it be food for thought and make sure you explore multiple server languages to find which works best for you. <br/> <br/> Setting up Sequelize and understanding what’s going on can be daunting, so I hope this simple and basic tutorial helps anyone who reads it. This tutorial is <strong>VERY BASIC</strong> and will not go into great depth about every aspect of Sequelize. Also, I use certain tools to help me out when coding, which others may or may not be aware of. Below, I list the tools I use and a basic description of what I use them for.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">TOOL</th>
+<th style="text-align: left;">PURPOSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Postico</td>
+<td style="text-align: left;">Visualizes your database with a user friendly interface</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Postman</td>
+<td style="text-align: left;">Debug and test fetch calls by targeting your frontend or backend</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ElephantSQL</td>
+<td style="text-align: left;">Online hosting service for databases; free, but can buy upgrades</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ATOM</td>
+<td style="text-align: left;">My preferred code editor</td>
+</tr>
+</tbody>
+</table>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="setting-up"><img height="100px" src="photos/setting-up.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><img height="200px" src="photos/terminalStart.png"/></p>
+<p>I have created a new folder called <code>mySequelize</code> and opened a terminal at that folder.</p>
+<p>My terminal is displaying the following, indicating I am on my Macbook Pro, in the folder <code>mySequelize</code>, as user: richardlorenzini.</p>
+<pre class="console"><code>(base) Richards-MBP:mySequelize richardlorenzini$</code></pre>
+<h2 id="setting-up-git">Setting Up Git</h2>
+<p><img height="200px" src="photos/terminalGitInit.png"/></p>
+<pre class="console"><code>git init</code></pre>
+<p>We will begin by initializing our git folder and connecting to this git repository.</p>
+<p><img height="200px" src="photos/terminalGitAddOrigin.png"/></p>
+<pre class="console"><code>git add remote origin &lt;insert_repository_url_here&gt;</code></pre>
+<p><img height="200px" src="photos/terminalGitIgnore.png"/></p>
+<pre class="console"><code>touch .gitignore</code></pre>
+<p>.gitignore is used to tell your git commands to ignore certain folders. This is extremely useful when working in a Node.js environment, as your Node_Modules folder (the packages installed into your project) can get massive quickly.</p>
+<p><img height="200px" src="photos/codeGitIgnore.png"/></p>
+<p>My .gitignore file can be located in my GitHub repository <a href='https://github.com/rlorenzini/usingGitignore/blob/master/.gitignore'>HERE</a>. This is a cookie-cutter catch-all .gitignore file.</p>
+<p><img height="200px" src="photos/terminalGitPush.png"/></p>
+<pre class="console"><code>git add . &amp;&amp; git commit -m &quot;first commit&quot; &amp;&amp; git push origin master</code></pre>
+<p>I always perform an initial commit to verify I have properly setup my git environment.</p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="npm-time"><img height="100px" src="photos/npm-initialization.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><img height="200px" src="photos/terminalNPMInstall.png"/></p>
+<pre class="console"><code>npm init &amp;&amp; npm install express &amp;&amp; npm install cors &amp;&amp; npm install body-parser &amp;&amp; npm install sequelize &amp;&amp; npm install sequelize pg</code></pre>
+<p>Don’t forget to initialize node in your project with <code>npm init</code>. Otherwise, you can’t install or use any packages.</p>
+<p>I install <strong>express</strong> to make my time coding my backend simpler, <strong>cors</strong> is to avoid certain HTTP request issues, <strong>body-parser</strong> allows us to translate what is being sent from the frontend to the backend, <strong>sequelize</strong> is the point of this tutorial and makes the transfer of data from the backend to our database simpler, and <strong>sequelize pg</strong> is used to tell sequelize we are using a <em>postgres database</em>.</p>
+<p><img height="200px" src="photos/terminalSQLCLI.png"/></p>
+<pre class="console"><code>npm install -g sequelize-cli</code></pre>
+<p>Sequelize does not, by default, have a command-line interface. <strong>Sequelize CLI</strong> stands for “Sequelize Command-Line Interface”. We are installing this so we can avoid a lot of the file creating and editing Sequelize performs. This also makes migrations easier.</p>
+<p><img height="200px" src="photos/codeBackendSetup.png"/></p>
+<p>Setting up our backend <strong>app.js</strong> environment. What we installed, we are requiring.</p>
+<p><strong>NOTE:</strong></p>
+<pre class="console"><code>models = require(./models)</code></pre>
+<p>is so we can tell Sequelize where the models are. More on that later.</p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="database-setup"><img height="100px" src="photos/database-setup.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p>In your command-line, which should be in your directory for your backend (the folder which has <strong>app.js</strong>), run the following command.</p>
+<pre class="console"><code>sequelize init</code></pre>
+<p>We have now initialize Sequelize. If you receive an error message informing you Sequelize is not a command, you did not properly install the Sequelize-CLI.</p>
+<p>Sequelize will create several folders inside of your working directory: models; seeders; migrations; config. At this point, running</p>
+<pre class="console"><code>sequelize db:migrate</code></pre>
+<p>can help avoid any early-stage issues, but is not required.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">FOLDER</th>
+<th style="text-align: left;">QUICK EXPLANATION</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MODELS</td>
+<td style="text-align: left;">A visual representation of each table in your database. Does not always update with migration.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MIGRATIONS</td>
+<td style="text-align: left;">JavaScript files which execute during migration. These files are the backbone of Sequelize.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEEDERS</td>
+<td style="text-align: left;">Used to dump data into a table. DO NOT USE in place of forms, post, and create/build.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SEEDERS</td>
+<td style="text-align: left;">Seeders should not be used until you have a basic understanding of Sequelize and databases.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CONFIG</td>
+<td style="text-align: left;">The config file in this folder tells Sequelize what database you are using and where it is located.</td>
+</tr>
+</tbody>
+</table>
+<p><img height="200px" src="photos/codeConfigMysql.png"/></p>
+<p>The config file will very likely need modified from the beginning of your project. For example, unless your database is a MySQL database, you will need to change your dialect. In our case, we are going to change the dialect to <strong>postgres</strong> since we are using a postgres database.</p>
+<p>I prefer to setup a database on a website called <strong>ElephantSQL</strong>. It is a free online service to host a database and store the data. ElephantSQL <strong>DOES NOT</strong> replace Postico and <strong>DOES NOT</strong> show you the tables, columns, and data inside of your database.</p>
+<p><img height="200px" src="photos/elephantSQL.png"/></p>
+<p>ElephantSQL provides us several pieces of information, which is automatically generated when we create our database. What we are interested in is <strong>Server, User &amp; Database, and Password</strong>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">INFOMATION</th>
+<th style="text-align: left;">DESCRIPTION</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>SERVER</strong></td>
+<td style="text-align: left;">The URL our database will be hosted on. A local environment runs a database on PORT 5432 by default.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>USER/DATABASE</strong></td>
+<td style="text-align: left;">When we go to our server, this is our username and the database name we are looking for.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>PASSWORD</strong></td>
+<td style="text-align: left;">The password we need to access the DATABASE via our USER.</td>
+</tr>
+</tbody>
+</table>
+<p>The placement of the information into postico and your config file are straight forward.</p>
+<p>SERVER goes into “host”, USER &amp; DATABASE goes into “username”/USER and “database”, and PASSWORD goes into “password”.</p>
+<p><img height="200px" src="photos/posticoDatabase.png"/></p>
+<p><img height="200px" src="photos/codeConfigElephantSQL.png"/></p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="first-migration"><img height="100px" src="photos/first-migration.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><img height="200px" src="photos/posticoDatabaseInitial.png"/></p>
+<p>Once we connect into our database via Postico, we can see all of our tables, columns, and data is a clean interface. Our Postico database is practically empty at this stage, as we have no created any tables.</p>
+<p><img height="200px" src="photos/terminalModelCreate.png"/></p>
+<pre class="console"><code>sequelize model:create --name Users --attributes &#39;username:string, password:string, firstName:string, lastName:string, email:string&#39;</code></pre>
+<p>We are finally creating our first <strong>TABLE</strong>. A <em>table</em> in Sequelize is referred to as a <strong>MODEL</strong> and <em>columns</em> are <strong>ATTRIBUTES</strong>. Our</p>
+<pre class="console"><code>model:create</code></pre>
+<p>command takes in a name and attributes. The name must be declared as</p>
+<pre class="console"><code>--name NameOfYourTable</code></pre>
+<p>. You <strong>MUST</strong> declare –name or the command will fail. Columns are immediately declared after the name of the table, and must be declared with –attributes to work. Attributes are wrapped inside of apostrophes as a whole and not individually, so be mindful of your syntax.</p>
+<pre class="console"><code>--attributes &#39;FirstColumnName:DATATYPE, SecondColumnName:DATA, etc:etc&#39;</code></pre>
+<p><img height="200px" src="photos/codeMigrationFile.png"/></p>
+<p>Running our model:create command has generated a new migration file. Migration files are JavaScript files with JavaScript code. Essentially, in our migration file above, we are creating a Class via Sequelize. This file is executed when we run</p>
+<pre class="console"><code>sequelize db:migrate</code></pre>
+<p>This particular migration file is telling us it will create a table called Users with the attributes id, username, password, firstName, lastName, email, createdAt, and updatedAt. Id, createdAt, and updatedAt are automatically generated by Sequelize.</p>
+<p>Our migration file starts with</p>
+<pre class="console"><code>model.exports</code></pre>
+<p>which is an object. The first key for our object is UP, and the last key is DOWN. Both UP and DOWN need to be utilized in a specific manner.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">WHAT</th>
+<th style="text-align: left;">WHY</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">UP</td>
+<td style="text-align: left;">Used to create, modify, or update your database.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DOWN</td>
+<td style="text-align: left;">Used to delete, undo, or reverse whatever UP does.</td>
+</tr>
+</tbody>
+</table>
+<p><img height="200px" src="photos/terminalDBMigrate.png"/></p>
+<p>I’m going to slow down and explain a bit about Sequelize, as to understand db:migrate we must understand how Sequelize functions. Sequelize keeps a log of everything done. Every migration is kept, with a log of when what was ran. This way, if a new user pulls our project and runs our project, Sequelize can build the environment from scratch exactly how you, the original developer, built your project. Due to this, you <strong>must</strong> commit fully to Sequelize. Let me explain.</p>
+<p>Imagine following this tutorial and at this point &lt;GO TO JACLYN’S GITHUB FOR THIS INFORMATION&gt; would be great, right? But we really don’t talk about that anymore, especially after <strong>the incident</strong>… Anyway. Let’s move on to utilizing Sequelize with scrapping data form news websites.</p>
+<p>I’m only partially kidding, but this is essentially what happens when you do not commit fully to Sequelize. If you use pg-promise to create a new table, Sequelize will be unable to retrieve that script and build a proper environment. Then, the user who downloaded and ran your project will not have a fully functional environment.</p>
+<p>Say you created a Users table in pg-promise. If the user then goes to a <em>login page</em> you created and submits their login information, your application will crash due to being unable to communicate properly with the server. Sequelize does not know the Users table exists since it did not create a migration and execute building the Users table. This is why if you plan to use Sequelize it is <strong>HIGHLY</strong> recommended, and almost completely required, to <strong>ONLY</strong> utilize Sequelize <strong>when modifying tables</strong>. IF you build, delete, add columns to, or remove columns from tables, <strong>stick with Sequelize</strong> to avoid these issues. As for querying data, such as finding data or entering data, you can decide between using Sequelize or the language you are using (mySQL, postgreSQL, SQLite, etc). For more complexity and optimization, using the native language is almost always better than strictly using Sequelize.</p>
+<p><img height="200px" src="photos/posticoPostMigrate.png"/></p>
+<p>Looking at our Postico after our db:migrate, we can see our Users table and the columns we specified. <strong>MAGNIFICENT.</strong></p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="forms-and-posts"><img height="100px" src="photos/forms-and-posts.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><img height="200px" src="photos/codePostForm.png"/></p>
+<p>I built my project in <strong>React</strong>, a framework for <strong>JavaScript</strong> based on Components and Single Page Applications. React is my comfort zone and go-to for building projects, but that is not the only reason I used it for this project. React allows you to break apart the webpage into components and inject them easily wherever they are needed. This way, I do not have to show off my entire project, but I can show off just the raw HTML code used to build the form.</p>
+<p>I purposely removed code-wrapping and indentions so the code is easier to follow. Otherwise, my code would either go further than my screen or would be less appealing to look at.</p>
+<p>For those who are unfamiliar with React, this is what you need to know about the form shown above. <strong>onClick</strong> is similar in functionality and purpose as <strong>action</strong>. <strong>onChange</strong> is a React thing, so do not get caught up on that too much. I’m using it to make it easier for me to pass my values to my backend via my <strong>fetch</strong> above, <strong>handleSubmitData</strong>.</p>
+<p><strong>Fetch</strong> has two very common uses: <strong>POST and GET</strong>. I your client, who is on the <strong>frontend</strong> of your applications, wants to <strong>get information or a new page</strong>, you have to use a <strong>get request</strong> via fetch. In my example above, our client wants to <strong>submit data to the database</strong>, so we have to allow them to <strong>post their data</strong> to our backend. This is why we are using a <strong>post request</strong> via fetch.</p>
+<p>Our header informs our server, the <strong>backend</strong>, what to expect. This is why we installed <strong>body-parser</strong> on the backend, so we can easily pass our data as a <strong>JSON</strong> file. <strong>JSON.stringify()</strong>, which is a JSON function, translates roughly to, “take this data and make it a JSON file.” JSON.stringify, as you would expect if you are familiar with JSON files, wants an object. We define our keys and values, where our keys are what our backend calls and our values are directly taken from our form. In my example, <strong>this.state.username</strong> is the value submitted by our user via the <strong>username input</strong>.</p>
+<p><strong>NOTE:</strong> There are many ways to do this step, with many different frameworks and libraries to change how you do it. For example, if you wish to use <strong>AXIOS</strong> to handle your fetch requests your code will look different. Be sure to keep in mind the technologies you are using, as my code may or may not translate properly into your technologies without a bit of fiddling.</p>
+<p><img height="200px" src="photos/appPostForm.png"/></p>
+<p><img height="200px" src="photos/terminalPostBody.png"/></p>
+<p>Our POST request is console logged on our backend so we can get an idea of what we are receiving from the frontend. When using <strong>body-parser</strong>, the JSON file is sent in the request as <strong>body</strong>. To access the JSON file, we must call <strong>req.body</strong>. Our user, me, sent nothing but “a” in every input.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">console</span>.<span class="at">log</span>(<span class="va">req</span>.<span class="at">body</span>)</a></code></pre></div>
+<p>As we see, we are no longer working with <strong>this.state.username</strong>, but we have all of our values of “a”. To get the value on the backend, we now use <strong>req.body.username</strong>. Below, I will list what the frontend sent and what the backend received so we can visualize the change better.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">FRONTEND FORM VALUES</th>
+<th style="text-align: left;">BACKEND JSON FILE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">this.state.username</td>
+<td style="text-align: left;">req.body.username</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">this.state.password</td>
+<td style="text-align: left;">req.body.password</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">this.state.firstName</td>
+<td style="text-align: left;">req.body.firstName</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">this.state.lastName</td>
+<td style="text-align: left;">req.body.lastName</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">this.state.email</td>
+<td style="text-align: left;">req.body.email</td>
+</tr>
+</tbody>
+</table>
+<p><img height="200px" src="photos/codeBackendPostToDB.png"/></p>
+<p>Personally, the first thing I do is create variable names for my data being received. Typing out <strong>username</strong> is quicker and takes up less space than typing <strong>req.body.username</strong>. This is a personal preference to shorten and clean-up my code, but is not required.</p>
+<p>Line 24 is where we are now in Sequelize territory. We are still working on our backend, but we now must communicate to Sequelize what we want Sequelize to do with our data. As you may recall above, we created a model/table called <strong>“Users”</strong>. Once we migrated, we received a model file called <strong>“users.js”</strong>. This is where Sequelize begins to shine, but you must understand <strong>what you are doing and why</strong>. We required our models earlier, at the very beginning, because Sequelize needs to know <strong>where to find them</strong>. For any coder who has ever created routes, paths, or imported their own files, this concept isn’t new but might look different.</p>
+<p>Our model === users. When we type <code>models</code>, Sequelize immediately knows two things. First, we are going to be doing something with a model. Secondly, it knows where which models we are going to be working with are. The next argument, <code>users</code>, tells Sequelize, “Check the /models folder for a file called ‘users’.” The last argument, <strong>build</strong>, is as basic as it comes. Time to build a new model with our data! This is going to be our first Users entry into our database.</p>
+<p><strong>models.Users.build()</strong></p>
+<p><strong>build()</strong> is a function and our <strong>model</strong> is built similar to a <strong>Class</strong>. Sequelize wants us to pass our data in as an object. Our keys <strong>must</strong> be exactly the same as the <strong>attributes</strong> our model is built with. If my model has an attribute “firstname”, I cannot send this key as “firstName”. If you run into errors about improperly building a model, this should be the first place you look. It is very easy to use the wrong syntax, especially if your database uses a different convention than your backend.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="dt">username</span><span class="op">:</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">username</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="dt">password</span><span class="op">:</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">password</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="dt">firstName</span><span class="op">:</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">firstName</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="dt">lastName</span><span class="op">:</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">lastName</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="dt">email</span><span class="op">:</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">email</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="op">}</span></a></code></pre></div>
+<p>This is how our <strong>build</strong> object would look if we did not define our req.body values as variables. It is not wrong and will work, but my preference is to define variables first.</p>
+<p><img height="200px" src="photos/posticoTerminalResults.png"/></p>
+<p>Postico is now displaying <strong>“a”</strong> values in each of our columns. <strong>NOTE:</strong> Postico does not refresh dynamically as data is put into your database. Remember to refresh to see the results. Our <strong>id</strong> column is, by default, 1 as this is our first entry. Behind my terminal is <strong>createdAt and updatedAt</strong>, which are updated automatically by Sequelize.</p>
+<p>Looking at our terminal, we see a long command being run which may be familiar to some of you. The command is run using pg-promise. Sequelize takes our <strong>models.Users.build({})</strong> and translates it into pg-promise for us, so we do not have to execute pg-promise ourselves. As you may recall, by default our config file uses “mysql” as the “dialect”. Sequelize can communicate with multiple backend technologies, which is great for us. If we decided to change our server to a mysql server, converting is much easier now as we only need to switch to mysql. The backend, frontend, models, and migrations do not change. We only have to uninstall pg-promise, install mysql, and require mysql. There may be a few other tweaks, but overall this is much faster and simpler than rewriting huge chunks of your code.</p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="using-seeders"><img height="100px" src="photos/seeders.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<h2 id="what-are-seeders">What Are Seeders?</h2>
+<p>To explain the ins and outs of seeders, we first need to go back to the basics of using a database. Why do we use databases? What is the point of a database? <strong>Why would you have an empty database?</strong> A lot of these questions seem rhetorical, but these are common questions teams ask when planning out their application.</p>
+<p><strong>Why do we use databases?</strong></p>
+<p>To store large amounts of data in one spot, which our application is able to access as long as it has a connection (wireless or hardwired) to our database. Remember, a database is just a computer which is set up to store data for an application. Databases are so important and widely used there are warehouses full of only databases called Data Centers.</p>
+<p><strong>What is the point of a database?</strong></p>
+<p>A database holds all our data so our client doesn’t have to. Also, we can now manage and regulate the data directly. The point of <em>your</em> database can change based on the scope and purpose of your application.</p>
+<p><strong>Why would you have an empty database?</strong></p>
+<p>This question definitely seems pointless, but there are times when a database would be empty. When you launch an application, do you have a pre-defined user base? If you have a log in but no one has registered an account, is your database going to be empty? What if our database is just for holding data which is relevant to our website? For example, what if we are creating a food market database, starting with potatoes, but do not want a userbase?</p>
+<p><strong>Ask yourself: WHAT AM I BUILDING AND WHY?</strong></p>
+<p>This question determines everything you are going to do moving forward, and the more you plan <strong>now</strong> the less you have to adjust in the <em>future</em>. Typically. Development can change drastically at times if the scope, scale, and focus of the application changes. If we decided to add a userbase to our food market website, we now need a second table, some form of session control to know when a user is logged into our application, and we have to discuss if we want users to be allowed to favorite foods. Maybe our users are now requesting a list of local food markets and farms. Are we going to allow them to save local locations to their user? Will we include a mapping feature to give them directions to their local markets?</p>
+<p>Throughout all of those adjustments, our original potatoes database was never changed. It still only stores information on potatoes. We <strong>might</strong> add a column for our association with the users, <em>if</em> we want a favorites feature, but that is another discuss.</p>
+<h2 id="creating-seeders">CREATING SEEDERS</h2>
+<p>For the purpose of my database, I have decided I want a table called <strong>“potatoes”</strong>, which will only hold information on a variety of potatoes. I have also decided I do not want my userbase to be able to manipulate the potatoes table, so I have no reason to create a potato registration feature. If my userbase is not going to add potatoes to the potato table, <strong>why make a page to add potatoes to our database?</strong> This is where <strong>seeders</strong> take over.</p>
+<p>A <strong>seeder</strong> is a file full of data which gets planted into our database. With <strong>Sequelize</strong> we must include certain information into our seeder file, or our seeder file will fail to execute. First, let’s create our potatoes table. What do people generally look for when it comes to potatoes? The name, the starch level, and the best way to cook them. This is data our userbase will come to us for, so from the beginning we are going to provide it.</p>
+<pre class="console"><code>sequelize model:create --name potatoes --attributes &#39;name:string, starch_level:string, cook_method:string&#39;</code></pre>
+<pre class="console"><code>sequelize db:migrate</code></pre>
+<p>We have created a table called <strong>potatoes</strong> with the columns <strong>id, name, starch_level, cook_method, createdAt, and updatedAt.</strong> The id, createdAt, and updatedAt are automatically created by Sequelize and have the constraint <strong>NOT NULL</strong>. As you may recall, we did not have to enter that information when registering new users. Sequelize automates these values during a table insertion, but we have to do <em>a little</em> extra work when using seeders. <strong>DON’T PANIC!</strong> We will figure this out.</p>
+<p><strong>QUICK NOTE:</strong> There are multiple naming conventions used across different languages, frameworks, and libraries. JavaScript commonly use what is called <strong>camelCase</strong>, but this is entirely at the discretion of the developer. For this small tutorial, I’m not concerned about naming conventions. Sequelize’s naming convention is to title your tables in the <strong>singular</strong>, ie. <em>potato</em> and <strong>not</strong> <em>potatoes</em>. Sequelize will check your –name and make the table name the <strong>plural</strong> of your table name. If the –name you give your table is already plural, Sequelize does not make any adjustments. Keep this is mind, as if you use the Sequelize naming conventions certain parts of my tutorial <strong>will need adjusted in your code</strong>.</p>
+<p>For example, my models.potatoes.findOne() <em>should</em> be models.potato.findOne() <strong>if</strong> I had used proper naming conventions.</p>
+<p>On to the code! Let’s create a seeder file and plug in our data.</p>
+<pre class="console"><code>sequelize seed:generate --name potato-data</code></pre>
+<p><img height="200px" src="photos/seederUp.png" /></p>
+<p>This is my completed <strong>UP</strong> for my seeder file, which has 13 <strong>objects</strong> inside of 1 <strong>array</strong>. Seeders typically only have one of two arguments, being <strong>bulkInsert</strong> and <strong>bulkDelete</strong>. Let’s break down why our <strong>UP</strong> is using <strong>bulkInsert</strong> and how to properly use <strong>bulkInsert</strong>.</p>
+<p>Again, like with a lot of things, Sequelize automates a lot of stuff for us. The first four lines of our file are automated and we do not pick the variables passed through the function.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a></code></pre></div>
+<p>Just like our migrations, we have <strong>module.exports = {}</strong> to tell Sequelize <strong>“everything in this object is to be used when we migrate”</strong>. Also just like our migrations, there are two primary keys: <strong>UP and DOWN</strong>. These function exactly how they do with migrations. When you run your migration, the <strong>UP</strong> is executed. When you reverse your migrations, the <strong>DOWN</strong> is executed. The only difference is the command we run in our terminal to execute seeders instead of migrations, which is <strong>db:seed</strong> instead of <em>db:migrate</em>. (More on this later.)</p>
+<p>Our keys, <strong>UP and DOWN</strong>, both have functions as their values. The functions return the result we desire. Since we want to insert a bunch of potatoes into our database, we are going to <strong>bulkInsert</strong> information into our database. Sequelize really picked straight forward function names. <strong>addColumn, removeColumn, bulkInsert, findOne, findAll, build</strong>. This helps keep Sequelize user-friendly, and allows us a better learning experience.</p>
+<p><strong>bulkInsert works as follows:</strong></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(</a>
+<a class="sourceLine" id="cb24-2" title="2">  <span class="st">&quot;name_of_table_we_want_to_manipulate&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb24-3" title="3">  [ <span class="op">{</span><span class="dt">name_of_column_inside_our_our_table</span><span class="op">:</span> <span class="st">&quot;value_we_want_to_insert_inside_said_column&quot;</span><span class="op">},</span></a>
+<a class="sourceLine" id="cb24-4" title="4">  <span class="op">{</span><span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">},</span></a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="op">{</span><span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">}</span></a>
+<a class="sourceLine" id="cb24-6" title="6">  ]<span class="op">,</span> <span class="op">{}</span> )<span class="op">;</span></a></code></pre></div>
+<p>Sequelize is very straight forward, which I have expressed many times. <strong>bulkInsert</strong> takes in the table name and an array. The array can hold many objects, where the keys match the column names. Our keys do not need to be in quotes, but our data in the first object is in quotes because we are passing in a <strong>string</strong>. You must know the <strong>data type</strong> of the column when creating a seeder, or else the seed will fail. We set all of our columns to strings when we created our table initially (recall model:create ….. ‘name:<strong>string</strong>, starch_level:<strong>string</strong>…….’). Common data types to be aware of are <strong>strings, integers, floats, booleans, and text.</strong></p>
+<p>Our finished result is…</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1">  up<span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-2" title="2">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(</a>
+<a class="sourceLine" id="cb25-3" title="3">      <span class="st">&quot;potatoes&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb25-4" title="4">      [<span class="op">{</span></a>
+<a class="sourceLine" id="cb25-5" title="5">      <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Yukon Gold&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb25-6" title="6">      <span class="dt">starch_level</span><span class="op">:</span> <span class="st">&quot;All Purpose&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb25-7" title="7">      <span class="dt">cook_method</span><span class="op">:</span> <span class="st">&quot;boil, bake, fry&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb25-8" title="8">      <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-9" title="9">      <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()</a>
+<a class="sourceLine" id="cb25-10" title="10">      <span class="op">}</span>]</a></code></pre></div>
+<p><strong>Why do we have an object for <em>createdAt and updatedAt</em> but <em>not id</em> when they are all set to <em>NOT NULL</em>?</strong></p>
+<p>Very good questions, complete stranger! This is just another Sequelize quirk. Sequelize will <strong>always</strong> handle the first column, <strong>id</strong>, for us, until we tell it otherwise. In our case, there’s no reason to change this, so we are letting Sequelize do its thing.</p>
+<p>Sequelize, however, does not automate <strong>createdAt and updatedAt</strong> when seeding for… Reasons. It does during insertions, such as when we inserted a new user via our registration, but not during seeding. Luckily, we have a built-in JavaScript function called <strong>Date()</strong> which Sequelize already uses. By setting our value to <strong>new Date()</strong>, we are passing in a time stamp of the moment the seeder is migrated. <strong>Why use <em>new Date()?</em></strong> Because I don’t want to type out this:</p>
+<p><code>2019-10-22 17:37:01.364+00</code></p>
+<p>This is how the time stamp comes thorugh, and even though it is easy to do ourselves… I just see no reason to.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="op">{</span><span class="dt">name</span><span class="op">:</span> <span class="st">&quot;Yukon Gold&quot;</span><span class="op">,</span> <span class="dt">starch_level</span><span class="op">:</span> <span class="st">&quot;All Purpose&quot;</span><span class="op">,</span> <span class="dt">cook_method</span><span class="op">:</span> <span class="st">&quot;boil, bake, fry&quot;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">},</span></a></code></pre></div>
+<p>This is the first entry of my seeder. As you recall, we created the attributes <strong>name, starch_level, and cook_method</strong> when we ran our <strong>model:create</strong> command. We did not create a constraint of <strong>NOT NULL</strong> on these values, but we decided when we created our table these values were important for our userbase. This is why we have created our object this way. Feel free to experiment and see if and when you can ignore passing values into a column, if you can put the columns out of order, and if you can pass through a limited amount of digits or pass an integer as a string. Or, maybe wait until <strong>after</strong> we create our <strong>DOWN</strong>.</p>
+<p><img height="150px" src="photos/seederDown.png" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1">down<span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb27-2" title="2">    <span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkDelete</span>(<span class="st">&quot;potatoes&quot;</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="op">{}</span>)</a>
+<a class="sourceLine" id="cb27-3" title="3">  <span class="op">}</span></a></code></pre></div>
+<p>Well, that was much shorter than the <strong>UP</strong>. Why? Because the <strong>UP</strong> is passing in 13 potato types with name, starch_level, cook_method, createdAt, and updatedAt keys. <strong>DOWN</strong> is just saying “delete everything”, but let’s get a <em>little</em> more technical with that.</p>
+<p><strong>bulkDelete</strong> passes through the table name, which for us is “potatoes”, and the value we want to set everything to, <strong>null</strong>. What’s that empty object in both our <strong>UP</strong> and <strong>DOWN</strong>? That is for options, which we are not using at this time. This is more useful when using <strong>bulkUpdate</strong> in your seeder.</p>
+<p>Now we run our seeder, similar to how we would run our migration.</p>
+<pre class="console"><code>sequelize db:seed:all</code></pre>
+<p>And our database is full of data! Success.</p>
+<p><img height="150px" src="photos/posticoPotatoes.png" /></p>
+<p>A few seeder commands you may need to know.</p>
+<pre class="console"><code>sequelize db:seed:undo</code></pre>
+<p><strong>db:seed:undo</strong> can pass the same arguments as <strong>db:seed</strong>, with the two most common being <strong>:all</strong> or <strong>–name file-name</strong>.</p>
+<pre class="console"><code>sequelize db:seed --name file-name</code></pre>
+<p>If you have multiple seeders and want to run just one, specify the name of the seeder with <strong>–name file-name</strong>.</p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="display-data"><img height="100px" src="photos/displaying-data.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p>Our food market website now has a database full of potatoes, but it does our end users no good if they can’t see that data. Why go to any website if you can’t see or use the data in some way? Reddit without posts, Instagram without pictures, Netflix without movies or shows; your users need to have access to relevant data.</p>
+<p>Sequelize has built-in functions for getting data. Some of the most common functions you will use are <strong>findOne(), findAll(), and findByPk()</strong>. <strong>findOne()</strong> is used to return <strong>one result</strong>, <strong>findAll()</strong> is used to return <strong>all results matching our search criteria</strong>, and <strong>findByPk()</strong> is used to find everything related to a certain <strong>primary key</strong>.</p>
+<p>We are going to start with <strong>findAll()</strong>.</p>
+<p><img height="150px" src="photos/codeGetPotatoes.png" /></p>
+<p>Overall, two lines of code is all we need to get all entries in our <strong>potatoes</strong> table and send them to the front. Like everything else, let’s break it down.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="va">app</span>.<span class="at">get</span>(<span class="st">&#39;/displayData&#39;</span><span class="op">,</span> (req<span class="op">,</span>res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-2" title="2">  <span class="va">models</span>.<span class="va">potatoes</span>.<span class="at">findAll</span>().<span class="at">then</span>((result) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-3" title="3">    <span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span><span class="dt">result</span><span class="op">:</span>result<span class="op">}</span>)</a>
+<a class="sourceLine" id="cb31-4" title="4">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="op">}</span>)</a></code></pre></div>
+<p><strong>NOTE:</strong> The commented code was a way I tested iterating the data and console logging just the names of the potatoes. I left this in intentionally, so you can test other ways of getting the data.</p>
+<h2 id="get-requests-backend">Get Requests, Backend</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="va">app</span>.<span class="at">get</span>(<span class="st">&#39;/displayData&#39;</span><span class="op">,</span> (req<span class="op">,</span>res) <span class="kw">=&gt;</span> <span class="op">{</span></a></code></pre></div>
+<p>We defined <strong>app</strong> in the beginning as our <strong>Express server</strong>, and the client wants to <strong>get</strong> data from us. The <strong>action</strong> associted with the <strong>get request</strong> is <strong>/displayData</strong>. <strong>/displayData</strong> must match the <strong>fetch request</strong> from the frontend, which we will go over shortly. <strong>(req,res)</strong> are our <strong>request and response</strong>, which are two variables. The community as a whole decided on <strong>req and res</strong> to be universal variable names, since they’re short and easy to understand.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="va">models</span>.<span class="va">potatoes</span>.<span class="at">findAll</span>().<span class="at">then</span>((result) <span class="kw">=&gt;</span> <span class="op">{</span></a></code></pre></div>
+<p><strong>models</strong> was <strong>required</strong> in the beginning as well as <strong>require(‘./models’)</strong>, which tells Sequelize where to look for our models. <strong>potatoes</strong> is a model/table, and Sequelize has functions built just for models/tables. <strong>models.potatoes.findAll()</strong> tells Sequelize, <strong>"we want to find all the entries in our potatoes model</strong>. The search functions return the results to us, which is why we can use a promise. Sequelize is <em>promise based</em>, but <em>async/await</em> can still work. Personally, I prefer <strong>promises</strong> when using Sequelize.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb34-1" title="1"><span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span><span class="dt">result</span><span class="op">:</span>result<span class="op">}</span>)</a>
+<a class="sourceLine" id="cb34-2" title="2">  })</a>
+<a class="sourceLine" id="cb34-3" title="3">})</a></code></pre></div>
+<p>We take our promise <strong>result</strong> and send it via <strong>res.json</strong> as <strong>result</strong>. Our response to the <strong>get request</strong> is to send a <strong>json file</strong> with the key <strong>result</strong> and the value <strong>result</strong>, where our value is the entire result of our <strong>findAll()</strong> function.</p>
+<h2 id="get-requests-frontend">Get Requests, Frontend</h2>
+<p><img height="200px" src="photos/codeFetchPotatoes.png" /></p>
+<p>To simplify the tutorial, I am using <strong>React Components</strong> instead of <strong>React Hooks</strong>. This is simply so those who are newer to either coding as a whole or Sequelize will have an easier time understanding what I am doing.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">let</span> newArray <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb35-2" title="2">    <span class="at">fetch</span>(<span class="st">&#39;http://localhost:8080/displayData&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-3" title="3">      <span class="dt">method</span><span class="op">:</span> <span class="st">&#39;GET&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb35-4" title="4">      <span class="dt">headers</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-5" title="5">        <span class="st">&#39;Content-Type&#39;</span><span class="op">:</span> <span class="st">&#39;application/json&#39;</span></a>
+<a class="sourceLine" id="cb35-6" title="6">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb35-7" title="7">    <span class="op">}</span>).<span class="at">then</span>(response <span class="kw">=&gt;</span> <span class="va">response</span>.<span class="at">json</span>()).<span class="at">then</span>(json <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-8" title="8">      <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">json</span>.<span class="va">result</span>.<span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-9" title="9">        <span class="va">newArray</span>.<span class="at">push</span>(<span class="va">json</span>.<span class="at">result</span>[i])</a>
+<a class="sourceLine" id="cb35-10" title="10">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb35-11" title="11">      <span class="kw">this</span>.<span class="at">setState</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb35-12" title="12">        ...<span class="va">this</span>.<span class="at">state</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb35-13" title="13">        <span class="dt">potatoName</span><span class="op">:</span> newArray</a>
+<a class="sourceLine" id="cb35-14" title="14">      <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb35-15" title="15">    <span class="op">}</span>)</a></code></pre></div>
+<p>First, I create a <strong>newArray</strong> which will hold our <strong>fetch results</strong>. We <strong>fetch</strong> from our <strong>localhost:8080</strong>, which is where our backend server is <strong>listening</strong>. Our action is <strong>/displayData</strong>, which must be the same on the backend. With fetch, there are multiple methods we can use. Our client wants to <strong>get</strong> data, so we are using <strong>method: ‘GET’</strong>. The header is to tell our browser the incoming content will be a <strong>json file</strong>.</p>
+<p>After our fetch, we are using a <strong>promise</strong>. We take the response and run the <strong>json()</strong> function on it, which makes the response easier for us to use as a whole. Console.log(response) instead if you want to see all the data you receive during a fetch cal. Once we run the <strong>json()</strong> function, we take the new <strong>json file</strong> and iterate through it with a <strong>for loop</strong>. But why? Let’s check our <strong>developer tools</strong> and <strong>console.log(json)</strong> instead of doing the for loop.</p>
+<p><img height="200px" src="photos/codeJsonLog.png" /></p>
+<p>Our <strong>json file</strong> is an object, which holds an array, which holds objects, and those objects are our potatoes. <strong>json.result</strong> is how we get to our <strong>result array</strong>. <strong>result</strong> should look familiar since we sent the <strong>result of our findAll()</strong> to our frontend from our backend. Since result is an <strong>array</strong>, we must <strong>iterate</strong> through it to get <strong>each result individually</strong>. Using a <strong>for loop</strong>, we can <strong>push each individual object within our array into our newArray</strong>. With React, we must then set a state to use our data elsewhere. I have set the state of <strong>potatoName</strong> to be <strong>newArray</strong>. In more vanilla JavaScript, pushing the data into a newArray is likely all you need. This simply depends on the frameworks and libraries you are using.</p>
+<p>We have the data on the frontend now, but we need to display it for our users. <strong>NOTE:</strong> Do not copy the following code without understanding it first, <strong>ESPECIALLY</strong> if you are not using React.</p>
+<p><img height="200px" src="photos/codeRenderPotatoes.png" /></p>
+<p>Since I set the state of <strong>potatoName to be newArray</strong>, this translates to <strong>this.state.potatoName = newArray</strong>. For those who are not React developers or do not use state, this essentially means I assigned a new global variable. I’m going to call said global variable <strong>this.state.potatoName</strong> and give it a shorter variable, <strong>potatoes</strong>. <strong>potatoes</strong> holds our <strong>newArray</strong>, which holds <strong>all 13 potatoes</strong> from our database.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb36-1" title="1"><span class="at">render</span>()<span class="op">{</span></a>
+<a class="sourceLine" id="cb36-2" title="2">  <span class="kw">let</span> potatoes <span class="op">=</span> <span class="kw">this</span>.<span class="va">state</span>.<span class="at">potatoName</span></a>
+<a class="sourceLine" id="cb36-3" title="3">  <span class="kw">let</span> potatoName <span class="op">=</span> (<span class="op">&lt;</span>p<span class="op">&gt;</span>Loading&lt;/p<span class="op">&gt;</span>)</a>
+<a class="sourceLine" id="cb36-4" title="4">  <span class="cf">if</span> (<span class="op">!</span><span class="kw">this</span>.<span class="va">state</span>.<span class="at">loading</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb36-5" title="5">    potatoName <span class="op">=</span> <span class="va">potatoes</span>.<span class="at">map</span>((onePotato) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb36-6" title="6">      <span class="cf">return</span> (</a>
+<a class="sourceLine" id="cb36-7" title="7">        <span class="op">&lt;</span>li id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}&gt;</span></a>
+<a class="sourceLine" id="cb36-8" title="8">        <span class="op">&lt;</span>p<span class="op">&gt;{</span><span class="va">onePotato</span>.<span class="at">name</span><span class="op">}</span> <span class="op">:</span> <span class="op">{</span><span class="va">onePotato</span>.<span class="at">starch_level</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb36-9" title="9">        &lt;/li<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb36-10" title="10">      )</a>
+<a class="sourceLine" id="cb36-11" title="11">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb36-12" title="12"><span class="op">}</span></a></code></pre></div>
+<p>I am going to use a new variable <strong>potatoName</strong> in a dynamic way. Until the <strong>fetch call</strong> is completed, wherever we insert <strong>potatoName</strong> into our webpage there will be a <strong>paragraph element</strong> with the text <strong>Loading</strong>. My following <strong>if statement</strong> translates to, <strong>“once the fetch call is finished updating my state, do this following code”.</strong> Again, do not just copy and paste expecting this to work if you are not using React.</p>
+<p>Since I want to replace my <strong>Loading</strong> text once my <strong>fetch call</strong> is completed, I am going to assign <strong>potatoName</strong> to something new. <strong>potatoes</strong> was assigned to <strong>this.state.potatoName</strong> which was assigned to <strong>newArray</strong>. Essentially, <strong>potatoes is newArray</strong>. One way to iterate an array is using the <strong>map()</strong> function.</p>
+<pre><code>potatoes.map((onePotato) =&gt; {
+  do something here
+ })</code></pre>
+<p>Since <strong>map()</strong> says, <strong>“do the following with each index inside this array”</strong>, we assign a variable inside the <strong>map()</strong> function. <strong>onePotato</strong> is now a single potato, but it represents all 13 potatoes. Once <strong>map()</strong> is done with the first index of <strong>onePotato</strong>, <strong>map()</strong> runs again with the second index, then the third, and finishes on the 13th index.</p>
+<p>Going back to our console log in our developer tools, we see each index is an object. Now we know <strong>onePotato</strong> is an object with the keys <strong>id, name, starch_level, etc</strong>. Look familiar? It should, since each key represents one column in our potatoes table. Since I want to display the name and starch levels of the potatoes for the user, I’m going to call the <strong>name and starch_level</strong>. <strong>onePotato.name</strong> will represent every potato’s name, and <strong>onePotato.starch_level</strong> will represent every potato’s starch level.</p>
+<p><img height="200px" src="photos/appDisplayPotatoes.png" /></p>
+<p>Our final result isn’t pretty, since we really haven’t done much styling, but we have successfully taken our potatoes from our database and displayed them for our users. In the next section, we will be combining <strong>sorting</strong> and <strong>associations</strong> by creating a <strong>favorites list</strong>, but first we will touch a very inportant topic. <strong>Updating information.</strong></p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="user-update"><img height="100px" src="photos/updating-data.png" /></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p>How often do you find yourself going into your settings on a website and changing your profile information? Maybe you update your biography, change your name, change your email address, or your physical address. If you use a blog or review app, do you ever find yourself editing your comments?</p>
+<p>All of these come down to one concept: <strong>updating data in your database.</strong> With Sequelize, this is rather simple as we have access to anotherbuilt-in function, <strong>update()</strong>. Sequelize really likes to name stuff based on what it does, which makes using Sequelize more intuitive. How does <strong>update()</strong> work though?</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb38-1" title="1"><span class="va">models</span>.<span class="va">TABLE</span>.<span class="at">update</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb38-2" title="2">  <span class="dt">column_1_to_update</span><span class="op">:</span> value_1<span class="op">,</span></a>
+<a class="sourceLine" id="cb38-3" title="3">  <span class="dt">column_2_to_update</span><span class="op">:</span> value_2<span class="op">,</span></a>
+<a class="sourceLine" id="cb38-4" title="4">  <span class="dt">column_nth</span><span class="op">:</span> value_nth</a>
+<a class="sourceLine" id="cb38-5" title="5">  <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb38-6" title="6">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb38-7" title="7">    <span class="dt">column_to_check</span><span class="op">:</span> value_to_check_for</a>
+<a class="sourceLine" id="cb38-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb38-9" title="9"><span class="op">}</span>)</a></code></pre></div>
+<p>First, you check your models for the <strong>table</strong> you wish you modify. For example, if you want to update your <strong>user information</strong> you would want to check the <strong>user model</strong>. The next part might not be as intuitive. First, <strong>we tell Sequelize which columns we want to modify and what data we want the values to become</strong>. Strange, right? We are telling Sequelize to modify data <em>before</em> telling it which entries we wish to modify. This is because <strong>update()</strong> takes in <strong>arguments</strong> first followed by an <strong>options object</strong>. The options tells our <strong>update()</strong> function <strong>what to do</strong> with our changes.</p>
+<p>In our <strong>options</strong>, we can use <strong>where</strong>. This works the same as <strong>findOne() and findAll()</strong>. “Change the values of these columns where this column has this value.” Or, in laymans terms, “I want to update my data. My username is XYZ.” Our <strong>option</strong> can, of course, take in multiple values in the column. If we want to update a set of data, for instance every Toyota Corolla manufactured in 2019, we could specify that in our <strong>where</strong> argument.</p>
+<p><img height="200px" src="photos/app-update.png" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb39-1" title="1"><span class="va">models</span>.<span class="va">Users</span>.<span class="at">update</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb39-2" title="2">  <span class="dt">firstName</span><span class="op">:</span> firstName<span class="op">,</span></a>
+<a class="sourceLine" id="cb39-3" title="3">  <span class="dt">lastName</span><span class="op">:</span> lastName</a>
+<a class="sourceLine" id="cb39-4" title="4">  <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb39-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb39-6" title="6">    <span class="dt">id</span><span class="op">:</span> userid</a>
+<a class="sourceLine" id="cb39-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb39-8" title="8"><span class="op">}</span>)</a></code></pre></div>
+<p>When our client executes a <strong>fetch</strong> to our <strong>/updateUserInformation</strong> action, we take the information they wish to update and apply it to our Sequelize <strong>update()</strong> function. My thought process is fairly simple with how I build my backend action. First, I assign my variables to the information coming in. I then create messages based on pass/fail conditions. In this example, I am only setting one message for if we successfully update the user’s information. In a fully developed application, you would want to catch errors and send responses if the update fails for whatever reason.</p>
+<p>After assigning all my variables, I then want to run my <strong>update()</strong>. We declared models in the beginning <code>const models = require('./models)</code>, our models has a model called Users, and we are using the Sequelize <strong>update()</strong> function. Remember, our models are our tables from our database. Since we are wanting the users to be able to update their user information, we are using models.Users.</p>
+<p>I build the <strong>update()</strong> function with the information I want to edit and which entries I want edited, in this case the first name and last name of the current user, I then send a response. The response is a confirmation that the update was successful. I also send the first name and last name to the frontend when it is successful, because I do not want the frontend handling the success response. The display will only change based on the information the backend sends, and the backend will only send the updated information if the update is successful.</p>
+<p><img height="200px" src="photos/dashboard-jsx.png" /></p>
+<p><img height="200px" src="photos/dashboard-fetch-update.png" /></p>
+<p>There is a lot going on, but the main thing to focus on right now are the inputs on lines 72 and 78 and the button on line 84. The button has an <strong>onClick</strong> called <strong>triggerSubmitUpdatedUserInformation</strong>. Great name, right? When the button triggers, it updates the user information. This function does a fetch call to our backend for the action <strong>/updateUserInformation</strong>, which we went over above. We want to <strong>POST</strong> our updated information to our database. We send our information through the <strong>body</strong> as <strong>JSON.stringify()</strong> since we are working with JSON. What we are sending in our JSON should look familiar; userid, firstName, lastName. If you look at the backend again, you will see we are assign variables to these values. Userid is req.body.userid, and so on.</p>
+<p>After sending our data, we use a <strong>promise</strong> (async/await works as well) to wait for a <strong>response</strong>. Our backend is sending a <strong>response as a json</strong>, so we turn our response into <strong>response.json()</strong>. We use another promise to take the <strong>json</strong> and do something with it. What I am doing is displaying the <strong>json.message</strong> on my webpage to inform the user <strong>the update was successful</strong>, then I’m updating the display with the <strong>new first name and last name</strong>. <strong>NOTE:</strong> Knowing the language and tools you are using is important, as I am using React and Redux to update my display. The way you update your display may be different from the way I updated my display.</p>
+<p>Let’s look at our functionality in action.</p>
+<p><img height="200px" src="photos/postico-preupdate.png" /></p>
+<p><img height="200px" src="photos/app-preupdate.png" /></p>
+<p>As we see, my first name is “frogs” and last name is “potatoes”. I want to change my information to my actual first name and last name, Richard Lorenzini. I fill out my form and get ready to update my information.</p>
+<p><img height="200px" src="photos/postico-postupdate.png" /></p>
+<p><img height="200px" src="photos/app-postupdate.png" /></p>
+<p>Both in postico and on our application’s user interface we see the information has been updated. <strong>NOTE:</strong> remember you must refresh postico to see these changes take effect. Our UI is set up as a single page application and will show us the changes automatically.</p>
+<p>Now that we can update basic information, let’s dive into associations!</p>
+<p><br/> <br/></p>
+<hr />
+<p><br/></p>
+<p><a name="add-del-data"><img height="100px" src="photos/add-delete-data.png" /></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p>If you’ve been following this tutorial from the beginning up until now, you have seen me explain <strong>create()</strong> and <strong>build()</strong>. These are important enough for their own section, but also go hand and hand with <strong>deleting data</strong>. If you cannot add or delete data, your application and backend will be very limited in scope.</p>
+<p>Do you want a user login? Do you want to keep track of scores? Do you want to save a player’s game? Do you want to add information to a user? Do you want to add a new potato to the potato database? Does your admin want to add new admins? Are you using a map and want to add permanent markers, designated locations, or information? Would you want to be able to delete any or all of that stuff? Does your user or your admin need access to adding or deleting information?</p>
+<p>In the modern world, it is very difficult to imagine an application or website which does not add and store information, even if it is just a basic username and password. Some applications, specifically on mobile, get around using a server by storing information on your device. For example, if you play a Solitaire or Chess app which tracks your win/loss ratio but does not have a user login the ratio is very likely stored locally. The demands of your client and the scope of your project determines if you need a backend and what your backend needs to do, so be mindful of what you are building and why.</p>
+<h3 id="create-vs-build-wip">Create() vs Build() WIP</h3>
+<p>create() uses save() build() automatically saves</p>
+<h3 id="destroy-wip">Destroy() WIP</h3>
+<p>deleted data from database</p>
+<p><a name="associations"><img height="100px" src="photos/associations.png"/></a></p>
+<p><strong>The bread and butter of any database</strong></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><strong>Associations</strong> are the backbone of all data. You can collect data. You can display data. You can manipulate data. These are very important, but data doesn’t exist to just sit in one spot without reference to anything else. There are endless combinations to explain associations and their importance, as we will see below.</p>
+<p><strong>How do I know <em>WHEN</em> I need an association and <em>WHY</em> I need an association?</strong></p>
+<ol type="1">
+<li><p>Bryan Abreu is a <strong>pitcher</strong> for the <strong>Houston Astros</strong>, which is a <strong>Major League Baseball</strong> team. Bryan is <em>associated</em> with being a pitcher, being <em>a pitcher for</em> the Astros, and the Astros are <em>associated</em> with baseball.</p></li>
+<li><p>Daniel Radcliffe is an <strong>actor</strong> who is known for <strong>his role</strong> as <strong>Harry Potter</strong> in the <strong>Harry Potter movie series</strong>. Daniel is <em>associated for his profession</em> as an actor, is <em>associated with his role</em> as Harry Potter, and Harry Potter is <em>associated</em> with being a <em>movie</em>, being a <em>movie series</em>, being a <em>movie series adapted from a book series</em>, and for being in the <em>fantasy genre</em>.</p></li>
+<li><p>Rose Gold is a <strong>waxy potato</strong>. Rose Gold is <em>associated</em> with being a <em>type of potato</em>, a <em>vegetable</em>, and for being a <em>waxy potato</em>.</p></li>
+</ol>
+<p>I’m sure most people can think of a dozen associations off the top of their head. Your database is <strong>very limited</strong> if you do not use associations. Without associations, how would you look up car parts, store a favorites list, have a friends list, or even a comment section in a blog? <strong>NOTE:</strong> it is <em>possible</em> but <em>not practical</em> to do this without associations. You database will quickly get bloated due to repetitive data. For example, a car dealership would have to build every single car from scratch. If there are two 2015 Toyota Corollas which are exactly identical <em>except for their VIN number</em>, you would have to <em>build both cars from scratch</em>. With associations, you can say, “This Corolla is associated with these parts, but has its own unique VIN number.” Now, we have reduced the amount of data we have to store <strong>by half</strong>. There are millions of cars in the USA alone, all of which have unique VIN numbers. By using associations, we only have to list each car part <em>once</em> and tell each car to <em>associate</em> with those specific parts. Otherwise, we would be building <em>millions</em> of cars in our database.</p>
+<p>This is just an example, but let’s look at associations in use.</p>
+<h2 id="types-of-associations">Types of Associations</h2>
+<p><a name="one-to-many"><img height="100px" src="photos/one-to-many.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<h3 id="hasmany-belongstomany">hasMany, belongsToMany</h3>
+<p><strong>hasMany and belongsToMany</strong> are the two ways to do a <strong>One to Many Association</strong>, but what does this even mean? When we do an One to Many Association, we are declaring, “this one <strong>item</strong> can refer to <strong>multiple things</strong>.” For instance, looking at our potato database we can see a <em>potato</em> can <strong>refer to many</strong> different <em>types</em> of potatoes. As with our previous examples, a player can be associated with one team, or if they have a long career multiple teams. Also, one actor or actress can be associated with many films, and one film can be associated with many actors and actresses.</p>
+<p><strong>NOTE:</strong> As stated previously, I am using <strong>React and Javascript</strong> on my frontend and <strong>Node, Express, and Javascript</strong> on my backend. In order to do more complex things with my frontend, such as protecting routes with authentication, using Higher Order Components, and storing global state, I am now using <strong>Redux and React Redux</strong>. This is where knowing the language you are coding in is important, since <strong>Sequelize</strong> cannot substitute frontend knowledge.</p>
+<h3 id="hasmany">hasMany</h3>
+<p><strong>hasMany</strong> is the first association we will be working with, because reasons. Do you want to know my reasoning? Well, my reasoning <strong>has many</strong> reasons. First, I find it easy to work with, especially as a newcomer. Second, in <strong>MY OPINION</strong> it has the most utility. Third, it’s the one I have used the most and know the best.</p>
+<p>As always, we must start with the CLI (command-line interface) to create a new migration. Remember, Sequelize is built on migrations and stores a log of each migration it ran and when. Skipping this step will not immediately destroy your app, but if you ever have to relaunch or rebuild your app it will fail to build your Sequelize properly.</p>
+<pre class="console"><code>sequelize migration:create --name add-fav-potato-association-table</code></pre>
+<p>Inside of our new migration, we are going to build our new table <strong>improperly</strong>. I am doing this on purpose, so we can see potential issues and how to fix them. Before scrolling past the picture to look at the solution, see if you can find the error yourself. If you cannot, do not fret! I will be explaining what I did wrong <strong>and</strong> how to fix it. With this migration, I want to build a <strong>favorite potatoes</strong> table with the <strong>userid</strong> and <strong>potatoid</strong>. I will explain why further down, but for now try and find the error.</p>
+<p><img height="200px" src="photos/fav-potato-migration.png" /></p>
+<pre class="console"><code>sequelize db:migrate</code></pre>
+<p>Do not forget we must migrate for our migration to be applied. This will not fail to run because the code itself is fine. Also, remember that Sequelize does not build our models for us after our initial build. We will have to add our own favorite potatoes model.</p>
+<p><img height="200px" src="photos/fav-potato-model.png" /></p>
+<p>The part I intentially built wrong was not including <strong>createdAt and updatedAt</strong> in my migration. The error message, when you try to build an entry in this table, will say something about one or both of these <strong>not existing</strong>. Our model itself is not wrong and will work properly, because Sequelize <strong>does not require</strong> us to have createdAt and updatedAt inside of our model, but they <strong>must exist inside our table on our database</strong>. The only way for us to get them to the database is via a migration. <strong>If you do this inside your databse directly and not via migrations, Sequelize will not build properly if you pull your project at a later time.</strong> Doing each step is very important! The only thing Sequelize automatically creates for <strong>every</strong> migration we create is the <strong>ID</strong>, and <strong>only if</strong> we are running the createTable function. Even though Sequelize automatically tracks the date of each row’s creation and last update, we still must build those columns inside our migration.</p>
+<p>In order to fix this mistake, which is very easy to do when you run in autopilot, we need to run a new migration.</p>
+<pre class="console"><code>sequelize migration:create --name add-dates-to-favorite-potatoes</code></pre>
+<p><img height="200px" src="photos/fav-potato-add-columns.png" /></p>
+<pre class="console"><code>sequelize db:migrate</code></pre>
+<p>Now our table has both createdAt and updatedAt, meaning Sequelize will now be happy. Since we have to create multiple columns, we must wrap it inside of <strong>Promise.all([])</strong>. Sequelize’s migrations can only return <strong>one instance</strong>, which is why we make our one instance <strong>Promise.all([])</strong>. This is how we handle doing multiple things within one migration. Building a table, no matter how many columns it has, is considered one action and returns once. If we were to build two tables within one migration, we would have to use Promise.all([]).</p>
+<p><strong>Why do we have a new table for our favorites?</strong></p>
+<p>This method aims to resolve a few issues. Associating two tables directly can get quite mess, mostly due to how <strong>DataTypes</strong> work with databases and Sequelize. For instance, the easiest way to associate to an item is based on the <strong>unique ID</strong> of that item. <strong>Only</strong> that item has that ID. As a user, I want to favorite <strong>multiple</strong> potatoes. Can <strong>DataTypes.INTEGER</strong> hold a sequence of numbers? No. <strong>DataTypes.STRING</strong> can, but it is not longer an <strong>INTEGER</strong> which directly associates to a potato’s <strong>unique ID</strong>. We would have to create a function to take the <strong>STRING</strong> and split it into multiple <strong>INTEGERS</strong>, and then create a function which uses <strong>findOne</strong> on each <strong>INTEGER</strong> we have. This is extemely cumbersome and will slow down your server immensely!</p>
+<p>By creating a new table which holds both the <strong>userid</strong> and <strong>potatoid</strong>, we only have to reference that table and <strong>findAll</strong> where the <strong>userid</strong> matches our current user. Now, we have every <strong>potatoid</strong> which is <strong>ASSOCIATED WITH</strong> our user.</p>
+<h3 id="update-your-models-with-associations">UPDATE YOUR MODELS WITH ASSOCIATIONS</h3>
+<p>There are a lot of steps, which makes missing one or two very easy, but they are all important. Updating our <strong>user and potato models</strong> is one of those steps. We want to tell Sequelize, “this user/potato will be associated with many favorites”. <strong>NOTE:</strong> Remember, I did not use typical naming conventions. Also, Users is capitalized which potatoes is not. This is to show new users of Sequelize naming conventions are <strong>NOT</strong> mandatory, even though they are recommended. <strong>Use the naming convention your job demands</strong>, or whichever naming convention you prefer.</p>
+<p><img height="200px" src="photos/users-association.png" /></p>
+<p><img height="200px" src="photos/potatoes-association.png" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb44-1" title="1"><span class="va">CurrentTable</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">AssociatedModel</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb44-2" title="2">  <span class="dt">as</span><span class="op">:</span> <span class="st">&quot;AssociatedTable&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb44-3" title="3">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&quot;AssociatedColumnFromAssociationTable&quot;</span></a>
+<a class="sourceLine" id="cb44-4" title="4"><span class="op">}</span>)</a></code></pre></div>
+<p>For simplicity, I keep variables very similar. My favorites table has a userid, and my user table has an id. This can get confusing, so I wrote out how I understand the Sequelize associations model. We are telling our <strong>current table</strong>, which is either our <strong>users or potatoes table</strong>, it is going to <strong>have many associations</strong>. These associations are going to be with another <strong>model</strong>, which I labeled <strong>AssociatedModel</strong>. In our example, this is our <strong>FavoritePotaotes</strong> model. <strong>hasMany</strong> takes in options are the model, with <strong>as: and foreignKey:</strong> being the two options I use most often.</p>
+<p><strong>as:</strong> checked our database for the <strong>Associated Table</strong> we are associating with. Since I like to keep variables similar if they represent the same thing, <strong>my model and table are both called FavoritePotatoes</strong>. This is purely because named them as such. Our <strong>foreignKey:</strong> is looking inside of our <strong>Associated Table</strong> for a specific <strong>column</strong>. This column has been called <strong>userid</strong>, because our <strong>FavoritePotatoes</strong> needs to know the <strong>ID of the user</strong> that has favorited a specific potato.</p>
+<p>This is a lot to digest, so if you are getting lost take a five minute break and come back.</p>
+<h3 id="frontend">Frontend</h3>
+<p>Let us look at how we would create a new entry in our favorites tables. Our user is logged into our application and is interested in our selection of potatoes. They wish to save a few potatoes to their favorites. As with most any website, this is most commonly a <strong>single click</strong>. I have built our <strong>displayData.js</strong> file again, but this time it is <strong>protected by authentication</strong>. When you are not logged in, you simply see the potato data. When you are logged in, you now see an option to <strong>favorite a potato</strong>. I have named this file <strong>userDisplayData.js</strong>.</p>
+<p><img height="200px" src="photos/user-display-data.png" /></p>
+<p>Our UI looks almost exactly the same, and the <em>mostly</em> the same as well. We only need to add a new <strong>post fetch request and button</strong>.</p>
+<p><img height="150px" src="photos/add-fav-button.png" /></p>
+<p><img height="150px" src="photos/post-fav-potato.png" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb45-1" title="1"><span class="op">&lt;</span>button className<span class="op">=</span><span class="st">&#39;favoriteButton&#39;</span></a>
+<a class="sourceLine" id="cb45-2" title="2">  id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb45-3" title="3">  value<span class="op">=</span><span class="st">&quot;false&quot;</span></a>
+<a class="sourceLine" id="cb45-4" title="4">  onClick<span class="op">={</span><span class="kw">this</span>.<span class="at">addPotatoToFavorites</span><span class="op">}&gt;</span>Add To Favorites</a>
+<a class="sourceLine" id="cb45-5" title="5">&lt;/button<span class="op">&gt;</span></a></code></pre></div>
+<p>Our new button has a few properties. For now, ignore the <strong>VALUE=“false”</strong> property. This is purely for styling test purposes and is <strong>not used</strong> in relation to Sequelize. What we need to focus on is our <strong>onClick</strong> property, which calls the <strong>addPotatoToFavorites</strong> function. <strong>addPotatoToFavorites</strong> creates a <strong>post fetch request</strong> which is sending a <strong>JSON file</strong>. This JSON file includes a <strong>body</strong> with two keys; <strong>userid and potatoid</strong>. This function uses <strong>React Redux</strong> to send the <strong>userid</strong> to our backend. You can use local storage to store the <strong>userid</strong>, but I chose to use <strong>React Redux</strong> moving forward. <strong>e.target.id</strong> is used to take the <strong>potatoid</strong> from the button, which is why our button has a value <strong>id={onePotato.id}</strong>. Since each button is unique and each have a unique event instance, we can directly pull a single ID from the button which is triggering the onclick event.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb46-1" title="1">addPotatoToFavorites<span class="op">=</span>(e)<span class="kw">=&gt;</span><span class="op">{</span></a>
+<a class="sourceLine" id="cb46-2" title="2">  <span class="at">fetch</span>(<span class="st">&#39;http://localhost:8080/userFavoritePotato&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb46-3" title="3">    <span class="dt">method</span><span class="op">:</span> <span class="st">&#39;POST&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb46-4" title="4">    <span class="dt">headers</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb46-5" title="5">      <span class="st">&#39;Content-Type&#39;</span><span class="op">:</span> <span class="st">&#39;application/json&#39;</span></a>
+<a class="sourceLine" id="cb46-6" title="6">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb46-7" title="7">    <span class="dt">body</span><span class="op">:</span> <span class="va">JSON</span>.<span class="at">stringify</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb46-8" title="8">      <span class="dt">userid</span><span class="op">:</span> <span class="kw">this</span>.<span class="va">props</span>.<span class="at">userid</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb46-9" title="9">      <span class="dt">potatoid</span><span class="op">:</span> <span class="va">e</span>.<span class="va">target</span>.<span class="at">id</span></a>
+<a class="sourceLine" id="cb46-10" title="10">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb46-11" title="11">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb46-12" title="12"><span class="op">}</span></a></code></pre></div>
+<p>As you can see, in order to store a new <strong>favorite potato</strong> we are only sending <strong>TWO INTEGERS</strong> to our backend. If we did not create our favorites table and did not use associations, we would have to rebuild our <strong>user</strong> with the entirety of <strong>every favorited potato</strong>. Maybe you could have a <strong>DataTypes.STRING</strong> which you split and then append a new string to an array before combining it back into a string and modifying our data entry. What data would you include in your new column? Even if you only store the name, you’ll have to split your string and run a <strong>findOne</strong> for each potato name. Again, this is just not efficient and can get confusing very fast.</p>
+<h3 id="backend">Backend</h3>
+<p>Let’s check out what our backend is doing with our new favorites.</p>
+<p><img height="150px" src="photos/create-new-fav-potato.png" /></p>
+<p>Associations sound and look intimidating, but so far we have only added a few lines of code between our frontend and backend. The backend checks for the <strong>body</strong>, which we sent in our <strong>addPotatoToFavorites</strong> function. As we have done before, we are going to build a new entry in a table. For learning purposes, instead of using <strong>build</strong> I am going to use <strong>create</strong>. The only difference is with <strong>build</strong> you must <strong>save()</strong> your model, whereas <strong>create</strong> runs <strong>save</strong> automatically.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb47-1" title="1"><span class="va">app</span>.<span class="at">post</span>(<span class="st">&#39;/userFavoritePotato&#39;</span><span class="op">,</span> (req<span class="op">,</span>res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb47-2" title="2">  <span class="kw">let</span> userid <span class="op">=</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">userid</span></a>
+<a class="sourceLine" id="cb47-3" title="3">  <span class="kw">let</span> potatoid <span class="op">=</span> <span class="at">Number</span>(<span class="va">req</span>.<span class="va">body</span>.<span class="at">potatoid</span>)</a>
+<a class="sourceLine" id="cb47-4" title="4"></a>
+<a class="sourceLine" id="cb47-5" title="5">  <span class="va">models</span>.<span class="va">FavoritePotatoes</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb47-6" title="6">    <span class="dt">userid</span><span class="op">:</span> userid<span class="op">,</span></a>
+<a class="sourceLine" id="cb47-7" title="7">    <span class="dt">potatoid</span><span class="op">:</span> potatoid</a>
+<a class="sourceLine" id="cb47-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb47-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Whichever potato we click to favorite sends <strong>req.body.userid</strong> and <strong>req.body.potatoid</strong> to our backend. Our backend takes those values and sends them to our <strong>FavoritePotatoes</strong> table. <strong>NOTE:</strong> This is where you would experience the error I explained earlier if you build your migration improperly. To make sure everything worked properly, let us check our database with Postico.</p>
+<p><img height="200px" src="photos/postico-fav-table.png" /></p>
+<p>Every single favorite is its own entry in our database. Our user, who’s <strong>unique ID</strong> is 2, has favorited <strong>three separate potatoes</strong>. <strong>NOTE:</strong> We cannot currently check if an entry already exists, since we have not written the code to do such. Therefore, a user can currently favorite the same potato multiple times. Try thinking of different ways to protect our user from making this mistake and how you would develop it in your code.</p>
+<h3 id="prevent-favoriting-twice">Prevent Favoriting Twice</h3>
+<p>Whenever using data sets, whether creating a friends list, favorited items, shopping cart, or anything else which associates a user to an item, one issue to overcome is <strong>duplicates</strong>. In most cases, you do <strong>not</strong> want duplicates, and if you do you want to handle them. In the case of a shopping cart, you would check for a duplicate and simply increase the duplicate’s count. For our potatoes, users can only favorite a single potato once.</p>
+<p><img height="100px" src="photos/postico-no-two-favs.png" /></p>
+<p>I have favorited several potatoes so far; 5: Red Bliss, 4: Katahdin, 2: Purple Peruvian, and 1: Yukon Gold. The way we present the favorites can change, but we still have to <strong>prevent</strong> a user from favoriting twice. Whether we disable the favorite button, change its look and feel, or swap it out with a remove favorite button is up to us. For learning purposes, let’s simply add a catch to the favorites.</p>
+<p><img height="200px" src="photos/no-two-favorites.png" /></p>
+<p>I split my code editor to show both the frontend (right side) and backend (left side) at the same time. On the frontend, nothing significant changes other than the addition of a <strong>promise</strong>. The promise is attached to our <strong>fetch call</strong>. When our backend responds, either the item will be <strong>favorited</strong> or we will receive a <strong>message</strong>.</p>
+<p>The backend is where the work happens. Before we <strong>create()</strong> a favorite we want to <strong>check if the favorite exists already</strong>. We are saving favorites by <strong>associating the userid with the potatoid</strong>. If our userid already matches a potatoid we wish to favorite, we should not allow the user to save the potato again. Luckily, Sequelize’s <strong>findOne()</strong> returns a promise.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb48-1" title="1"><span class="va">app</span>.<span class="at">post</span>(<span class="st">&#39;/userFavoritePotato&#39;</span><span class="op">,</span> authenticate<span class="op">,</span> (req<span class="op">,</span>res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb48-2" title="2">  <span class="kw">let</span> userid <span class="op">=</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">userid</span></a>
+<a class="sourceLine" id="cb48-3" title="3">  <span class="kw">let</span> potatoid <span class="op">=</span> <span class="at">Number</span>(<span class="va">req</span>.<span class="va">body</span>.<span class="at">potatoid</span>)</a>
+<a class="sourceLine" id="cb48-4" title="4">  <span class="kw">let</span> message <span class="op">=</span> <span class="st">&quot;Potato already favorited.&quot;</span></a>
+<a class="sourceLine" id="cb48-5" title="5"></a>
+<a class="sourceLine" id="cb48-6" title="6">  <span class="va">models</span>.<span class="va">FavoritePotatoes</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb48-7" title="7">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb48-8" title="8">      <span class="dt">userid</span><span class="op">:</span> userid<span class="op">,</span></a>
+<a class="sourceLine" id="cb48-9" title="9">      <span class="dt">potatoid</span><span class="op">:</span> potatoid</a>
+<a class="sourceLine" id="cb48-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb48-11" title="11">  <span class="op">}</span>).<span class="at">then</span>((item) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb48-12" title="12">    <span class="cf">if</span>(item) <span class="op">{</span></a>
+<a class="sourceLine" id="cb48-13" title="13">      <span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span> <span class="dt">message</span><span class="op">:</span> message <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb48-14" title="14">    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb48-15" title="15">      <span class="va">models</span>.<span class="va">FavoritePotatoes</span>.<span class="at">create</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb48-16" title="16">        <span class="dt">userid</span><span class="op">:</span> userid<span class="op">,</span></a>
+<a class="sourceLine" id="cb48-17" title="17">        <span class="dt">potatoid</span><span class="op">:</span> potatoid</a>
+<a class="sourceLine" id="cb48-18" title="18">      <span class="op">}</span>)<span class="op">;</span> <span class="co">//end of favoritepotatoes create</span></a>
+<a class="sourceLine" id="cb48-19" title="19">    <span class="op">}</span> <span class="co">//end of else</span></a>
+<a class="sourceLine" id="cb48-20" title="20">  <span class="op">}</span>)<span class="op">;</span> <span class="co">//end of promise</span></a>
+<a class="sourceLine" id="cb48-21" title="21"><span class="op">}</span>)<span class="op">;</span> <span class="co">//end of post</span></a></code></pre></div>
+<p>By using <strong>findOne()</strong> we can return the entire entry in our favorite’s table. If the entry <strong>exists</strong>, we send a response to our user in the form of a <strong>json message</strong> (this is my preference). If the entry <strong>does not exist</strong>, we do what we already did earlier; create a new entry in our favorite’s table.</p>
+<p><strong>Why is the promise returning item?</strong></p>
+<p>Because I called it item. I could have called it anything; car, potatoThatMayOrMayNotExistInOurFavoritesTable, usersFavoritePotato, spaceCat, etc. Item is generic, singular, and is simply to understand. Does our promise return an item? Send an error message. Does our promise not return an item? Build an item. Naming things can be tricky.</p>
+<p><strong>What does the authenticate parameter in your post do?</strong></p>
+<p>It checks if a user is currently logged in or not. If a user is not logged in, this post can never be triggered. How you build authentication is up to you. Check my frontend <strong>utilities</strong> and backend <strong>tools</strong> to see how I built these. Sequelize does not do authentication, so I use <strong>axios</strong> for its simplicity. If you do not want to worry about authentication at this time, simply remove the authenticate parameter.</p>
+<p><img height="200px" src="photos/app-favorites.png" /></p>
+<p>As you can see, I tried to add a potato I already had in my favorites list and received the <strong>json message</strong> in my <strong>console log</strong>. Users will not be using the developer tools to check console logs, so we should add it directly to the UI. How you want to display it is completely up to you! For the sake of this tutorial, I’m merely changing the button’s text and color.</p>
+<p><img height="200px" src="photos/app-favs.png" /></p>
+<p><a name="one-to-one"><img height="100px" src="photos/one-to-one.png"/></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<h3 id="belongsto-hasone">belongsTo, hasOne</h3>
+<p><a name="many-to-many"><img height="100px" src="photos/many-to-many.png" /></a></p>
+<h3 id="hasmany-1">hasMany</h3>
+<p><a name="del-assoc"><img height="100px" src="photos/delete-associations.png" /></a></p>
+<p><a href="#top"><code>back to top</code></a></p>
+<p><a href="#destroy-func">To Destroy() Function</a></p>
+<p>I’m building this section before I finish covering all the other association types as I feel it is more important to know how to delete an association than how to build multiple types of associations. Any one association <em>can</em> work for what you need, regardless if it is the best or not. If you cannot delete entries, however, that is a different problem entirely. What if you couldn’t unfriend someone from a social media app? Or remove items from a shopping cart? It doesn’t matter how the website associations that information with your user account if you cannot remove it.</p>
+<p><strong>NOTE:</strong> I’m going to be referencing my association as <strong>favorited</strong> <em>A LOT</em> in the following section, but <strong>KEEP YOUR MIND OPEN</strong>. If I add an item to a shopping cart, the association doesn’t change. I just change the name of it from <em>favorited items</em> to <em>shopping cart</em>. Anything in any application where an user can store items <strong>is an association</strong> of some sort, whether it is state management on the frontend or table associations on the backend.</p>
+<p>First, let’s look as our user interface and Postico.</p>
+<p><img height="200px" src="photos/app-favs.png" /></p>
+<p><img height="200px" src="photos/postico-favs.png" /></p>
+<p>We can see I have favorited several potatoes, and Postico reflects our association in our databse. <strong>Make sure the information matches</strong> before you start moving forward. I’ll show how I display the difference between favorited and not shortly.</p>
+<p>Originally when displaying the data my UI did not properly reflect which potatoes were saved. I was displaying based on the unique ID of each favorite (the left-most column in Postico) instead of by the potatoid (third column). Make sure you are mindful of which number you are pulling from, or you may get unexpected results. It’s harder to catch in a small-case scenario like this where your favorite’s unique IDs will match your data entry’s unique IDs. Larger applications will likely have vast amounts of data where this is either far less likely to occur or far more obvious when it does occur.</p>
+<p>When you think of deleting data as a programmer, what are the necessary components you need in order to build a delete function? If you’re new to programming or working with a backend, take a moment to think about a few of the key components before reading on. Breaking down the necessary steps and recognizing what needs built and why is an important step to programming, and working with a tool like Sequelize will never eliminate this.</p>
+<p>Have you thought about it?</p>
+<p>Just as with adding information to a database, we need <strong>something interactive for our users</strong> (such as a delete button), <strong>a function to post the request to the server</strong> (such as fetch, axios, or HXR), and <strong>our backend needs to tell the server to delete the posted data</strong> (Sequelize handles this part for us). These are the <strong>three main components</strong> we will need for our application. You can break these down into many more components, such as a more complex UI with multi-click deletions and a Sequelize query for all incoming requests, but we’re going to keep it as simple as possible for now.</p>
+<h3 id="the-backend">The Backend</h3>
+<p>The first major step to this hurdle is <strong>displaying the difference between items which are favorited and those which are not favorited</strong>. There are many ways to do this, such as having a separate page or putting a star next to an item. Many applications use both of these concepts, where you can find a list of your favorited items on a separate page (shopping carts, favorited items, read books, watched videos, wish lists, friends list) and a basic UI change (gold star next to an item). The backend needs to send the favorited associations to the frontend, but it <strong>must be a post</strong>. Why? Because we want <strong>the user’s favorited items</strong>, which means <strong>the user must send us their unique ID</strong>.</p>
+<p><strong>Why must it be the user’s unique ID?</strong></p>
+<p>Because when we set up the favorites, we decided to associate the user’s ID to the potato’s ID. We <em>could</em> have used the username, first name, last name, email, or any other user value, <strong>but the unique ID is unique</strong>. This <em>guarantees</em> we will never have two users with the same user ID.</p>
+<p><strong>But we only want to <em>GET</em> the favorites. Why must we <em>POST</em>?</strong></p>
+<p>Since the user has to <strong>SEND</strong> us information for us to get <em>only</em> their favorited items, we must use <strong>post</strong>. <strong>Get</strong> is used for only data retrieval, whereas <strong>post</strong> is used when data is to be sent from the frontend to the backend. If, for example, an admin wanted to see <strong>all favorites data</strong> we would simply <strong>get</strong> all said data. As soon as we want to <strong>filter out information in any way</strong>, we must <strong>post</strong> the desired constraints to the backend. In our example, our user only wants their favorites, so we filter out all other user’s favorites.</p>
+<p><img height="200px" src="photos/back-user-favs.png" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb49-1" title="1"><span class="va">app</span>.<span class="at">post</span>(<span class="st">&#39;/favoritePotatoes&#39;</span><span class="op">,</span> authenticate<span class="op">,</span> (req<span class="op">,</span>res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-2" title="2"></a>
+<a class="sourceLine" id="cb49-3" title="3">  <span class="kw">let</span> userid <span class="op">=</span> <span class="va">req</span>.<span class="va">body</span>.<span class="at">userid</span></a>
+<a class="sourceLine" id="cb49-4" title="4"></a>
+<a class="sourceLine" id="cb49-5" title="5">  <span class="va">models</span>.<span class="va">FavoritePotatoes</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb49-6" title="6">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-7" title="7">      <span class="dt">userid</span><span class="op">:</span> userid</a>
+<a class="sourceLine" id="cb49-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb49-9" title="9">  <span class="op">}</span>).<span class="at">then</span>((items) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-10" title="10">    <span class="cf">if</span>(items) <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-11" title="11">      <span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span> <span class="dt">array</span><span class="op">:</span> items <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb49-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb49-13" title="13">    <span class="cf">else</span><span class="op">{</span></a>
+<a class="sourceLine" id="cb49-14" title="14">      <span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span> <span class="dt">message</span><span class="op">:</span> <span class="st">&quot;No favorited items&quot;</span> <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb49-15" title="15">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb49-16" title="16">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-17" title="17"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>We are posting to <strong>‘/favoritePotatoes’</strong>, we want to authenticate this route since <strong>only a user should be able to retrieve their favorites</strong>, and we are using the <strong>findAll()</strong> function since our user <strong>wants all of their favorites</strong>. <strong>NOTE:</strong> there is a huge different between findOne() and findAll(). findOne() returns <strong>a single object</strong> and findAll() returns <strong>an array of objects</strong>. You do not have to create a for loop, a while statement, an if else condition, or anything else to push the entries into a single array. findAll() does the heavy lifting for us, simplifying our code. <strong>This is where querying in the native language can have better performance</strong>. Sequelize <em>assumes</em> a lot, which can negatively impact your performance.</p>
+<p>After looking at findAll(), I’m sure a lot of people are seeing a pattern with Sequelize. Query({options}) is the basic setup, with the most common option being <strong>where: {}</strong>. “The user wants to find all of their favorite potatoes.”</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb50-1" title="1"><span class="va">models</span>.<span class="va">FavoritePotatoes</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb50-2" title="2">  <span class="dt">where</span><span class="op">:{</span></a>
+<a class="sourceLine" id="cb50-3" title="3">    <span class="dt">userid</span><span class="op">:</span> userid</a>
+<a class="sourceLine" id="cb50-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb50-5" title="5"><span class="op">}</span>)</a></code></pre></div>
+<p>Reading the code, we are checking a model called FavoritePotatoes. We want to find all entries where the userid column matches the userid we are provided. Elegant code can read almost like a sentence, and Sequelize does its best to make it as easy as possible on us.</p>
+<p>Sequelize functions <strong>return promises</strong>, and the promise for findAll() is the array. We declare the array as <strong>items</strong>, and can now use this data as needed. I built a simple catch where if no items are returned we send a message, “No favorited items”.</p>
+<p>If favorited items are returned, we want to get this information to the frontend. My preferred was is with <strong>res.json()</strong>. Since it is an array, I call my key <strong>array</strong> since Sequelize gave us an array of objects. We can call this favoritedArray, usersFavoritedItemsFromThePotatoTableInOurDatabase, or whatever you desire.</p>
+<p>Regardless of the outcome, whenever our frontend calls the “/favoritePotatoes” action it will get a response.</p>
+<h3 id="the-frontend">The Frontend</h3>
+<p><img height="200px" src="photos/front-fav-fetch.png" /></p>
+<p>Whether you build the frontend or backend first, building the second component is <em>a little</em> easier. We have our backend setup, so our frontend merely needs to match the requirements of the backend. We need to send the user’s unique ID, it has to be a post request, and we know we are getting a response in the form of a json object.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb51-1" title="1"><span class="at">fetch</span>(<span class="st">&#39;http://localhost:8080/favoritePotatoes&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb51-2" title="2">  <span class="dt">method</span><span class="op">:</span> <span class="st">&#39;POST&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb51-3" title="3">  <span class="dt">headers</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb51-4" title="4">    <span class="st">&#39;Content-Type&#39;</span><span class="op">:</span> <span class="st">&#39;application/json&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb51-5" title="5">    <span class="st">&#39;authorization&#39;</span><span class="op">:</span> <span class="st">&#39;Bearer &#39;</span> <span class="op">+</span> <span class="va">localStorage</span>.<span class="at">getItem</span>(<span class="st">&#39;jsonwebtoken&#39;</span>)</a>
+<a class="sourceLine" id="cb51-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb51-7" title="7">  <span class="dt">body</span><span class="op">:</span> <span class="va">JSON</span>.<span class="at">stringify</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb51-8" title="8">    <span class="dt">userid</span><span class="op">:</span> <span class="kw">this</span>.<span class="va">props</span>.<span class="at">userid</span></a>
+<a class="sourceLine" id="cb51-9" title="9">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb51-10" title="10"><span class="op">}</span>).<span class="at">then</span>(response <span class="kw">=&gt;</span> <span class="va">response</span>.<span class="at">json</span>()).<span class="at">then</span>(json <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb51-11" title="11">  <span class="cf">if</span>(<span class="va">json</span>.<span class="at">array</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb51-12" title="12">    <span class="kw">this</span>.<span class="at">setState</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb51-13" title="13">      ...<span class="va">this</span>.<span class="at">state</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb51-14" title="14">      <span class="dt">favoritePotatoes</span><span class="op">:</span> <span class="va">json</span>.<span class="at">array</span></a>
+<a class="sourceLine" id="cb51-15" title="15">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb51-16" title="16">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb51-17" title="17">  <span class="cf">else</span> <span class="op">{</span><span class="va">console</span>.<span class="at">log</span>(<span class="va">json</span>.<span class="at">message</span>)<span class="op">}</span></a>
+<a class="sourceLine" id="cb51-18" title="18">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb51-19" title="19">}</a></code></pre></div>
+<p>I am using <strong>fetch</strong> to send a request to my backend, which is located at “http://localhost:8080”. I want to call the action “/favoritePotatoes”. I know the method needs to be “POST” and my authentication is set up (headers: {“authorization”:“XYZ”}). In the body, I <strong>have to send the user’s unique ID</strong>, which I already have stored in my state manager <strong>Redux</strong> as userid. Our backend is expecting the body of the request to have a key called “userid”, so we must send the userid with a key called “userid”. Fetch is promise based, meaning as soon as we <strong>receive a response from the backend</strong> we can immediately do something with it. I know I’m sending json objects, regardless if the fetch passes or fails, so I turn my response into json.</p>
+<p>If statements can check if something is “truthy” or “falsey”, meaning <strong>if the json.array exists, do this. Else, do something else</strong>. If the array exists, we want to store the information and use it elsewhere. In my case, I’m using local state in <strong>React</strong> to store the array for later. If not array exists in the response, we will console log the error message. Likely, you’d want to display the error message as something like “you have not favorited any items yet” or “your shopping cart is empty” for a better user experience.</p>
+<p>Now that I have my array of objects, the objects being each favorited potato, I can display them on my frontend. My primary code from the <strong>hasMany associations section</strong> is not changing, but I am now going to change the appearance of my user’s favorited items.</p>
+<p><img height="200px" src="photos/front-fav-render.png" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb52-1" title="1"><span class="at">render</span>()<span class="op">{</span></a>
+<a class="sourceLine" id="cb52-2" title="2">  <span class="kw">let</span> potatoes <span class="op">=</span> <span class="kw">this</span>.<span class="va">state</span>.<span class="at">potatoName</span></a>
+<a class="sourceLine" id="cb52-3" title="3">  <span class="kw">let</span> favoritePotatoes <span class="op">=</span> <span class="kw">this</span>.<span class="va">state</span>.<span class="at">favoritePotatoes</span></a>
+<a class="sourceLine" id="cb52-4" title="4">  <span class="kw">let</span> potatoName <span class="op">=</span> (<span class="op">&lt;</span>p<span class="op">&gt;</span>Loading&lt;/p<span class="op">&gt;</span>)</a>
+<a class="sourceLine" id="cb52-5" title="5">  <span class="cf">if</span> (<span class="op">!</span><span class="kw">this</span>.<span class="va">state</span>.<span class="at">loading</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-6" title="6">    potatoName <span class="op">=</span> <span class="va">potatoes</span>.<span class="at">map</span>((onePotato) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-7" title="7">      <span class="cf">for</span>(<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">favoritePotatoes</span>.<span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-8" title="8">        <span class="cf">if</span>(<span class="va">onePotato</span>.<span class="at">id</span> <span class="op">===</span> favoritePotatoes[i].<span class="at">potatoid</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-9" title="9">          <span class="cf">return</span> (</a>
+<a class="sourceLine" id="cb52-10" title="10">            <span class="op">&lt;</span>li id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}</span> className<span class="op">=</span><span class="st">&quot;potatoListLI&quot;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-11" title="11">              <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&quot;firstRowPotatoDisplay&quot;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-12" title="12">                <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoName&quot;</span><span class="op">&gt;{</span><span class="va">onePotato</span>.<span class="at">name</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-13" title="13">                <span class="op">&lt;</span>button className<span class="op">=</span><span class="st">&#39;removeFavoriteButton&#39;</span></a>
+<a class="sourceLine" id="cb52-14" title="14">                  id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb52-15" title="15">                  onClick<span class="op">={</span><span class="kw">this</span>.<span class="at">removePotatoFromFavorites</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb52-16" title="16">                  <span class="op">&gt;</span>Remove From Favorites</a>
+<a class="sourceLine" id="cb52-17" title="17">                &lt;/button<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-18" title="18">              &lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-19" title="19">              <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoStarch&quot;</span><span class="op">&gt;</span><span class="dt">Type</span><span class="op">:</span> <span class="op">{</span><span class="va">onePotato</span>.<span class="at">starch_level</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-20" title="20">              <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoCook&quot;</span><span class="op">&gt;</span>Cook <span class="dt">methods</span><span class="op">:</span> <span class="op">{</span><span class="va">onePotato</span>.<span class="at">cook_method</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-21" title="21">            &lt;/li<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-22" title="22">          )</a>
+<a class="sourceLine" id="cb52-23" title="23">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb52-24" title="24">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb52-25" title="25">      <span class="cf">return</span> (</a>
+<a class="sourceLine" id="cb52-26" title="26">        <span class="op">&lt;</span>li id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}</span> className<span class="op">=</span><span class="st">&quot;potatoListLI&quot;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-27" title="27">          <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&quot;firstRowPotatoDisplay&quot;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-28" title="28">            <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoName&quot;</span><span class="op">&gt;{</span><span class="va">onePotato</span>.<span class="at">name</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-29" title="29">            <span class="op">&lt;</span>button className<span class="op">=</span><span class="st">&#39;favoriteButton&#39;</span></a>
+<a class="sourceLine" id="cb52-30" title="30">              id<span class="op">={</span><span class="va">onePotato</span>.<span class="at">id</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb52-31" title="31">              onClick<span class="op">={</span><span class="kw">this</span>.<span class="at">addPotatoToFavorites</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb52-32" title="32">              <span class="op">&gt;</span>Add To Favorites</a>
+<a class="sourceLine" id="cb52-33" title="33">            &lt;/button<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-34" title="34">          &lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-35" title="35">          <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoStarch&quot;</span><span class="op">&gt;</span><span class="dt">Type</span><span class="op">:</span> <span class="op">{</span><span class="va">onePotato</span>.<span class="at">starch_level</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-36" title="36">          <span class="op">&lt;</span>p className<span class="op">=</span><span class="st">&quot;potatoCook&quot;</span><span class="op">&gt;</span>Cook <span class="dt">methods</span><span class="op">:</span> <span class="op">{</span><span class="va">onePotato</span>.<span class="at">cook_method</span><span class="op">}</span>&lt;/p<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-37" title="37">        &lt;/li<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb52-38" title="38">      )</a>
+<a class="sourceLine" id="cb52-39" title="39">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb52-40" title="40">  <span class="op">}</span></a></code></pre></div>
+<p>Whew, that’s a lot to digest at once. The bottom <strong>render()</strong> is staying the same as before. We take the full list of all potatoes and display them on the page.</p>
+<p>The first <strong>render()</strong> is where things get freaky. We are declaring two variables; <strong>potatoes and favoritePotatoes</strong>. potatoes refers to <strong>all the potatoes</strong>, regardless of being favorited or not. favoritePotatoes refers to <strong>only our user’s potatoes</strong>. We start by mapping through <strong>all the potatoes first</strong>, because our page will display <strong>all potatoes</strong> regardless if the user has all of the potatoes favorited or none of them favorited. I then want to look through my array of favorited potatoes to check if the favorite potatoes exist in the potatoes we are displaying (the answer should be yes to all favorited potatoes).</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb53-1" title="1"><span class="cf">if</span>(<span class="va">onePotato</span>.<span class="at">id</span> <span class="op">===</span> favoritePotatoes[i].<span class="at">potatoid</span>) <span class="op">{</span></a></code></pre></div>
+<p>If there is a potato in our entire list which is also a favorited potato, we will do the following. The JSX code will look almost identical to the original render(), but <strong>the button has been changed</strong>. The className is “removeFavoriteButton” and the button’s text is “Remove From Favorites”. We have also changed the onClick from addPotatoToFavorites() to removePotatoFromFavorites(). We want a function to remove the potato from the favorites since adding an already favorited potato has no purpose, so the button needs to change both in appearance and functionality. We will create the new function soon.</p>
+<p>Our user will now see a change in their UI if an item is favorited. If you wish to display all information on one page <strong>this is very important for the user’s experience</strong>. If the user can see which items are saved and which aren’t, and both add or remove saved items then and there, it will be a much more seamless experience for the user. Once our database grows to hundres of thousands of entries and a user can potentially have thousands of favorited items, a separate favorites only page would be a good idea.</p>
+<p><img height="200px" src="photos/app-favs.png" /></p>
+<p>As is, our button will not fire properly because we never created the removePotatoFromFavorites() function. A quick and easy way to test this is to simply create a console log. When in doubt, log it out.</p>
+<p><img height="75px" src="photos/front-del-click.png" /></p>
+<p>Our onClick now triggers a console log which says “you clicked a button! congrats!” When we click on a favorited potato, our developer tools now show our new console log.</p>
+<p><img height="75px" src="photos/app-del-click.png" /></p>
+<p>Now that our UI reflects the status of items and our new button can properly trigger, we can finally focus on creating a delete query with Sequelize. Remember what we need; a post call from the frontend, a post action on the backend, and a Sequelize query to delete the data from the database. Sequelize has a built in function called <strong>destroy()</strong> which we will be using.</p>
+<h1 id="destroy-data">Destroy() Data</h1>
+<p><a name="destroy-func"></a></p>

@@ -1,0 +1,43 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" type='text/css' href="../style.css")
+    title Core Dump - Welcome
+  body
+    div.wrapper
+      div.leftbar
+        p.logobox-a
+        p.logobox-b
+        p.logobox-c
+        a(href='/').logo COREDUMP
+      div.center
+        span.search
+          form(method='get' action='/search/')
+          span.button.btn.btn-info Search
+          input(type='search' class='searchinput' placeholder='  search coredump')
+          a(href='/login').login Login
+          a(href='/signup').signup Sign Up
+          span.avatar
+        p.line
+      div.loginbox
+        div(class="sign-up-container")
+          div(class="errors-container")
+          h2 Sign Up
+          form(class="sign-up-form")
+            .form-group
+              label(for='username') Username
+              input#username.form-control(type='text' name='userName' placeholder="Username")
+            .form-group
+              label(for='email') Email address
+              input#email.form-control(type='email', name="email", placeholder='Enter Email')
+              .form-group
+              label(for='avatar') Avatar
+              input#username.form-control(type='text' name='avatar' placeholder="Optional Avatar URL Here")
+            .form-group
+              label(for='password') Password
+              input#password.form-control(type='password', name="password", placeholder='Password')
+            button.btn.btn-primary(type='submit') Sign Up
+          a(href='/login') Already have an account? Log in here.
+        script(src="js/signup.js")

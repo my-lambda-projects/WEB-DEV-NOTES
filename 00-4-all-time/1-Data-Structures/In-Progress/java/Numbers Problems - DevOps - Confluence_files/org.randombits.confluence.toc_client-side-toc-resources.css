@@ -1,0 +1,2 @@
+/* module-key = 'org.randombits.confluence.toc:client-side-toc-resources', location = 'net/customware/confluence/plugin/toc/css/toc.css' */
+.toc-macro ul.toc-indentation{margin-top:0}.toc-macro{font-size:14px}.toc-macro span.toc-outline{padding-right:5px}.toc-macro.hidden-outline span.toc-outline{display:none}.toc-macro li.toc-empty-item{list-style-type:none}@media print{.toc-macro.non-printable{display:none}}

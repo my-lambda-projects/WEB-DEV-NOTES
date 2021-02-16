@@ -1,0 +1,49 @@
+/* module-key = 'confluence.macros.advanced:get-more', location = 'com/atlassian/confluence/plugins/macros/advanced/css/recently-updated-common.css' */
+.recently-updated .waiting-image {
+  vertical-align: text-bottom;
+  display: none
+}
+
+.loading .waiting-image {
+  display: inline
+}
+
+.recently-updated ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none
+}
+
+.recently-updated>h2 {
+  margin-top: 0
+}
+
+.update-item-icon {
+  float: left
+}
+
+.update-item-details {
+  padding-left: 21px;
+  margin-right: 10px
+}
+
+.recently-updated .results-container {
+  margin-top: 10px
+}
+
+.more-link-container {
+  margin-top: 10px;
+  padding-top: 7px;
+  border-top: 1px solid #ccc
+}
+
+.recently-updated.macro-blank-experience {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALsAAAD4CAMAAACDgmeaAAAAGFBMVEX///9wcHBwcHBwcHBwcHBwcHBwcHBwcHDJYMTAAAAACHRSTlMAESIzRFVmd1lsqD8AAAS2SURBVHja7d3hbtwgEARgBlj8/m/cNO3dVIpSnwEzNy37s1Ljr5P11saWSQsLQP5LAUhvWESfF2DJZgFqdp9b30N0j/kd3ayVfMKd+IT78UG5mZ5wIz7lbnrKHfWg3E2PvLwgl5catfTqxZnXdrQqyJ7yAftxHJH7S9nnJSKKwE76CL6ULLAj68uYnv3kLAFdac/Z1Y5sa0e2ted3Kr/QWXPo5aPWmR/HmpN6ba0ukz8PNqdh2nG0a6t1wHPdD7hmb4+rzzm9Hq3F6BIjcJf97PdYyyl71q1vfRxsyWyke5b/gn2Zm/5Z9sVw8sftspUIDNsVcIY/ZJcvXfXbdXLqO+1SOfU9drzzEvk8OuWr9LPolK/TO9AJet2ulZ/rp9EFD28ndQwUj5596JSd2uXyc70fnfiBjiFdhB+mJ1F9e+h3Dp35fvPHCvpl/Fy6vozp2HRFGdPhS0/GdPjS09wVWE3s43SUiKX2iR1TI6JIYh9v9hwfhXX2bro+eLzyHCm9WmDwitjjOKJ0xM7gqyB2PjctPXQGn1XdHq1F6b/FK8uCx/l7AldDjFWna/eM0c9JTF4U4Jw0iF03J9FN189JdHeMfk7eEDvnpGHsnJMGsWvmZHfs+jmJm2LnnDSIXTAnu2PXz0ncFjvnpFfsrDuD745dPydxZ+yck4Z2Bu/XMpyTBrGvnJPojl0/J9Edu35OXm6ZNzpdF7QM56RfyzB4PzvnpGHLcE762TknDVuGc9LAvuJ0xbKW4ZzUt7s++HUtwzmpt+vn5LqW4Zw0PFU5J/3sPF3Vdv2cxNJTlXPS71TlnDS0c0762TknTe3gyWpnTxnPIYE59i77+HiDjZ104m3spBNvYyedeB/7rMMIXp7FrON8fVPpdvu03+/XD5r8iU9G9jiOVjML236T/eRFVAs7a9svzsj9f9PNdtRiek2AGhGwvBYr8bOK4TVwjl902N175Poprw+qzz0ffsv5A12WsFHi0eksjzW9wkZnWayl5mCjC+yCRhfbKY9RuWDQsNEldggaXW7PbHSVPQsaXXuy8qpLakf3gxk2ulnDZza6T8Oztn1Bw4vsu2lE9t002z69aTzt/k2Dbd9Nc2K3apodvMhuHDx28CK7cfDYwe/gL1c2xmfjrsEOXlNwxmfjrsHJpro2wXNTXQ88XtlU1yT4Ei2qS8vjlU11YTlqiN+fNt6flL4YfH7T4DdeU3gZvz+8vzc8IN64bbIxHhb4PIqHMN++rtHj4b73lCUeXXut6fXMNfnh8a/tLXiO1+vRsQ+oyV6aLMc9TIl/Jz2M9+z9D/ZKZsFvj2oW/PYGZ8FyT3b+ZRkfozc+yCI9Zmw9lnsLg/Ae+zie/Nlw2m/Ek49L7nkrc8Tf7wfdU+zEjxeAcTbtM/ClRrn8j8An+DqZ391IM/C1HVHzoirxeOg7uNbHr6ess7fjaLSPRl+jRVmXe2PuQ3huybaqeLTUjddXulzO9gRfO/F6u68+GeJp99UnY3waKMjttnokDZ6vMA7RJXq+wjgi1+j5CmO/XKovEbX0ytX6UkqvXK9Xy6mHo5z8RXCv8HEi14cvhJNvCScfnnD6Pd30W7pZAPqXivV1tuqL6+gfhgR/YaTH2YEAAAAASUVORK5CYII=) right no-repeat
+}
+
+/* module-key = 'confluence.macros.advanced:get-more', location = 'com/atlassian/confluence/plugins/macros/advanced/css/recently-updated-print.css' */
+@media print {
+  .recently-updated .more-link-container {
+    display: none
+  }
+}

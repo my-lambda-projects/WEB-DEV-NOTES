@@ -1,0 +1,90 @@
+<h1 id="foreign-keys-and-the-join-operation">Foreign Keys And The JOIN Operation</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#setting-up-the-database">Setting up the database</a></li>
+<li><a href="#using-join-to-retrieve-rows-from-multiple-tables">Using JOIN to retrieve rows from multiple tables</a></li>
+<li><a href="#what-we-learned">What we learned:</a></li>
+<li><a href="#helpful-links">Helpful links:</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>In relational databases, <em>relationships</em> are key. We can create relationships, or <em>associations</em>, among tables so that they can access and share data. In a SQL database, we create table associations through <em>foreign keys</em> and <em>primary keys</em>.</p>
+<p>You’ve learned about primary and foreign keys. Now, it’s time to put them to use.</p>
+<h2 id="setting-up-the-database">Setting up the database</h2>
+<p>Create a new database called “learn_joins”. Connect to that database. Run the following SQL statements to create tables and the data in them.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> breeds (</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb1-3" title="3">  name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb1-5" title="5">);</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> breeds (name)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb2-3" title="3">(<span class="st">&#39;Australian Shepherd&#39;</span>),</a>
+<a class="sourceLine" id="cb2-4" title="4">(<span class="st">&#39;Basset Hound&#39;</span>),</a>
+<a class="sourceLine" id="cb2-5" title="5">(<span class="st">&#39;Beagle&#39;</span>),</a>
+<a class="sourceLine" id="cb2-6" title="6">(<span class="st">&#39;Corgi&#39;</span>),</a>
+<a class="sourceLine" id="cb2-7" title="7">(<span class="st">&#39;German Shepherd&#39;</span>),</a>
+<a class="sourceLine" id="cb2-8" title="8">(<span class="st">&#39;Korean Jindo&#39;</span>),</a>
+<a class="sourceLine" id="cb2-9" title="9">(<span class="st">&#39;Labradoodle&#39;</span>),</a>
+<a class="sourceLine" id="cb2-10" title="10">(<span class="st">&#39;Miniature Schnauzer&#39;</span>),</a>
+<a class="sourceLine" id="cb2-11" title="11">(<span class="st">&#39;Yorkshire Terrier&#39;</span>);</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb3-3" title="3">  name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb3-4" title="4">  age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb3-5" title="5">  breed_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb3-6" title="6">  weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb3-7" title="7">  microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span>,</a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(<span class="kw">id</span>),</a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (breed_id) <span class="kw">REFERENCES</span> breeds(<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb3-10" title="10">);</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> puppies (name, age_yrs, breed_id, weight_lbs, microchipped)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb4-3" title="3">(<span class="st">&#39;Cooper&#39;</span>, <span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">18</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-4" title="4">(<span class="st">&#39;Indie&#39;</span>, <span class="fl">0.5</span>, <span class="dv">9</span>, <span class="dv">13</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-5" title="5">(<span class="st">&#39;Kota&#39;</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="dv">26</span>, <span class="kw">false</span>),</a>
+<a class="sourceLine" id="cb4-6" title="6">(<span class="st">&#39;Zoe&#39;</span>, <span class="fl">0.8</span>, <span class="dv">6</span>, <span class="dv">32</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-7" title="7">(<span class="st">&#39;Charley&#39;</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">25</span>, <span class="kw">false</span>),</a>
+<a class="sourceLine" id="cb4-8" title="8">(<span class="st">&#39;Ladybird&#39;</span>, <span class="fl">0.6</span>, <span class="dv">7</span>, <span class="dv">20</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-9" title="9">(<span class="st">&#39;Callie&#39;</span>, <span class="fl">0.9</span>, <span class="dv">4</span>, <span class="dv">16</span>, <span class="kw">false</span>),</a>
+<a class="sourceLine" id="cb4-10" title="10">(<span class="st">&#39;Jaxson&#39;</span>, <span class="fl">0.4</span>, <span class="dv">3</span>, <span class="dv">19</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-11" title="11">(<span class="st">&#39;Leinni&#39;</span>, <span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">25</span>, <span class="kw">true</span>),</a>
+<a class="sourceLine" id="cb4-12" title="12">(<span class="st">&#39;Max&#39;</span>, <span class="fl">1.6</span>, <span class="dv">5</span>, <span class="dv">65</span>, <span class="kw">false</span>);</a></code></pre></div>
+<h2 id="using-join-to-retrieve-rows-from-multiple-tables">Using JOIN to retrieve rows from multiple tables</h2>
+<p>Now that we’ve set up an association between the “puppies” table and the “friends” table, we can access data from both tables. We can do so by using a <a href="https://www.postgresql.org/docs/8.3/tutorial-join.html">JOIN operation</a> in our SELECT query. Type the following into psql:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">INNER</span> <span class="kw">JOIN</span> breeds <span class="kw">ON</span> (puppies.breed_id <span class="op">=</span> breeds.<span class="kw">id</span>);</a></code></pre></div>
+<p>The <code>JOIN</code> operation above is joining the “puppies” table with the “breeds” table together into a single table using the foreign key/primary key shared between the two tables: <code>breed_id</code>.</p>
+<p>You should get all rows back containing all information for the puppies and breeds with matching <code>breed_id</code> values:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1">postgres<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb6-2" title="2">postgres<span class="op">-</span># <span class="kw">INNER</span> <span class="kw">JOIN</span> breeds <span class="kw">ON</span> (puppies.breed_id <span class="op">=</span> breeds.<span class="kw">id</span>);</a>
+<a class="sourceLine" id="cb6-3" title="3"> <span class="kw">id</span> |   name   | age_yrs | breed_id | weight_lbs | microchipped | <span class="kw">id</span> |        name</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">----+----------+---------+----------+------------+--------------+----+---------------------</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="dv">1</span> | Cooper   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">18</span> | t            |  <span class="dv">8</span> | Miniature Schnauzer</a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="dv">2</span> | Indie    |     <span class="fl">0.5</span> |        <span class="dv">9</span> |         <span class="dv">13</span> | t            |  <span class="dv">9</span> | Yorkshire Terrier</a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="dv">3</span> | Kota     |     <span class="fl">0.7</span> |        <span class="dv">1</span> |         <span class="dv">26</span> | f            |  <span class="dv">1</span> | Australian Shepherd</a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="dv">4</span> | Zoe      |     <span class="fl">0.8</span> |        <span class="dv">6</span> |         <span class="dv">32</span> | t            |  <span class="dv">6</span> | Korean Jindo</a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="dv">5</span> | Charley  |     <span class="fl">1.5</span> |        <span class="dv">2</span> |         <span class="dv">25</span> | f            |  <span class="dv">2</span> | Basset Hound</a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="dv">6</span> | Ladybird |     <span class="fl">0.6</span> |        <span class="dv">7</span> |         <span class="dv">20</span> | t            |  <span class="dv">7</span> | Labradoodle</a>
+<a class="sourceLine" id="cb6-11" title="11">  <span class="dv">7</span> | Callie   |     <span class="fl">0.9</span> |        <span class="dv">4</span> |         <span class="dv">16</span> | f            |  <span class="dv">4</span> | Corgi</a>
+<a class="sourceLine" id="cb6-12" title="12">  <span class="dv">8</span> | Jaxson   |     <span class="fl">0.4</span> |        <span class="dv">3</span> |         <span class="dv">19</span> | t            |  <span class="dv">3</span> | Beagle</a>
+<a class="sourceLine" id="cb6-13" title="13">  <span class="dv">9</span> | Leinni   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">25</span> | t            |  <span class="dv">8</span> | Miniature Schnauzer</a>
+<a class="sourceLine" id="cb6-14" title="14"> <span class="dv">10</span> | <span class="fu">Max</span>      |     <span class="fl">1.6</span> |        <span class="dv">5</span> |         <span class="dv">65</span> | f            |  <span class="dv">5</span> | German Shepherd</a>
+<a class="sourceLine" id="cb6-15" title="15">(<span class="dv">10</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>We could make our query more specific by selecting specific columns, adding a <code>WHERE</code> clause, or doing any number of operations that we could do in a normal <code>SELECT</code> query. Aside from an <code>INNER JOIN</code>, we could also do different types of <code>JOIN</code> operations. (Refer to this overview on <a href="http://www.postgresqltutorial.com/postgresql-joins/">PostgreSQL JOINS</a> for more information.)</p>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>What a foreign key is/does</li>
+<li>How to create a foreign key</li>
+<li>How to alter/update an existing table</li>
+<li>How to use the JOIN operation to get rows from two tables</li>
+</ul>
+<h2 id="helpful-links">Helpful links:</h2>
+<ul>
+<li><a href="https://www.postgresql.org/docs/9.2/ddl-constraints.html">PostgreSQL Docs: Constraints</a></li>
+<li><a href="https://www.postgresql.org/docs/10/datatype-numeric.html">PostgreSQL Docs: Data Types &gt; Numeric Types</a></li>
+<li><a href="https://www.postgresql.org/docs/8.3/tutorial-join.html">PostgreSQL Docs: Joins Between Tables</a></li>
+<li><a href="http://www.postgresqltutorial.com/postgresql-joins/">PostgreSQL Tutorial: PostgreSQL Joins</a></li>
+</ul>

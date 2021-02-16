@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>dtw</name>
+  <version>0.1.0</version>
+  <description>Simple DTW implementation. Can be compiled as an ROS package (Groovy+) or as a standard C++ library.</description>
+  <maintainer email="calder.pg@gmail.com">Calder Phillips-Grafflin</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
+
+</package>

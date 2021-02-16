@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "44c1f763-f47e-496f-b3c1-d04852ca61e0",
+    "name": "TTT: Player Clicks Hints",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-02-hints-ui-provided-js.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "ttt--player-clicks-hints"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Hints 2: Tracking Grid Clicks\n\nTo track and store the grid clicks, you can perform the following steps in the\nJavaScript file:\n\n1. Declare a variable named `currentPlayerSymbol` and set it to \"x\".\n1. Declare a variable named `squareValues` and initialize it to an array with\n   nine empty string entries.\n1. Add an event listener to the `window` object for the `DOMContentLoaded`\n   event.\n1. In the event handler for the `DOMContentLoaded` event, add a click event\n   handler to the tic-tac-toe grid `<div>`.\n1. In the click event handler, inspect the target of the event. Ignore the event\n   if its `id` does not begin with \"square-\".\n1. If the event target's `id` attribute does begin with \"square-\", then parse\n   the number after \"square-\" using the [`Number.parseInt`] method.\n1. If the value in the `squareValues` array for the index of the parsed number\n   is not an empty string, then ignore the event.\n1. There must not be a play in that square, so:\n   * Programmatically create an `img` element, set its source to appropriate\n     value from the requirements by using the value in `currentPlayerSymbol`,\n     and append the `img` element to the event target.\n   * Store the value of `currentPlayerSymbol` in the corresponding slot in the\n     `squareValues` array.\n   * If the `currentPlayerSymbol` is \"x\", then set it to \"o\". Otherwise, set\n     `currentPlayerSymbol` to \"x\".\n\n\n**Why do these hints suggest creating an array in which to track the symbols?**\nIn the world of good programming, the _state_ of the application is kept\nseparate from the _visualization_ of the program's state. What that practically\nmeans is that the Tic Tac Toe game really only cares about the \"x\" values and\nthe \"o\" values, not the fact that there are fancy SVG images in the UI. For it\nto figure out the winner or tie, it cares about the _data_ that describes the\ngame board at any given point, not the HTML elements that the players see. If\nthe program knows the state of the board at any given point, then it can make\nthose determinations as well as restoring the game board from that point in the\nfuture.\n\nWhen you finish, you should have something similar to the following.\n\n![clickable squares](https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/requirement-2.gif)\n\n[`Number.parseInt`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/parseInt\n"
+  },
+  "success": true
+}

@@ -1,0 +1,67 @@
+<h1 id="a-postgresql-cheat-sheet">A PostgreSQL cheat sheet</h1>
+<blockquote>
+<p>Learn to move your first steps with the PostgreSQL console with this cheat sheet.</p>
+</blockquote>
+<p><em>Learn to move your first steps with the PostgreSQL console with this cheat sheet.</em></p>
+<p><a href="chrome-extension://cjedbglnccaioiolemnfhjncicchinao/blog/static/7690eafc4f448cd4a3f3f9e479ec6091/c1b63/postgresql.png"><img src="chrome-extension://cjedbglnccaioiolemnfhjncicchinao/blog/static/7690eafc4f448cd4a3f3f9e479ec6091/7a3d6/postgresql.png" title="A PostgreSQL command line cheat sheet" alt="A PostgreSQL command line cheat sheet" /></a></p>
+<p>PostgreSQL is a fantastic database isn’t it? However for all those starting out, <strong>PostgreSQL console</strong> could be confusing to say the least.</p>
+<p>Let’s see in this cheatsheet what are the basic commands for <strong>moving your first steps it the PostgreSQL console</strong>.</p>
+<h2 id="first-steps-with-postgresql"><a href="#first-steps-with-postgresql"></a>First steps with PostgreSQL</h2>
+<p>First of all you want to login into the console. To do so become the user postgres from the command line with:</p>
+<p>Once inside enter the PostgreSQL console with:</p>
+<p>If you use <a href="https://postgresapp.com/">Postgres.app</a> for MacOS, from the terminal you can run <code>psql</code> followed by the default database name:</p>
+<p>If you see this prompt you’re in:</p>
+<h2 id="interacting-with-databases"><a href="#interacting-with-databases"></a>Interacting with databases</h2>
+<p>Once inside the PostgreSQL console you can interact with databases. From now on I’ll omit the prompt <code>postgres=#</code>. To <strong>create a new database</strong>:</p>
+<p>To list all the databases in the server:</p>
+<p>In addition to the shortcut there is also the extended version:</p>
+<p>To delete a database <strong>(warning zone)</strong>:</p>
+<p>To connect to a database run:</p>
+<p>or:</p>
+<p>and you should see:</p>
+<pre><code>You are now connected to database &quot;family&quot; as user &quot;postgres&quot;</code></pre>
+<p>Note that <strong>outside the PostgreSQL console</strong> you can also create a database with <code>createdb</code>:</p>
+<h2 id="interacting-with-tables"><a href="#interacting-with-tables"></a>Interacting with tables</h2>
+<p>Once connected to a database you can <strong>list all its tables</strong> with:</p>
+<p>This command will give you a representation of all the tables in the database:</p>
+<pre><code>          List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | daughter | table | postgres
+ public | mother   | table | postgres
+(2 rows)</code></pre>
+<p>My example assumes a simple database with two tables <a href="https://www.valentinog.com/blog/many-to-one/">connected through a many to one relationship</a>. To describe a table, that is, to see its columns, run:</p>
+<p>This command will give you a complete description of the table:</p>
+<pre><code>                                      Table &quot;public.daughter&quot;
+   Column   |          Type          | Collation | Nullable |               Default                
+------------+------------------------+-----------+----------+--------------------------------------
+ id         | smallint               |           | not null | nextval(&#39;daughter_id_seq&#39;::regclass)
+ first_name | character varying(254) |           | not null | 
+ last_name  | character varying(254) |           | not null | 
+ mother_id  | integer                |           | not null | 
+Indexes:
+    &quot;daughter_pkey&quot; PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    &quot;fk_mother_id&quot; FOREIGN KEY (mother_id) REFERENCES mother(id)</code></pre>
+<p>You can see every column in the table with the corresponding type. If there is any primary or foreign key you’ll see them as well.</p>
+<h2 id="postgresql-roles"><a href="#postgresql-roles"></a>PostgreSQL roles</h2>
+<p>Database users can interact, modify, update, and see databases. In PostgreSQL they’re called <strong>roles</strong>. To create a new user from the PostgreSQL console run:</p>
+<pre><code>CREATE ROLE my_user WITH LOGIN PASSWORD &#39;my_password&#39;;</code></pre>
+<p>PostgreSQL roles may own one or more database. Once you create a role you can assign an entire database to it:</p>
+<pre><code>CREATE DATABASE my_database WITH OWNER my_user;</code></pre>
+<p>If you want to give a user the ability to create new databases, run:</p>
+<pre><code>ALTER USER my_user CREATEDB;</code></pre>
+<p>When you’re done with databases, roles, and tables you can finally exit the console with:</p>
+<h2 id="postgresql-dumping-a-remote-database"><a href="#postgresql-dumping-a-remote-database"></a>PostgreSQL: dumping a remote database</h2>
+<p>It’s common when migrating between systems to migrate first the application code, fetch the database from the old system, and load it in the new environment.</p>
+<p>With <code>pg_dump</code> you can dump a remote database to the local environment. To do so, set the <code>PGPASSWORD</code> environment:</p>
+<pre><code>unset HISTFILE
+export PGPASSWORD=4c1d4f7591801abb</code></pre>
+<p>Then, use <code>pg_dump</code> to dump the remote database on the local machine:</p>
+<pre><code>pg_dump -h dbhost.example -d dbname -U dbuser &gt; backup_file</code></pre>
+<p>To load the dump on the new machine, create the database and then run:</p>
+<pre><code>psql dbname &lt; backup_file</code></pre>
+<h2 id="postgresql-console-getting-help"><a href="#postgresql-console-getting-help"></a>PostgreSQL console: getting help</h2>
+<p>The PostgreSQL console has a lot more commands, and there are also a lot of <strong>SQL instructions in the PostgreSQL dialect</strong>. To see the complete list of all the SQL command available in PostgreSQL you can run:</p>
+<p>To see a complete list of PostgreSQL command run:</p>
+<p><a href="https://www.valentinog.com/blog/psql/">Source</a></p>

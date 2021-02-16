@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "823ec8e6-9f49-438f-9fe0-3b7365a37e61",
+    "name": "The Request/Response Cycle",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/topics/browser-basics/readings/reading-request-response-cycle-js.md",
+    "type": "Reading",
+    "timeEstimate": 360,
+    "urls": [
+      "the-request-response-cycle"
+    ],
+    "topic": "Homework for Next Monday",
+    "subtopic": "Homework",
+    "body": "# The Request-Response Cycle\n\nBrowsing the Web might seem like magic, but it’s really just a series of\n**requests** and **responses**. When we search for information or navigate to a\nWeb page, we are requesting something, and we expect to get a response back.\n\nWe can think about the request-response cycle as the communication pattern\nbetween a client, or browser, and a server. Whenever we type a URL into the\naddress bar of a browser, we are making a _request_ to a server for information\nback. The most common of these is an `http request`.\n\n## The request-response cycle diagram\n\nLet’s take a look at this diagram of the request-response cycle from\n[O’Reily][1]:\n\n<p>\n  <img src=\"https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-DOM-API/browser-basics/assets/request-response-cycle.png\" style=\"width: 100%; height: auto;\">\n</p>\n\nOn the left is the **client** side, or the browser. On the right is the\n**server** side, with a database where data is stored. The internet, in the\nmiddle, is a series of these client requests and server responses. We'll be\ngoing into more depth with servers soon, but for right now we are focusing on\nthe client side.\n\n## The browser’s role in the request-response cycle\n\nAs depicted in the diagram, the browser plays a key role in the request-response\ncycle. Besides letting the user make the request to the server, the browser\nalso:\n\n1. Parses HTML, CSS, and JS\n2. Renders that information to the user by constructing and rendering a DOM tree\n\nWhen we make a successful request to the server, we are able to view a Web page\nwith content and functionality. Unsuccessful requests prevent the page from\nloading and displaying information. You've probably seen a 404 page before!\n\nUnderstanding the request-response cycle is fundamental to developing for the\nWeb. If a server is down, or something is wrong with the request, you’ll most\nlikely see an error on the client side. Learning how to debug these errors and\nset up error handling is a common task for Web developers.\n\nYou can go to the **Network tab** of your browser’s **Developer Tools** to view\nthese requests and responses. Open a new tab, open up the Developer Tools in\nyour browser, and then navigate to `google.com`. Watch the request go through in\nyour Network tab!\n\n## What we learned:\n\n- Reviewed diagram of request-response cycle\n- The client side vs. the server side\n- The role of the browser\n- Where to view Network requests in the browser\n\n[1]: https://www.oreilly.com/library/view/using-google-app/9780596802462/\n"
+  },
+  "success": true
+}

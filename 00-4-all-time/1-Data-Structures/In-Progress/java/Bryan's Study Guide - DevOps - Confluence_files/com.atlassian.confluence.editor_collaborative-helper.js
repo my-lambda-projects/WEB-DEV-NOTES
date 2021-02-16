@@ -1,0 +1,9 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:collaborative-helper', location = 'loader/collaborative-helper.js' */
+define("confluence-editor/loader/collaborative-helper",["jquery","ajs","confluence/meta","confluence/api/event","confluence/get-content-id"],function(c,g,r,f,k){function h(){var b=k();b!==l&&(i=c.Deferred(),l=b,c.when(i,m).done(function(){d.load()}));return i}function n(){e()?(h().resolve(),o.resolve(g.Rte.getEditor())):p("off")}function p(b){c('meta[name="ajs-collaborative-editor-status"]').attr("content",b)}function e(b){var a=b||{},b=a.id||k(),a=a.type||r.get("content-type");return("page"===a||
+"blogpost"===a)&&"0"!==b}var d,m=c.Deferred(),l,i,q=c.Deferred(),j=c.Deferred(),o=c.Deferred();return{_init:function(){f.bind("rte-loaded",function(b,a){a.editPermission&&e(a)&&h().resolve()});f.bind("rte-quick-edit-init rte-initial-raw-content-ready",function(b,a){h().done(function(){if(e(a)){if(a){var b=a.syncRevSource&&!("synchrony"===a.syncRevSource||"synchrony-ack"===a.syncRevSource)?"unreconciled-recovery":c("<div>"+a.editorContent+"</div>").find(".fatal-render-error").length?"render":!1;b?
+j.reject(b):j.resolve(a)}q.resolve()}})});f.bind("rte-quick-edit-ready",function(){n()});f.bind("rte-ready",function(){g.Rte.isQuickEdit||n()})},registerPlugin:function(b){d=b;m.resolve();q.done(function(){d.edit(j.promise(),o.promise())})},setStatus:p,isCollaborativeEditingAvailable:e,getEditorContent:function(){return e()&&"fake"!==c('meta[name="ajs-collaborative-editor-status"]').attr("content")?d.getSynchronisedEditorContent():{content:g.Rte.getEditor().getContent()}},hasUnsavedChanges:function(){return d.hasUnsavedChanges()}}});
+require("confluence/module-exporter").safeRequire("confluence-editor/loader/collaborative-helper",function(c){c._init()});
+}catch(e){WRMCB(e)};

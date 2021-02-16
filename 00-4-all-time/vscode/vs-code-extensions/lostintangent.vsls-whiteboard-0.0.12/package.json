@@ -1,0 +1,97 @@
+{
+	"name": "vsls-whiteboard",
+	"displayName": "Live Share Whiteboard",
+	"publisher": "lostintangent",
+	"description": "Adds a real-time collaborative whiteboard to Visual Studio Live Share sessions",
+	"version": "0.0.12",
+	"icon": "icon.png",
+	"homepage": "https://github.com/lostintangent/vsls-whiteboard",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lostintangent/vsls-whiteboard"
+	},
+	"bugs": {
+		"url": "https://github.com/lostintangent/vsls-whiteboard/issues"
+	},
+	"author": {
+		"name": "Jonathan Carter"
+	},
+	"engines": {
+		"vscode": "^1.30.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"keywords": [
+		"Collaboration",
+		"Sharing",
+		"Remote"
+	],
+	"activationEvents": [
+		"onFileSystem:vsls",
+		"onCommand:liveshare.start",
+		"onCommand:liveshare.startFromActivityBar",
+		"onCommand:liveshare.startFromFileTreeExplorer",
+		"onCommand:liveshare.startFromWelcomePage",
+		"onCommand:liveshare.startFromWelcomeContent",
+		"onCommand:liveshare.startReadOnly",
+		"onCommand:liveshare.startReadOnlyFromActivityBar",
+		"onCommand:liveshare.startReadOnlyFromFileTreeExplorer",
+		"onCommand:liveshare.startReadOnlyFromWelcomeContent",
+		"onCommand:liveshare.joinPlannedSession",
+		"onCommand:liveshare.inviteUserJoin",
+		"onCommand:liveshare.inviteUserJoinByEmail",
+		"onCommand:liveshare.openWhiteboard"
+	],
+	"main": "./dist/bundle.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "liveshare.openWhiteboard",
+				"title": "Open Whiteboard",
+				"category": "Live Share"
+			},
+			{
+				"command": "liveshare.saveWhiteboard",
+				"title": "Save Whiteboard (SVG)",
+				"category": "Live Share"
+			}
+		],
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "liveshare.saveWhiteboard",
+					"when": "view == liveshare.session && viewItem == Whiteboard"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "webpack",
+		"compile-web": "webpack --config webpack.browser.config",
+		"watch": "webpack --watch",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/node": "^8.10.25",
+		"ts-loader": "^5.3.3",
+		"tslint": "^5.8.0",
+		"typescript": "^3.1.4",
+		"vscode": "^1.1.25",
+		"webpack": "^4.28.3",
+		"webpack-cli": "^3.2.0"
+	},
+	"dependencies": {
+		"vsls": "^1.0.1830"
+	},
+	"extensionDependencies": [
+		"ms-vsliveshare.vsliveshare"
+	],
+	"__metadata": {
+		"id": "8b2af6ed-196d-4ab7-a537-2915197a6de1",
+		"publisherId": "1a65a5dc-634f-48ad-929d-25316264b312",
+		"publisherDisplayName": "Jonathan Carter"
+	}
+}

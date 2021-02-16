@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "c4cfc1f1-3d3a-4926-a8b4-73a9ab13048b",
+    "name": "RDBMS And Database Entity Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/relational-databases/objectives/reading-server-database-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "rdbms-and-database-entity-objectives"
+    ],
+    "topic": "Monday - Hello, Database!",
+    "subtopic": "Learning Objectives",
+    "body": "## RDBMS And Database Entity Objectives\n\nDatabases are an essential part of many Web applications. There are lots of\nthings we could store in a database and use in a Web app, including user\ninformation, product information, review information, and more. Learning how to\ncreate databases and retrieve information stored in a database to display in a\nWeb app is a foundational development skill.\n\nIn this section, you will be able to\n\n* Define what a relational database management system is\n* Describe what relational data is\n* Define what a database is\n* Define what a database table is\n* Describe the purpose of a primary key\n* Describe the purpose of a foreign key\n* Describe how to properly name things in PostgreSQL\n* Install and configure PostgreSQL 12, its client tools, and a GUI client for it\n  named Postbird\n* Connect to an instance of PostgreSQL with the command line tool `psql`\n* Identify whether a user is a normal user or a superuser by the prompt in the\n  `psql` shell\n* Create a user for the relational database management system\n* Create a database in the database management system\n* Configure a database so that only the owner (and superusers) can connect to\n  it\n* View a list of databases in an installation of PostgreSQL\n* Create tables in a database\n* View a list of tables in a database\n* Identify and describe the common data types used in PostgreSQL\n* Describe the purpose of the UNIQUE and NOT NULL constraints, and create\n  columns in database tables that have them\n* Create a primary key for a table\n* Create foreign key constraints to relate tables\n* Explain that SQL is not case sensitive for its keywords but is for its entity\n  names\n"
+  },
+  "success": true
+}

@@ -1,0 +1,35 @@
+/****
+variables.css -- setting variables for full page scope after normalizing
+****/
+
+html {
+  /* Colors */
+  --primary-color: rgb(108, 77, 138);
+  --raw-rgb-primary-color: 108, 77, 138;
+  --primary-color-light: rgb(183, 183, 212);
+  --primary-color-dark: rgb(85, 26, 139);
+  --primary-color-white: rgb(232, 232, 252);
+
+  --secondary-color: rgb(250, 211, 84);
+  --secondary-color-light: rgb(255, 238, 181);
+  --secondary-color-dark: rgb(189, 147, 9);
+  --secondary-color-white: rgb(255, 251, 239);
+
+  --error-color: red;
+  --success-color: green;
+  --lightest-white: white;
+
+  /* Icons */
+  --icon-color-stop1: var(--primary-color-light);
+  --icon-color-stop2: var(--primary-color);
+  --icon-color-stop3: var(--primary-color-dark);
+  --icon-padding: 3px;
+  --icon-margin: 10px;
+  --icon-button-padding: 6px;
+  --icon-button-font-size: 3rem;
+  --icon-button-primary-background: linear-gradient(140deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+
+  --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+
+  --button-primary-background-hover: linear-gradient(179deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+}

@@ -1,0 +1,5 @@
+/* module-key = 'confluence.extra.jira:macro-browser-resources', location = 'templates/extra/jira/macro-icon.css' */
+#macro-browser-dialog .icon-jiraql {
+  background-image: url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1000.0.0-da105be110ec/_/download/resources/confluence.extra.jira:macro-browser-resources/../../../images/sprites/macro-icons.png');
+  background-position: -1840px top
+}

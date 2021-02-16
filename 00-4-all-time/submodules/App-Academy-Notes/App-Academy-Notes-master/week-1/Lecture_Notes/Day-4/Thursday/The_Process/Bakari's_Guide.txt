@@ -1,0 +1,8 @@
+@here Another framework: 
+
+Understand the problem - what are the inputs and outputs?
+Come up with a plan - write out pseudocode (step as comments in english)
+Execute the plan - transform the english steps into lines of code
+Reflect, refactor - look over your code to troubleshoot, find errors using 
+console.log and fix, rewrite repeated or confusing code so it is clear and
+DRY (don't repeat yourself)

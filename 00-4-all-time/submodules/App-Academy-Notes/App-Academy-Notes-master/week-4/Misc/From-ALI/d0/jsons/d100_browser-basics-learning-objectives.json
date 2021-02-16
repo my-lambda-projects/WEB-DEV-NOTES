@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "f7b72008-abb5-45b2-a143-5c826610cbaf",
+    "name": "Browser Basics Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/objectives/reading-browser-basics-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 300,
+    "urls": [
+      "browser-basics-learning-objectives"
+    ],
+    "topic": "Homework for Next Monday",
+    "subtopic": "Learning Objectives",
+    "body": "# Browser Basics Lesson Learning Objectives\n\nBelow is a complete list of the terminal learning objectives for this lesson.\nWhen you complete this lesson, you should be able to perform each of the\nfollowing objectives. These objectives capture how you may be evaluated on the\nassessment for this lesson.\n\n1. Explain the difference between the BOM (browser object model) and the\n   DOM(document object model).\n2. Given a diagram of all the different parts of the Browser identify each part.\n   Use the Window API to change the innerHeight of a user's window.\n3. Identify the context of an anonymous functions running in the Browser (the\n   window).\n4. Given a JS file and an HTML file, use a script tag to import the JS file and\n   execute the code therein when all the elements on the page load (using\n   `DOMContentLoaded`)\n5. Given a JS file and an HTML file, use a script tag to import the JS file and\n   execute the code therein when the page loads\n6. Identify three ways to prevent JS code from executing until an entire HTML\n   page is loaded\n7. Label a diagram on the Request/Response cycle.\n8. Explain the Browser's main role in the request/response cycle. (1.Parsing\n   HTML,CSS, JS 2. Rendering that information to the user by constructing a DOM\n   tree and rendering it)\n9. Given several detractors - identify which real-world situations could be\n   implemented with the Web Storage API (shopping cart, forms saving inputs\n   etc.)\n10. Given a website to visit that depends on cookies (like Amazon), students\n    should be able to go to that site add something to their cart and then\n    delete that cookie using the Chrome Developer tools in order to empty their\n    cart.\n"
+  },
+  "success": true
+}

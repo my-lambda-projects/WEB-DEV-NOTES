@@ -1,0 +1,4 @@
+/* module-key = 'com.atlassian.confluence.plugins.confluence-ui-components:cql', location = 'css/cql/cql-filter-field.css' */
+.cql-filter .aui-iconfont-remove,.cql-type-date .aui-nav a{cursor:pointer}.aui-datepicker-dialog{z-index:4000}.cql-filter .absolute-date-pickers{padding:7px 0 7px 10px;display:inline-block}.cql-filter .from-date-picker.text{margin-right:7px}.cql-filter .to-date-picker.text{margin-left:7px}#macro-browser-dialog .macro-input-fields .absolute-date-pickers input{max-width:96px}
+/* module-key = 'com.atlassian.confluence.plugins.confluence-ui-components:cql', location = 'css/cql/cql-component.css' */
+.cql-error-container .aui-message{margin-bottom:10px}.cql-filter:first-child .aui-nav-heading{padding-top:0;border-top:0}.cql-filter .aui-iconfont-remove{display:inline-block;float:right;padding-top:2px}.cql-render-heading{margin-top:2em}.cql-render-heading button{float:right;margin-top:-5px}.cql-add-filter-container{padding:10px 0 0 0}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="./bubble.css">
+	<!-- <script type="text/javascript" src="./bubble.js"></script> -->
+	<title>Bubbling Principle Demo</title>
+</head>
+
+
+
+<body>
+
+	<h1>Bubbling Principle Demo</h1>
+
+	<div id="outer" onclick="console.log('outer div event triggered')">
+		<div id="middle" onclick="console.log('middle div event triggered')">
+			<div id="inner" onclick="console.log('inner div event triggered')"></div>
+		</div>
+	</div>
+
+
+
+	<!-- stopping propogation -->
+
+	<!-- <div id="outer" onclick="console.log('outer div event triggered')">
+		<div id="middle">
+			<div id="inner" onclick="console.log('inner div event triggered')"></div>
+		</div>
+	</div> -->
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JavaScript output: transformed source code 1`] = `
+"const name = \\"jack\\";
+module.exports = (
+  <div className=\\"first-a first-b\\">
+    <p className=\\"second-a second-b second-c second-d\\" />
+    <p
+      styleName=\\"third-c third-d\\"
+      className=\\"third-a third-b third-e third-f\\"
+    />
+    <p styleName=\\"fourth-a fourth-b\\" />
+    <p className=\\"fivth-a fivth-b\\" />
+    <p styleName=\\"two\\" className=\\"one\\" />
+    {[1, 2, 3].map(item => {
+      return (
+        <p
+          key={item}
+          className={\\"seventh-a seventh-b \\" + (\\"seventh-i-\\" + item)}
+        />
+      );
+    })}
+  </div>
+);
+"
+`;
+
+exports[`JavaScript output: transformed source code 2`] = `
+"const name = \\"jack\\";
+module.exports = (
+  <div styleName=\\"first-a first-b\\">
+    <p styleName=\\"second-a second-b second-c second-d\\" />
+    <p
+      className=\\"third-e third-f\\"
+      styleName=\\"third-a third-b third-c third-d\\"
+    />
+    <p styleName=\\"fourth-a fourth-b\\" />
+    <p className=\\"fivth-a fivth-b\\" />
+    <p styleName=\\"one two\\" />
+    {[1, 2, 3].map(item => {
+      return (
+        <p
+          key={item}
+          className={\\"seventh-i-\\" + item}
+          styleName=\\"seventh-a seventh-b\\"
+        />
+      );
+    })}
+  </div>
+);
+"
+`;
+
+exports[`html output: generated html 1`] = `
+<div
+  className="first-a first-b"
+>
+  <p
+    className="second-a second-b second-c second-d"
+  />
+  <p
+    className="third-a third-b third-e third-f"
+    styleName="third-c third-d"
+  />
+  <p
+    styleName="fourth-a fourth-b"
+  />
+  <p
+    className="fivth-a fivth-b"
+  />
+  <p
+    className="one"
+    styleName="two"
+  />
+  <p
+    className="seventh-a seventh-b seventh-i-1"
+  />
+  <p
+    className="seventh-a seventh-b seventh-i-2"
+  />
+  <p
+    className="seventh-a seventh-b seventh-i-3"
+  />
+</div>
+`;
+
+exports[`html output: generated html 2`] = `
+<div
+  styleName="first-a first-b"
+>
+  <p
+    styleName="second-a second-b second-c second-d"
+  />
+  <p
+    className="third-e third-f"
+    styleName="third-a third-b third-c third-d"
+  />
+  <p
+    styleName="fourth-a fourth-b"
+  />
+  <p
+    className="fivth-a fivth-b"
+  />
+  <p
+    styleName="one two"
+  />
+  <p
+    className="seventh-i-1"
+    styleName="seventh-a seventh-b"
+  />
+  <p
+    className="seventh-i-2"
+    styleName="seventh-a seventh-b"
+  />
+  <p
+    className="seventh-i-3"
+    styleName="seventh-a seventh-b"
+  />
+</div>
+`;
+
+exports[`static html output: static html 1`] = `"<div class=\\"first-a first-b\\"><p class=\\"second-a second-b second-c second-d\\"></p><p styleName=\\"third-c third-d\\" class=\\"third-a third-b third-e third-f\\"></p><p styleName=\\"fourth-a fourth-b\\"></p><p class=\\"fivth-a fivth-b\\"></p><p styleName=\\"two\\" class=\\"one\\"></p><p class=\\"seventh-a seventh-b seventh-i-1\\"></p><p class=\\"seventh-a seventh-b seventh-i-2\\"></p><p class=\\"seventh-a seventh-b seventh-i-3\\"></p></div>"`;
+
+exports[`static html output: static html 2`] = `"<div styleName=\\"first-a first-b\\"><p styleName=\\"second-a second-b second-c second-d\\"></p><p class=\\"third-e third-f\\" styleName=\\"third-a third-b third-c third-d\\"></p><p styleName=\\"fourth-a fourth-b\\"></p><p class=\\"fivth-a fivth-b\\"></p><p styleName=\\"one two\\"></p><p class=\\"seventh-i-1\\" styleName=\\"seventh-a seventh-b\\"></p><p class=\\"seventh-i-2\\" styleName=\\"seventh-a seventh-b\\"></p><p class=\\"seventh-i-3\\" styleName=\\"seventh-a seventh-b\\"></p></div>"`;

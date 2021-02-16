@@ -1,0 +1,12 @@
+<h1 id="connection-pool">Connection Pool</h1>
+<p>If you’re connecting to the database from a single process, you should create only one Sequelize instance. Sequelize will set up a connection pool on initialization. This connection pool can be configured through the constructor’s <code>options</code> parameter (using <code>options.pool</code>), as is shown in the following example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="co">/* ... */</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">pool</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">max</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">acquire</span><span class="op">:</span> <span class="dv">30000</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">idle</span><span class="op">:</span> <span class="dv">10000</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Learn more in the <a href="../class/lib/sequelize.js~Sequelize.html#instance-constructor-constructor">API Reference for the Sequelize constructor</a>. If you’re connecting to the database from multiple processes, you’ll have to create one instance per process, but each instance should have a maximum connection pool size of such that the total maximum size is respected. For example, if you want a max connection pool size of 90 and you have three processes, the Sequelize instance of each process should have a max connection pool size of 30.</p>

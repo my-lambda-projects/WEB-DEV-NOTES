@@ -1,0 +1,130 @@
+<h2 id="sql-continued-w10d3---learning-objectives">SQL (continued) (W10D3) - Learning Objectives</h2>
+<h3 id="sql-continued">SQL (continued)</h3>
+<ol type="1">
+<li>How to perform relational database design</li>
+</ol>
+<ul>
+<li>Steps to Designing the Database:
+<ul>
+<li>Define the entities. What data are are you storing, what are the fields for each entity?
+<ul>
+<li>You can think of this in similar ways to OOP (object oriented programming).</li>
+<li>If you wanted to model this information using classes, what classes would you make? Those are generally going to be the tables that are created in your database.</li>
+<li>The attributes of your classes are generally going to be the fields/columns that we need for each table.</li>
+</ul></li>
+<li>Identify primary keys. Most of the time these will be ids that you can generate as a serial field, incrementing with each addition to the database.</li>
+<li>Establish table relationships. Connect related data together with foreign keys. Know how we store these keys in a one-to-one, one-to-many, or many-to-many relationship.
+<ul>
+<li>With a one-to-one or one-to-many relationship, we are able to use a foreign key on the table to indicate the other specific record that it is connected to.</li>
+<li>With a many-to-many relationship, each record could be connected to multiple records, so we have to create a join table to connect these entities. A record on this join table connects a record from one table to a record from another table. <img src="./oto-relationship.svg" alt="one-to-one" /> <img src="./otm-and-mtm-relationships.svg" alt="one-to-many many-to-many" /></li>
+</ul></li>
+</ul></li>
+</ul>
+<ol start="2" type="1">
+<li>How to use transactions to group multiple SQL commands into one succeed or fail operation</li>
+</ol>
+<ul>
+<li>We can define an explicit transaction using <code>BEGIN</code> and ending with either <code>COMMIT</code> or <code>ROLLBACK</code>.</li>
+<li>If any command inside the block fails, everything will be rolled back. We can also specify that we want to roll back at the end of the block instead of committing. We saw that this can be useful when analyzing operations that would manipulate our database.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb1-3" title="3">      <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Alice&#39;</span>;</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">UPDATE</span> branches <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="kw">WHERE</span> name <span class="op">=</span> (<span class="kw">SELECT</span> branch_name <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Alice&#39;</span>);</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Bob&#39;</span>;</a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">UPDATE</span> branches <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb1-9" title="9">      <span class="kw">WHERE</span> name <span class="op">=</span> (<span class="kw">SELECT</span> branch_name <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Bob&#39;</span>);</a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">COMMIT</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="kw">UPDATE</span> cities</a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">SET</span> city <span class="op">=</span> <span class="st">&#39;New York City&#39;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="kw">WHERE</span> city <span class="op">=</span> <span class="st">&#39;New York&#39;</span>;</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">ROLLBACK</span>;</a></code></pre></div>
+<ol start="3" type="1">
+<li>How to apply indexes to tables to improve performance</li>
+</ol>
+<ul>
+<li>An index can help optimize queries that we have to run regularly. If we are constantly looking up records in a table by a particular field (such as username or phone number), we can add an index in order to speed up this process.</li>
+<li>An index maintains a sorted version of the field with a reference to the record that it points to in the table (via primary key). If we want to find a record based on a field that we have an index for, we can look through this index in a more efficient manner than having to scan through the entire table (generally O(log n) since the index is sorted, instead of O(n) for a sequential scan).</li>
+<li>To add an index to a field we can use the following syntax:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (column_name);</a></code></pre></div>
+<ul>
+<li>To drop an index we can do the following:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">DROP</span> <span class="kw">INDEX</span> index_name</a></code></pre></div>
+<ul>
+<li>Making an index is not always the best approach. Indices allow for faster lookup, but slow down record insertion and the updating of associated fields, since we not only have to add the information to the table, but also manipulate the index.
+<ul>
+<li>We generally wouldn’t care about adding an index if:
+<ul>
+<li>The tables are small</li>
+<li>We are updating the table frequently, especially the associated columns</li>
+<li>The column has many NULL values</li>
+</ul></li>
+</ul></li>
+</ul>
+<ol start="4" type="1">
+<li>Explain what and why someone would use EXPLAIN</li>
+</ol>
+<ul>
+<li>EXPLAIN gives us information about how a query will run (the query plan)</li>
+<li>It gives us an idea of how our database will search for data as well as a qualitative comparitor for how expensive that operation will be. Comparing the cost of two queries will tell us which one is more efficient (lower cost).</li>
+<li>We can also use the ANALYZE command with EXPLAIN, which will actually run the specified query. Doing so gives us more detailed information, such as the milliseconds it took our query to execute as well as specifics like the exact number of rows filtered and returned.</li>
+</ul>
+<ol start="5" type="1">
+<li>Demonstrate how to install and use the node-postgres library and its Pool class to query a PostgreSQL-managed database</li>
+</ol>
+<ul>
+<li>We can add the <code>node-postgres</code> library to our application with <code>npm install pg</code>. From there we will typically use the Pool class associated with this library. That way we can run many SQL queries with one database connection (as opposed to Client, which closes the connection after a query).</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">// If we need to specify a username, password, or database, we can do so when we create a Pool instance, otherwise the default values for logging in to psql are used:</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;&lt;&lt;username&gt;&gt;&#39;</span><span class="op">,</span> <span class="dt">password</span><span class="op">:</span> <span class="st">&#39;&lt;&lt;password&gt;&gt;&#39;</span><span class="op">,</span> <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;&lt;&lt;database&gt;&gt;&#39;</span><span class="op">}</span>)</a></code></pre></div>
+<ul>
+<li>The <code>query</code> method on the Pool instance will allow us to execute a SQL query on our database. We can pass in a string that represents the query we want to run</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> allAirportsSql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="vs">  SELECT id, city_id, faa_id, name</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="vs">  FROM airports;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectAllAirports</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(allAirportsSql)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span> <span class="co">// invoking end() will close our connection to the database</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-11" title="11"></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="at">selectAllAirports</span>()<span class="op">;</span></a></code></pre></div>
+<ul>
+<li>The return value of this asynchronous function is an object with a <code>rows</code> key that points to an array of objects, each object representing a record with field names as keys.</li>
+</ul>
+<ol start="6" type="1">
+<li>Explain how to write prepared statements with placeholders for parameters of the form “$1”, “$2”, and so on</li>
+</ol>
+<ul>
+<li>The prepared statement (SQL string that we wrote) can also be made more dynamic by allowing for parameters to be passed in.</li>
+<li>The Pool instance’s <code>query</code> function allows us to pass a second argument, an array of parameters to be used in the query string. The location of the parameter substitutions are designated with <code>$1</code>, <code>$2</code>, etc., to signify the first, second, etc., arguments.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> airportsByNameSql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="vs">  SELECT name, faa_id</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="vs">  FROM airports</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="vs">  WHERE UPPER(name) LIKE UPPER($1)</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-6" title="6"></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectAirportsByName</span>(name) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(airportsByNameSql<span class="op">,</span> [ <span class="vs">`%</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">%`</span> ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span> <span class="co">// invoking end() will close our connection to the database</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-12" title="12"></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">// Get the airport name from the command line and store it</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">// in the variable &quot;name&quot;. Pass that value to the</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">// selectAirportsByName function.</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="kw">const</span> name <span class="op">=</span> <span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>]<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="co">// console.log(name);</span></a>
+<a class="sourceLine" id="cb7-18" title="18"><span class="at">selectAirportsByName</span>(name)<span class="op">;</span></a></code></pre></div>

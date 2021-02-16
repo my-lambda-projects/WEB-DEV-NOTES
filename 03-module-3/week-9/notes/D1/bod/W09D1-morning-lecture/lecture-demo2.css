@@ -1,0 +1,33 @@
+.list {
+  /* font-family:'Syne Tactile', cursive; */
+  /* font-size: 20px; */
+  /* font-size: 2rem; */
+  /* font-style: italic; */
+  /* font-weight: bold; */
+
+  /* text-align: center; */
+  /* text-decoration: underline black; */
+  /* text-transform: capitalize; */
+}
+
+body {
+  /* background-color: yellow; */
+  /* background-color: rgb(255, 255, 0); */
+  /* background-color: rgba(255, 255, 0, 1); */
+  /* background-color: #ffff00; */
+  /* These ^ are all the same thing */
+}
+
+.box.not-demo {
+  /* border: 1px solid #00FF00; */
+  /* dotted, dashed, double, etc */
+  /* border-radius: 4px; */
+}
+
+.box.demo {
+  /* background-color: #000000; */
+  /* border-radius: 4px; */
+  /* box-shadow: 0 2px gray; offset-x | offset-y | color */
+  /* filter: blur(2px); */
+  /* opacity: 0.2; */
+}

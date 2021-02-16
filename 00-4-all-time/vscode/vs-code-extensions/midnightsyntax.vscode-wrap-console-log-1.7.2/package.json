@@ -1,0 +1,245 @@
+{
+	"name": "vscode-wrap-console-log",
+	"displayName": "Wrap Console Log",
+	"description": "Wrap to console.log by word or selection",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/midnightsyntax/vscode-wrap-console-log"
+	},
+	"version": "1.7.2",
+	"publisher": "midnightsyntax",
+	"icon": "images/icon.png",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"keywords": [
+		"wrap",
+		"console",
+		"log"
+	],
+	"activationEvents": [
+		"onCommand:console.log.wrap",
+		"onCommand:console.log.wrap.input",
+		"onCommand:console.log.wrap.prefix",
+		"onCommand:console.log.wrap.prefix.input",
+		"onCommand:console.log.wrap.up",
+		"onCommand:console.log.wrap.up.prefix",
+		"onCommand:console.log.wrap.up.prefix.input",
+		"onCommand:console.log.wrap.down",
+		"onCommand:console.log.wrap.down.prefix",
+		"onCommand:console.log.wrap.down.prefix.input",
+		"onCommand:console.log.wrap.string",
+		"onCommand:console.log.wrap.string.up",
+		"onCommand:console.log.wrap.string.down"
+	],
+	"main": "out/extension.js",
+	"contributes": {
+		"configuration": {
+			"id": "wrap-console-log",
+			"title": "Wrap Console Log",
+			"type": "object",
+			"properties": {
+				"wrap-console-log.autoFormat": {
+					"type": "boolean",
+					"description": "Run VSCode 'Format Document' after every log command.",
+					"default": false
+				},
+				"wrap-console-log.configuration.emptyLineAction": {
+					"type": "string",
+					"enum": [
+						"Insert and push",
+						"Replace empty"
+					],
+					"markdownDescription": "Defines the default text action when logging to an empty line. \n\n`Insert and push` will push the target line in the direction of the log command. \n\n`Replace empty` will replace the target line. No existing rows will be moved.",
+					"default": "Insert and push"
+				},
+				"wrap-console-log.configuration.moveToLine": {
+					"type": "string",
+					"enum": [
+						"Current line",
+						"Target line"
+					],
+					"description": "Controls what line the cursor should be set to after log.",
+					"default": "Current line"
+				},
+				"wrap-console-log.configuration.moveToPosition": {
+					"type": "string",
+					"enum": [
+						"Current position",
+						"First character",
+						"Beginning of line",
+						"End of line"
+					],
+					"description": "Specifies the cursor position within the log line after log.",
+					"default": "Current position"
+				},
+				"wrap-console-log.alwaysInputBoxOnPrefix": {
+					"type": "boolean",
+					"title": "Always show input box when wrapping with a prefix.",
+					"description": "Always use the input box when logging with a prefix.",
+					"default": false
+				},
+				"wrap-console-log.alwaysUsePrefix": {
+					"type": "boolean",
+					"title": "Always log with the wrapped word as prefix.",
+					"description": "Always log with default prefix.",
+					"default": false
+				},
+				"wrap-console-log.format.wrap.logFunctionName": {
+					"markdownDescription": "Defines the function to use for default logging with no arguments. See also [`Log String`](#wrap-console-log.format.text.logString).",
+					"type": "string",
+					"default": "console.log",
+					"pattern": "^[a-zA-Z.-]+$"
+				},
+				"wrap-console-log.format.wrap.logString": {
+					"markdownDescription": "Enables custom control of the default log string. Use `$func` to specify the function name defined by [`Log Function`](#wrap-console-log.format.text.textFunction) and `$var` to specify the variable/text to log. `$var` can be specified **one** or **multible** times. ",
+					"type": "string",
+					"default": "$func($var)"
+				},
+				"wrap-console-log.format.wrap.prefixFunctionName": {
+					"markdownDescription": "Defines the function to use for logging with prefix. See also [`Wrap Advanced`](#wrap-console-log.format.text.prefixString).",
+					"type": "string",
+					"default": "console.log",
+					"pattern": "^[a-zA-Z.-]+$"
+				},
+				"wrap-console-log.format.wrap.prefixString": {
+					"markdownDescription": "Enables custom control of the prefix log string. Use `$func` to specify the function name defined by [`Wrap Function Name`](#wrap-console-log.format.text.prefixFunctionName) and `$var` to specify the variable/text to log. `$var` can be specified **one** or **multible** times. ",
+					"type": "string",
+					"default": "$func('$var:', $var)"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "console.log.wrap",
+				"title": "Wrap console.log"
+			},
+			{
+				"command": "console.log.wrap.down",
+				"title": "Wrap down console log"
+			},
+			{
+				"command": "console.log.wrap.up",
+				"title": "Wrap up console log"
+			},
+			{
+				"command": "console.log.wrap.prefix",
+				"title": "Wrap prefix console log"
+			},
+			{
+				"command": "console.log.wrap.input",
+				"title": "Wrap input console log"
+			},
+			{
+				"command": "console.log.wrap.down.prefix",
+				"title": "Wrap down prefix console log"
+			},
+			{
+				"command": "console.log.wrap.up.prefix",
+				"title": "Wrap up prefix console log"
+			},
+			{
+				"command": "console.log.wrap.down.input",
+				"title": "Wrap down input console log"
+			},
+			{
+				"command": "console.log.wrap.up.input",
+				"title": "Wrap up input console log"
+			},
+			{
+				"command": "console.log.wrap.string",
+				"title": "Wrap console.log as string"
+			},
+			{
+				"command": "console.log.wrap.string.down",
+				"title": "Wrap down console.log as string"
+			},
+			{
+				"command": "console.log.wrap.string.up",
+				"title": "Wrap up console.log as string"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "console.log.wrap",
+				"key": "ctrl+alt+w w",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.string",
+				"key": "alt+shift+w w",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.string.down",
+				"key": "alt+shift+w down",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.string.up",
+				"key": "alt+shift+w up",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.down",
+				"key": "ctrl+alt+w down",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.up",
+				"key": "ctrl+alt+w up",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.prefix",
+				"key": "ctrl+alt+w ctrl+alt+w",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.input",
+				"key": "ctrl+shift+alt+w w",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.down.prefix",
+				"key": "ctrl+alt+w ctrl+alt+down",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.up.prefix",
+				"key": "ctrl+alt+w ctrl+alt+up",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.down.input",
+				"key": "ctrl+shift+alt+w down",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "console.log.wrap.up.input",
+				"key": "ctrl+shift+alt+w up",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^3.1.4",
+		"vscode": "^1.1.25",
+		"mocha": "^2.3.3",
+		"@types/node": "^8.10.25",
+		"@types/mocha": "^2.2.32"
+	},
+	"__metadata": {
+		"id": "3262c42b-a248-4b97-9f4d-5a6812bac132",
+		"publisherId": "28047516-c526-4db4-a8b0-74b2cfea8792",
+		"publisherDisplayName": "midnightsyntax"
+	}
+}

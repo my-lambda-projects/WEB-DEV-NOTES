@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.auiplugin:internal-@atlassian-aui-src-js-aui-progress-indicator', location = 'node_modules/@atlassian/aui/src/js/aui/progress-indicator.js' */
+("undefined"===typeof window?global:window).__d3ebcf189654ce92803791fd3e76baad=function(){function g(a,b,c){(0,h.recomputeStyle)(a);a.css("width",100*c+"%");b.attr("data-value",c)}var d={};"use strict";Object.defineProperty(d,"__esModule",{value:!0});var a=__02fa0d2334b5d2f9701871403ba9d89a,i=a&&a.__esModule?a:{"default":a},h=__1e5eff515fb8ea62ccd80d65455e88cd,a=(a=__fb27ffae84b96c14bf339e62cefcf116)&&a.__esModule?a:{"default":a},j={update:function(a,b){var c=(0,i.default)(a).first(),d=c.children(".aui-progress-indicator-value"),
+e=c.attr("data-value"),f=parseFloat(e)||0;if(!(e&&f===b))return e||d.css("width",0),"number"===typeof b&&(1>=b&&0<=b)&&(c.trigger("aui-progress-indicator-before-update",[f,b]),e=(document.body||document.documentElement).style,"string"===typeof e.transition||"string"===typeof e.WebkitTransition?(d.one("transitionend webkitTransitionEnd",function(){c.trigger("aui-progress-indicator-after-update",[f,b])}),g(d,c,b)):(g(d,c,b),c.trigger("aui-progress-indicator-after-update",[f,b]))),c},setIndeterminate:function(a){var a=
+(0,i.default)(a).first(),b=a.children(".aui-progress-indicator-value");a.removeAttr("data-value");(0,h.recomputeStyle)(a);b.css("width","100%")}};(0,a.default)("progressBars",j);d.default=j;return d=d["default"]}.call(this);
+}catch(e){WRMCB(e)};

@@ -1,0 +1,71 @@
+{
+	"name": "vscode-html2pug",
+	"displayName": "html2pug",
+	"description": "HTML to PUG VSCode extension",
+	"version": "4.0.0",
+	"icon": "icon.png",
+	"bugs": {
+		"url": "https://github.com/dbalas/vscode-html2pug/issues",
+		"email": "dbalasdev@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dbalas/vscode-html2pug.git"
+	},
+	"license": "MIT",
+	"publisher": "dbalas",
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"tags": [
+		"vscode",
+		"jade",
+		"pug",
+		"html2pug",
+		"html2jade"
+	],
+	"categories": [
+		"Programming Languages",
+		"Formatters",
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.transformHtmlToPug"
+	],
+	"main": "./extension",
+	"contributes": {
+		"keybindings": [
+			{
+				"command": "extension.transformHtmlToPug",
+				"key": "ctrl+alt+p",
+				"mac": "cmd+alt+p",
+				"linux": "ctrl+alt+p"
+			}
+		],
+		"commands": [
+			{
+				"command": "extension.transformHtmlToPug",
+				"title": "html2pug: Transform"
+			}
+		]
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^12.0.1",
+		"eslint": "^5.16.0",
+		"typescript": "^3.4.5",
+		"vscode": "^1.1.34"
+	},
+	"dependencies": {
+		"html2pug": "^4.0.0"
+	},
+	"__metadata": {
+		"id": "610bd0fb-03b9-4590-9347-eecb5414fac1",
+		"publisherId": "03d44ed7-c112-4380-bf2c-ec4f14fc21d5",
+		"publisherDisplayName": "dbalas"
+	}
+}

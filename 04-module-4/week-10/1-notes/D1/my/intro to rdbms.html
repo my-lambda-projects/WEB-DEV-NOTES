@@ -1,0 +1,976 @@
+<h1 id="fundamentals-of-relational-database-management-systems">Fundamentals of Relational Database Management Systems</h1>
+<h3 id="b.-terminology">B. terminology</h3>
+<p>According to “Fundamentals of Database Systems” (Elmasri and Navarathe, 2nd Ed, 1994) the four key concepts of the relational model are defined as:</p>
+<ol type="1">
+<li><p><strong>domain</strong> - a <em>domain</em> is a (possibly very large) set of atomic values. For example, “names” could be a domain with values that are strings, and while the strings themselves could be broken down further into substrings and characters, the database treats them as atoms.</p></li>
+<li><p><strong>attribute</strong> - a relational <em>attribute</em> is simply the pairing of a name (an identifier) and a domain. An <em>attribute value</em> is the further pairing of an attribute to a specific value; e.g. <code>color: "blue"</code>.</p></li>
+<li><p><strong>tuple</strong> - a <em>tuple</em> is an ordered set of values.</p></li>
+<li><p><strong>relation</strong> - a <em>relation</em> is a set of rows.</p></li>
+</ol>
+<p><strong>Practically speaking</strong>, a domain is more-or-less synonymous with a <em>data type</em>. The implementation of an attribute is referred to as a <em>column</em>, a tuple is implemented as a <em>row</em> (or <em>record</em>), and the implementation of a relation is a <em>table</em>. These terms (data types, columns, rows or records, and tables) are commonly used, and often treated interchangably with their more abstract equivalents. For some relation, the tuple of <em>attributes</em> is referred to as the <strong>header</strong>, while the zero or more tuples of <em>attribute values</em> is called the <strong>extent</strong>.</p>
+<h3 id="c.-structured-query-language-sql">C. Structured Query Language (SQL)</h3>
+<p>While various alternative languages have been implemented to manage relational data, the industry standard is <strong>SQL</strong>, pronounced as either “sequel” or “ess-kew-ell”. Like JavaScript, SQL is composed of <em>expressions</em> (code that can be evaluated) and <em>statements</em> (code that instructs the system to do something). Unlike JavaScript (which is a <em>procedural</em> programming language) SQL is referred to as a <em>declarative programming language</em>. This means that rather than giving the system a list of instructions to perform (a <em>procedure</em>) the SQL developer <em>declares</em> things that might be true about one or more tables, and the system either fetches (<code>SELECT</code>) or modifies (<code>INSERT, DELETE, UPDATE</code>) the records in the database that match the declaration.</p>
+<p>NOTE: PostgreSQL and other RDBMS’s will generally also provide procedural extensions to support more familiar programming features like variables, functions, loops, and exception handling - more on this later.</p>
+<p><strong><em>Things to know about SQL:</em></strong></p>
+<ul>
+<li>SQL is a <em>case-insensitive</em> programming language; <code>SELECT</code> and <code>select</code> are both interpreted as the same keyword.</li>
+<li>SQL <em>identifiers</em> (table and column names, etc) are <em>by default case-insensitive</em>, and are converted on creation to whatever case (upper or lower) is defined as the default. (The <em>default</em> for this default is <strong>lower</strong> :-D) You can override this behavior (and pretty much any naming rule) in PostgreSQL by putting double quotes around your identifier - while useful in rare situations (such as using a keyword like <code>ORDER</code> as an identifier: <code>CREATE TABLE "order" ...</code>), this is in general a <em>very bad idea</em>.</li>
+<li><em>text data</em> stored in a SQL database is (of course) <em>case-sensitive</em>.</li>
+<li>by <em>common convention</em>, SQL keywords are capitalized (<code>SELECT * FROM</code>) while identifiers are not (<code>student</code>, <code>course</code>, <code>cohort</code>)</li>
+</ul>
+<p><strong><em>SQL is like JavaScript, in that:</em></strong></p>
+<ul>
+<li>statements are terminated with a semicolon.</li>
+<li>block comments are delimited with <code>/*</code> and <code>*/</code>.</li>
+<li>whitespace is not significant.</li>
+</ul>
+<p><strong><em>SQL is different from JavaScript, in that:</em></strong></p>
+<ul>
+<li>SQL is a <strong><em>declarative</em></strong> language; JS is a <strong><em>procedural</em></strong> language.</li>
+<li><strong>strings</strong> are delimited with <strong>single quotes</strong>: (<code>'a string'</code>); <strong>double quotes</strong> are used for <strong>quoted identifiers only</strong>: (<code>"Bad Table Name"</code>).</li>
+<li><strong>semicolons</strong> at the end of a statement are <strong>required</strong>.</li>
+<li>single-line comments are introduced with two dashes (<code>-- this is a comment</code>).</li>
+<li>the equals sign (<code>=</code>) serves as <strong>both</strong> the <em>assignment operator</em> (<code>SET attempts = 5 WHERE ...</code>) and an <em>equivalence test</em> (<code>CASE WHEN attempts = 5 THEN ...</code>)</li>
+<li>running and committing a statement that makes a change to a database results in a durable, persistant change. <strong><em>In general, you cannot trivially ‘undo’ accidental changes to your schema or data!</em></strong></li>
+</ul>
+<p>NOTE: in addition to standard SQL syntax, the postgres SQL dialect includes many shortcut commands introduced with a backslash; <code>\c &lt;some_db&gt;</code> connects to the <code>&lt;some_db&gt;</code> database; <code>\d &lt;some_table&gt;</code> dumps the definition for <code>&lt;some_table</code>; <code>\q</code> exits the script, etc. <code>psql</code> is the standard CLI program used to interact with PostgreSQL; if invoked with the <code>-E</code> flag <code>psql</code> will display the corresponding SQL code for any backslash commands.</p>
+<p>(<em>postgres</em> chapter 4: <em>SQL Syntax</em>)</p>
+<p>BOOKMARK THIS: for the syntax of <strong><em>every PostgreSQL SQL statement</em></strong>, see the first section (<em>SQL Commands</em>) of <em>postgres</em> part IV: <em>Reference</em></p>
+<h3 id="d.-data-types">D. data types</h3>
+<p>Relational data is <em>structured</em> data; the SQL standard defines types for strings of fixed and variable length, integers, fixed-precision and floating point numbers of various types, dates and times, and boolean values; each type has a corresponding domain. Particular RDBMS’s will often include extra data types in addition to the standard - for intstance, PostgreSQL has types for MAC addresses and geometric primatives. Most RDBMS’s will also allow the developer to define custom data types and constraints. PostgreSQL can be extended by adding modules that define extended data types, such as GIS types for mapping data.</p>
+<p>NOTE: this bit on character strings in postgres, from the version 12 documentation: &gt;The notations <code>varchar(n)</code> and <code>char(n)</code> are aliases for <code>character varying(n)</code> and <code>character(n)</code>, respectively. <code>character</code> without length specifier is equivalent to <code>character(1)</code>. If <code>character varying</code> is used without length specifier, the type accepts strings of any size. The latter is a PostgreSQL extension.</p>
+<p>(<em>postgres</em> chapter 8: <em>Data Types</em>, and table 8.1)</p>
+<h3 id="e.-tables">E. tables</h3>
+<p>A <strong>table</strong> is composed of (a) a <em>table name</em>, (b) a <em>header</em> (a list of one or more columns) , and an <em>extent</em> (or <em>body</em>) of zero or more records, a collection of <em>constraints</em> and <em>indices</em> that restrict the possible data that can be present, and speed access to it.</p>
+<p>It is important to remember that the SQL standard refers to the rows in a table as unordered; this reflects the mathematical definition of a relation as a set of tuples. In practice, the rows often will come back from the RDBMS in some repeatable order (at least until rows are inserted or deleted), but code should <strong><em>never</em></strong> rely on this behavior.</p>
+<p>Tables are created with a <code>CREATE TABLE</code> DDL* statement. Here is a simple example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> person(</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,        <span class="co">-- SERIAL creates an INTEGER / SEQUENCE pair</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="fu">first</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,   <span class="co">-- postgres does not require a length for strings,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="fu">last</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,    <span class="co">-- but the ORM will want this for validation</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  dob <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,            <span class="co">-- every person has a Date of Birth</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  dod <span class="dt">DATE</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> (<span class="kw">NULL</span>), <span class="co">-- but living people don&#39;t have a (known) Date of Death</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  gamer <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span>(<span class="kw">TRUE</span>), <span class="co">-- isn&#39;t everyone?</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">UNIQUE</span> (<span class="fu">first</span>, <span class="fu">last</span>, dob) <span class="co">-- this is a TABLE constraint that will create an index</span></a>
+<a class="sourceLine" id="cb1-9" title="9">); <span class="co">-- this semicolon is required to properly end the statement!</span></a></code></pre></div>
+<p>NOTES: * This table has a <code>PRIMARY KEY</code> (<code>id</code>) associated with an <code>INTEGER</code> column that has an associated <code>SEQUENCE</code> object that will generate unique values. This is a <em>very</em> common pattern for active data tables, as well as tables created through an ORM (Object Relational Mapper). * The name fields <code>first</code> and <code>last</code> have a maximum length of 50 characters. PostgreSQL does not require this, as the overhead for a variable-length string up to the maximum supported size is constant, but frameworks often will. * The fields <code>first</code>, <code>last</code>, <code>dob</code> and <code>gamer</code> cannot be <code>NULL</code>. * <code>first</code>, <code>last</code> and <code>dob</code> are <strong>required</strong>. <code>gamer</code> is <strong>optional</strong> when data is inserted, as there is a <strong>default value</strong> for this column. * The <code>UNIQUE</code> constraint will cause postgres to reject any insert or update that would result in duplicate values in the <code>first</code>, <code>last</code> and <code>dob</code> columns. This is accomplished by creating a unique <code>INDEX</code> object on these columns, which will generally slow down writes and speed up searches that make use of it. (for the curious, searches on (<code>first</code>, <code>last</code>) will be sped up (generally, to O(log(n))); but searches on (<code>last</code>,<code>first</code>) will still be O(n), because that pairing isn’t indexed)</p>
+<p>* DDL = <em>Data Definition Language</em> - more on this shortly</p>
+<p>(<em>postgres</em> chapter 5.1: <em>Table Basics</em>)</p>
+<h3 id="f.-queries-and-transactions">F. queries and transactions</h3>
+<p>An RDBMS <em>query</em> - or <em>SQL query</em> - is an statement in the SQL language. <strong><em>SQL queries manipulate data.</em></strong> Queries are characterized as <em>Data Manipulation Language</em> (<strong>DML</strong>) or <em>Data Definition Language</em> (<strong>DDL</strong>) depending on whether they manipulate <strong>data</strong> (<em>DML</em>) or <strong>metadata</strong> (data-about-data) (<em>DDL</em>)</p>
+<p><strong>DDL verbs</strong> <code>CREATE, DROP, ALTER, TRUNCATE, GRANT, REVOKE</code> etc.</p>
+<p><strong>DML verbs</strong> <code>SELECT, INSERT, UPDATE, DELETE</code> etc.</p>
+<p>SQL statements are grouped into <strong>transactions</strong>, either implicitly as a configuration option on the connection (<em>autocommit</em>), or explicitly, in a block of code opened with a <code>BEGIN</code> or <code>START TRANSACTION</code> statement, possibly including <code>SAVEPOINT</code> marks, and ending with either a <code>COMMIT</code> statement (to make any pending changes associated with the transaction permanent) or a <code>ROLLBACK</code> statement (to cancel any transaction-related changes that have not been committed).</p>
+<p>The purpose of a transaction is to group operations that need to all succeed as a set in order to be valid; a typical example is dispensing cash from an ATM; the customer wants to receive the cash, and the bank wants to be sure an account is debited accordingly; if the cash cannot be dispensed for any reason the transaction needs to be cancelled, but if the cash is dispensed an account has to be debited.</p>
+<p>(<em>postgres</em> chapter 3.4: <em>Transactions</em>)</p>
+<h4 id="select">0. select</h4>
+<p>The most basic SQL statement is the <code>SELECT</code> statement; <code>SELECT</code>statements read data from the database. A standalone <code>SELECT</code> statement returns the results of the read operation to the client. A generic <code>SELECT</code> statement has the form:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">SELECT</span> <span class="op">&lt;</span><span class="kw">columns</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  [<span class="kw">FROM</span> <span class="op">&lt;</span><span class="kw">tables</span><span class="op">&gt;</span>]                    <span class="co">-- where are we getting this data?</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  [<span class="kw">WHERE</span> <span class="op">&lt;</span>conditions<span class="op">&gt;</span>]               <span class="co">-- what conditions must it satisfy?</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  [<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="op">&lt;</span>grouping_expressions<span class="op">&gt;</span>]  <span class="co">-- are there any columns to aggregate on?</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  [<span class="kw">HAVING</span> <span class="op">&lt;</span>group_conditions<span class="op">&gt;</span>]        <span class="co">-- what conditions must aggregates satisfy?</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  [<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="op">&lt;</span>ordering_expressions<span class="op">&gt;</span>]; <span class="co">-- do we want the rows in some order?</span></a></code></pre></div>
+<p>where all of the clauses between <code>SELECT &lt;columns&gt;</code> and the <code>;</code> are optional. (the ordering of these clauses is strict, however)</p>
+<ul>
+<li><code>&lt;columns&gt;</code> can be any comma separated combination of constants (<code>5</code>), column names (<code>ssn</code>), expressions (<code>first || ' ' || last</code>), system functions (<code>CURRENT_DATE</code>), aggregation expressions (<code>COUNT(*) AS total</code>) or the wildcard (<code>*</code>).</li>
+<li><code>&lt;tables&gt;</code> is some combination of one or more tables or table-like objects, typically connected with <code>JOIN</code> conditions.</li>
+<li><code>&lt;conditions&gt;</code> are conditional (boolean) expressions that restrict the selection to rows that satisfy some logical criteria.</li>
+<li><code>&lt;grouping_expressions&gt;</code> are a subset of the <code>&lt;columns&gt;</code>, used with aggregation expressions like <code>COUNT</code>, <code>MAX</code>, <code>MIN</code>. (In postgres you can also use the column number in the selection list; <code>GROUP BY 2,3</code>)</li>
+<li><code>&lt;ordering_expressions&gt;</code> are a list of either <code>&lt;columns&gt;</code> or calculated values.</li>
+</ul>
+<p>NOTE: <code>||</code> is the string concatenation operator in postgres NOTE2: <code>+</code> won’t join postgres strings. I’ve tried; It doesn’t work.</p>
+<p>A typical <code>SELECT</code> statement might look like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="fu">first</span> <span class="op">||</span> <span class="st">&#39; &#39;</span> <span class="op">||</span> <span class="fu">last</span> <span class="kw">AS</span> name,</a>
+<a class="sourceLine" id="cb3-2" title="2">aa<span class="op">-</span>#        AGE(dob) <span class="kw">AS</span> age</a>
+<a class="sourceLine" id="cb3-3" title="3">aa<span class="op">-</span>#   <span class="kw">FROM</span> person</a>
+<a class="sourceLine" id="cb3-4" title="4">aa<span class="op">-</span>#   <span class="kw">ORDER</span> <span class="kw">BY</span> dob;</a>
+<a class="sourceLine" id="cb3-5" title="5">      name      |          age</a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">----------------+-----------------------</span></a>
+<a class="sourceLine" id="cb3-7" title="7"> David James    | <span class="dv">60</span> years <span class="dv">1</span> mon <span class="dv">2</span> days</a>
+<a class="sourceLine" id="cb3-8" title="8"> Ronald Stevens | <span class="dv">55</span> years <span class="dv">13</span> days</a>
+<a class="sourceLine" id="cb3-9" title="9">(<span class="dv">2</span> <span class="kw">rows</span>)</a></code></pre></div>
+<h5 id="a.-the-select-clause">a. the <code>SELECT</code> clause</h5>
+<p>The <code>SELECT</code> clause is the keyword followed by a comma-separated list of expressions - these can any of attribute names, calculated values, function calls, or constants. Each expression can also be assigned a name with <code>AS</code>, as in <code>first || ' ' || last AS name</code>. <code>SELECT</code> queries with multiple tables must qualify duplicated column names with the table name: <code>person.id</code>, <code>cat.id</code>. The tables themselves can be assigned aliases: <code>person AS o</code>, <code>cat AS c</code>.</p>
+<p>(<em>postgres</em> chapter 7.3: <em>Select Lists</em>)</p>
+<h5 id="b.-the-from-clause">b. the <code>FROM</code> clause</h5>
+<p>The <code>FROM</code> clause defines which relations will be queried, and how they will be related to each other. Most useful <code>SELECT</code> statements include <code>FROM</code> clauses with one or more <code>JOIN</code> conditions.</p>
+<p>Let’s create a <code>cat</code> table and populate it with some kitties:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1">aa<span class="op">=</span># <span class="kw">CREATE</span> <span class="kw">TABLE</span> cat(</a>
+<a class="sourceLine" id="cb4-2" title="2">aa(#   <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb4-3" title="3">aa(#   name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</a>
+<a class="sourceLine" id="cb4-4" title="4">aa(#   dob <span class="dt">DATE</span> <span class="kw">DEFAULT</span>(<span class="kw">NULL</span>),</a>
+<a class="sourceLine" id="cb4-5" title="5">aa(#   dod <span class="dt">DATE</span> <span class="kw">DEFAULT</span>(<span class="kw">NULL</span>),</a>
+<a class="sourceLine" id="cb4-6" title="6">aa(#   sex <span class="dt">CHAR</span> <span class="kw">NULL</span> <span class="kw">CHECK</span> (sex <span class="kw">IN</span> (<span class="st">&#39;F&#39;</span>,<span class="st">&#39;M&#39;</span>)),</a>
+<a class="sourceLine" id="cb4-7" title="7">aa(#   neutered <span class="dt">BOOLEAN</span> <span class="kw">DEFAULT</span>(<span class="kw">NULL</span>),</a>
+<a class="sourceLine" id="cb4-8" title="8">aa(#   owner_id <span class="dt">INT</span> <span class="kw">DEFAULT</span>(<span class="kw">NULL</span>) <span class="kw">REFERENCES</span> person(<span class="kw">id</span>));</a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="kw">CREATE</span> <span class="kw">TABLE</span></a>
+<a class="sourceLine" id="cb4-10" title="10">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> cat (name, sex, owner_id) <span class="kw">values</span> (<span class="st">&#39;Miss Kitty&#39;</span>,<span class="st">&#39;F&#39;</span>,<span class="dv">1</span>);</a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-12" title="12">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> cat (name, sex, owner_id, neutered) <span class="kw">values</span> (<span class="st">&#39;Zippie&#39;</span>,<span class="st">&#39;F&#39;</span>,<span class="dv">1</span>, <span class="kw">FALSE</span>);</a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-14" title="14">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> cat (name, sex, owner_id, neutered) <span class="kw">values</span> (<span class="st">&#39;Walter&#39;</span>,<span class="st">&#39;M&#39;</span>, <span class="kw">NULL</span>, <span class="kw">TRUE</span>);</a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-16" title="16">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> cat (name, sex, owner_id, neutered) <span class="kw">values</span> (<span class="st">&#39;Nightshade&#39;</span>,<span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="kw">TRUE</span>);</a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a></code></pre></div>
+<p>Now let’s check the data:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person;</a>
+<a class="sourceLine" id="cb5-2" title="2"> <span class="kw">id</span> | <span class="fu">first</span>  |  <span class="fu">last</span>   |    dob     | dod | gamer</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">----+--------+---------+------------+-----+-------</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dv">1</span> | David  | James   | <span class="dv">1960</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">18</span> |     | t</a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="dv">2</span> | Ronald | Stevens | <span class="dv">1965</span><span class="op">-</span><span class="dv">07</span><span class="op">-</span><span class="dv">07</span> |     | t</a>
+<a class="sourceLine" id="cb5-6" title="6">(<span class="dv">2</span> <span class="kw">rows</span>)</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cat;</a>
+<a class="sourceLine" id="cb5-9" title="9"> <span class="kw">id</span> |    name    | dob | dod | sex | neutered | owner_id</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">----+------------+-----+-----+-----+----------+----------</span></a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="dv">1</span> | Miss Kitty |     |     | F   |          |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="dv">2</span> | Zippie     |     |     | F   | f        |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="dv">3</span> | Walter     |     |     | M   | t        |</a>
+<a class="sourceLine" id="cb5-14" title="14">  <span class="dv">4</span> | Nightshade |     |     |     | t        |</a>
+<a class="sourceLine" id="cb5-15" title="15">(<span class="dv">4</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>So to connect these two tables, what kinds of joins are there to chose from? Considering two tables <code>left</code> (in this case, <em>o</em>) and <code>right</code> (in this case, <em>c</em>), the common ones are: * an <code>INNER JOIN</code>, where some condition is met for every pair of rows returned:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">INNER</span> <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id;</a>
+<a class="sourceLine" id="cb6-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  |    name    | sex</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">-------+-------+------------+-----</span></a>
+<a class="sourceLine" id="cb6-4" title="4"> David | James | Miss Kitty | F</a>
+<a class="sourceLine" id="cb6-5" title="5"> David | James | Zippie     | F</a>
+<a class="sourceLine" id="cb6-6" title="6">(<span class="dv">2</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>Note that this is the default <code>JOIN</code> behavior, so <code>INNER</code> is presumed if not provided:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id;</a>
+<a class="sourceLine" id="cb7-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  |    name    | sex</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">-------+-------+------------+-----</span></a>
+<a class="sourceLine" id="cb7-4" title="4"> David | James | Miss Kitty | F</a>
+<a class="sourceLine" id="cb7-5" title="5"> David | James | Zippie     | F</a>
+<a class="sourceLine" id="cb7-6" title="6">(<span class="dv">2</span> <span class="kw">rows</span>)</a></code></pre></div>
+<ul>
+<li>a <code>LEFT OUTER JOIN</code>, where either a condition is met for both rows in the pair, or there is a row in <code>left</code> with no matching record in <code>right</code>: (in this case, persons without cats are included)</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id;</a>
+<a class="sourceLine" id="cb8-2" title="2"> <span class="fu">first</span>  |  <span class="fu">last</span>   |    name    | sex</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">--------+---------+------------+-----</span></a>
+<a class="sourceLine" id="cb8-4" title="4"> David  | James   | Miss Kitty | F</a>
+<a class="sourceLine" id="cb8-5" title="5"> David  | James   | Zippie     | F</a>
+<a class="sourceLine" id="cb8-6" title="6"> Ronald | Stevens |            |</a>
+<a class="sourceLine" id="cb8-7" title="7">(<span class="dv">3</span> <span class="kw">rows</span>)</a></code></pre></div>
+<ul>
+<li>a <code>RIGHT OUTER JOIN</code>, where either a condition is met for both rows in the pair, or there is a row in <code>right</code> with no matching record in <code>left</code>: (in this case, cats without owners are included)</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">RIGHT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id;</a>
+<a class="sourceLine" id="cb9-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  |    name    | sex</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">-------+-------+------------+-----</span></a>
+<a class="sourceLine" id="cb9-4" title="4"> David | James | Miss Kitty | F</a>
+<a class="sourceLine" id="cb9-5" title="5"> David | James | Zippie     | F</a>
+<a class="sourceLine" id="cb9-6" title="6">       |       | Walter     | M</a>
+<a class="sourceLine" id="cb9-7" title="7">       |       | Nightshade |</a>
+<a class="sourceLine" id="cb9-8" title="8">(<span class="dv">4</span> <span class="kw">rows</span>)</a></code></pre></div>
+<ul>
+<li>a <code>FULL OUTER JOIN</code>, where either a condition is met for both rows in the pair, or one or the other records has no matching record: (unmatched persons and cats are both included)</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">FULL</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id;</a>
+<a class="sourceLine" id="cb10-2" title="2"> <span class="fu">first</span>  |  <span class="fu">last</span>   |    name    | sex</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">--------+---------+------------+-----</span></a>
+<a class="sourceLine" id="cb10-4" title="4"> David  | James   | Miss Kitty | F</a>
+<a class="sourceLine" id="cb10-5" title="5"> David  | James   | Zippie     | F</a>
+<a class="sourceLine" id="cb10-6" title="6">        |         | Walter     | M</a>
+<a class="sourceLine" id="cb10-7" title="7">        |         | Nightshade |</a>
+<a class="sourceLine" id="cb10-8" title="8"> Ronald | Stevens |            |</a>
+<a class="sourceLine" id="cb10-9" title="9">(<span class="dv">5</span> <span class="kw">rows</span>)</a></code></pre></div>
+<ul>
+<li>and finally - <strong>for completeness</strong> - the <strong><em>cartesian product</em></strong>, or dreaded <strong><em>cross join</em></strong>, aka <em>“the join of no join”</em>, or <em>“why does my query never finish?!?!”</em> (every row from <code>left</code> is now paired with every row from <code>right</code>)</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o, cat c;</a>
+<a class="sourceLine" id="cb11-2" title="2"> <span class="fu">first</span>  |  <span class="fu">last</span>   |    name    | sex</a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">--------+---------+------------+-----</span></a>
+<a class="sourceLine" id="cb11-4" title="4"> David  | James   | Miss Kitty | F</a>
+<a class="sourceLine" id="cb11-5" title="5"> Ronald | Stevens | Miss Kitty | F</a>
+<a class="sourceLine" id="cb11-6" title="6"> David  | James   | Zippie     | F</a>
+<a class="sourceLine" id="cb11-7" title="7"> Ronald | Stevens | Zippie     | F</a>
+<a class="sourceLine" id="cb11-8" title="8"> David  | James   | Walter     | M</a>
+<a class="sourceLine" id="cb11-9" title="9"> Ronald | Stevens | Walter     | M</a>
+<a class="sourceLine" id="cb11-10" title="10"> David  | James   | Nightshade |</a>
+<a class="sourceLine" id="cb11-11" title="11"> Ronald | Stevens | Nightshade |</a>
+<a class="sourceLine" id="cb11-12" title="12">(<span class="dv">8</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>When you <strong>intend</strong> to do this, you can make some pretty cool stuff happen declaratively - but more commonly, a cross join is caused by an <em>unfortunate coding decision</em>, like this: (hint - it will always be true that <code>o.id = o.id</code>!)</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> o.<span class="kw">id</span>;</a>
+<a class="sourceLine" id="cb12-2" title="2"> <span class="fu">first</span>  |  <span class="fu">last</span>   |    name    | sex</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">--------+---------+------------+-----</span></a>
+<a class="sourceLine" id="cb12-4" title="4"> David  | James   | Miss Kitty | F</a>
+<a class="sourceLine" id="cb12-5" title="5"> Ronald | Stevens | Miss Kitty | F</a>
+<a class="sourceLine" id="cb12-6" title="6"> David  | James   | Zippie     | F</a>
+<a class="sourceLine" id="cb12-7" title="7"> Ronald | Stevens | Zippie     | F</a>
+<a class="sourceLine" id="cb12-8" title="8"> David  | James   | Walter     | M</a>
+<a class="sourceLine" id="cb12-9" title="9"> Ronald | Stevens | Walter     | M</a>
+<a class="sourceLine" id="cb12-10" title="10"> David  | James   | Nightshade |</a>
+<a class="sourceLine" id="cb12-11" title="11"> Ronald | Stevens | Nightshade |</a>
+<a class="sourceLine" id="cb12-12" title="12">(<span class="dv">8</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>(<em>postgres</em> chapter 7.2.1: <em>The FROM Clause</em>)</p>
+<h5 id="c.-the-where-clause">c. the <code>WHERE</code> clause</h5>
+<p>The <code>WHERE</code> clause sets conditions for rows to be included in the result:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id <span class="kw">WHERE</span> neutered <span class="kw">IS</span> <span class="kw">NULL</span>;</a>
+<a class="sourceLine" id="cb13-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  |    name    | sex</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">-------+-------+------------+-----</span></a>
+<a class="sourceLine" id="cb13-4" title="4"> David | James | Miss Kitty | F</a>
+<a class="sourceLine" id="cb13-5" title="5">(<span class="dv">1</span> <span class="kw">row</span>)</a></code></pre></div>
+<p>Note that the same thing could be accomplished with a fancier join condition:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, c.name, c.sex <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id <span class="kw">AND</span> neutered <span class="kw">IS</span> <span class="kw">NULL</span>;</a>
+<a class="sourceLine" id="cb14-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  |    name    | sex</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="co">-------+-------+------------+-----</span></a>
+<a class="sourceLine" id="cb14-4" title="4"> David | James | Miss Kitty | F</a>
+<a class="sourceLine" id="cb14-5" title="5">(<span class="dv">1</span> <span class="kw">row</span>)</a></code></pre></div>
+<p>(<em>postgres</em> chapter 7.2.2: <em>The WHERE Clause</em>)</p>
+<h5 id="d.-the-group-by-and-having-clauses">d. the <code>GROUP BY</code> and <code>HAVING</code> clauses</h5>
+<p>These clauses are used to aggregate data. <code>GROUP BY</code> identifies columns to aggregate on; <code>HAVING</code> optionally adds conditions on the aggregated rows: (in these queries, <code>cats</code> is calculated by counting the matching rows with <code>COUNT(*)</code>)</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> cats <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id <span class="kw">GROUP</span> <span class="kw">BY</span> o.<span class="fu">first</span>, o.<span class="fu">last</span> <span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb15-2" title="2"> <span class="fu">first</span> | <span class="fu">last</span>  | cats</a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">-------+-------+------</span></a>
+<a class="sourceLine" id="cb15-4" title="4"> David | James |    <span class="dv">2</span></a>
+<a class="sourceLine" id="cb15-5" title="5">(<span class="dv">1</span> <span class="kw">row</span>)</a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7">aa<span class="op">=</span># <span class="kw">SELECT</span> o.<span class="fu">first</span>, o.<span class="fu">last</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> cats <span class="kw">FROM</span> person o <span class="kw">JOIN</span> cat c <span class="kw">ON</span> o.<span class="kw">id</span> <span class="op">=</span> c.owner_id <span class="kw">GROUP</span> <span class="kw">BY</span> o.<span class="fu">first</span>, o.<span class="fu">last</span> <span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">2</span>;</a>
+<a class="sourceLine" id="cb15-8" title="8"> <span class="fu">first</span> | <span class="fu">last</span> | cats</a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">-------+------+------</span></a>
+<a class="sourceLine" id="cb15-10" title="10">(<span class="dv">0</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>(<em>postgres</em> chapter 7.2.3: <em>The GROUP BY and HAVING Clauses</em>)</p>
+<h5 id="e.-the-order-by-clause">e. the <code>ORDER BY</code> clause</h5>
+<p>The <code>ORDER BY</code> clause does what it says - it orders the rows returned in the dataset. While lots of clever query tricks can be done with entries in this clause, the most common thing to sort on is the values in one or more columns, optionally reversing the sort order with the keyword <code>DESC</code>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cat <span class="kw">ORDER</span> <span class="kw">BY</span> name;</a>
+<a class="sourceLine" id="cb16-2" title="2"> <span class="kw">id</span> |    name    | dob | dod | sex | neutered | owner_id</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="co">----+------------+-----+-----+-----+----------+----------</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="dv">1</span> | Miss Kitty |     |     | F   |          |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="dv">4</span> | Nightshade |     |     |     | t        |</a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="dv">3</span> | Walter     |     |     | M   | t        |</a>
+<a class="sourceLine" id="cb16-7" title="7">  <span class="dv">2</span> | Zippie     |     |     | F   | f        |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb16-8" title="8">(<span class="dv">4</span> <span class="kw">rows</span>)</a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cat <span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">DESC</span>;</a>
+<a class="sourceLine" id="cb16-11" title="11"> <span class="kw">id</span> |    name    | dob | dod | sex | neutered | owner_id</a>
+<a class="sourceLine" id="cb16-12" title="12"><span class="co">----+------------+-----+-----+-----+----------+----------</span></a>
+<a class="sourceLine" id="cb16-13" title="13">  <span class="dv">2</span> | Zippie     |     |     | F   | f        |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb16-14" title="14">  <span class="dv">3</span> | Walter     |     |     | M   | t        |</a>
+<a class="sourceLine" id="cb16-15" title="15">  <span class="dv">4</span> | Nightshade |     |     |     | t        |</a>
+<a class="sourceLine" id="cb16-16" title="16">  <span class="dv">1</span> | Miss Kitty |     |     | F   |          |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb16-17" title="17">(<span class="dv">4</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>You can also just use the (one-based) index of the column you want to sort on:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb17-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cat <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dv">2</span>;</a>
+<a class="sourceLine" id="cb17-2" title="2"> <span class="kw">id</span> |    name    | dob | dod | sex | neutered | owner_id</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="co">----+------------+-----+-----+-----+----------+----------</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dv">1</span> | Miss Kitty |     |     | F   |          |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb17-5" title="5">  <span class="dv">4</span> | Nightshade |     |     |     | t        |</a>
+<a class="sourceLine" id="cb17-6" title="6">  <span class="dv">3</span> | Walter     |     |     | M   | t        |</a>
+<a class="sourceLine" id="cb17-7" title="7">  <span class="dv">2</span> | Zippie     |     |     | F   | f        |        <span class="dv">1</span></a>
+<a class="sourceLine" id="cb17-8" title="8">(<span class="dv">4</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>(<em>postgres</em> chapter 7.5: <em>Sorting Rows</em>)</p>
+<h4 id="insert">1. insert</h4>
+<p>An <code>INSERT</code> query adds rows to a table. There are a couple of options here - the simplest is with one or more tuples of values:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb18-1" title="1">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> person (<span class="fu">first</span>, <span class="fu">last</span>, dob)</a>
+<a class="sourceLine" id="cb18-2" title="2">aa<span class="op">-</span># <span class="kw">VALUES</span> (<span class="st">&#39;David&#39;</span>, <span class="st">&#39;James&#39;</span>, <span class="st">&#39;1960-06-18&#39;</span>); <span class="co">-- separate more tuples with commas</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a></code></pre></div>
+<p>A slightly more complicated form makes use of a <code>SELECT</code> statement:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb19-1" title="1">aa<span class="op">=</span># <span class="kw">INSERT</span> <span class="kw">INTO</span> person(<span class="fu">first</span>, <span class="fu">last</span>, dob)</a>
+<a class="sourceLine" id="cb19-2" title="2">aa<span class="op">-</span>#   <span class="kw">SELECT</span> <span class="fu">last</span>, <span class="fu">first</span>, dob</a>
+<a class="sourceLine" id="cb19-3" title="3">aa<span class="op">-</span>#     <span class="kw">FROM</span> person</a>
+<a class="sourceLine" id="cb19-4" title="4">aa<span class="op">-</span>#     <span class="kw">WHERE</span> dob <span class="op">=</span> <span class="st">&#39;1960-06-18&#39;</span>;</a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="kw">INSERT</span> <span class="dv">0</span> <span class="dv">1</span></a></code></pre></div>
+<p>(This is a general pattern that will also apply to <code>UPDATE</code> and <code>DELETE</code> statements)</p>
+<p>(<em>postgres</em> chapter 6.1: <em>Inserting Data</em>)</p>
+<h4 id="update">2. update</h4>
+<p>An <code>UPDATE</code> query changes existing rows in a table. As with <code>INSERT</code>, we can update a single row:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb20-1" title="1">aa<span class="op">=</span># U2DATE person</a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="kw">SET</span> dob <span class="op">=</span> <span class="st">&#39;1967-02-27&#39;</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="kw">WHERE</span> <span class="fu">last</span> <span class="op">=</span> <span class="st">&#39;David&#39;</span></a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="kw">AND</span> <span class="fu">first</span> <span class="op">=</span> <span class="st">&#39;James&#39;</span>;</a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw">UPDATE</span> <span class="dv">1</span></a></code></pre></div>
+<p>or we can update every row that matches a selection:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb21-1" title="1">aa<span class="op">=</span># <span class="kw">UPDATE</span> person</a>
+<a class="sourceLine" id="cb21-2" title="2">aa<span class="op">-</span>#   <span class="kw">SET</span> gamer <span class="op">=</span> <span class="kw">FALSE</span></a>
+<a class="sourceLine" id="cb21-3" title="3">aa<span class="op">-</span>#   <span class="kw">WHERE</span> <span class="kw">id</span> <span class="kw">IN</span></a>
+<a class="sourceLine" id="cb21-4" title="4">aa<span class="op">-</span>#     (<span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> person <span class="kw">WHERE</span> <span class="fu">first</span> <span class="op">=</span> <span class="st">&#39;David&#39;</span>);</a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="kw">UPDATE</span> <span class="dv">1</span></a></code></pre></div>
+<p>NOTE: an update operation will fail if it violates a referential constraint.</p>
+<p>(<em>postgres</em> chapter 6.2: <em>Updating Data</em>)</p>
+<h4 id="delete">3. delete</h4>
+<p>A <code>DELETE</code> statement removes records from the database. Similar to <code>INSERT</code> and <code>UPDATE</code> operations, <code>DELETE</code> statements can be targeted with an explicit set of criteria:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb22-1" title="1">aa<span class="op">=</span># <span class="kw">DELETE</span></a>
+<a class="sourceLine" id="cb22-2" title="2">aa<span class="op">-</span># <span class="kw">FROM</span> person</a>
+<a class="sourceLine" id="cb22-3" title="3">aa<span class="op">-</span># <span class="kw">WHERE</span> dob <span class="kw">BETWEEN</span> <span class="st">&#39;1960-01-01&#39;</span> <span class="kw">AND</span> <span class="st">&#39;1961-01-01&#39;</span>;</a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="kw">DELETE</span> <span class="dv">1</span></a></code></pre></div>
+<p>Or can remove records that match the results of a <code>SELECT</code> statement:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb23-1" title="1">aa<span class="op">=</span># <span class="kw">DELETE</span></a>
+<a class="sourceLine" id="cb23-2" title="2">aa<span class="op">-</span># <span class="kw">FROM</span> person</a>
+<a class="sourceLine" id="cb23-3" title="3">aa<span class="op">-</span># <span class="kw">WHERE</span> dob <span class="kw">IN</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(dob) <span class="kw">FROM</span> person);</a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="kw">DELETE</span> <span class="dv">1</span></a></code></pre></div>
+<p>Alternatively, all records can be removed by running a <code>DELETE</code> statement with no <code>WHERE</code> clause:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb24-1" title="1">aa<span class="op">=</span># <span class="kw">DELETE</span> <span class="kw">FROM</span> person;</a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="kw">DELETE</span> <span class="dv">0</span></a></code></pre></div>
+<p>NOTE: a delete operation will fail if it violates a referential constraint.</p>
+<p>(<em>postgres</em> chapter 6.3: <em>Deleting Data</em>)</p>
+<p>NOTE: In addition to a (DML) <code>DELETE</code> statement, there is a <em>DDL</em> statement - <code>TRUNCATE</code> - that removes <strong>all</strong> rows from a table. Because <code>TRUNCATE</code> statements are treated as DDL, they are logged differently than <code>DELETE</code> statements, and are generally not permitted inside a transaction block. For more information, see <code>TRUNCATE</code> in the <em>SQL Commands</em> documentation.</p>
+<h2 id="ii.-relations">II. relations</h2>
+<p>While a simple application might only require one table, typical applications will require several (or many) tables to properly organize their data. The real power of an RDBMS lies in the <em>constraints</em> that define the <strong><em>relationships</em></strong> between the <em>attributes</em> (columns) of <em>relations</em> (tables). More on this after we examine <strong><em>keys</em></strong> and <strong><em>indices</em></strong>.</p>
+<h3 id="keys-and-other-constraints">keys and other constraints</h3>
+<p>In general, a <strong><em>constraint</em></strong> is a rule that valid data must conform to. <code>NOT NULL</code> is an example of a simple constraint that we’ve already encountered. A <code>CHECK CONSTRAINT</code> is a rule either about the values in a particular column (<code>CHECK (age &lt; 100)</code>; a <strong>column constraint</strong>) - or within a row (<code>CHECK (start_date &lt;= end_date)</code>; a <strong>table constraint</strong>).</p>
+<p>In a relational database, a (generic) <strong><em>key constraint</em></strong> is an ordered set of one or more columns whose values taken together are constrained to be unique. A table’s <strong><em>primary key</em></strong> is often the preferred way to search for specific records and <em>may</em> reflect the physical organization of the extent (that is, the ordering of the rows in the table as a data structure); a <strong><em>candidate key</em></strong> is any collection of columns that are constrained to be unique. Primary keys are created with a <code>PRIMARY KEY</code> constraint (either as a column constraint (on a single column) or a table constraint (if multiple columns are involved)); candidate keys are created by defining <code>UNIQUE</code> constraints on either columns or tables.</p>
+<p>A <strong><em>foreign key</em></strong> is an ordered set of one or more columns in a table that are constrained to correspond to a <em>candidate key</em> that has been defined on either the same table or another table in the same database. Foreign keys are created by defining a <code>FOREIGN KEY</code> constraint, either as a column constraint or a table constraint.</p>
+<p>In practice, all of these constraints are implemented by building a maintained <strong>index</strong> on the target table.</p>
+<p>(see <em>postgres</em> section 5.4, <em>Constraints</em>)</p>
+<h3 id="indexes">indexes</h3>
+<p>An <strong><em>index</em></strong> is a database object that represents a sorted list of the values contained in an ordered set of one or more columns. Indexes can be unique (producing a constraint) or can allow duplicates. Indexes make most of the magic of an RDBMS possible. Most indexes are implemented as various sorts of <em>trees</em>, but other types of indexes are available.</p>
+<p>Well designed indexes can <em>dramatically</em> improve the performance of an application. Poorly designed indexes are at best useless overhead. A good general approach is to start with the indexes that are created by defining <code>PRIMARY KEY</code>, <code>UNIQUE</code>, and <code>FOREIGN KEY</code> constraints, and then add indexes to speed up specific queries based on the columns used.</p>
+<h3 id="normalization">normalization</h3>
+<p>You all had some exposure to the principles of Object Oriented Programming, back in the SOLID OOP week. <strong><em>Database Design</em></strong> is the analogous process for developing a well-performing database schema. As with OOP, the step zero in modeling a real-world situation with a database is to identify the various kinds of things that will matter to your system, while step one is to characterize the significant relationships between those things.</p>
+<h4 id="null-values">NULL values</h4>
+<p>We defined the <code>person</code> table like this:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> person(</a>
+<a class="sourceLine" id="cb25-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,        <span class="co">-- SERIAL creates an INTEGER / SEQUENCE pair</span></a>
+<a class="sourceLine" id="cb25-3" title="3">  <span class="fu">first</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,   <span class="co">-- postgres does not require a length for strings,</span></a>
+<a class="sourceLine" id="cb25-4" title="4">  <span class="fu">last</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,    <span class="co">-- but the ORM will want this for validation</span></a>
+<a class="sourceLine" id="cb25-5" title="5">  dob <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,            <span class="co">-- every person has a Date of Birth</span></a>
+<a class="sourceLine" id="cb25-6" title="6">  dod <span class="dt">DATE</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> (<span class="kw">NULL</span>), <span class="co">-- but living people don&#39;t have a (known) Date of Death</span></a>
+<a class="sourceLine" id="cb25-7" title="7">  gamer <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span>(<span class="kw">TRUE</span>), <span class="co">-- isn&#39;t everyone?</span></a>
+<a class="sourceLine" id="cb25-8" title="8">  <span class="kw">UNIQUE</span> (<span class="fu">first</span>, <span class="fu">last</span>, dob) <span class="co">-- this is a TABLE constraint that will create an index</span></a>
+<a class="sourceLine" id="cb25-9" title="9">); <span class="co">-- this semicolon is required to properly end the statement!</span></a></code></pre></div>
+<p>But we could have alternatively done it like this, and added a <code>dead_person</code> table:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> person(</a>
+<a class="sourceLine" id="cb26-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,        <span class="co">-- SERIAL creates an INTEGER / SEQUENCE pair</span></a>
+<a class="sourceLine" id="cb26-3" title="3">  <span class="fu">first</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,   <span class="co">-- postgres does not require a length for strings,</span></a>
+<a class="sourceLine" id="cb26-4" title="4">  <span class="fu">last</span> <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,    <span class="co">-- but the ORM will want this for validation</span></a>
+<a class="sourceLine" id="cb26-5" title="5">  dob <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,            <span class="co">-- every person has a Date of Birth</span></a>
+<a class="sourceLine" id="cb26-6" title="6">  gamer <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span>(<span class="kw">TRUE</span>), <span class="co">-- isn&#39;t everyone?</span></a>
+<a class="sourceLine" id="cb26-7" title="7">  <span class="kw">UNIQUE</span> (<span class="fu">first</span>, <span class="fu">last</span>, dob) <span class="co">-- this is a TABLE constraint that will create an index</span></a>
+<a class="sourceLine" id="cb26-8" title="8">); <span class="co">-- this semicolon is required to properly end the statement!</span></a>
+<a class="sourceLine" id="cb26-9" title="9"></a>
+<a class="sourceLine" id="cb26-10" title="10"><span class="kw">CREATE</span> <span class="kw">TABLE</span> dead_person(</a>
+<a class="sourceLine" id="cb26-11" title="11">  person_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> <span class="kw">REFERENCES</span> person(<span class="kw">id</span>),</a>
+<a class="sourceLine" id="cb26-12" title="12">  dod <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>);  <span class="co">-- dead persons should have a Date of Death</span></a></code></pre></div>
+<p>Mathemeticians and Computer Scientists like to argue about which approach is better. (This conundrum has an OOP equvalent - is a <code>DeadPerson</code> a subtype of <code>Person</code>, or is <em>dead</em> just a state that a <code>Person</code> can be in?)</p>
+<h4 id="normal-forms">normal forms</h4>
+<p>Relations can be characterized according to their <strong><em>normal form</em></strong>, as defined by E. F. Codd and others in the 1970’s. In a nutshell, these forms are defined as increasingly restrictive conditions that a relation must satisfy. Here are the most commonly used normal forms:</p>
+<ul>
+<li>UNF - Unnormalized Form - data may be non-atomic (array values)</li>
+<li>1NF - First Normal Form - all data is atomic; relation has a primary key</li>
+<li>2NF - Second Normal Form - no data is dependant on a part of a candidate key</li>
+<li>3NF - Third Normal Form - all data is dependant on a candidate key</li>
+<li>BCNF, etc - Boyce-Codd Normal Form and higher place further constraints on the permitted data dependencies.</li>
+</ul>
+<p>In practice, a schema that is in 3NF is considered to be fully normalized.</p>
+<p>Progressive normalization is generally accomplished by moving attributes that do not depend on the primary key of a relation to other related relations. (this might make more sense once you see it)</p>
+<hr />
+<p>Consider an office app for a ’color coordnation specialist". Part of their log table looks like this (key columns are marked with an asterisk):</p>
+<p><strong>visit</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>visit*</th>
+<th>time*</th>
+<th>person*</th>
+<th>fav_color0</th>
+<th>fc_rgb0</th>
+<th>fav_color1</th>
+<th>fc_rgb1</th>
+<th>fav_color2</th>
+<th>fc_rgb2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+<td>red</td>
+<td>0xff0000</td>
+<td>gold</td>
+<td>0xffd700</td>
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="even">
+<td>2020-03-10</td>
+<td>09:45</td>
+<td>John</td>
+<td>red</td>
+<td>0xff0000</td>
+<td>gold</td>
+<td>0xffd700</td>
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="odd">
+<td>2020-03-14</td>
+<td>13:00</td>
+<td>John</td>
+<td>red</td>
+<td>0xff0000</td>
+<td>gold</td>
+<td>0xffd700</td>
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="even">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+<td>red</td>
+<td>0xff0000</td>
+<td>gold</td>
+<td>0xffd700</td>
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="odd">
+<td>2020-03-07</td>
+<td>12:30</td>
+<td>Dave</td>
+<td>green</td>
+<td>0x00ff00</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-03-23</td>
+<td>15:30</td>
+<td>Dave</td>
+<td>green</td>
+<td>0x00ff00</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-03-21</td>
+<td>09:15</td>
+<td>Mary</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-04-04</td>
+<td>10:45</td>
+<td>Mary</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-04-17</td>
+<td>14:00</td>
+<td>Mary</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This data is already in 1NF (assuming it has a primary key; probably <code>visit, time, person</code>) But it doesn’t look like favorite colors data depends on the whole key, but rather just the person. ___ We can refactor (<em>normalize</em>) this data to look like this:</p>
+<p><strong>visit</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>visit*</th>
+<th>time*</th>
+<th>person*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-10</td>
+<td>09:45</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-14</td>
+<td>13:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-07</td>
+<td>12:30</td>
+<td>Dave</td>
+</tr>
+<tr class="even">
+<td>2020-03-23</td>
+<td>15:30</td>
+<td>Dave</td>
+</tr>
+<tr class="odd">
+<td>2020-03-21</td>
+<td>09:15</td>
+<td>Mary</td>
+</tr>
+<tr class="even">
+<td>2020-04-04</td>
+<td>10:45</td>
+<td>Mary</td>
+</tr>
+<tr class="odd">
+<td>2020-04-17</td>
+<td>14:00</td>
+<td>Mary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>person</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>person*</th>
+<th>fav_color0</th>
+<th>fc_rgb0</th>
+<th>fav_color1</th>
+<th>fc_rgb1</th>
+<th>fav_color2</th>
+<th>fc_rgb2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>John</td>
+<td>red</td>
+<td>0xff0000</td>
+<td>gold</td>
+<td>0xffd700</td>
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="even">
+<td>Dave</td>
+<td>green</td>
+<td>0x00ff00</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Mary</td>
+<td>blue</td>
+<td>0x0000ff</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>Similarly, we can see that the RGB codes depend only on the colors (or vice-versa), so we can move those to another relation as well:</p>
+<p><strong>visit</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>visit*</th>
+<th>time*</th>
+<th>person*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-10</td>
+<td>09:45</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-14</td>
+<td>13:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-07</td>
+<td>12:30</td>
+<td>Dave</td>
+</tr>
+<tr class="even">
+<td>2020-03-23</td>
+<td>15:30</td>
+<td>Dave</td>
+</tr>
+<tr class="odd">
+<td>2020-03-21</td>
+<td>09:15</td>
+<td>Mary</td>
+</tr>
+<tr class="even">
+<td>2020-04-04</td>
+<td>10:45</td>
+<td>Mary</td>
+</tr>
+<tr class="odd">
+<td>2020-04-17</td>
+<td>14:00</td>
+<td>Mary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>person</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>person*</th>
+<th>fav_color0</th>
+<th>fav_color1</th>
+<th>fav_color2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>John</td>
+<td>red</td>
+<td>gold</td>
+<td>green</td>
+</tr>
+<tr class="even">
+<td>Dave</td>
+<td>green</td>
+<td>blue</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Mary</td>
+<td>blue</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>color</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>color*</th>
+<th>fc_rgb0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>red</td>
+<td>0xff0000</td>
+</tr>
+<tr class="even">
+<td>gold</td>
+<td>0xffd700</td>
+</tr>
+<tr class="odd">
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="even">
+<td>blue</td>
+<td>0x0000ff</td>
+</tr>
+</tbody>
+</table>
+<p>This data is now in 2NF, since each column is now dependant on the primary key. But something’s still not quite right… What could it be? ___ The problem is that the only difference between the <code>fav_color0</code> attribute and the <code>fav_color1</code> and <code>fav_color2</code> attributes appears to be the name. Neither Dave nor Mary have three favorite colors, and what if John wants to pick a fourth one? The solution is to move the favorite colors to another table or their own:</p>
+<p><strong>visit</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>visit*</th>
+<th>time*</th>
+<th>person*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-10</td>
+<td>09:45</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-14</td>
+<td>13:00</td>
+<td>John</td>
+</tr>
+<tr class="even">
+<td>2020-03-04</td>
+<td>09:00</td>
+<td>John</td>
+</tr>
+<tr class="odd">
+<td>2020-03-07</td>
+<td>12:30</td>
+<td>Dave</td>
+</tr>
+<tr class="even">
+<td>2020-03-23</td>
+<td>15:30</td>
+<td>Dave</td>
+</tr>
+<tr class="odd">
+<td>2020-03-21</td>
+<td>09:15</td>
+<td>Mary</td>
+</tr>
+<tr class="even">
+<td>2020-04-04</td>
+<td>10:45</td>
+<td>Mary</td>
+</tr>
+<tr class="odd">
+<td>2020-04-17</td>
+<td>14:00</td>
+<td>Mary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>person</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>person*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>John</td>
+</tr>
+<tr class="even">
+<td>Dave</td>
+</tr>
+<tr class="odd">
+<td>Mary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>person_color</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>person*</th>
+<th>fav_color*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>John</td>
+<td>red</td>
+</tr>
+<tr class="even">
+<td>John</td>
+<td>gold</td>
+</tr>
+<tr class="odd">
+<td>John</td>
+<td>green</td>
+</tr>
+<tr class="even">
+<td>Dave</td>
+<td>green</td>
+</tr>
+<tr class="odd">
+<td>Dave</td>
+<td>blue</td>
+</tr>
+<tr class="even">
+<td>Mary</td>
+<td>blue</td>
+</tr>
+</tbody>
+</table>
+<p><strong>color</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>color*</th>
+<th>fc_rgb0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>red</td>
+<td>0xff0000</td>
+</tr>
+<tr class="even">
+<td>gold</td>
+<td>0xffd700</td>
+</tr>
+<tr class="odd">
+<td>green</td>
+<td>0x00ff00</td>
+</tr>
+<tr class="even">
+<td>blue</td>
+<td>0x0000ff</td>
+</tr>
+</tbody>
+</table>
+<p>This data is now in 3NF, as every value now depends solely on the primary key value for its tuple. ___</p>
+<h4 id="number-and-relationships">number and relationships</h4>
+<p>Relationships can be characterized by the number of matching tuples that can exist on each side. (In the general case, the count is either zero, one, or more-than-one, but particular relationships can have other constraints - consider how many biological parents a person can have)</p>
+<p>Generically, relationships are classed as:</p>
+<ul>
+<li><strong><em>one-to-one</em></strong></li>
+<li><strong><em>one-to-many</em></strong></li>
+<li><strong><em>many-to-many</em></strong></li>
+</ul>
+<p>In the <strong><em>first</em></strong> example in this section (regarding NULL values), the <em>dead_person</em> relation was in a <strong>one-to-one</strong> relationship with the <em>person</em> relation, since each record in the <em>dead_person</em> table maps to exactly one <em>person</em> record. (a Person may not have a corresponding record in the <em>dead_person</em> table - that’s perfectly okay!)</p>
+<p>In the <strong><em>last</em></strong> example (3NF, above), the <em>person</em> relation is in a <strong><em>one-to-many</em></strong> relationship with both the <em>visit</em> and <em>person_color</em> table. The <em>color</em> table is also in a one-to-many relationship with the <em>person_color</em> table; these last two relationships together implement a <strong><em>many-to-many</em></strong> relationship between the <em>person</em> table and the <em>color</em> table. In this kind of arrangement, the <em>person_color</em> table is said to be a <strong>join table</strong>, joining <em>person</em> with <em>color</em>. Other attributes of this relationship could be tracked in the <em>person_color</em> table; more complicated relationships can also involve join tables that connect more than two other tables.</p>
+<p>It is important to understand that a SQL query is not required to respect joins that exist in the database; we can join anything to anything, as long as we can define a relationship. That said, the indexes that implement <code>PRIMARY KEY</code>, <code>UNIQUE</code>, and <code>FOREIGN KEY</code> constraints will tend to dramatically accellerate queries that make proper use of them.</p>
+<p>A diagram that represents database tables and the relationships between them is called an <strong><em>Entity Relationship Diagram</em></strong> (<strong>ERD</strong>)</p>
+<h3 id="views">views</h3>
+<p>A <strong><em>view</em></strong> is a named SQL object that corresponds to a <code>SELECT</code> statement. Creating a view is simple:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb27-1" title="1">aa<span class="op">=</span># <span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">VIEW</span> person_list <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb27-2" title="2">aa<span class="op">-</span>#   <span class="kw">SELECT</span> <span class="fu">first</span> <span class="op">||</span> <span class="st">&#39; &#39;</span> <span class="op">||</span> <span class="fu">last</span> <span class="kw">AS</span> name,</a>
+<a class="sourceLine" id="cb27-3" title="3">aa<span class="op">-</span>#          AGE(dob) <span class="kw">AS</span> age</a>
+<a class="sourceLine" id="cb27-4" title="4">aa<span class="op">-</span>#     <span class="kw">FROM</span> person</a>
+<a class="sourceLine" id="cb27-5" title="5">aa<span class="op">-</span>#     <span class="kw">ORDER</span> <span class="kw">BY</span> dob;</a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="kw">CREATE</span> <span class="kw">VIEW</span></a></code></pre></div>
+<p>and using it is equally simple:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb28-1" title="1">aa<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person_list;</a>
+<a class="sourceLine" id="cb28-2" title="2">      name      |          age</a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co">----------------+-----------------------</span></a>
+<a class="sourceLine" id="cb28-4" title="4"> David James    | <span class="dv">60</span> years <span class="dv">1</span> mon <span class="dv">2</span> days</a>
+<a class="sourceLine" id="cb28-5" title="5"> Ronald Stevens | <span class="dv">55</span> years <span class="dv">13</span> days</a>
+<a class="sourceLine" id="cb28-6" title="6">(<span class="dv">2</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>as is getting rid of it:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb29-1" title="1">aa<span class="op">=</span># <span class="kw">DROP</span> <span class="kw">VIEW</span> person_list;</a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="kw">DROP</span> <span class="kw">VIEW</span></a></code></pre></div>
+<p>So what good is a view? Views can capture complicated <code>SELECT</code> queries for reuse, and can be used as data sources in other queries, exactly like tables. A <strong><em>materialized view</em></strong> is a special kind of view that can be referenced as a <em>foreign key</em>. Because a view is a database object, views can simplify tuning indexes to optimize query performance. Also, views are often created as a component of procedural database objects like <em>stored procedures</em> and <em>user-defined functions</em>.</p>
+<p>In general, you probably won’t be defining views as a full-stack or front-end developer, but it’s still good to know what they are, and what they are for - both for dealing with back-end problems and as a topic for interview questions.</p>
+<h3 id="performance-tuning">performance tuning</h3>
+<p>PostgreSQL and other RDBMS’s in general have tools to help the developer figure out where time is being spent in queries. The <code>EXPLAIN</code> verb asks the system to <strong>explain</strong> how it plans to go about running the query:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb30-1" title="1">aa<span class="op">=</span># <span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person_list;</a>
+<a class="sourceLine" id="cb30-2" title="2">                              <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="co">----------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb30-4" title="4"> Subquery <span class="kw">Scan</span> <span class="kw">on</span> person_list  (<span class="kw">cost</span><span class="op">=</span><span class="dv">29</span>.<span class="dv">11</span><span class="op">..</span><span class="fl">32.74</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">48</span>)</a>
+<a class="sourceLine" id="cb30-5" title="5">   <span class="op">-&gt;</span>  <span class="kw">Sort</span>  (<span class="kw">cost</span><span class="op">=</span><span class="dv">29</span>.<span class="dv">11</span><span class="op">..</span><span class="fl">29.84</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">52</span>)</a>
+<a class="sourceLine" id="cb30-6" title="6">         <span class="kw">Sort</span> <span class="kw">Key</span>: person.dob</a>
+<a class="sourceLine" id="cb30-7" title="7">         <span class="op">-&gt;</span>  Seq <span class="kw">Scan</span> <span class="kw">on</span> person  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">17.25</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">52</span>)</a>
+<a class="sourceLine" id="cb30-8" title="8">(<span class="dv">4</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>Adding the <code>ANALYZE</code> verb instructs the system to run the query and report on its observed performance:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb31-1" title="1">aa<span class="op">=</span># <span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person_list;</a>
+<a class="sourceLine" id="cb31-2" title="2">                                                   <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="co">----------------------------------------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb31-4" title="4"> Subquery <span class="kw">Scan</span> <span class="kw">on</span> person_list  (<span class="kw">cost</span><span class="op">=</span><span class="dv">29</span>.<span class="dv">11</span><span class="op">..</span><span class="fl">32.74</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">48</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">049</span><span class="op">..</span><span class="fl">0.051</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">2</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb31-5" title="5">   <span class="op">-&gt;</span>  <span class="kw">Sort</span>  (<span class="kw">cost</span><span class="op">=</span><span class="dv">29</span>.<span class="dv">11</span><span class="op">..</span><span class="fl">29.84</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">52</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">047</span><span class="op">..</span><span class="fl">0.048</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">2</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb31-6" title="6">         <span class="kw">Sort</span> <span class="kw">Key</span>: person.dob</a>
+<a class="sourceLine" id="cb31-7" title="7">         <span class="kw">Sort</span> <span class="kw">Method</span>: quicksort  Memory: 25kB</a>
+<a class="sourceLine" id="cb31-8" title="8">         <span class="op">-&gt;</span>  Seq <span class="kw">Scan</span> <span class="kw">on</span> person  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">17.25</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">290</span> width<span class="op">=</span><span class="dv">52</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">028</span><span class="op">..</span><span class="fl">0.034</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">2</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb31-9" title="9"> Planning <span class="dt">Time</span>: <span class="fl">0.245</span> ms</a>
+<a class="sourceLine" id="cb31-10" title="10"> Execution <span class="dt">Time</span>: <span class="fl">0.093</span> ms</a>
+<a class="sourceLine" id="cb31-11" title="11">(<span class="dv">7</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>Your experience analyzing algorithms should help you understand what these <em>EXPLAIN</em> reports mean. <strong>cost</strong> is an estimated, relative metric; <strong>actual time</strong> reports a hard metric for analyzing the performance of large queries. As a full-stack developer, you’ll want to remember that these tools are here when you have a poorly performing query to impove or answer interview questions about.</p>
+<p>(see <em>postgres</em> section 14.1, <em>Using EXPLAIN</em>)</p>
+<h2 id="iii.-programming">III. programming</h2>
+<p>There is an immense amount of documentation to cover to properly explain the procedural extensions to an RDBMS like postgres. As little of it has much bearing on this week’s material, it will be covered here very lightly!</p>
+<p>PostgreSQL supports procedural programming in several languages, including <em>Python</em> and <em>JavaScript</em>; the simplest one to use was created to directly work with the postgres SQL dialect, and is refered to as <strong><em>PL/pgSQL</em></strong>.</p>
+<p>(<em>postgres</em> chapter 42: <em>PL/pgSQL - SQL Procedural Language</em>)</p>
+<h3 id="cursors">cursors</h3>
+<p>A <strong><em>cursor</em></strong> is a procedural object that allows a block of code to execute on every row returned by a select statement. Cursors don’t usually stand alone; they are usually embedded in other procedural objects like <em>functions</em>, <em>procedures</em>, and <em>triggers</em>.</p>
+<p>(<em>postgres</em> chapter 42.7 : <em>Cursors</em>)</p>
+<h3 id="stored-procedures-and-functions">stored procedures and functions</h3>
+<p><strong><em>stored procedures</em></strong> and <strong><em>functions</em></strong> are procedural SQL objects with parameters, variables, loops, and various mechanisms to return data. <em>functions</em> can return record sets and serve as stand-ins for tables (like views), and can return values calculated from tuples or relations. While functions are not allowed to make changes to the database, <strong><em>stored procedures</em></strong> can; they are able to insert, update or delete data as needed.</p>
+<p>(<em>postgres</em> chapter 37.3: <em>User-Defined Functions</em> and 37.4: <em>User-Defined Procedures</em>)</p>
+<h3 id="triggers">triggers</h3>
+<p>A <strong><em>trigger</em></strong> is a procedural database object that executes whenever a particular event occurs in the database. Triggers can write to log files, update data in other tables, or even override the attempted operation and either do nothing or do something entirely different. From the documentation:</p>
+<blockquote>
+<p>A trigger is a specification that the database should automatically execute a particular function whenever a certain type of operation is performed. Triggers can be attached to tables (partitioned or not), views, and foreign tables.</p>
+<p>On tables and foreign tables, triggers can be defined to execute either before or after any <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> operation, either once per modified row, or once per SQL statement. <code>UPDATE</code> triggers can moreover be set to fire only if certain columns are mentioned in the <code>SET</code> clause of the <code>UPDATE</code> statement. Triggers can also fire for <code>TRUNCATE</code> statements. If a trigger event occurs, the trigger’s function is called at the appropriate time to handle the event.</p>
+</blockquote>
+<p>(<em>postgres</em> chapter 38: <em>Triggers</em>)</p>
+<h2 id="iv.-administration-and-security">IV. administration and security</h2>
+<p>Every RDBMS designed for multiple users has to deal with the twin problems of <strong>authentication</strong> and <strong>authorization</strong>.</p>
+<ul>
+<li><em>Authentication</em> is the mechanism that confirms the identity of a user.</li>
+<li><em>Authorization</em> is the mechanism that controls access to system resources.</li>
+</ul>
+<p>In general, every object in an RDBMS like postgres has a name that is unique in some namespace, has an owner, and (for database objects) has read and write or execute permissions that can be granted or revoked.</p>
+<ul>
+<li><strong>users</strong> (<strong>roles</strong>) are objects in the <em>global</em> namespace that are owned by the system’s <em>superusers</em></li>
+<li><strong>databases</strong> are objects in the <em>global</em> namespace that are owned by a <em>user or role</em></li>
+<li><strong>schemas</strong> are objects located in a <em>database namespace</em> that are owned by a <em>user or role</em></li>
+<li><strong>all other objects</strong> are located in a <em>schema namespace</em> (defaulting to the <em>default</em> schema, <strong>public</strong>) and owned by a <em>user or role</em></li>
+</ul>
+<p>In addition to securing the database against authenticated access (through the ‘front door’), most RDBMS’s will have provisions for securing (encrypting) the binary files that hold the system’s persisted data, to protect against inappropriate access to the system’s data files or their backups. This is referred to as securing ‘data at rest’, and is typically a requirement for systems that manage medical or financial data. (We won’t worry further about it here)</p>
+<p>Additional security requirements often exist related to <em>logging</em> and <em>auditing</em>. Both of these activities generally well-supported on full-featured RDBMS’s. (Neither of these will be addressed further here)</p>
+<h3 id="databases-and-schemas">databases and schemas</h3>
+<p>A <strong>database</strong> is a logical container (a set of <em>namespaces</em>) for schemas, but more commonly the (default) <code>public</code> schema is the container for relations and their associated data. In PostgreSQL and many other systems, a database is also a <em>physical</em> construct that exists on one or more files in the file system. (These files are generally binary, and often are encrypted) Databases have an owner, and rights can be granted and revoked within them. (These are distinct from the rights required to create or drop an entire database)</p>
+<p>A <strong>schema</strong> (in this context) is a logical per-user namespace that exists within any database that the user can connect to. All of our work has been done in the <code>public</code> namespace; this is typical of databases that are the backends for OLTP (OnLine Transaction Processing) websites.</p>
+<p>In this example, in the database <code>aa</code> there is a single table (<code>person</code>), owned by the user <code>gordon</code>, and located in the <code>public</code> schema.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb32-1" title="1">aa<span class="op">=</span># \dt</a>
+<a class="sourceLine" id="cb32-2" title="2">        <span class="kw">List</span> <span class="kw">of</span> relations</a>
+<a class="sourceLine" id="cb32-3" title="3"> <span class="kw">Schema</span> |  Name  | <span class="kw">Type</span>  | Owner</a>
+<a class="sourceLine" id="cb32-4" title="4"><span class="co">--------+--------+-------+--------</span></a>
+<a class="sourceLine" id="cb32-5" title="5"> <span class="kw">public</span> | person | <span class="kw">table</span> | gordon</a>
+<a class="sourceLine" id="cb32-6" title="6">(<span class="dv">1</span> <span class="kw">row</span>)</a></code></pre></div>
+<p>(You will generally not need to worry much about this usage of the term <em>schema</em>; more often the term is used to refer to a system’s <em>metadata</em>)</p>
+<p>Databases can be created with a <code>CREATE DATABASE</code> statement (making use of a <em>lot</em> of defaults), as:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb33-1" title="1">aa<span class="op">=</span># <span class="kw">CREATE</span> <span class="kw">DATABASE</span> aaa;</a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw">CREATE</span> <span class="kw">DATABASE</span></a></code></pre></div>
+<p>The properties of a database can be changed with an <code>ALTER DATABASE</code> statement:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb34-1" title="1">aa<span class="op">=</span># <span class="kw">ALTER</span> <span class="kw">DATABASE</span> aaa OWNER <span class="kw">TO</span> hsm;</a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="kw">ALTER</span> <span class="kw">DATABASE</span></a></code></pre></div>
+<p>And a database can ge dropped (<em>permanently</em>, unless it is backed up) with a <code>DELETE DATABASE</code> statement:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb35-1" title="1">aa<span class="op">=</span># <span class="kw">DROP</span> <span class="kw">DATABASE</span> aaa;</a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="kw">DROP</span> <span class="kw">DATABASE</span></a></code></pre></div>
+<p>(Schemas are similarly managed with <code>CREATE SCHEMA</code>, <code>ALTER SCHEMA</code> and <code>DROP SCHEMA</code> statements)</p>
+<p>The container (namespace) for a database instance is the (RDBMS) server instance; the container for a schema instance is the database.</p>
+<h3 id="users-and-roles">users and roles</h3>
+<p>On postgres, <strong>users</strong> and <strong>roles</strong> are interchangable; a <em>user</em> is just a role with permission to connect to the database (<code>LOGIN</code> permission), and a <em>role</em> is an object that can be have permissions granted to it or revoked from it - so in addition to corresponding to a particular user, a <code>ROLE</code> can also be a <em>group</em> to which other users or groups belong.</p>
+<p>Users (roles) are created, altered and dropped with their own set of DDL statements:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb36-1" title="1">aa<span class="op">=</span># <span class="kw">CREATE</span> <span class="fu">USER</span> donald LOGIN <span class="kw">PASSWORD</span> <span class="st">&#39;greyzone&#39;</span>;</a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="kw">CREATE</span> <span class="kw">ROLE</span></a>
+<a class="sourceLine" id="cb36-3" title="3">aa<span class="op">=</span># <span class="kw">ALTER</span> <span class="fu">USER</span> donald CREATEDB;</a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="kw">ALTER</span> <span class="kw">ROLE</span></a>
+<a class="sourceLine" id="cb36-5" title="5">aa<span class="op">=</span># <span class="kw">DROP</span> <span class="kw">ROLE</span> donald; <span class="co">-- a USER is a ROLE</span></a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="kw">DROP</span> <span class="kw">ROLE</span></a></code></pre></div>
+<p>A <strong>superuser</strong> is a user or role that can perform any operation on the RDBMS instance; <code>SUPERUSER</code> is just an attribute of users/roles:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb37-1" title="1">aa<span class="op">=</span># <span class="kw">CREATE</span> <span class="kw">ROLE</span> barak SUPERUSER;</a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="kw">CREATE</span> <span class="kw">ROLE</span></a>
+<a class="sourceLine" id="cb37-3" title="3">aa<span class="op">=</span># <span class="kw">DROP</span> <span class="kw">ROLE</span> barak;</a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="kw">DROP</span> <span class="kw">ROLE</span></a></code></pre></div>
+<p>The container for users and roles on postgres is the (RDBMS) server instance.</p>
+<h3 id="authentication-schemes">authentication schemes</h3>
+<p>PostgreSQL offers several means to authenticate clients, controlled by a configuration file named <code>pg_hba.conf</code>. This is a flat text file with records composed of the following fields:</p>
+<ul>
+<li>connection type (<em>local</em>, <em>host</em>, <em>hostssl</em>, etc)</li>
+<li>client IP address (if applicable)</li>
+<li>database - a comma-separated list of databases that can be connected to; also the special names <code>sameuser</code>, <code>samerole</code>, and <code>all</code>.</li>
+<li>user - matches a single user or role, or when prefixed with <code>+</code> matches the name of a role that the user belongs to, or the special value <code>all</code>.</li>
+<li>auth-method - one of:
+<ul>
+<li><code>trust</code> - the RDBMS <em>trusts</em> that the OS has already authenticated the logged in user identified by their username. Such a user need not actually have a password; often these are ‘system’ accounts that are not permitted to log in interactively.</li>
+<li><code>reject</code> - the user is not allowed to connect</li>
+<li><code>password</code>, <code>md5</code>, <code>scram-sha-256</code>, etc - authenticates the user with a password, either plaintext (<code>password</code>) or a password hashed using the named scheme.</li>
+<li><code>ldap</code>, <code>radius</code>, etc - various methods that use an external authentication server.</li>
+</ul></li>
+</ul>
+<p>A typical (simple) production scheme might use one or more dedicated ‘worker’ accounts with <code>trust</code> authentication to handle routine database tasks (DML), and a privileged password-protected account to manage database deployments and migrations (DDL).</p>
+<p>(see <em>postgres</em> chapter 20)</p>

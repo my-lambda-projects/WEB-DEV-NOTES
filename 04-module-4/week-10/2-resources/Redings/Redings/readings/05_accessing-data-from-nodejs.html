@@ -1,0 +1,265 @@
+<h1 id="node-postgres-and-prepared-statements">Node-Postgres And Prepared Statements</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#connecting">Connecting</a></li>
+<li><a href="#prepared-statement">Prepared Statement</a></li>
+<li><a href="#try-it-out-for-yourself">Try it out for yourself</a></li>
+<li><a href="#what-youve-learned">What you’ve learned</a></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>The library <a href="https://www.node-postgres.com">node-postgres</a> is, not too surprisingly, the library that Node.js applications use to connect to a database managed by a PostgreSQL RDBMS. The applications that you deal with will use this library to make connections to the database and get rows returned from your SQL <code>SELECT</code> statements.</p>
+<h2 id="connecting">Connecting</h2>
+<p>The <strong>node-postgres</strong> library provides two ways to connect to it. You can use a single <code>Client</code> object, or you can use a <code>Pool</code> of <code>Client</code> objects. Normally, you want to use a <code>Pool</code> because creating and opening single connections to any database server is a “costly” operation in terms of CPU and network resources. A <code>Pool</code> creates a group of those <code>Client</code> connections and lets your code use them whenever it needs to.</p>
+<p>To use a <code>Pool</code>, you specify any specific portions of the following connection parameters that you need. The default values for each parameter is listed with each parameter.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 41%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Connection parameter</th>
+<th>What it indicates</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>user</td>
+<td>The name of the user you want to connect as</td>
+<td>The user name that runs the application</td>
+</tr>
+<tr class="even">
+<td>password</td>
+<td>The password to use</td>
+<td>The password set in your configuration</td>
+</tr>
+<tr class="odd">
+<td>database</td>
+<td>The name of the database to connect to</td>
+<td>The user’s database</td>
+</tr>
+<tr class="even">
+<td>port</td>
+<td>The port over which to connect</td>
+<td>5432</td>
+</tr>
+<tr class="odd">
+<td>host</td>
+<td>The name of the server to connect to</td>
+<td>localhost</td>
+</tr>
+</tbody>
+</table>
+<p>Normally, you will only override the user and password fields, and sometimes the database if it doesn’t match the user’s name. You do that by instantiating a new <code>Pool</code> object and passing in an object with those key/value pairs.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">user</span><span class="op">:</span> <span class="st">&#39;application_user&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">password</span><span class="op">:</span> <span class="st">&#39;iy7qTEcZ&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Once you have an instance of the <code>Pool</code> class, you can use the <code>query</code> method on it to run queries. (The <code>query</code> method returns a Promise, so it’s nice to just use <code>await</code> for it to finish.)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(<span class="vs">`</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="vs">  SELECT id, name, age_yrs</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="va">console</span>.<span class="at">log</span>(results)<span class="op">;</span></a></code></pre></div>
+<p>When this runs, you will get an object that contains a property named “rows”. The value of “rows” will be an array of the rows that match the statement. Here’s an example output from the code above.</p>
+<pre><code>{
+  rows:
+    [ { id: 1, name: &#39;Cooper&#39;, age_yrs: &#39;1.0&#39; },
+      { id: 2, name: &#39;Indie&#39;, age_yrs: &#39;0.5&#39; },
+      { id: 3, name: &#39;Kota&#39;, age_yrs: &#39;0.7&#39; },
+      { id: 4, name: &#39;Zoe&#39;, age_yrs: &#39;0.8&#39; },
+      { id: 5, name: &#39;Charley&#39;, age_yrs: &#39;1.5&#39; },
+      { id: 6, name: &#39;Ladybird&#39;, age_yrs: &#39;0.6&#39; },
+      { id: 7, name: &#39;Callie&#39;, age_yrs: &#39;0.9&#39; },
+      { id: 8, name: &#39;Jaxson&#39;, age_yrs: &#39;0.4&#39; },
+      { id: 9, name: &#39;Leinni&#39;, age_yrs: &#39;1.0&#39; },
+      { id: 10, name: &#39;Max&#39;, age_yrs: &#39;1.6&#39; } ],
+}</code></pre>
+<p>You can see that the “rows” property contains an array of objects. Each object represents a row in the “puppies” table that matches the query. Each object has a property named after the column selected in the <code>SELECT</code> statement. The query read <code>SELECT id, name, age_yrs</code> and each object has an “id”, “name”, and an “age_yrs” property.</p>
+<p>You can then use that array to loop over and do things with it. For example, you could print them to the console like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">for</span> (<span class="kw">let</span> row <span class="kw">of</span> <span class="va">results</span>.<span class="at">rows</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">row</span>.<span class="at">id</span><span class="sc">}</span><span class="vs">. </span><span class="sc">${</span><span class="va">row</span>.<span class="at">name</span><span class="sc">}</span><span class="vs"> is </span><span class="sc">${</span><span class="va">row</span>.<span class="at">age_yrs</span><span class="sc">}</span><span class="vs"> old&lt;/li&gt;`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>Which would show</p>
+<pre><code>1. Cooper is 1.0 years old
+2. Indie is 0.5 years old
+3. Kots is 0.7 years old
+...</code></pre>
+<h2 id="prepared-statement">Prepared Statement</h2>
+<p>Prepared statements are SQL statements that have parameters in them that you can use to substitute values. The parameters are normally part of the <code>WHERE</code> clause in all statements. You will also use them in the <code>SET</code> portion of <code>UPDATE</code> statements and the <code>VALUES</code> portion of <code>INSERT</code> statements.</p>
+<p>For example, say your application collected the information to create a new row in the puppy table by asking for the puppy’s name, age, breed, weight, and if it was microchipped. You’d have those values stored in variables somewhere. You’d want to create an <code>INSERT</code> statement that inserts the data from those variables into a SQL statement that the RDBMS could then execute to insert a new row.</p>
+<p>Think about what a generic <code>INSERT</code> statement would look like. It would have to have the</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> puppies (name, age_yrs, breed, weight_lbs, microchipped)</a></code></pre></div>
+<p>portion of the statement. The part that would change with each time you inserted would be the specific values that would go into the <code>VALUES</code> section of the <code>INSERT</code> statement. With prepared statements, you use <em>positional parameters</em> to act as placeholders for the actual values that you will provide the query.</p>
+<p>For example, the generic <code>INSERT</code> statement from above would look like this.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> puppies (name, age_yrs, breed, weight_lbs, microchipped)</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>, $<span class="dv">3</span>, $<span class="dv">4</span>, $<span class="dv">5</span>);</a></code></pre></div>
+<p>Each of the “$” placeholders is a positional argument for the parameters that you pass in. That means, the value that you pass in for the first parameter will be put where the “$1” placeholder is, which is the value for the “name” of the puppy. The “$2” corresponds to the “age_yrs” column, so it should contain the age of the puppy. This continues for the third, fourth, and fifth parameters, as well.</p>
+<p>Assume that in your code, you have the variables <code>name</code>, <code>age</code>, <code>breedName</code>, <code>weight</code>, and <code>isMicrochipped</code> containing the values that the user provided for the new puppy. Then, your use of the <code>query</code> method will now include another argument, the values that you want to pass in inside an array.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(<span class="vs">`</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="vs">  INSERT INTO puppies (name, age_yrs, breed, weight_lbs, microchipped)</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="vs">  VALUES ($1, $2, $3, $4, $5);</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="vs">`</span><span class="op">,</span> [name<span class="op">,</span> age<span class="op">,</span> breedName<span class="op">,</span> weight<span class="op">,</span> isMicrochipped])<span class="op">;</span></a></code></pre></div>
+<p>You can see that the variable <code>name</code> is in the first position of the array, so it will be substituted into the placeholder “$1”. The <code>age</code> variable is in the second position of the array, so it will be substituted into the “$2” placeholder.</p>
+<p>The full documentation for how to use queries with <strong>node-postgres</strong> can be found on the <a href="https://node-postgres.com/features/queries">Queries</a> documentation page on their Web site.</p>
+<h2 id="try-it-out-for-yourself">Try it out for yourself</h2>
+<p>Make sure you have a database with a table that has data in it. If you don’t, create a new database and run the following SQL.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb9-3" title="3">  name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb9-4" title="4">  age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb9-5" title="5">  breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb9-6" title="6">  weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb9-7" title="7">  microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span></a>
+<a class="sourceLine" id="cb9-8" title="8">);</a>
+<a class="sourceLine" id="cb9-9" title="9"></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="kw">insert</span> <span class="kw">into</span> puppies(name, age_yrs, breed, weight_lbs, microchipped)</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="kw">values</span></a>
+<a class="sourceLine" id="cb9-12" title="12">(<span class="st">&#39;Cooper&#39;</span>, <span class="dv">1</span>, <span class="st">&#39;Miniature Schnauzer&#39;</span>, <span class="dv">18</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb9-13" title="13">(<span class="st">&#39;Indie&#39;</span>, <span class="fl">0.5</span>, <span class="st">&#39;Yorkshire Terrier&#39;</span>, <span class="dv">13</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb9-14" title="14">(<span class="st">&#39;Kota&#39;</span>, <span class="fl">0.7</span>, <span class="st">&#39;Australian Shepherd&#39;</span>, <span class="dv">26</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb9-15" title="15">(<span class="st">&#39;Zoe&#39;</span>, <span class="fl">0.8</span>, <span class="st">&#39;Korean Jindo&#39;</span>, <span class="dv">32</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb9-16" title="16">(<span class="st">&#39;Charley&#39;</span>, <span class="fl">1.5</span>, <span class="st">&#39;Basset Hound&#39;</span>, <span class="dv">25</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb9-17" title="17">(<span class="st">&#39;Ladybird&#39;</span>, <span class="fl">0.6</span>, <span class="st">&#39;Labradoodle&#39;</span>, <span class="dv">20</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb9-18" title="18">(<span class="st">&#39;Callie&#39;</span>, <span class="fl">0.9</span>, <span class="st">&#39;Corgi&#39;</span>, <span class="dv">16</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb9-19" title="19">(<span class="st">&#39;Jaxson&#39;</span>, <span class="fl">0.4</span>, <span class="st">&#39;Beagle&#39;</span>, <span class="dv">19</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb9-20" title="20">(<span class="st">&#39;Leinni&#39;</span>, <span class="dv">1</span>, <span class="st">&#39;Miniature Schnauzer&#39;</span>, <span class="dv">25</span>, <span class="st">&#39;yes&#39;</span> ),</a>
+<a class="sourceLine" id="cb9-21" title="21">(<span class="st">&#39;Max&#39;</span>, <span class="fl">1.6</span>, <span class="st">&#39;German Shepherd&#39;</span>, <span class="dv">65</span>, <span class="st">&#39;no&#39;</span>);</a></code></pre></div>
+<p>Now that you have ten rows in the “puppies” table of a database, you can create a simple Node.js project to access it.</p>
+<p>Create a new directory somewhere that’s not part of an existing project. Run <code>npm init -y</code> to initialize the <strong>package.json</strong> file. Then, run <code>npm install pg</code> to install the library from this section. (Why is the name of the library “node-postgres” but you install “pg”? Dunno.) Finally, open Visual Studio Code for the current directory with <code>code .</code>.</p>
+<p>Create a new file named <strong>sql-test.js</strong>.</p>
+<p>The first thing you need to do is import the <code>Pool</code> class from the <strong>node-postgres</strong> library. The name of the library in the <strong>node_modules</strong> directory is “pg”. That line of code looks like this and can be found all over the <a href="https://www.node-postgres.com">node-postgres</a> documentation.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>Now, write some SQL that will select all of the records from the “puppies” table. (This is assuming you want to select puppies. If you’re using a different table with different data, write the appropriate SQL here.)</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">const</span> allPuppies <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="vs">`</span><span class="op">;</span></a></code></pre></div>
+<p>You will now use that with a new <code>Pool</code> object. You will need to know the name of the database that the “puppies” table is in (or whatever database you want to connect to).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">const</span> allPuppies <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-7" title="7"></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb12-9" title="9">  <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;«database name»&#39;</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Of course, replace “«database name»” with the name of your database. Otherwise, when you run it, you will see this error message.</p>
+<pre><code>UnhandledPromiseRejectionWarning: error: database &quot;«database name»&quot; does not exist</code></pre>
+<p>This will, by default, connect to “localhost” on port “5432” with your user credentials because you did not specify any other parameters.</p>
+<p>Once you have the pool, you can execute the query that you have in <code>allPuppies</code>. Remember that the <code>query</code> method returns a Promise. This code wraps the call to <code>query</code> in an <code>async function</code> so that it can use the <code>await</code> keyword for simplicity’s sake. Then, it prints out the rows that it fetched to the console. Finally, it calls <code>end</code> on the connection pool object to tell <strong>node-postgres</strong> to close all the connections and quit. Otherwise, your application will just hang and you’ll have to close it with Control+C.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> allPuppiesSql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;«database name»&#39;</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11"></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectAllPuppies</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-13" title="13">  <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(allPuppiesSql)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15">  <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb14-17" title="17"></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="at">selectAllPuppies</span>()<span class="op">;</span></a></code></pre></div>
+<p>When you run this with <code>node sql-test.js</code>, you should see some output like this although likely in a nicer format.</p>
+<pre><code>[ { id: 1, name: &#39;Cooper&#39;, age_yrs: &#39;1.0&#39;, breed: &#39;Miniature Schnauzer&#39;, weight_lbs: 18, microchipped: true },
+  { id: 2, name: &#39;Indie&#39;, age_yrs: &#39;0.5&#39;, breed: &#39;Yorkshire Terrier&#39;, weight_lbs: 13, microchipped: true },
+  { id: 3, name: &#39;Kota&#39;, age_yrs: &#39;0.7&#39;, breed: &#39;Australian Shepherd&#39;, weight_lbs: 26, microchipped: false },
+  { id: 4, name: &#39;Zoe&#39;, age_yrs: &#39;0.8&#39;, breed: &#39;Korean Jindo&#39;, weight_lbs: 32, microchipped: true },
+  { id: 5, name: &#39;Charley&#39;, age_yrs: &#39;1.5&#39;, breed: &#39;Basset Hound&#39;, weight_lbs: 25, microchipped: false },
+  { id: 6, name: &#39;Ladybird&#39;, age_yrs: &#39;0.6&#39;, breed: &#39;Labradoodle&#39;, weight_lbs: 20, microchipped: true },
+  { id: 7, name: &#39;Callie&#39;, age_yrs: &#39;0.9&#39;, breed: &#39;Corgi&#39;, weight_lbs: 16, microchipped: false },
+  { id: 8, name: &#39;Jaxson&#39;, age_yrs: &#39;0.4&#39;, breed: &#39;Beagle&#39;, weight_lbs: 19, microchipped: true },
+  { id: 9, name: &#39;Leinni&#39;, age_yrs: &#39;1.0&#39;, breed: &#39;Miniature Schnauzer&#39;, weight_lbs: 25, microchipped: true },
+  { id: 10, name: &#39;Max&#39;, age_yrs: &#39;1.6&#39;, breed: &#39;German Shepherd&#39;, weight_lbs: 65, microchipped: false } ]</code></pre>
+<p>Now, try one of those parameterized queries. Comment out the <code>selectAllPuppies</code> function and invocation.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="co">// async function selectAllPuppies() {</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">//   const results = await pool.query(allPuppiesSql);</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="co">//   console.log(results.rows);</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="co">//   pool.end();</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="co">// }</span></a>
+<a class="sourceLine" id="cb16-6" title="6"></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="co">// selectAllPuppies();</span></a></code></pre></div>
+<p>Add the following content to the bottom of the file.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="co">// Define the parameterized query where it will select a puppy</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">// based on an id</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">const</span> singlePuppySql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="vs">  FROM puppies</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="vs">  WHERE ID = $1;</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb17-8" title="8"></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="co">// Run the parameterized SQL by passing in an array that contains</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="co">// the puppyId to the query method. Then, print the results and</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="co">// end the pool.</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectOnePuppy</span>(puppyId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-13" title="13">  <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId])<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-15" title="15">  <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb17-17" title="17"></a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="co">// Get the id from the command line and store it</span></a>
+<a class="sourceLine" id="cb17-19" title="19"><span class="co">// in the variable &quot;id&quot;. Pass that value to the</span></a>
+<a class="sourceLine" id="cb17-20" title="20"><span class="co">// selectOnePuppy function.</span></a>
+<a class="sourceLine" id="cb17-21" title="21"><span class="kw">const</span> id <span class="op">=</span> <span class="va">Number</span>.<span class="at">parseInt</span>(<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-22" title="22"><span class="at">selectOnePuppy</span>(id)<span class="op">;</span></a></code></pre></div>
+<p>Now, when you run the program, include a number after the command. For example, if you run <code>node sql-test.js 1</code>, it will print out</p>
+<pre><code>[ { id: 1,
+    name: &#39;Cooper&#39;,
+    age_yrs: &#39;1.0&#39;,
+    breed: &#39;Miniature Schnauzer&#39;,
+    weight_lbs: 18,
+    microchipped: true } ]</code></pre>
+<p>If you run <code>node sql-test.js 4</code>, it will print out</p>
+<pre><code>[ { id: 4,
+    name: &#39;Zoe&#39;,
+    age_yrs: &#39;0.8&#39;,
+    breed: &#39;Korean Jindo&#39;,
+    weight_lbs: 32,
+    microchipped: true } ]</code></pre>
+<p>That’s because the number that you type on the command line is being substituted in for the “$1” in the parameterized query. That means, when you pass in “4”, It’s like the RDMBS takes the parameterized query</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">SELECT</span> <span class="kw">id</span>, name, age_yrs, breed, weight_lbs, microchipped</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> $<span class="dv">1</span>;</a></code></pre></div>
+<p>and your value “4”</p>
+<p>and mushes them together to make</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">SELECT</span> <span class="kw">id</span>, name, age_yrs, breed, weight_lbs, microchipped</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> <span class="dv">4</span>; <span class="co">-- Value substituted here by PostgreSQL.</span></a></code></pre></div>
+<p>That happens because when you run the query, you call the <code>query</code> method like this.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId])<span class="op">;</span></a></code></pre></div>
+<p>which passes along the sql stored in <code>singlePuppySql</code> and the value stored in <code>puppyId</code> (as the first parameter) to PostgreSQL.</p>
+<p>What do you think will happen if you change <code>singlePuppySql</code> to have <em>two</em> parameters instead of one, but only pass in one parameter through the <code>query</code> method?</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">const</span> singlePuppySql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="vs">  FROM puppies</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="vs">  WHERE ID = $1</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="vs">  AND age_yrs &gt; $2;</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="vs">`</span><span class="op">;</span></a></code></pre></div>
+<p>PostgreSQL is smart enough to see that you’ve only provided one parameter value but it needs <em>two</em> positional parameters. It gives you the error message</p>
+<pre><code>error: bind message supplies 1 parameters, but prepared statement &quot;&quot; requires 2</code></pre>
+<p>In this error message, the term “bind message” is the kind of message that the <code>query</code> method sends to PostgreSQL when you provide parameters to it.</p>
+<p>Change the query back to how it was. Now, add an extra parameter to the invocation of the <code>query</code> method. What do you think will happen?</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId<span class="op">,</span> <span class="st">&#39;extra parameter&#39;</span>])<span class="op">;</span></a></code></pre></div>
+<p>Again, PostgreSQL gives you an error message about a mismatch in the number of placeholders in the SQL and the number of values you passed to it.</p>
+<pre><code>error: bind message supplies 2 parameters, but prepared statement &quot;&quot; requires 1</code></pre>
+<h2 id="what-youve-learned">What you’ve learned</h2>
+<p>Here, you’ve seen how to connect to a PostgreSQL database using the <strong>node-postgres</strong> library named “pg”. You saw how to run simple SQL statements against it and handle the results. You also saw how to create parameterized queries so that you can pass in values to be substituted.</p>
+<p>If you are using the <strong>node-postgres</strong> library and running your own handcrafted SQL, you will most often use parameterized queries. It’s good to get familiar with them.</p>

@@ -1,0 +1,31 @@
+.ExcelTable2003 {
+	border: 1px solid #404040;
+	border-width: 1px 0px 0px 1px;
+	font-size: 10pt;
+	font-family: arial;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.ExcelTable2003 TH {
+	background-color: #D4D0C8;
+	border: 1px solid #808080;
+	border-width: 0px 1px 1px 0px;
+	font-weight: normal;
+}
+
+.ExcelTable2003 TD {
+	border: 0px;
+	background-color: white;
+	padding: 0px 4px 0px 2px;
+	border: 1px solid #C0C0C0;
+	border-width: 0px 1px 1px 0px;
+}
+
+.ExcelTable2003 TD.heading {
+	background-color: #D4D0C8;
+	border: 1px solid #808080;
+	border-width: 0px 1px 1px 0px;
+	text-align: center;
+	padding: 0px 0px 0px 0px;
+}

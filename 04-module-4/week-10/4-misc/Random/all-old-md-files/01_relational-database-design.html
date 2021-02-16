@@ -1,0 +1,325 @@
+<h1 id="creating-a-schema-for-relational-database-design">Creating A Schema For Relational Database Design</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#creating-a-schema-for-relational-database-design">Creating A Schema For Relational Database Design</a>
+<ul>
+<li><a href="#what-is-relational-database-design">What is Relational Database Design?</a></li>
+<li><a href="#stages-of-relational-database-design">Stages of Relational Database Design</a>
+<ul>
+<li><a href="#1-define-database-purpose-and-entities">1. Define database purpose and entities</a></li>
+<li><a href="#2-identify-primary-keys">2. Identify primary keys</a></li>
+<li><a href="#3-establish-table-relationships">3. Establish table relationships</a></li>
+<li><a href="#4-apply-normalization-rules">4. Apply normalization rules</a></li>
+</ul></li>
+<li><a href="#schema-design-tools">Schema design tools</a></li>
+<li><a href="#what-we-learned">What we learned:</a></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>Schemas allow us to easily visualize database tables and their relationships to one another, so that we can identify areas that need clarity, refinement, or redesign.</p>
+<p>In this reading, we’re going to cover the stages of relational database design and how to create schema that depicts database table relationships.</p>
+<h2 id="what-is-relational-database-design">What is Relational Database Design?</h2>
+<p>According to Technopedia, <a href="https://www.techopedia.com/definition/25113/relational-database-design-rdd">Relational Database Design</a> (or RDD) differs from other databases in terms of data organization and transactions: “In an RDD, the data are organized into tables and all types of data access are carried out via controlled transactions.”</p>
+<p>In previous readings, we created relational database tables and accessed data from these tables through PostgreSQL queries. These tables (a.k.a. <em>entities</em>) contain rows (a.k.a. <em>records</em>) and columns (a.k.a. <em>fields</em>). We also learned how to uniquely identify table records by adding a <code>PRIMARY KEY</code> and how to create a table association by adding a <code>FOREIGN KEY</code>.</p>
+<p>A relational database usually contains multiple tables. It’s useful to create schema to help us visualize these tables, keep track of primary keys and foreign keys, and create relationships among tables. This is a key part of the RDD process defined below.</p>
+<h2 id="stages-of-relational-database-design">Stages of Relational Database Design</h2>
+<p>There are four generally-agreed-upon stages of Relational Database Design:</p>
+<ol type="1">
+<li>Define the purpose/entities of the relational DB.</li>
+<li>Identify primary keys.</li>
+<li>Establish table relationships.</li>
+<li>Apply normalization rules.</li>
+</ol>
+<h3 id="define-database-purpose-and-entities">1. Define database purpose and entities</h3>
+<p>The first stage is identifying the purpose of the database (<em>Why is the database being created? What problem is it solving? What is the data used for?</em>), as well as identifying the main entities, or <em>tables</em>, that need to be created. It also typically involves identifying the table’s attributes (i.e. <em>columns</em> and <em>rows</em>).</p>
+<p>For example, if we were creating a database for order processing on an e-commerce application, we would need a database with at least three tables: a <code>products</code> table, an <code>orders</code> tables, and a <code>users</code> (i.e. customers) table. We know that a product will probably have an ID, name, and price, and an order will contain one or more product IDs. We also know that users can create multiple orders.</p>
+<figure>
+<img src="images/orders-erd-entities.svg" alt="Orders ERD entities" /><figcaption>Orders ERD entities</figcaption>
+</figure>
+<h3 id="identify-primary-keys">2. Identify primary keys</h3>
+<p>The second stage is to identify the primary key (<em>PK</em>) of each table. As we previously learned, a table’s primary key contains a unique value, or values, that identify each distinct record. For our above example of online orders, we would probably create IDs to serve as the primary key for each table: a product ID, an order ID, and a user ID.</p>
+<figure>
+<img src="images/orders-erd-primary-keys.svg" alt="orders-erd-primary-keys.svg" /><figcaption>orders-erd-primary-keys.svg</figcaption>
+</figure>
+<h3 id="establish-table-relationships">3. Establish table relationships</h3>
+<p>The third stage is to establish the relationships among the tables in the database. There are three types of relational database table relationships:</p>
+<ul>
+<li>One-to-one</li>
+<li>One-to-many</li>
+<li>Many-to-many</li>
+</ul>
+<p><strong>One-to-one relationship</strong></p>
+<p>In a one-to-one relationship, one record in a table is associated with only one record in another table. We could say that only one record in Table B belongs to only one record in Table A.</p>
+<p>A one-to-one relationship is the least common type of table relationship. While the two tables above could be combined into a single table, we may want to keep some less-used data separate from the main <code>products</code> table.</p>
+<figure>
+<img src="images/products-erd-one-to-one.svg" alt="products-erd-one-to-one.svg" /><figcaption>products-erd-one-to-one.svg</figcaption>
+</figure>
+<p>The above schema depicts two tables: a “products” table and a “product_details” table. A <code>product_details</code> record belongs to only one product record. We’ve used an arrow to indicate the one-to-one relationship between the tables. Both tables have the same primary key – <code>product_id</code> – which we can use in a <a href="https://www.postgresql.org/docs/8.3/tutorial-join.html"><code>JOIN</code></a> operation to get data from both tables.</p>
+<p>This table relationship would produce the following example data (note that not all columns are shown below):</p>
+<p><strong>Products</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1597</td>
+<td>Glass Coffee Mug</td>
+</tr>
+<tr class="even">
+<td>1598</td>
+<td>Metallic Coffee Mug</td>
+</tr>
+<tr class="odd">
+<td>1599</td>
+<td>Smart Coffee Mug</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Product Details</strong></p>
+<table>
+<colgroup>
+<col style="width: 1%" />
+<col style="width: 4%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>product_id</th>
+<th>full_description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1597</td>
+<td>Sturdy tempered glass coffee mug with natural cork band and silicone lid. Barista standard - fits under commercial coffee machine heads and most cup-holders.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1598</td>
+<td>Fun coffee mug that comes in various metallic colors. Sleek, stylish, and easy to wash. Makes a great addition to your kitchen. Take it on the go by attaching the secure lid.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1599</td>
+<td>This smart mug goes beyond being a simple coffee receptacle. Its smart features let you set and maintain an exact drinking temperature for up to 1.5 hours, so your coffee is never too hot or too cold.</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that the “Metallic Coffee Mug” is a “Fun coffee mug that comes in various metallic colors.”</p>
+<p><strong>One-to-many relationship</strong></p>
+<p>In a one-to-many relationship, each record in Table A is associated with multiple records in Table B. Each record in Table B is associated with only one record in Table A.</p>
+<figure>
+<img src="images/orders-erd-one-to-many.svg" alt="orders-erd-one-to-many.svg" /><figcaption>orders-erd-one-to-many.svg</figcaption>
+</figure>
+<p>The above schema depicts a one-to-many relationship between the “users” table and the <code>orders</code> table: One user can create multiple orders. The primary key of the “orders” table (<code>id</code>) is a foreign key in the “users” table (<code>order_id</code>). We can use this foreign key in a <code>JOIN</code> operation to get data from both tables.</p>
+<p>This table relationship would produce the following example data (note that not all columns are shown below):</p>
+<p><strong>Users</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orders</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>purchaser_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that “Alice” has made two orders and “Bob” has made one order.</p>
+<p><strong>Many-to-many relationship</strong></p>
+<p>In a many-to-many relationship, multiple records in Table A are associated with multiple records in Table B. You would normally create a third table for this relationship called a <em><strong>join table</strong></em>, which contains the primary keys from both tables.</p>
+<figure>
+<img src="images/orders-erd-many-to-many.svg" alt="orders-erd-many-to-many.svg" /><figcaption>orders-erd-many-to-many.svg</figcaption>
+</figure>
+<p>The above schema depicts a many-to-many relationship between the <code>products</code> table and the <code>orders</code> table. A single order can have multiple products, and a single product can belong to multiple orders. We created a third join table called <code>order_details</code>, which contains both the<code>order_id</code> and <code>product_id</code> fields as foreign keys.</p>
+<p>This table relationship would produce the following example data(note that not all columns are shown below):</p>
+<p><strong>Products</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1597</td>
+<td>Glass Coffee Mug</td>
+</tr>
+<tr class="even">
+<td>1598</td>
+<td>Metallic Coffee Mug</td>
+</tr>
+<tr class="odd">
+<td>1599</td>
+<td>Smart Coffee Mug</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Users</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orders</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>purchaser_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Order Details</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>order_id</th>
+<th>product_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>10</td>
+<td>1599</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>11</td>
+<td>1597</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>11</td>
+<td>1598</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>12</td>
+<td>1597</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>12</td>
+<td>1598</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>12</td>
+<td>1599</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that “Alice” has two orders. One order containing a “Smart Coffee Mug” and another order containing both a “Glass Coffee Mug” and “Metallic Coffee Mug”.</p>
+<h3 id="apply-normalization-rules">4. Apply normalization rules</h3>
+<p>The fourth stage in RDD is <em><strong>normalization</strong></em>. Normalization is the process of optimizing the database structure so that redundancy and confusion are eliminated.</p>
+<p>The rules of normalization are called “normal forms” and are as follows:</p>
+<ol type="1">
+<li>First normal form</li>
+<li>Second normal form</li>
+<li>Third normal form</li>
+<li>Boyce-Codd normal form</li>
+<li>Fifth normal form</li>
+</ol>
+<p>The first three forms are widely used in practice, while the fourth and fifth are less often used.</p>
+<p><strong>First normal form rules:</strong></p>
+<ul>
+<li>Eliminate repeating groups in individual tables.</li>
+<li>Create a separate table for each set of related data.</li>
+<li>Identify each set of related data with a primary key.</li>
+</ul>
+<p><strong>Second normal form rules:</strong></p>
+<ul>
+<li>Create separate tables for sets of values that apply to multiple records.</li>
+<li>Relate these tables with a foreign key.</li>
+</ul>
+<p><strong>Third normal form rules:</strong></p>
+<ul>
+<li>Eliminate fields that do not depend on the table’s key.</li>
+</ul>
+<p><em>Note: For examples of how to apply these forms, read <a href="https://support.microsoft.com/en-us/help/283878/description-of-the-database-normalization-basics">“Description of the database normalization basics”</a> from Microsoft.</em></p>
+<h2 id="schema-design-tools">Schema design tools</h2>
+<p>Many people draw their relational database design schema with good ol’ pen and paper, or on a whiteboard. However, there are also lots of online tools created for this purpose if you’d like to use something easily exportable/shareable. Feel free to check out the ERD (short for “Entity Relationship Diagram”) tools below.</p>
+<p>Free Database Diagram (ERD) Design Tools:</p>
+<ul>
+<li><a href="https://www.lucidchart.com/">Lucidchart</a></li>
+<li><a href="https://www.draw.io/">draw.io</a></li>
+<li><a href="https://dbdiagram.io/home?utm_source=holistics&amp;utm_medium=top_5_tools_blog">dbdiagram.io</a></li>
+<li><a href="https://www.quickdatabasediagrams.com/">QuickDBD</a></li>
+</ul>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>Stages of Relational Database Design (RDD)</li>
+<li>Examples of schema depicting table relationships</li>
+<li>Normalization rules</li>
+<li>Schema drawing tools</li>
+</ul>

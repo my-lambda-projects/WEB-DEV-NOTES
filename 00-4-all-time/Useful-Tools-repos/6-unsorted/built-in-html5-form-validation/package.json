@@ -1,0 +1,26 @@
+{
+  "name": "built-in-html5-form-validation",
+  "version": "1.0.0",
+  "description": "A little application demonstrating how HTML5 built-in form validation works",
+  "main": "index.js",
+  "scripts": {
+    "scss": "node-sass --watch styles/scss -o styles/css",
+    "clean": "rm -rf dist/ && mkdir dist/",
+    "build": "cp -R scripts styles dist/ && cp index.html submit.html dist/",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interglobalmedia/built-in-html5-form-validation.git"
+  },
+  "author": "Maria D. Campbell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interglobalmedia/built-in-html5-form-validation/issues"
+  },
+  "homepage": "https://github.com/interglobalmedia/built-in-html5-form-validation#readme",
+  "dependencies": {
+    "gh-pages": "^2.2.0",
+    "node-sass": "^4.14.1"
+  }
+}

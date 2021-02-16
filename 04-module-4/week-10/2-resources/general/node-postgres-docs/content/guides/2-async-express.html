@@ -1,0 +1,57 @@
+<p>My preferred way to use node-postgres (and all async code in node.js) is with <code>async/await</code>. I find it makes reasoning about control-flow easier and allows me to write more concise and maintainable code.</p>
+<p>This is how I typically structure express web-applications with node-postgres to use <code>async/await</code>:</p>
+<pre><code>- app.js
+- index.js
+- routes/
+  - index.js
+  - photos.js
+  - user.js
+- db/
+  - index.js &lt;--- this is where I put data access code</code></pre>
+<p>That’s the same structure I used in the <a href="/guides/project-structure">project structure</a> example.</p>
+<p>My <code>db/index.js</code> file usually starts out like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>()</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">query</span><span class="op">:</span> (text<span class="op">,</span> params) <span class="kw">=&gt;</span> <span class="va">pool</span>.<span class="at">query</span>(text<span class="op">,</span> params)<span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span></a></code></pre></div>
+<p>Then I will install <a href="https://www.npmjs.com/package/express-promise-router">express-promise-router</a> and use it to define my routes. Here is my <code>routes/user.js</code> file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> Router <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;express-promise-router&#39;</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">const</span> db <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../db&#39;</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">// create a new express-promise-router</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">// this has the same API as the normal express router except</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">// it allows you to use async functions as route handlers</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="kw">const</span> router <span class="op">=</span> <span class="kw">new</span> <span class="at">Router</span>()</a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">// export our router to be mounted by the parent application</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> router</a>
+<a class="sourceLine" id="cb3-12" title="12"></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="va">router</span>.<span class="at">get</span>(<span class="st">&#39;/:id&#39;</span><span class="op">,</span> <span class="kw">async</span> (req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="kw">const</span> <span class="op">{</span> id <span class="op">}</span> <span class="op">=</span> <span class="va">req</span>.<span class="at">params</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="kw">const</span> <span class="op">{</span> rows <span class="op">}</span> <span class="op">=</span> <span class="cf">await</span> <span class="va">db</span>.<span class="at">query</span>(<span class="st">&#39;SELECT * FROM users WHERE id = $1&#39;</span><span class="op">,</span> [id])</a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="va">res</span>.<span class="at">send</span>(rows[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="op">}</span>)</a></code></pre></div>
+<p>Then in my <code>routes/index.js</code> file I’ll have something like this which mounts each individual router into the main application:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// ./routes/index.js</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> users <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./user&#39;</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">const</span> photos <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./photos&#39;</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> app <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="va">app</span>.<span class="at">use</span>(<span class="st">&#39;/users&#39;</span><span class="op">,</span> users)</a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="va">app</span>.<span class="at">use</span>(<span class="st">&#39;/photos&#39;</span><span class="op">,</span> photos)</a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="co">// etc..</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="op">}</span></a></code></pre></div>
+<p>And finally in my <code>app.js</code> file where I bootstrap express I will have my <code>routes/index.js</code> file mount all my routes. The routes know they’re using async functions but because of express-promise-router the main express app doesn’t know and doesn’t care!</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// ./app.js</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> express <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;express&#39;</span>)</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">const</span> mountRoutes <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./routes&#39;</span>)</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">const</span> app <span class="op">=</span> <span class="at">express</span>()</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="at">mountRoutes</span>(app)</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">// ... more express setup stuff can follow</span></a></code></pre></div>
+<p>Now you’ve got <code>async/await</code>, node-postgres, and express all working together!</p>

@@ -1,0 +1,537 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 29 ], {
+    "1Y1u": function ( e, t, n ) {
+      "use strict";
+      var o = n( "/dP/" ),
+        a = n( "8TdO" ),
+        i = n( "H5qd" ),
+        r = n.n( i );
+      const l = r.a `mutation FileUploadMutation($size:Int!$contentType:String!$mimeType:String!$fileName:String!$pageId:String!$fileStoreId:String!$minorEdit:Boolean$renderEditorHTML:Boolean$collectionName:String!)@experimental{experimentalFileUpload(size:$size contentType:$contentType mimeType:$mimeType fileName:$fileName pageId:$pageId fileStoreId:$fileStoreId minorEdit:$minorEdit renderEditorHTML:$renderEditorHTML collectionName:$collectionName)}`,
+        c = r.a `query MediaDownloadTokenQuery($contentId:ID!$status:[String]){content(id:$contentId status:$status){nodes{id body{atlas_doc_format{mediaToken{token}}}}}mediaConfiguration{clientId fileStoreUrl}}`,
+        d = r.a `query ExternalShareMediaDownloadTokenQuery($contentId:ID!){singleContent(id:$contentId){id body{atlas_doc_format{mediaToken{token}}}}mediaConfiguration{clientId fileStoreUrl}}`,
+        s = r.a `query MediaUploadTokenQuery($contentId:ID!){contentMediaSession(contentId:$contentId){token{value}configuration{clientId fileStoreUrl}collection mediaPickerUserToken{id token}}}`,
+        u = async e => await Object( a.b )().query( {
+          query: c,
+          variables: {
+            contentId: e,
+            status: [ "current", "draft", "archived" ]
+          },
+          context: {
+            allowOnExternalPage: !0
+          },
+          fetchPolicy: "network-only"
+        } ), f = async e => await Object( a.b )().query( {
+          query: s,
+          variables: {
+            contentId: e
+          },
+          fetchPolicy: "network-only"
+        } );
+      var g = n( "CSQs" );
+      const m = () => {},
+        b = e => e.contentId && e.contentType ? t => {
+          const {
+            id: n,
+            name: o,
+            size: i,
+            mimeType: r
+          } = t, {
+            contentId: c,
+            contentType: d
+          } = e;
+          ( e => {
+            Object( a.b )().mutate( {
+              mutation: l,
+              variables: e
+            } )
+          } )( {
+            size: i,
+            contentType: d,
+            mimeType: r,
+            fileName: o,
+            pageId: c,
+            fileStoreId: n,
+            minorEdit: !0,
+            renderEditorHTML: !1,
+            collectionName: "contentId-" + c
+          } )
+        } : m;
+      n.d( t, "c", ( function () {
+        return O
+      } ) ), n.d( t, "b", ( function () {
+        return S
+      } ) ), n.d( t, "a", ( function () {
+        return j
+      } ) );
+      const v = Object( g.a )( async e => {
+          var t, n, o, i, r, l, c, s, f, g, m, b, v;
+          const p = await ( e.isExternalShare ? ( async e => await Object( a.b )().query( {
+            query: d,
+            variables: {
+              contentId: e
+            },
+            context: {
+              allowOnExternalPage: !0
+            },
+            fetchPolicy: "network-only"
+          } ) )( e.contentId ) : u( e.contentId ) );
+          return {
+            token: ( e.isExternalShare ? null == p || null === ( t = p.data ) || void 0 === t || null === ( n = t.singleContent ) || void 0 === n || null === ( o = n.body ) || void 0 === o || null === ( i = o.atlas_doc_format ) || void 0 === i || null === ( r = i.mediaToken ) || void 0 === r ? void 0 : r.token : null == p || null === ( l = p.data ) || void 0 === l || null === ( c = l.content ) || void 0 === c || null === ( s = c.nodes ) || void 0 === s || null === ( f = s[ 0 ] ) || void 0 === f || null === ( g = f.body ) || void 0 === g || null === ( m = g.atlas_doc_format ) || void 0 === m || null === ( b = m.mediaToken ) || void 0 === b ? void 0 : b.token ) || "",
+            config: ( null == p || null === ( v = p.data ) || void 0 === v ? void 0 : v.mediaConfiguration ) || {}
+          }
+        }, 54e4 ),
+        p = e => async () => {
+          const t = await e();
+          return {
+            token: t.token || "",
+            clientId: t.config.clientId || "",
+            baseUrl: t.config.fileStoreUrl || ""
+          }
+        }, h = async e => {
+          var t, n, o, a, i, r, l;
+          const c = await u( e ),
+            {
+              clientId: d = "",
+              fileStoreUrl: s = ""
+            } = ( null == c || null === ( t = c.data ) || void 0 === t ? void 0 : t.mediaConfiguration ) || {};
+          return {
+            clientId: d,
+            token: ( null == c || null === ( n = c.data ) || void 0 === n || null === ( o = n.content ) || void 0 === o || null === ( a = o.nodes ) || void 0 === a || null === ( i = a[ 0 ] ) || void 0 === i || null === ( r = i.body ) || void 0 === r || null === ( l = r.atlas_doc_format ) || void 0 === l ? void 0 : l.mediaToken.token ) || "",
+            baseUrl: s || ""
+          }
+        }, I = Object( g.a )( async e => {
+          var t, n;
+          const o = await f( e.contentId ),
+            a = ( null == o || null === ( t = o.data ) || void 0 === t ? void 0 : t.contentMediaSession ) || {};
+          return {
+            token: ( null == a || null === ( n = a.token ) || void 0 === n ? void 0 : n.value ) || "",
+            config: ( null == a ? void 0 : a.configuration ) || {},
+            collectionId: ( null == a ? void 0 : a.collection ) || ""
+          }
+        }, 54e4 ), y = Object( g.a )( async e => {
+          var t, n;
+          const o = await f( e.contentId ),
+            a = ( null == o || null === ( t = o.data ) || void 0 === t ? void 0 : t.contentMediaSession ) || {},
+            i = ( null == a || null === ( n = a.configuration ) || void 0 === n ? void 0 : n.fileStoreUrl ) || "",
+            r = ( null == a ? void 0 : a.mediaPickerUserToken ) || {};
+          return {
+            token: r.token || "",
+            config: {
+              fileStoreUrl: i,
+              clientId: r.id || ""
+            }
+          }
+        }, 354e4 ), k = async e => ( await I.getValue( e ) ).collectionId, w = async e => ( {
+          authProvider: p( () => I.getValue( e ) ),
+          userAuthProvider: p( () => y.getValue( e ) ),
+          getAuthFromContext: h
+        } ), O = async e => ( {
+          authProvider: p( async () => {
+            let t = await v.getValue( e );
+            return t.token || ( t = await v.forceGetValue( e ) ), t
+          } ),
+          getAuthFromContext: h
+        } ), S = async e => ( {
+          viewMediaClientConfig: await O( e )
+        } ), j = async e => {
+          T( e );
+          const [ t, n, o ] = await Promise.all( [ O( e ), w( e ), k( e ) ] );
+          return {
+            viewMediaClientConfig: t,
+            uploadParams: {
+              collection: o
+            },
+            uploadMediaClientConfig: n
+          }
+        };
+      let x;
+      const T = e => {
+        x && o.a.off( "file-added", x ), x = b( e ), o.a.on( "file-added", x )
+      }
+    },
+    "82Bo": function ( e, t, n ) {
+      "use strict";
+      var o = n( "Czhu" ),
+        a = n( "HbGN" ),
+        i = n( "Iy7w" ),
+        r = n( "ERkP" ),
+        l = n.n( r ),
+        c = n( "L21V" ),
+        d = n( "lZoD" ),
+        s = n( "H5Ms" ),
+        u = n( "bU5Q" ),
+        f = n( "Tos6" ),
+        g = n( "kvU/" ),
+        m = n( "3IV/" ),
+        b = n( "a0gl" ),
+        v = n( "daKX" ),
+        p = n( "bR0+" ),
+        h = n( "frZf" ),
+        I = n( "Ua4J" ),
+        y = n( "+mzV" ),
+        k = n( "qhEF" ),
+        w = n( "WWAs" ),
+        O = n( "v5SA" ),
+        S = n( "1Y1u" ),
+        j = n( "rGGD" ),
+        x = n( "8TdO" ),
+        T = n( "H5qd" );
+      const C = n.n( T ).a `mutation SetTaskStatusMutation($contentId:ID!$taskId:ID!$status:TaskStatus!){setTaskStatus(inlineTasksInput:{cid:$contentId taskId:$taskId status:$status trigger:VIEW_PAGE}){success}}`,
+        P = Object( c.f )( {
+          flagTitle: {
+            id: "fabric-media-support.tasklist.error.flag.title",
+            description: "Flag title to inform user that an attempt to toggle a tasklist checkbox failed",
+            defaultMessage: "Something went wrong"
+          },
+          flagDescription: {
+            id: "fabric-media-support.tasklist.error.flag.description",
+            description: "Flag description to inform user that an attempt to toggle a tasklist checkbox failed",
+            defaultMessage: "An error occurred while trying to change a task's status. Please try again later."
+          }
+        } );
+      class E {
+        constructor( e, t, n ) {
+          this.intl = e, this.flags = t, this.contentId = n
+        }
+        toggleTask( e, t ) {
+          return Object( x.b )().mutate( {
+            mutation: C,
+            variables: {
+              contentId: this.contentId,
+              taskId: e.localId,
+              status: "DONE" === t ? "CHECKED" : "UNCHECKED"
+            }
+          } ).then( e => {
+            var n;
+            return ( null != ( n = e ) && null != ( n = n.data ) && null != ( n = n.setTaskStatus ) ? n.success : n ) || !1 || this.showErrorFlag(), t
+          } ).catch( e => {
+            this.showErrorFlag()
+          } )
+        }
+        showErrorFlag() {
+          this.flags.showErrorFlag( {
+            title: this.intl.formatMessage( P.flagTitle ),
+            description: this.intl.formatMessage( P.flagDescription )
+          } )
+        }
+        notifyRecentUpdates( e ) {}
+        subscribe( e, t ) {}
+        unsubscribe( e, t ) {}
+        unsubscribeRecentUpdates( e ) {}
+      }
+      const $ = new( n( "Cvqa" ).b )( {
+        url: "/gateway/api/directory/graphql",
+        cacheSize: 100,
+        cacheMaxAge: 3e5
+      } );
+      var H = n( "OjhK" ),
+        U = n( "S+bX" ),
+        M = n( "TU9K" ),
+        B = n( "Cwwk" ),
+        D = n( "JncL" );
+      n.d( t, "a", ( function () {
+        return N
+      } ) );
+      Object( v.a )( "ADFRenderer" );
+      const F = Object( i.a )( "div", {
+          target: "exyfvr00"
+        } )( 'div[mode="stick"]{z-index:1;background:#fff;}span{&.inline-highlight{cursor:pointer;background-color:rgba(255,240,179,0.5);border-bottom:2px solid rgba(255,196,0,0.82);&.active-highlight{background-color:', m.Y75, ";border-bottom:2px solid ", m.Y300, ";box-shadow:0 2px 2px ", m.N50, ";}}&.inline-create-comment-selection{background-color:", m.Y75, ";border-bottom:2px solid ", m.Y300, ";box-shadow:0 2px 2px ", m.N50, ";}}" ),
+        N = Object( c.g )( Object( r.memo )( e => {
+          const {
+            document: t,
+            featureFlags: n,
+            dataProviders: i,
+            extensionHandlers: c = {},
+            getExtensionHandlers: m = ( () => ( {} ) ),
+            eventHandlers: v,
+            appearance: x = "comment",
+            allowDynamicTextSizing: T = !0,
+            adfStage: C = "stage0",
+            portalRef: P,
+            onComplete: N,
+            onRendered: _,
+            renderWhenReady: q,
+            allowStickyHeaders: z = !0,
+            isTruncatedContent: A
+          } = e, R = Object( a.a )( e, [ "document", "featureFlags", "dataProviders", "extensionHandlers", "getExtensionHandlers", "eventHandlers", "appearance", "allowDynamicTextSizing", "adfStage", "portalRef", "onComplete", "onRendered", "renderWhenReady", "allowStickyHeaders", "isTruncatedContent" ] ), V = Object( B.a )();
+          Object( r.useEffect )( () => ( t && n && n[ "confluence.frontend.fabric.fire-event-media" ] && Object( D.a )(), _ && _(), () => {
+            t && n && n[ "confluence.frontend.fabric.fire-event-media" ] && Object( D.b )()
+          } ), [ e.contentId ] );
+          const {
+            isExternalShareRequest: K
+          } = Object( r.useContext )( M.a ), L = Object( r.useCallback )( ( {
+            contentId: t,
+            spaceKey: n,
+            push: o,
+            cloudId: a,
+            userId: i,
+            flags: r
+          }, l ) => {
+            const {
+              getDataProviders: c,
+              intl: d
+            } = e, s = {};
+            c && Object.assign( s, c() ), t && ( s.mediaProvider = Object( S.b )( {
+              contentId: t,
+              isExternalShare: K
+            } ) ), a && i && ( s.mentionProvider = Object( j.a )( a, i ).then( e => e.mentionResource ).catch( e => Promise.reject() ) ), t && ( s.taskDecisionProvider = Promise.resolve( new E( d, r, t ) ) ), a && ( s.emojiProvider = Object( U.a )( f.a, {
+              cloudId: a,
+              source: "view"
+            } ), V && ( s.profilecardProvider = function ( e, t ) {
+              return Promise.resolve( {
+                cloudId: e,
+                resourceClient: $,
+                getActions: t
+              } )
+            }( a, ( t => n => {
+              const {
+                intl: o
+              } = e;
+              return [ {
+                label: o.formatMessage( {
+                  id: "view.profile"
+                } ),
+                callback: () => {
+                  t( Object( p.a )( n, null, h.a ) )
+                }
+              } ]
+            } )( o ) ) ) ), t && n && ( s.contextIdentifierProvider = Promise.resolve( {
+              containerId: n,
+              objectId: t,
+              product: "confluence"
+            } ) ), s.cardProvider = Promise.resolve( new u.c );
+            if ( Object.keys( s ).length ) {
+              l = l || g.a.create( {} );
+              for ( const e of Object.keys( s ) ) l.setProvider( e, s[ e ] )
+            }
+            return l
+          }, [ e.getDataProviders, e.intl ] ), {
+            push: J
+          } = Object( r.useContext )( I.a ), {
+            spaceKey: G,
+            contentId: W
+          } = Object( r.useContext )( y.a ), {
+            cloudId: Q,
+            userId: Y
+          } = Object( b.a )();
+          let X = c;
+          m && ( X = Object.assign( m(), c ) );
+          const Z = n && n[ "confluence.frontend.fabric.renderer.table.sorting" ],
+            ee = n && n[ "confluence.frontend.fabric.renderer.heading.anchor" ],
+            te = n && n[ "confluence.frontend.fabric.editor.media.linking" ],
+            ne = n && n[ "confluence.frontend.fabric.renderer.sticky-headers" ] && "mobile" !== x && z,
+            oe = n && n[ "confluence.frontend.open.expand.when.following.link" ],
+            ae = n && n[ "confluence.frontend.fabric.renderer-spec-based-validator" ],
+            ie = !!n && !!n[ "confluence.frontend.fabric.editor.codeblock.copy" ];
+          return t ? l.a.createElement( F, null, l.a.createElement( d.c, {
+            to: [ k.a, w.a, O.a ]
+          }, ( a, r, c ) => {
+            const d = r.getTotalHeight() + c.getFloatingHeight(),
+              f = L( {
+                spaceKey: G,
+                contentId: e.contentId ? e.contentId : W,
+                push: J,
+                cloudId: Q,
+                userId: Y,
+                flags: a
+              }, i );
+            return l.a.createElement( u.d, null, l.a.createElement( s.a, Object( o.a )( Object( o.a )( {
+              enableSsrInlineScripts: Boolean( !1 ),
+              adfStage: C,
+              document: t,
+              appearance: x,
+              allowDynamicTextSizing: T,
+              stickyHeaders: ne && {
+                offsetTop: d
+              },
+              extensionHandlers: X,
+              eventHandlers: v,
+              dataProviders: f,
+              portal: P || void 0,
+              onComplete: N,
+              allowColumnSorting: Z,
+              allowHeadingAnchorLinks: oe ? {
+                allowNestedHeaderLinks: ee,
+                activeHeadingId: e.queryHash
+              } : ee,
+              allowAltTextOnImages: !0,
+              media: {
+                allowLinking: te,
+                featureFlags: Object( H.a )( n )
+              },
+              allowCopyToClipboard: ie
+            }, R ), {}, {
+              useSpecBasedValidator: ae,
+              truncated: A,
+              maxHeight: 85,
+              fadeOutHeight: 35
+            } ) ), q && q() )
+          } ) ) : null
+        } ) )
+    },
+    CSQs: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return r
+      } ) );
+      var o = n( "nnRT" ),
+        a = n.n( o );
+      const i = [ -1 / 0, null, null ],
+        r = ( e, t ) => {
+          const n = {};
+
+          function o( o, r ) {
+            const l = Date.now();
+            let c = "";
+            try {
+              c = JSON.stringify( o )
+            } catch ( f ) {
+              0
+            }
+            const [ d, s, u ] = n[ c ] || i;
+            if ( r || d + t <= l || !a()( s, o ) ) {
+              const t = e( o );
+              return n[ c ] = [ l, o, t ], t
+            }
+            return u
+          }
+          return {
+            forceGetValue: e => o( e, !0 ),
+            getValue: e => o( e, !1 )
+          }
+        }
+    },
+    JncL: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return i
+      } ) ), n.d( t, "b", ( function () {
+        return r
+      } ) );
+      var o = n( "/dP/" );
+      const a = e => {
+          if ( !e.isUserCollection ) return fetch( "/wiki/rest/internal/1.0/eventnotifier/notify", {
+            method: "POST",
+            body: JSON.stringify( {
+              attachmentViewed: {
+                fileStoreId: e.fileId
+              }
+            } ),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          } )
+        },
+        i = () => {
+          o.a.on( "media-viewed", a )
+        },
+        r = () => {
+          o.a.off( "media-viewed", a )
+        }
+    },
+    OjhK: function ( e, t, n ) {
+      "use strict";
+
+      function o( e ) {
+        return e ? {
+          newCardExperience: Boolean( e[ "confluence.frontend.media.cards.new.experience" ] ),
+          zipPreviews: Boolean( e[ "confluence.frontend.media.viewer.zip.previews" ] ),
+          codeViewer: Boolean( e[ "confluence.frontend.media.viewer.code.viewer" ] ),
+          folderUploads: Boolean( e[ "confluence.frontend.media.picker.folder.uploads" ] ),
+          poll_intervalMs: Number( e[ "confluence.frontend.media.poll.intervalms" ] ),
+          poll_maxAttempts: Number( e[ "confluence.frontend.media.poll.maxattempts" ] ),
+          poll_backoffFactor: Number( e[ "confluence.frontend.media.poll.backoff.factor" ] ),
+          poll_maxIntervalMs: Number( e[ "confluence.frontend.media.poll.maxIntervalms" ] ),
+          poll_maxGlobalFailures: Number( e[ "confluence.frontend.media.poll.max.global.failures" ] )
+        } : {}
+      }
+      n.d( t, "a", ( function () {
+        return o
+      } ) )
+    },
+    "S+bX": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return l
+      } ) );
+      var o = n( "pFSi" ),
+        a = n.n( o ),
+        i = n( "daKX" );
+      Object( i.a )( "emoji-provider" );
+      const r = "/gateway/api/emoji",
+        l = a()( ( e, t ) => {
+          var n, o;
+          const a = ( ( e, t ) => {
+            const n = {
+              providers: [ {
+                url: r + "/standard"
+              }, {
+                url: r + "/atlassian"
+              } ],
+              allowUpload: !0,
+              currentUser: t ? {
+                id: t
+              } : void 0
+            };
+            return e && n.providers.push( {
+              url: `${r}/${e}/site`
+            } ), n
+          } )( null !== ( n = null == t ? void 0 : t.cloudId ) && void 0 !== n ? n : "", null !== ( o = null == t ? void 0 : t.userId ) && void 0 !== o ? o : void 0 );
+          let i;
+          try {
+            i = new e( a )
+          } catch ( l ) {
+            0
+          }
+          return Promise.resolve( i )
+        }, ( e, t ) => {
+          var n, o;
+          return `${null!==(n=null==t?void 0:t.cloudId)&&void 0!==n?n:""}_${null!==(o=null==t?void 0:t.source)&&void 0!==o?o:""}`
+        } )
+    },
+    v5SA: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return l
+      } ) );
+      var o = n( "Czhu" ),
+        a = n( "zjfJ" ),
+        i = n( "lZoD" ),
+        r = n( "WWAs" );
+      class l extends i.a {
+        constructor( ...e ) {
+          super( ...e ), Object( a.a )( this, "state", {
+            floatingBanners: []
+          } ), Object( a.a )( this, "showFloating", ( e, t ) => {
+            const n = Object( r.b )( e, this.state.floatingBanners ); - 1 === n ? this.setState( n => {
+              const a = [ ...n.floatingBanners ];
+              return a.push( {
+                name: e,
+                height: t
+              } ), Object( o.a )( Object( o.a )( {}, n ), {}, {
+                floatingBanners: a
+              } )
+            } ) : this.state.floatingBanners[ n ].height !== t && this.setState( e => {
+              const a = [ ...e.floatingBanners ];
+              return a[ n ].height = t, Object( o.a )( Object( o.a )( {}, e ), {}, {
+                floatingBanners: a
+              } )
+            } )
+          } ), Object( a.a )( this, "hideFloating", e => {
+            const t = Object( r.b )( e, this.state.floatingBanners );
+            t > -1 && this.setState( e => {
+              const n = [ ...e.floatingBanners ];
+              return n.splice( t, 1 ), Object( o.a )( Object( o.a )( {}, e ), {}, {
+                floatingBanners: n
+              } )
+            } )
+          } ), Object( a.a )( this, "getFloatingHeightBefore", e => {
+            const t = Object( r.b )( e, this.state.floatingBanners );
+            return -1 === t ? 0 : this.state.floatingBanners.slice( 0, t ).reduce( ( e, t ) => e + t.height, 0 )
+          } ), Object( a.a )( this, "getFloatingHeight", () => this.state.floatingBanners.reduce( ( e, t ) => e + t.height, 0 ) )
+        }
+      }
+    }
+  }
+] );
+//# sourceMappingURL=29.SUGt1e3icx.js.map

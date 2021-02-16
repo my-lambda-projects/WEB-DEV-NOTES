@@ -1,0 +1,7 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.drag-and-drop:insert-dialog-upload-controller', location = 'js/insert-dialog-upload-controller.js' */
+define("confluence-drag-and-drop/insert-dialog-upload-controller",["confluence/meta","jquery","confluence/message-handler"],function(d,c,e){var b=function(a){this.messageHandler=null;this.context=a;a=this.getForm();d.getBoolean("can-attach-files")||a.remove()};b.prototype.getForm=function(){return c("form",this.context.baseElement)};b.prototype.pack=function(){};b.prototype.displayErrors=function(a){this.getMessageHandler().displayMessages(a);a=this.getMessageHandler().getMessageContainer().find("ul");
+a.toggleClass("one-message",1===a.find("li").length);a.closest(".aui-message").append("\x3cspan class\x3d'aui-icon icon-warning'\x3e\x3c/span\x3e");this.pack()};b.prototype.clearErrors=function(){this.getMessageHandler().clearMessages();this.pack()};b.prototype.getMessageHandler=function(){this.messageHandler||(this.messageHandler=e({baseElement:c(".aui-message",this.context.baseElement)}));return this.messageHandler};return b});
+}catch(e){WRMCB(e)};

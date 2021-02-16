@@ -1,0 +1,650 @@
+{
+	"name": "codestream",
+	"displayName": "CodeStream: GitHub, GitLab, Bitbucket PRs and Code Review",
+	"description": "GitHub pull requests and code reviews in your IDE. Eliminate context-switching between tools. Also integrates with GitLab, Bitbucket, Slack, Teams, Jira, Trello and more.",
+	"version": "10.2.0",
+	"author": "CodeStream",
+	"publisher": "CodeStream",
+	"license": "UNLICENSED",
+	"homepage": "https://codestream.com",
+	"bugs": {
+		"url": "https://github.com/TeamCodeStream/CodeStream/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TeamCodeStream/CodeStream"
+	},
+	"engines": {
+		"vscode": "^1.50.0"
+	},
+	"main": "./dist/extension",
+	"icon": "assets/images/codestream.png",
+	"preview": false,
+	"categories": [
+		"Other"
+	],
+	"galleryBanner": {
+		"color": "#eff1f3",
+		"theme": "light"
+	},
+	"keywords": [
+		"chat",
+		"collaboration",
+		"review",
+		"github",
+		"slack"
+	],
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "codestream-activitybar",
+					"title": "CodeStream",
+					"icon": "assets/images/codestream.svg"
+				}
+			]
+		},
+		"views": {
+			"codestream-activitybar": [
+				{
+					"id": "activitybar.codestream",
+					"type": "webview",
+					"name": "CodeStream",
+					"icon": "assets/images/codestream.svg",
+					"contextualTitle": "CodeStream"
+				}
+			],
+			"scm": [
+				{
+					"id": "scmTreeDataProvider",
+					"name": "CodeStream"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "scmTreeDataProvider",
+				"contents": "[Toggle CodeStream](command:codestream.toggle)",
+				"when": "codestream:status == signedOut"
+			},
+			{
+				"view": "scmTreeDataProvider",
+				"contents": "[Request Feedback](command:codestream.newReview)",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"view": "scmTreeDataProvider",
+				"contents": "Request feedback on your work-in-progress, or final code review.",
+				"when": "codestream:status == signedIn"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "CodeStream",
+			"properties": {
+				"codestream.autoHideMarkers": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether to automatically hide editor marker glyphs when the CodeStream panel is showing codemarks in the current file",
+					"scope": "window"
+				},
+				"codestream.autoSignIn": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether to automatically sign in to CodeStream",
+					"scope": "window"
+				},
+				"codestream.disableStrictSSL": {
+					"type": "boolean",
+					"default": false,
+					"description": "Allow self-signed certificates to be used in network requests",
+					"scope": "window"
+				},
+				"codestream.email": {
+					"type": "string",
+					"default": null,
+					"description": "Specifies the email address to use to connect to the CodeStream service",
+					"scope": "window"
+				},
+				"codestream.proxySupport": {
+					"type": "string",
+					"default": "on",
+					"enum": [
+						"on",
+						"off"
+					],
+					"description": "Specifies whether to support proxy servers",
+					"scope": "window"
+				},
+				"codestream.serverUrl": {
+					"type": "string",
+					"default": "https://api.codestream.com",
+					"description": "Specifies the url to use to connect to the CodeStream service",
+					"scope": "window"
+				},
+				"codestream.showAvatars": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether to show avatars",
+					"scope": "window"
+				},
+				"codestream.showInStatusBar": {
+					"type": "string",
+					"enum": [
+						"left",
+						"right",
+						false
+					],
+					"enumDescriptions": [
+						"Shows the CodeStream status bar item on the left",
+						"Shows the CodeStream status bar item on the right",
+						"No CodeStream status bar item will be shown"
+					],
+					"default": "left",
+					"description": "Specifies whether to show CodeStream in the status bar",
+					"scope": "window"
+				},
+				"codestream.showMarkerCodeLens": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether to show code lens above lines with associated codemarks in the editor",
+					"scope": "window"
+				},
+				"codestream.showMarkerGlyphs": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies whether to show glyph indicators at the start of lines with associated codemarks in the editor",
+					"scope": "window"
+				},
+				"codestream.showShortcutTipOnSelection": {
+					"type": "boolean",
+					"default": false,
+					"description": "Specifies whether to show a shortcut key tip attached to the selection when you select code",
+					"scope": "window"
+				},
+				"codestream.team": {
+					"type": "string",
+					"default": null,
+					"description": "Specifies an optional team to use to connect to the CodeStream service",
+					"scope": "window"
+				},
+				"codestream.traceLevel": {
+					"type": "string",
+					"default": "verbose",
+					"enum": [
+						"silent",
+						"errors",
+						"verbose",
+						"debug"
+					],
+					"description": "Specifies how much (if any) output will be sent to the CodeStream output channel",
+					"scope": "window"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "codestream.showReviewDiff",
+				"title": "Show Review Diff",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.showNextChangedFile",
+				"title": "Show Next Changed File",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.showPreviousChangedFile",
+				"title": "Show Previous Changed File",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.closeReviewDiff",
+				"title": "Close Review Diff",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.goOffline",
+				"title": "Go Offline",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.signIn",
+				"title": "Sign In...",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.signOut",
+				"title": "Sign Out",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.toggle",
+				"title": "Toggle CodeStream",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.startWork",
+				"title": "Start Work",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.newComment",
+				"title": "Add Comment",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.newIssue",
+				"title": "Create Issue",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.newReview",
+				"title": "Request Feedback",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.newPermalink",
+				"title": "Get Permalink",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.copyPermalink",
+				"title": "Copy Permalink to Clipboard",
+				"category": "CodeStream"
+			},
+			{
+				"command": "codestream.newPullRequest",
+				"title": "New Pull Request",
+				"category": "CodeStream",
+				"icon": {
+					"light": "assets/images/light/pull-request.svg",
+					"dark": "assets/images/dark/pull-request.svg"
+				}
+			},
+			{
+				"command": "codestream.scmNewReview",
+				"title": "Request Feedback",
+				"icon": {
+					"light": "assets/images/light/review.svg",
+					"dark": "assets/images/dark/review.svg"
+				}
+			},
+			{
+				"command": "codestream.scmNewComment",
+				"title": "New Comment",
+				"icon": {
+					"light": "assets/images/light/comment.svg",
+					"dark": "assets/images/dark/comment.svg"
+				}
+			},
+			{
+				"command": "codestream.scmNewIssue",
+				"title": "New Issue",
+				"icon": {
+					"light": "assets/images/light/issue.svg",
+					"dark": "assets/images/dark/issue.svg"
+				}
+			},
+			{
+				"command": "codestream.scmNewPullRequest",
+				"title": "New Pull Request",
+				"icon": {
+					"light": "assets/images/light/pull-request.svg",
+					"dark": "assets/images/dark/pull-request.svg"
+				}
+			}
+		],
+		"keybindings": [
+			{
+				"command": "codestream.toggle",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ /",
+				"mac": "ctrl+/ /",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.toggle",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+/",
+				"mac": "ctrl+/ ctrl+/",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.startWork",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ w",
+				"mac": "ctrl+/ w",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newComment",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ c",
+				"mac": "ctrl+/ c",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newComment",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+c",
+				"mac": "ctrl+/ ctrl+c",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newIssue",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ i",
+				"mac": "ctrl+/ i",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newIssue",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+i",
+				"mac": "ctrl+/ ctrl+i",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newReview",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ r",
+				"mac": "ctrl+/ r",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newReview",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+r",
+				"mac": "ctrl+/ ctrl+r",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPullRequest",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ m",
+				"mac": "ctrl+/ m",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPullRequest",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ p",
+				"mac": "ctrl+/ p",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPullRequest",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+m",
+				"mac": "ctrl+/ ctrl+m",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPullRequest",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+p",
+				"mac": "ctrl+/ ctrl+p",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.showNextChangedFile",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "alt+f6",
+				"mac": "alt+f6",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.showPreviousChangedFile",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "alt+shift+f6",
+				"mac": "alt+shift+f6",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPermalink",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ l",
+				"mac": "ctrl+/ l",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.newPermalink",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ ctrl+shift+l",
+				"mac": "ctrl+/ ctrl+l",
+				"when": "codestream:status == signedIn"
+			},
+			{
+				"command": "codestream.copyPermalink",
+				"args": {
+					"source": "Shortcut"
+				},
+				"key": "ctrl+shift+/ shift+l",
+				"mac": "ctrl+/ shift+l",
+				"when": "editorTextFocus && codestream:status == signedIn"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "codestream.goOffline",
+					"when": "codestream:status != signedOut"
+				},
+				{
+					"command": "codestream.signIn",
+					"when": "codestream:status != signedIn && codestream:status != signingIn"
+				},
+				{
+					"command": "codestream.signOut",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.toggle",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.startWork",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.newComment",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.newIssue",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.newReview",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.showPreviousChangedFile",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.showNextChangedFile",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.newPermalink",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.copyPermalink",
+					"when": "codestream:status == signedIn"
+				},
+				{
+					"command": "codestream.newPullRequest",
+					"when": "codestream:status == signedIn"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "codestream.newComment",
+					"when": "codestream:status == signedIn",
+					"group": "9_zcodestream@1"
+				},
+				{
+					"command": "codestream.newIssue",
+					"when": "codestream:status == signedIn && resourceScheme == file",
+					"group": "9_zcodestream@2"
+				},
+				{
+					"command": "codestream.newPermalink",
+					"when": "codestream:status == signedIn && resourceScheme == file",
+					"group": "9_zcodestream@4"
+				}
+			],
+			"view/title": [
+				{
+					"command": "codestream.scmNewPullRequest",
+					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
+					"group": "navigation"
+				},
+				{
+					"command": "codestream.scmNewReview",
+					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
+					"group": "navigation"
+				},
+				{
+					"command": "codestream.scmNewComment",
+					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
+					"group": "navigation"
+				},
+				{
+					"command": "codestream.scmNewIssue",
+					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"activationEvents": [
+		"*"
+	],
+	"scripts": {
+		"analyze:bundle": "webpack --env.analyzeBundle",
+		"analyze:deps": "webpack --env.analyzeDeps",
+		"build": "webpack --env.development",
+		"bundle": "npm install --no-save && npm run agent:bundle && webpack --env.production",
+		"bundle:ci": "npm run clean:ci && npm run bundle",
+		"clean": "git clean -Xdf -e !node_modules -e !node_modules/**/* -e !codestream*.info",
+		"clean:ci": "git clean -xdf && npm run webview:clean:ci && npm run agent:clean:ci",
+		"lint": "eslint --fix --ext .ts \"src/{**!(webviews)/*,*}\"",
+		"pack": "vsce package",
+		"pretty": "prettier --config .prettierrc.js --write \"./src/**/*.ts\" \"./src/**/*.js\" ./package.json ./.prettierrc.js",
+		"rebuild": "npm run clean && npm install --no-save && npm run agent:rebuild && npm run build",
+		"test": "npm run agent:test",
+		"watch": "webpack --watch --env.development --info-verbosity verbose",
+		"agent:build": "pushd \"../shared/agent\" && npm run build && popd",
+		"agent:bundle": "pushd \"../shared/agent\" && npm run bundle && popd",
+		"agent:bundle:ci": "pushd \"../shared/agent\" && npm run bundle:ci && popd",
+		"agent:clean:ci": "pushd \"../shared/agent\" && npm run clean:ci && popd",
+		"agent:rebuild": "pushd \"../shared/agent\" && npm run rebuild && popd",
+		"agent:test": "pushd \"../shared/agent\" && npm run test && popd",
+		"agent:watch": "pushd \"../shared/agent\" && npm run watch && popd",
+		"webview:analyze": "webpack --env.analyzeBundleWebview",
+		"webview:build": "webpack --config-name webview --env.development",
+		"webview:clean:ci": "pushd \"../shared/ui\" && npm run clean:ci && popd",
+		"webview:watch": "webpack --watch --config-name webview --env.development --info-verbosity verbose",
+		"preinstall": "pushd \"../shared/ui\" && npm install --no-save && popd"
+	},
+	"dependencies": {
+		"core-js": "2.6.9",
+		"date-fns": "1.30.1",
+		"lodash-es": "4.17.15",
+		"uuid": "3.3.2",
+		"vscode-languageclient": "5.2.1",
+		"vsls": "0.3.1291"
+	},
+	"devDependencies": {
+		"@babel/cli": "7.7.0",
+		"@babel/core": "7.7.2",
+		"@babel/plugin-proposal-class-properties": "7.7.0",
+		"@babel/plugin-proposal-object-rest-spread": "7.6.2",
+		"@babel/plugin-syntax-dynamic-import": "7.2.0",
+		"@babel/plugin-transform-runtime": "7.6.2",
+		"@babel/preset-env": "7.7.1",
+		"@babel/preset-react": "7.7.0",
+		"@babel/preset-typescript": "7.7.2",
+		"@babel/runtime": "7.7.2",
+		"@types/diff": "4.0.2",
+		"@types/keytar": "4.4.0",
+		"@types/lodash-es": "4.17.3",
+		"@types/node": "10.11.7",
+		"@types/node-fetch": "2.5.0",
+		"@types/uuid": "3.4.5",
+		"@types/vscode": "1.49.0",
+		"@typescript-eslint/eslint-plugin": "2.18.0",
+		"@typescript-eslint/eslint-plugin-tslint": "2.18.0",
+		"@typescript-eslint/parser": "2.18.0",
+		"babel-loader": "8.0.6",
+		"babel-plugin-styled-components": "1.10.6",
+		"circular-dependency-plugin": "5.0.2",
+		"clean-webpack-plugin": "1.0.1",
+		"css-loader": "3.1.0",
+		"eslint": "6.8.0",
+		"eslint-loader": "3.0.3",
+		"eslint-plugin-import": "2.20.0",
+		"filemanager-webpack-plugin": "2.0.5",
+		"fork-ts-checker-webpack-plugin": "3.1.0",
+		"html-loader": "0.5.5",
+		"html-webpack-inline-source-plugin": "0.0.10",
+		"html-webpack-plugin": "3.2.0",
+		"less": "3.9.0",
+		"less-loader": "5.0.0",
+		"mini-css-extract-plugin": "0.8.0",
+		"optimize-css-assets-webpack-plugin": "5.0.3",
+		"prettier": "1.19.1",
+		"terser-webpack-plugin": "1.4.4",
+		"ts-loader": "6.2.1",
+		"tsconfig-paths-webpack-plugin": "3.2.0",
+		"tslint": "6.0.0",
+		"typescript": "3.6.4",
+		"vsce": "1.66.0",
+		"webpack": "4.38.0",
+		"webpack-bundle-analyzer": "3.8.0",
+		"webpack-cli": "3.3.6"
+	},
+	"__metadata": {
+		"id": "a59a33cb-9f43-4f1a-890f-5d400cb82389",
+		"publisherId": "4239572b-f334-4e63-9024-819b4e343f42",
+		"publisherDisplayName": "CodeStream"
+	}
+}

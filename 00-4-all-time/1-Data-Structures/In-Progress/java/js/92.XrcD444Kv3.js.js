@@ -1,0 +1,549 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 92 ], {
+    "0LOj": function ( e, n, t ) {
+      "use strict";
+      n.a = function ( e ) {
+        return e.displayName || e.name || "Component"
+      }
+    },
+    "1X17": function ( e, n, t ) {
+      "use strict";
+      t.d( n, "b", ( function () {
+        return a
+      } ) ), t.d( n, "a", ( function () {
+        return r
+      } ) );
+      var o = t( "oBkS" ),
+        i = t.n( o );
+      const a = ( e, n ) => n ? i()( e, {
+          targetType: "page",
+          operation: "archive"
+        } ) : r( e ),
+        r = e => i()( e, {
+          targetType: "page",
+          operation: "delete"
+        } )
+    },
+    "7Otk": function ( e, n, t ) {
+      "use strict";
+      var o = t( "97Jx" ),
+        i = t.n( o ),
+        a = t( "m3Bd" ),
+        r = t.n( a ),
+        c = t( "VrFO" ),
+        s = t.n( c ),
+        l = t( "Y9Ll" ),
+        d = t.n( l ),
+        u = t( "N+ot" ),
+        p = t.n( u ),
+        f = t( "AuHH" ),
+        h = t.n( f ),
+        m = t( "1Pcy" ),
+        v = t.n( m ),
+        b = t( "5Yy7" ),
+        g = t.n( b ),
+        x = t( "KEM+" ),
+        y = t.n( x ),
+        w = t( "ERkP" ),
+        C = t.n( w ),
+        O = t( "aWzz" ),
+        k = t.n( O ),
+        j = t( "0LOj" ),
+        D = t( "xbH5" ),
+        I = t( "S6DC" );
+      n.a = function ( e ) {
+        var n, t;
+        return t = n = function ( n ) {
+          function t() {
+            var e, n;
+            s()( this, t );
+            for ( var o = arguments.length, i = new Array( o ), a = 0; a < o; a++ ) i[ a ] = arguments[ a ];
+            return n = p()( this, ( e = h()( t ) ).call.apply( e, [ this ].concat( i ) ) ), y()( v()( n ), "callContextFn", Object( D.a )( v()( n ), I.a ) ), y()( v()( n ), "shouldCloseAfterClick", ( function () {
+              return !n.props.isDisabled && !n.props.href
+            } ) ), y()( v()( n ), "handleClick", ( function ( e ) {
+              n.props.onClick( e ), n.shouldCloseAfterClick() && n.callContextFn( "itemClicked" )
+            } ) ), y()( v()( n ), "handleKeyDown", ( function ( e ) {
+              n.props.onKeyDown ? n.props.onKeyDown( e ) : "Space" !== e.key && "Enter" !== e.key || n.handleClick( e )
+            } ) ), n
+          }
+          return g()( t, n ), d()( t, [ {
+            key: "render",
+            value: function () {
+              var n = this.props,
+                t = n.children,
+                o = r()( n, [ "children" ] );
+              return C.a.createElement( e, i()( {}, o, {
+                onClick: this.handleClick,
+                onKeyDown: this.handleKeyDown
+              } ), t )
+            }
+          } ] ), t
+        }( w.Component ), y()( n, "displayName", "WithItemClick(".concat( Object( j.a )( e ), ")" ) ), y()( n, "defaultProps", {
+          onClick: function () {}
+        } ), y()( n, "contextTypes", y()( {}, I.a, k.a.object ) ), t
+      }
+    },
+    "7hB0": function ( e, n, t ) {
+      "use strict";
+      var o = t( "97Jx" ),
+        i = t.n( o ),
+        a = t( "m3Bd" ),
+        r = t.n( a ),
+        c = t( "VrFO" ),
+        s = t.n( c ),
+        l = t( "Y9Ll" ),
+        d = t.n( l ),
+        u = t( "N+ot" ),
+        p = t.n( u ),
+        f = t( "AuHH" ),
+        h = t.n( f ),
+        m = t( "1Pcy" ),
+        v = t.n( m ),
+        b = t( "5Yy7" ),
+        g = t.n( b ),
+        x = t( "KEM+" ),
+        y = t.n( x ),
+        w = t( "ERkP" ),
+        C = t.n( w ),
+        O = t( "aWzz" ),
+        k = t.n( O ),
+        j = t( "7nmT" ),
+        D = t.n( j ),
+        I = t( "fN3Q" ),
+        P = t.n( I ),
+        A = t( "0LOj" ),
+        M = t( "xbH5" ),
+        F = t( "S6DC" );
+      n.a = function ( e ) {
+        var n, t;
+        return t = n = function ( n ) {
+          function t() {
+            var e, n;
+            s()( this, t );
+            for ( var o = arguments.length, i = new Array( o ), a = 0; a < o; a++ ) i[ a ] = arguments[ a ];
+            return n = p()( this, ( e = h()( t ) ).call.apply( e, [ this ].concat( i ) ) ), y()( v()( n ), "contextId", void 0 ), y()( v()( n ), "callContextFn", Object( M.a )( v()( n ), F.b ) ), y()( v()( n ), "isFocusable", ( function () {
+              return !n.props.isDisabled && !n.props.isHidden
+            } ) ), y()( v()( n ), "handleFocus", ( function () {
+              n.isFocusable() && n.callContextFn( "itemFocused", n.contextId )
+            } ) ), n
+          }
+          return g()( t, n ), d()( t, [ {
+            key: "componentDidMount",
+            value: function () {
+              this.isFocusable() && ( this.contextId = P()(), this.callContextFn( "registerItem", this.contextId, D.a.findDOMNode( this ) ) )
+            }
+          }, {
+            key: "componentDidUpdate",
+            value: function () {
+              this.isFocusable() && this.callContextFn( "updateItem", this.contextId, D.a.findDOMNode( this ) )
+            }
+          }, {
+            key: "componentWillUnmount",
+            value: function () {
+              this.isFocusable() && this.callContextFn( "deregisterItem", this.contextId )
+            }
+          }, {
+            key: "render",
+            value: function () {
+              var n = this.props,
+                t = n.children,
+                o = r()( n, [ "children" ] );
+              return C.a.createElement( e, i()( {
+                onFocus: this.handleFocus,
+                role: "menuitem"
+              }, o ), t )
+            }
+          } ] ), t
+        }( w.Component ), y()( n, "displayName", "WithItemFocus(".concat( Object( A.a )( e ), ")" ) ), y()( n, "contextTypes", y()( {}, F.b, k.a.object ) ), t
+      }
+    },
+    Fqgi: function ( e, n, t ) {
+      "use strict";
+      var o = t( "7Otk" ),
+        i = t( "7hB0" ),
+        a = t( "mQlO" );
+      n.a = Object( o.a )( Object( i.a )( a.a ) )
+    },
+    Inyi: function ( e, n, t ) {
+      var o = t( "Q4oW" );
+      e.exports = function ( e, n ) {
+        var t;
+        return o( e, ( function ( e, o, i ) {
+          return !( t = n( e, o, i ) )
+        } ) ), !!t
+      }
+    },
+    RUJR: function ( e, n, t ) {
+      "use strict";
+      t.d( n, "a", ( function () {
+        return i
+      } ) );
+      var o = t( "RfuI" );
+      const i = Object( o.a )( {
+        id: "ecIaj",
+        name: "DeletePageDialog",
+        loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "vendors~4134d62c" ), t.e( "delete-page-dialog~b59ad437" ) ] ).then( t.bind( null, "v4hK" ) ) ).DeletePageDialog
+      } )
+    },
+    S6DC: function ( e, n, t ) {
+      "use strict";
+      t.d( n, "b", ( function () {
+        return i
+      } ) ), t.d( n, "a", ( function () {
+        return a
+      } ) );
+      var o = function ( e ) {
+          return "@atlaskit-private-do-not-use/dropdown-menu:".concat( e )
+        },
+        i = o( "focus-manager" ),
+        a = ( o( "selection-cache" ), o( "selection-manager" ), o( "click-manager" ) )
+    },
+    lyMi: function ( e, n, t ) {
+      "use strict";
+      Object.defineProperty( n, "__esModule", {
+        value: !0
+      } ), n.default = void 0;
+      var o = a( t( "ERkP" ) ),
+        i = a( t( "4KTy" ) );
+
+      function a( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function r() {
+        return ( r = Object.assign || function ( e ) {
+          for ( var n = 1; n < arguments.length; n++ ) {
+            var t = arguments[ n ];
+            for ( var o in t ) Object.prototype.hasOwnProperty.call( t, o ) && ( e[ o ] = t[ o ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var c = function ( e ) {
+        return o.default.createElement( i.default, r( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill="currentColor" fill-rule="evenodd"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></g></svg>'
+        }, e ) )
+      };
+      c.displayName = "MoreIcon";
+      var s = c;
+      n.default = s
+    },
+    mQlO: function ( e, n, t ) {
+      "use strict";
+      var o = t( "97Jx" ),
+        i = t.n( o ),
+        a = t( "m3Bd" ),
+        r = t.n( a ),
+        c = t( "VrFO" ),
+        s = t.n( c ),
+        l = t( "Y9Ll" ),
+        d = t.n( l ),
+        u = t( "N+ot" ),
+        p = t.n( u ),
+        f = t( "AuHH" ),
+        h = t.n( f ),
+        m = t( "1Pcy" ),
+        v = t.n( m ),
+        b = t( "5Yy7" ),
+        g = t.n( b ),
+        x = t( "KEM+" ),
+        y = t.n( x ),
+        w = t( "ERkP" ),
+        C = t.n( w ),
+        O = t( "KsTJ" ),
+        k = t( "3IV/" ),
+        j = t( "3GHw" ),
+        D = function ( e ) {
+          return function ( n ) {
+            var t = n.theme,
+              o = Object( j.c )( t[ j.e ], e );
+            return Object( O.css )( [ "\n    background-color: ", ";\n    color: ", ";\n    fill: ", ";\n    text-decoration: none;\n\n    &:focus {\n      color: ", ";\n    }\n  " ], o.background, o.text, o.background, o.text )
+          }
+        },
+        I = function ( e ) {
+          var n = e.isCompact,
+            t = e.theme,
+            o = e.description,
+            i = n ? "compact" : "default",
+            a = Object( j.c )( t[ j.e ], i, "padding" ),
+            r = a.bottom,
+            c = void 0 === r ? 0 : r,
+            s = a.left,
+            l = void 0 === s ? 0 : s,
+            d = a.right,
+            u = void 0 === d ? 0 : d,
+            p = a.top,
+            f = void 0 === p ? 0 : p,
+            h = "function" == typeof f ? f() : f,
+            m = "function" == typeof c ? c() : c;
+          return h = Math.max( o ? h - 1 : h, 0 ), m = Math.max( m - 1, 0 ), Object( O.css )( [ "\n    padding: ", "px ", "px ", "px ", "px;\n  " ], h, u, m, l )
+        },
+        P = function ( e ) {
+          var n = e.isCompact,
+            t = e.theme,
+            o = n ? "compact" : "default",
+            i = Object( j.c )( t[ j.e ], o, "height" );
+          return i ? Object( O.css )( [ "\n        height: ", "px;\n      " ], i ) : ""
+        },
+        A = function ( e ) {
+          var n = e.isCompact,
+            t = e.theme,
+            o = n ? "compact" : "default",
+            i = Object( j.c )( t[ j.e ], o, "width" );
+          return i ? "number" == typeof i ? Object( O.css )( [ "\n        width: ", "px;\n      " ], i ) : Object( O.css )( [ "\n        width: ", ";\n      " ], i ) : ""
+        },
+        M = function ( e ) {
+          var n = e.theme,
+            t = e.isDisabled,
+            o = e.isDragging,
+            i = e.isSelected;
+          if ( o ) return Object( O.css )( [ "\n      ", " box-shadow: 0 4px 8px -2px ", ",\n        0 0 1px ", ";\n    " ], D( "dragging" ), k.N60A, k.N60A );
+          var a = Object( O.css )( [ "\n    &:focus {\n      box-shadow: 0 0 0 2px\n        ", " inset;\n      text-decoration: none;\n    }\n  " ], Object( j.c )( n[ j.e ], "outline", "focus" ) );
+          return t ? Object( O.css )( [ "\n      cursor: not-allowed;\n      ", " ", ";\n    " ], D( "disabled" ), a ) : i ? Object( O.css )( [ "\n      ", " &:hover {\n        ", ";\n      }\n\n      &:active {\n        ", ";\n      }\n\n      ", ";\n    " ], D( "selected" ), D( "hover" ), D( "active" ), a ) : Object( O.css )( [ "\n    &:hover {\n      ", ";\n    }\n\n    &:active {\n      ", ";\n    }\n\n    ", ";\n  " ], D( "hover" ), D( "active" ), a )
+        },
+        F = function ( e ) {
+          var n = e.theme;
+          return Object( O.css )( [ "\n  && {\n    align-items: center;\n    border-radius: ", "px;\n    box-sizing: border-box;\n    cursor: pointer;\n    display: ", ";\n    flex: none;\n    ", " ", " ", " ", " ", " &:focus {\n      /* focus shadow drawn by getInteractiveStyles */\n\n      outline: none;\n      /* relative position prevents bgcolor of a hovered element from\n      obfuscating focus ring of a focused sibling element */\n      position: relative;\n    }\n  }\n" ], Object( j.c )( n[ j.e ], "borderRadius" ), ( function ( e ) {
+            return e.isHidden ? "none" : "flex"
+          } ), D( "default" ), I, M, P, A )
+        },
+        N = function ( e ) {
+          var n = e.href,
+            t = e.linkComponent;
+          return t ? Object( O.default )( t ).withConfig( {
+            displayName: "Item",
+            componentId: "z6qfkt-0"
+          } )( [ "\n      ", ";\n    " ], F ) : n ? O.default.a.withConfig( {
+            displayName: "Item",
+            componentId: "z6qfkt-1"
+          } )( [ "\n      ", ";\n    " ], F ) : O.default.span.withConfig( {
+            displayName: "Item",
+            componentId: "z6qfkt-2"
+          } )( [ "\n    ", ";\n  " ], F )
+        },
+        E = t( "BMbf" ),
+        H = ( O.default.span.withConfig( {
+          displayName: "ItemParts__InputWrapper",
+          componentId: "sc-14xek3m-0"
+        } )( [ "\n  display: flex;\n  margin: 0 2px;\n" ] ), O.default.span.withConfig( {
+          displayName: "ItemParts__BeforeAfterBase",
+          componentId: "sc-14xek3m-1"
+        } )( [ "\n  align-items: center;\n  display: flex;\n  flex-shrink: 0;\n  /* Fix windows line-height issue */\n  padding-bottom: 1px;\n" ] ) ),
+        B = Object( O.default )( H ).withConfig( {
+          displayName: "ItemParts__Before",
+          componentId: "sc-14xek3m-2"
+        } )( [ "\n  ", ";\n" ], ( function ( e ) {
+          var n = e.isCompact,
+            t = e.theme,
+            o = n ? "compact" : "default",
+            i = Object( j.c )( t[ j.e ], o, "beforeItemSpacing" );
+          return Object( O.css )( [ "\n    margin-right: ", "px;\n  " ], i )
+        } ) ),
+        K = Object( O.default )( H ).withConfig( {
+          displayName: "ItemParts__After",
+          componentId: "sc-14xek3m-3"
+        } )( [ "\n  ", ";\n" ], ( function ( e ) {
+          var n = e.isCompact,
+            t = e.theme,
+            o = n ? "compact" : "default",
+            i = Object( j.c )( t[ j.e ], o, "afterItemSpacing" );
+          return Object( O.css )( [ "\n    margin-left: ", "px;\n  " ], i )
+        } ) ),
+        _ = O.default.span.withConfig( {
+          displayName: "ItemParts__ContentWrapper",
+          componentId: "sc-14xek3m-4"
+        } )( [ "\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n  margin: 0;\n  overflow: hidden;\n\n  &:first-child {\n    margin: 0;\n  }\n" ] ),
+        L = O.default.span.withConfig( {
+          displayName: "ItemParts__Content",
+          componentId: "sc-14xek3m-5"
+        } )( [ "\n  display: block;\n  flex: 1 1 auto;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: ", ";\n  line-height: ", ";\n  /* Fix windows line-height issue */\n  padding-bottom: 1px;\n" ], ( function ( e ) {
+          return e.allowMultiline ? "normal" : "nowrap"
+        } ), 16 / Object( E.f )() ),
+        R = O.default.span.withConfig( {
+          displayName: "ItemParts__Description",
+          componentId: "sc-14xek3m-6"
+        } )( [ "\n  flex: 1 1 auto;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  ", " ", ";\n" ], ( function ( e ) {
+          var n = e.isDisabled,
+            t = e.theme;
+          return n ? Object( O.css )( [ "\n      color: ", ";\n    " ], Object( j.c )( t[ j.e ], "secondaryText", "disabled" ) ) : Object( O.css )( [ "\n    color: ", ";\n\n    /* This detects hover on the grandparent. Saves us having to maintain isHovered\n       state in the grandparent. */\n    *:hover > * > & {\n      color: ", ";\n    }\n\n    *:active > * > & {\n      color: ", ";\n    }\n  " ], Object( j.c )( t[ j.e ], "secondaryText", "default" ), ( function () {
+            return Object( j.c )( t[ j.e ], "secondaryText", "hover" )
+          } ), ( function () {
+            return Object( j.c )( t[ j.e ], "secondaryText", "active" )
+          } ) )
+        } ), ( function ( e ) {
+          var n = e.isCompact,
+            t = n ? j.b : Object( E.g )(),
+            o = n ? j.a : 14 / t;
+          return Object( O.css )( [ "\n    font-size: ", "px;\n    line-height: ", ";\n    /* Fix windows line-height issue */\n    padding-bottom: 1px;\n  " ], t, o )
+        } ) );
+      t.d( n, "a", ( function () {
+        return S
+      } ) );
+      var S = function ( e ) {
+        function n( e ) {
+          var t;
+          return s()( this, n ), t = p()( this, h()( n ).call( this, e ) ), y()( v()( t ), "setRef", ( function ( e ) {
+            t.ref = e
+          } ) ), y()( v()( t ), "href", ( function () {
+            return t.props.isDisabled ? null : t.props.href
+          } ) ), t.rootComponent = N( {
+            href: t.href(),
+            linkComponent: e.linkComponent
+          } ), t
+        }
+        return g()( n, e ), d()( n, [ {
+          key: "componentDidMount",
+          value: function () {
+            this.ref && this.props.autoFocus && this.ref.focus()
+          }
+        }, {
+          key: "render",
+          value: function () {
+            var e = this,
+              n = this.props,
+              t = n.onClick,
+              o = n.onKeyDown,
+              a = n.isCompact,
+              c = n.isDisabled,
+              s = n.isDragging,
+              l = n.isHidden,
+              d = n.isSelected,
+              u = n.onMouseEnter,
+              p = n.onMouseLeave,
+              f = n.role,
+              h = n.dnd,
+              m = r()( n, [ "onClick", "onKeyDown", "isCompact", "isDisabled", "isDragging", "isHidden", "isSelected", "onMouseEnter", "onMouseLeave", "role", "dnd" ] ),
+              v = this.rootComponent,
+              b = h && h.dragHandleProps || null,
+              g = {
+                onClick: function ( e ) {
+                  e.defaultPrevented || !c && t && t( e )
+                },
+                onMouseDown: function ( e ) {
+                  b && b.onMouseDown && b.onMouseDown( e ), e.preventDefault()
+                },
+                onKeyDown: function ( e ) {
+                  s || ( b && b.onKeyDown && b.onKeyDown( e ), e.defaultPrevented || c || o && o( e ) )
+                }
+              };
+            return C.a.createElement( v, i()( {
+              "aria-disabled": c,
+              href: this.href(),
+              isCompact: a,
+              isDisabled: c,
+              isDragging: s,
+              isHidden: l,
+              isSelected: d,
+              onMouseEnter: u,
+              onMouseLeave: p,
+              role: f,
+              tabIndex: c || l || this.props.href ? null : 0,
+              target: this.props.target,
+              title: this.props.title,
+              innerRef: function ( n ) {
+                e.setRef( n ), h && h.innerRef && h.innerRef( n )
+              }
+            }, h && h.draggableProps, b, g, m ), !!this.props.elemBefore && C.a.createElement( B, {
+              isCompact: a
+            }, this.props.elemBefore ), C.a.createElement( _, null, C.a.createElement( L, {
+              allowMultiline: this.props.shouldAllowMultiline
+            }, this.props.children ), !!this.props.description && C.a.createElement( R, {
+              isCompact: this.props.isCompact,
+              isDisabled: this.props.isDisabled
+            }, this.props.description ) ), !!this.props.elemAfter && C.a.createElement( K, {
+              isCompact: a
+            }, this.props.elemAfter ) )
+          }
+        } ] ), n
+      }( w.Component );
+      y()( S, "defaultProps", {
+        autoFocus: !1,
+        description: "",
+        isCompact: !1,
+        isDisabled: !1,
+        isHidden: !1,
+        role: "button",
+        shouldAllowMultiline: !1
+      } )
+    },
+    oBkS: function ( e, n, t ) {
+      var o = t( "myUI" ),
+        i = t( "S3pA" ),
+        a = t( "Inyi" ),
+        r = t( "wxYD" ),
+        c = t( "R5u7" );
+      e.exports = function ( e, n, t ) {
+        var s = r( e ) ? o : a;
+        return t && c( e, n, t ) && ( n = void 0 ), s( e, i( n, 3 ) )
+      }
+    },
+    v9KL: function ( e, n, t ) {
+      "use strict";
+      t.d( n, "e", ( function () {
+        return i
+      } ) ), t.d( n, "a", ( function () {
+        return a
+      } ) ), t.d( n, "c", ( function () {
+        return r
+      } ) ), t.d( n, "g", ( function () {
+        return c
+      } ) ), t.d( n, "f", ( function () {
+        return s
+      } ) ), t.d( n, "d", ( function () {
+        return l
+      } ) ), t.d( n, "b", ( function () {
+        return d
+      } ) );
+      var o = t( "RfuI" );
+      const i = Object( o.a )( {
+          id: "+ogIb",
+          name: "ArchivedPageBannerLoader",
+          loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "vendors~4134d62c" ), t.e( 2 ), t.e( 3 ), t.e( 33 ), t.e( 49 ), t.e( 58 ), t.e( 86 ), t.e( "unarchive-pages-dialog-loader~b59ad437" ), t.e( "archived-page-banner~b59ad437" ) ] ).then( t.bind( null, "yJ+U" ) ) ).ArchivedPageBanner
+        } ),
+        a = Object( o.a )( {
+          id: "oMMvz",
+          name: "ArchivePagesLoader",
+          loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "afp~af75c846" ), t.e( "vendors~4134d62c" ), t.e( 26 ), t.e( 49 ), t.e( 58 ), t.e( 86 ), t.e( "archive-pages-loader~2cbbe392" ) ] ).then( t.bind( null, "HA1y" ) ) ).ArchivePagesLoader
+        } ),
+        r = Object( o.a )( {
+          id: "EIXHf",
+          name: "ArchiveUpsellDialog",
+          loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "afp~af75c846" ), t.e( "vendors~4134d62c" ), t.e( 26 ), t.e( 49 ), t.e( 58 ), t.e( 86 ), t.e( "archive-pages-loader~2cbbe392" ) ] ).then( t.bind( null, "lHeW" ) ) ).ArchiveUpsellDialog
+        } ),
+        c = Object( o.a )( {
+          id: "xeaKe",
+          name: "UnarchivePagesDialogLoader",
+          loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "vendors~4134d62c" ), t.e( 2 ), t.e( 3 ), t.e( 33 ), t.e( 49 ), t.e( 58 ), t.e( 86 ), t.e( "unarchive-pages-dialog-loader~b59ad437" ) ] ).then( t.bind( null, "rHua" ) ) ).UnarchivePagesLoader
+        } ),
+        s = Object( o.a )( {
+          id: "T4Nv3",
+          name: "BulkArchivePagesLoader",
+          loader: async () => ( await Promise.all( [ t.e( "atlaskit~66e23772" ), t.e( "vendors~4134d62c" ), t.e( 58 ), t.e( "bulk-archive-pages-loader~b59ad437" ) ] ).then( t.bind( null, "b9Qd" ) ) ).BulkArchivePagesLoader
+        } ),
+        l = Object( o.a )( {
+          id: "KyBjq",
+          name: "ArchivedNavigationButton",
+          loader: async () => ( await t.e( "archived-navigation-button~b59ad437" ).then( t.bind( null, "Nl8v" ) ) ).ArchivedNavigationButton
+        } ),
+        d = Object( o.a )( {
+          id: "ExSrT",
+          name: "ArchiveRemoteProcessContainer",
+          loader: async () => ( await Promise.all( [ t.e( "vendors~4134d62c" ), t.e( 58 ), t.e( "archive-remote-process-container~4bdf6f54" ) ] ).then( t.bind( null, "zagJ" ) ) ).ArchiveRemoteProcessContainer
+        } )
+    },
+    xbH5: function ( e, n, t ) {
+      "use strict";
+      n.a = function ( e, n ) {
+        return function ( t ) {
+          var o;
+          if ( !e.context[ n ] ) return null;
+          for ( var i = arguments.length, a = new Array( i > 1 ? i - 1 : 0 ), r = 1; r < i; r++ ) a[ r - 1 ] = arguments[ r ];
+          return ( o = e.context[ n ] )[ t ].apply( o, a )
+        }
+      }
+    }
+  }
+] );
+//# sourceMappingURL=92.XrcD444Kv3.js.map

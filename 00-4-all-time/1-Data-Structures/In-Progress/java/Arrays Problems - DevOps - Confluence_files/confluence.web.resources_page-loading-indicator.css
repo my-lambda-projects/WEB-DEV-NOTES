@@ -1,0 +1,20 @@
+/* module-key = 'confluence.web.resources:page-loading-indicator', location = 'includes/css/page-loading-indicator.css' */
+.confluence-loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3000;
+  width: 100px;
+  height: 100px;
+  margin-left: -50px;
+  margin-top: -50px
+}
+
+.confluence-page-loading-errors {
+  position: fixed;
+  max-width: 500px;
+  width: 500px;
+  top: 20px;
+  left: 50%;
+  margin-left: -250px
+}

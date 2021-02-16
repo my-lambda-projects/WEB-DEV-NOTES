@@ -1,0 +1,133 @@
+{
+	"name": "debug-visualizer",
+	"private": true,
+	"displayName": "Debug Visualizer",
+	"description": "A visual watch window that lets you visualize your data structures while debugging.",
+	"icon": "docs/logo.drawio.png",
+	"version": "2.0.6",
+	"license": "GPL-3.0",
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"publisher": "hediet",
+	"keywords": [
+		"debugger",
+		"debugging",
+		"debug",
+		"visual",
+		"javascript",
+		"graph",
+		"ast",
+		"visualization"
+	],
+	"bugs": {
+		"url": "https://github.com/hediet/vscode-debug-visualizer/issues"
+	},
+	"author": {
+		"email": "henning.dieterichs@live.de",
+		"name": "Henning Dieterichs"
+	},
+	"readme": "./README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hediet/vscode-debug-visualizer.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:vscode-debug-visualizer.new-visualizer",
+		"onCommand:vscode-debug-visualizer.visualizer-set-expression",
+		"onDebug",
+		"onWebviewPanel:debugVisualizer"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "vscode-debug-visualizer.new-visualizer",
+				"title": "Debug Visualizer: New View"
+			},
+			{
+				"command": "vscode-debug-visualizer.visualizer-set-expression",
+				"title": "Debug Visualizer: Use Selection as Expression"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "vscode-debug-visualizer.visualizer-set-expression",
+				"key": "shift+f1",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"title": "Debug Visualizer",
+			"properties": {
+				"debugVisualizer.useChromeKioskMode": {
+					"type": "boolean",
+					"default": true,
+					"description": "Pop out Debug Visualization Views with Chrome in Kiosk Mode."
+				},
+				"debugVisualizer.debugAdapterConfigurations": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "object",
+						"properties": {
+							"expressionTemplate": {
+								"type:": "string",
+								"description": "A template for the final expression sent to the debugger for evaluation. Use `${expr}` to refer to the currently visualized expression."
+							},
+							"context": {
+								"type": "string",
+								"enum": [
+									"watch",
+									"repl"
+								],
+								"description": "The context to use for evaluating the expression."
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"pub": "vsce publish --yarn --baseImagesUrl https://github.com/hediet/vscode-debug-visualizer/raw/master/extension --baseContentUrl https://github.com/hediet/vscode-debug-visualizer/raw/master/extension",
+		"package": "vsce package --yarn",
+		"vscode:prepublish": "yarn build",
+		"build": "webpack --mode production",
+		"dev": "shx rm -rf dist && tsc -watch -p ./"
+	},
+	"dependencies": {
+		"@hediet/std": "^0.6.0",
+		"@hediet/typed-json-rpc": "^0.7.7",
+		"@hediet/typed-json-rpc-websocket-server": "^0.7.7",
+		"chrome-launcher": "^0.12.0",
+		"@hediet/node-reload": "^0.7.3",
+		"express": "^4.17.1",
+		"open": "^7.0.2",
+		"serve-static": "^1.14.1",
+		"ws": "^7.2.1",
+		"crypto-random-string": "^3.1.0",
+		"mobx-utils": "^5.6.1"
+	},
+	"devDependencies": {
+		"copy-webpack-plugin": "^5.1.1",
+		"@types/copy-webpack-plugin": "^5.0.0",
+		"@types/express": "^4.17.2",
+		"@types/serve-static": "^1.13.3",
+		"@types/node": "^13.7.4",
+		"@types/vscode": "1.46.0",
+		"tslint": "^6.0.0",
+		"typescript": "^3.8.2",
+		"webpack": "^4.41.6",
+		"webpack-cli": "^3.3.11",
+		"ts-loader": "^6.2.1",
+		"shx": "^0.3.2"
+	},
+	"__metadata": {
+		"id": "bce78737-8848-49f7-a27d-97004928fe41",
+		"publisherId": "4d8048f9-07cf-483a-b27b-1fdc29cea931",
+		"publisherDisplayName": "Henning Dieterichs"
+	}
+}

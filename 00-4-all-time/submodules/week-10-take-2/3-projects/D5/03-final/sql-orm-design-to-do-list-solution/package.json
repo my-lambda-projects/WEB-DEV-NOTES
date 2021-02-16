@@ -1,0 +1,16 @@
+{
+  "name": "sql-orm-design-to-do-list",
+  "version": "1.0.0",
+  "description": "A project to learn data modeling with a command line to-do list.",
+  "main": "program.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.0.0",
+    "sequelize": "^5.21.5",
+    "sequelize-cli": "^5.5.1"
+  }
+}

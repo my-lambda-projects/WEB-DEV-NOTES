@@ -1,0 +1,71 @@
+/*
+
+*/
+.box {
+    border: 10px solid black; /* Applies to all four sides. */
+    height: 100px; /* Content's height */
+    margin: 50px; /* Applies to all four sides. */
+    padding: 25px; /* Applies to all four sides. */
+    width: 250px; /* Content's width */
+}
+
+.box {
+    border: 10px solid black; /* Applies to all four sides. */
+    box-sizing: border-box;
+    height: 100px; /* Sum of content + top/bottom padding + top/bottom border */
+    margin: 50px; /* Applies to all four sides. */
+    padding: 25px; /* Applies to all four sides. */
+    width: 250px; /* Sum of content + left/right padding + left/right border */
+}
+
+/*
+Examples of padding
+*/
+
+.box-1 {
+    /* One value applies to all four sides. */
+    padding: 3em;
+}
+
+.box-2 {
+    /* Two values: top & bottom | left & right */
+    padding: 20% 5%;
+}
+
+.box-3 {
+    /* Three values: top | left & right | bottom. */
+    padding: 15px 10px 20px;
+}
+
+.box-4 {
+    /* Four values:  top | right | bottom | left*/
+    padding: 0 10px 2em 1em;
+}
+
+.box-5 {
+    /* Global values */
+    padding: inherit; /* OR initial OR unset */
+}
+
+/*
+padding is a shorthand value. 
+Thus, the definition above for the "box-4" class could be declared like this, too.
+*/
+.box-4 {
+    padding-top: 0;
+    padding-right: 10px;
+    padding-bottom: 2em;
+    padding-left: 1em;
+}
+
+.box-parent {
+    background-color: #000000; /* Black */
+    width: 300px;
+    height: 300px;
+}
+
+.box-child {
+    background-color: #ffff00; /* Yellow */
+    width: 100px;
+    height: 280px;
+}

@@ -1,0 +1,104 @@
+// Table code for dbdiagram.io
+
+// Draft 3
+
+Table Users {
+  id int [pk, increment]
+  username varchar
+  email varchar
+  hashedPassword varchar
+
+}
+
+Table Votes {
+  id int [pk, increment]
+  userId int
+  answerId int
+}
+Ref: Votes.userId > Users.id
+Ref: Votes.answerId > Answers.id
+
+Table Questions {
+  id int [pk, increment] // auto-increment
+  questionText text
+  userId int
+  created_at timestamp
+}
+Ref: Questions.userId > Users.id
+
+Table Answers {
+  id int [pk, increment]
+  answerText text
+  questionId int
+  userId int
+  created_at timestamp
+}
+Ref: Answers.questionId > Questions.id
+Ref: Answers.userId > Users.id
+
+
+//Draft 2
+
+Table Users {
+  id int [pk, increment]
+  username varchar
+  email varchar
+  hashedPassword varchar
+
+}
+
+
+
+Table Questions {
+  id int [pk, increment] // auto-increment
+  questionText text
+  userId int
+  created_at timestamp
+}
+Ref: Questions.userId > Users.id
+
+Table Answers {
+  id int [pk, increment]
+  answerText text
+  questionId int
+  userId int
+  votes int
+  created_at timestamp
+}
+Ref: Answers.questionId > Questions.id
+Ref: Answers.userId > Users.id
+
+// Draft 1
+
+Table Users {
+  id int [pk, increment]
+  username varchar
+  email varchar
+  hashedPassword varchar
+
+}
+
+Table Votes {
+  id int [pk, increment]
+  voteCount int
+}
+
+Table Questions {
+  id int [pk, increment] // auto-increment
+  questionText text
+  userId int
+  created_at timestamp
+}
+Ref: Questions.userId > Users.id
+
+Table Answers {
+  id int [pk, increment]
+  answerText text
+  questionId int
+  userId int
+  voteId int
+  created_at timestamp
+}
+Ref: Answers.questionId > Questions.id
+Ref: Answers.userId > Users.id
+Ref: Answers.voteId > Votes.id

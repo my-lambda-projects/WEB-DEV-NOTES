@@ -1,0 +1,2 @@
+/* module-key = 'com.atlassian.confluence.plugins.confluence-invite-to-edit:plus-icon-css', location = 'css/plus-icon.css' */
+.invite-plus-icon{height:16px;width:2px;background-color:#707070;display:block;margin:0 auto}.invite-plus-icon:before{content:'';height:2px;width:16px;background-color:#707070;display:block;margin-left:-7px;margin-top:7px}

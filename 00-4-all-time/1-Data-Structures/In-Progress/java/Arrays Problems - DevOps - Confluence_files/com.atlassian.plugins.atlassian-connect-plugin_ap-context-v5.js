@@ -1,0 +1,14 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.plugins.atlassian-connect-plugin:ap-context-v5', location = 'v5/js/context/util.js' */
+define("ac/context/util",function(){return{isValidExtensionOptionsForCache:function(a){var b=(!a.contextJwt||!connectHost.isJwtExpired(a.contextJwt,!0))&&!!a.structuredContext;if(b){var c=a.productContext&&0<Object.getOwnPropertyNames(a.productContext).length;a=0<Object.getOwnPropertyNames(a.structuredContext).length;c&&!a&&(b=!1)}return b}}});
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.plugins.atlassian-connect-plugin:ap-context-v5', location = 'v5/js/context/main.js' */
+define("ac/context",["ac/content-resolver","ac/context/util"],function(l,m){function f(a){if(a.id&&1<a.id.length)return a.id;throw Error("ACJS: cannot generate cache key for extension");}function n(a){a=3E4+a;var b=Date.now();return a<b}function h(a,b){return{cachedAt:Date.now(),contextJwt:b,contextObj:a}}function g(a){var b=f(a);if(!c[b]||!c[b].promise&&c[b].context&&n(c[b].context.cachedAt))a.classifier="json",c[b]=c[b]||{},c[b].promise=l.resolveByExtension(a,!0).done(function(a){a&&(c[b].context=
+h(a.options.structuredContext,a.options.contextJwt))})}function k(a){if(!a||2>a.length)throw Error("ACJS: Cannot get token. Add-on does not support JWT authentication");}function p(a){if(m.isValidExtensionOptionsForCache(a.extension.options)){var b=f(a.extension);c[b]={context:h(a.extension.options.structuredContext,a.extension.options.contextJwt)}}else g(a.extension)}var c={};_AP.util.awaitGlobal("connectHost",function(a){a.onIframeEstablished(p);a.onIframeUnload(function(a){delete c[f(a.extension)]})});
+var e={getToken:function(a){return new window.ES6Promise.Promise(function(b,e){var d=f(a._context.extension);g(a._context.extension);c[d].promise?c[d].promise.done(function(a){k(a.options.contextJwt);try{b(a.options.contextJwt)}catch(q){}}.bind(this)).fail(function(){console.error("ACJS: content resolver failed to get context jwt token")}).always(function(){delete c[d].promise}.bind(this)):(k(c[d].context.contextJwt),b(c[d].context.contextJwt))})},getContext:function(a){return new window.ES6Promise.Promise(function(b,
+e){var d=f(a._context.extension);g(a._context.extension);c[d].promise?c[d].promise.done(function(a){try{b(c[d].context.contextObj)}catch(q){}}.bind(this)).fail(function(){e("ACJS: content resolver failed to get context")}).always(function(){delete c[d].promise}.bind(this)):b(c[d].context.contextObj)})}};e.getContext.returnsPromise=!0;e.getToken.returnsPromise=!0;return e});
+}catch(e){WRMCB(e)};

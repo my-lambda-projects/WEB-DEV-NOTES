@@ -1,0 +1,47 @@
+ ~ ~ :  docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+ ~ ~ :  cd /var/lib/postgresql
+ ~ postgresql :  ll
+total 8
+drwxr-xr-x  2 postgres postgres 4096 Oct 12 17:21 .
+drwxr-xr-x 40 root     root     4096 Nov 11 15:58 ..
+ ~ postgresql :  docker create -v /var/lib/postgresql/data --name PostgresData alpine
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+188c0c94c7c5: Already exists
+Digest: sha256:c0e9560cda118f9ec63ddefb4a173a2b2a0347082d7dff7dc14272e7841a5b5a
+Status: Downloaded newer image for alpine:latest
+1c745727bfbfe04c5c8f7da121cef08594fef4c4f0ccda0ab1d60f7aee1e5c4d
+ ~ postgresql :  docker run -p 5432:5432 --name bryans-db -e POSTGRES_PASSWORD=password -d --volumes-from PostgresData postgre
+Unable to find image 'postgre:latest' locally
+docker: Error response from daemon: pull access denied for postgre, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+ ~ postgresql :  docker run -p 5432:5432 --name bryans-db -e POSTGRES_PASSWORD=password -d --volumes-from PostgresData postgres
+d713ddedaeeb276e643304d426e11a4a6fbecf67a2e71eb815f4b2c451b5f91e
+ ~ postgresql :  docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+d713ddedaeeb        postgres            "docker-entrypoint.s…"   10 seconds ago      Up 7 seconds        0.0.0.0:5432->5432/tcp   bryans-db
+ ~ postgresql :  psql postgres
+psql: error: could not connect to server: FATAL:  password authentication failed for user "bryan"
+password retrieved from file "/home/bryan/.pgpass"
+ ~ postgresql :  psql -U postgres postgres
+Password for user postgres:
+psql (13.0 (Ubuntu 13.0-1.pgdg20.04+1))
+Type "help" for help.
+
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=# CREATE USER bryan WITH PASSWORD 'summer2015' SUPERUSER;
+CREATE ROLE
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ bryan     | Superuser                                                  | {}
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=#

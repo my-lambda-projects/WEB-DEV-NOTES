@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320"><defs><clipPath id="a"><path d="M0 0h320v80l-160 80 160 80v80H0z"/></clipPath></defs><g fill="none" stroke="#bfbfbf" stroke-width="40"><path d="M100 20H20v280h80M220 20h80v280h-80"/><ellipse cx="165" cy="160" clip-path="url(#a)" rx="75" ry="80"/></g></svg>

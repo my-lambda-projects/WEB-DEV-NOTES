@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "ee38df44-9c33-4a2a-8abd-190e67d90069",
+    "name": "TTT: New Game Hints",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-04-hints-js.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "ttt--new-game-hints"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Hints 4: Creating A New Game\n\nA way to tackle this is to subscribe to the click event of the \"New\nGame\" button. Then, in that click event handler, just reset everything.\n\nIf you've reviewed the hints for steps 1, 2, and 3, then you can follow these\ndirections to make it work.\n\n## In the HTML file\n\n* Add an `id` attribute with a value of `new-game` to the `<button>` with the\n  text \"New Game\"\n* Add the `disabled` attribute to the button.\n\n## In the JavaScript file\n\n* In the `checkGameStatus` function, in the last check to see if `gameStatus`\n  is not an empty string, add new code in there to set the `new-game` button's\n  `disabled` property to `false`.\n* In the `DOMContentLoaded` event handler, add a click event handler to the\n  element with the `new-game` id.\n* In the click event handler, reset the variables to their original values\n  * `currentPlayerSymbol = 'x';`\n  * `squareValues = ['', '', '', '', '', '', '', '', ''];`\n  * `gameStatus = '';`\n* Also, clear out the header that contains the game status.\n* Also, loop through the values 0 through 8, get a reference to the HTML element\n  with the id `square-X` where X is one of those numeric values, and set that\n  HTML elements `innerHTML` property to an empty string to clear out an image\n  that may be in there.\n* Also, set the `new-game` buttons' `disabled` property to `true`.\n\nWhen you get done, it should look something like this.\n\n![creating a new game](https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/requirement-4.gif)\n"
+  },
+  "success": true
+}

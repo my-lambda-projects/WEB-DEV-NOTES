@@ -1,0 +1,123 @@
+<h2 id="psql">PSQL</h2>
+<p>Magic words:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">psql</span> -U postgres</a></code></pre></div>
+<p>Some interesting flags (to see all, use <code>-h</code> or <code>--help</code> depending on your psql version): - <code>-E</code>: will describe the underlaying queries of the <code>\</code> commands (cool for learning!) - <code>-l</code>: psql will list all databases and then exit (useful if the user you connect with doesn’t has a default database, like at AWS RDS)</p>
+<p>Most <code>\d</code> commands support additional param of <code>__schema__.name__</code> and accept wildcards like <code>*.*</code></p>
+<ul>
+<li><code>\q</code>: Quit/Exit</li>
+<li><code>\c __database__</code>: Connect to a database</li>
+<li><code>\d __table__</code>: Show table definition (columns, etc.) including triggers</li>
+<li><code>\d+ __table__</code>: More detailed table definition including description and physical disk size</li>
+<li><code>\l</code>: List databases</li>
+<li><code>\dy</code>: List events</li>
+<li><code>\df</code>: List functions</li>
+<li><code>\di</code>: List indexes</li>
+<li><code>\dn</code>: List schemas</li>
+<li><code>\dt *.*</code>: List tables from all schemas (if <code>*.*</code> is omitted will only show SEARCH_PATH ones)</li>
+<li><code>\dT+</code>: List all data types</li>
+<li><code>\dv</code>: List views</li>
+<li><code>\dx</code>: List all extensions installed</li>
+<li><code>\df+ __function__</code> : Show function SQL code.</li>
+<li><code>\x</code>: Pretty-format query results instead of the not-so-useful ASCII tables</li>
+<li><code>\copy (SELECT * FROM __table_name__) TO 'file_path_and_name.csv' WITH CSV</code>: Export a table as CSV</li>
+<li><code>\des+</code>: List all foreign servers</li>
+<li><code>\dE[S+]</code>: List all foreign tables</li>
+</ul>
+<p>User Related: - <code>\du</code>: List users - <code>\du __username__</code>: List a username if present. - <code>create role __test1__</code>: Create a role with an existing username. - <code>create role __test2__ noinherit login password __passsword__;</code>: Create a role with username and password. - <code>set role __test__;</code>: Change role for current session to <code>__test__</code>. - <code>grant __test2__ to __test1__;</code>: Allow <code>__test1__</code> to set its role as <code>__test2__</code>. - <code>\deu+</code>: List all user mapping on server</p>
+<h2 id="configuration">Configuration</h2>
+<ul>
+<li>Service management commands:</li>
+</ul>
+<pre><code>sudo service postgresql stop
+sudo service postgresql start
+sudo service postgresql restart</code></pre>
+<ul>
+<li>Changing verbosity &amp; querying Postgres log: <br/>1) First edit the config file, set a decent verbosity, save and restart postgres:</li>
+</ul>
+<pre><code>sudo vim /etc/postgresql/9.3/main/postgresql.conf
+
+# Uncomment/Change inside:
+log_min_messages = debug5
+log_min_error_statement = debug5
+log_min_duration_statement = -1
+
+sudo service postgresql restart</code></pre>
+<ol start="2" type="1">
+<li>Now you will get tons of details of every statement, error, and even background tasks like VACUUMs</li>
+</ol>
+<pre><code>tail -f /var/log/postgresql/postgresql-9.3-main.log</code></pre>
+<ol start="3" type="1">
+<li>How to add user who executed a PG statement to log (editing <code>postgresql.conf</code>):</li>
+</ol>
+<pre><code>log_line_prefix = &#39;%t %u %d %a &#39;</code></pre>
+<h2 id="create-command">Create command</h2>
+<p>There are many <code>CREATE</code> choices, like <code>CREATE DATABASE __database_name__</code>, <code>CREATE TABLE __table_name__</code> … Parameters differ but can be checked <a href="https://www.postgresql.org/search/?u=%2Fdocs%2F9.1%2F&amp;q=CREATE">at the official documentation</a>.</p>
+<h2 id="handy-queries">Handy queries</h2>
+<ul>
+<li><code>SELECT * FROM pg_proc WHERE proname='__procedurename__'</code>: List procedure/function</li>
+<li><code>SELECT * FROM pg_views WHERE viewname='__viewname__';</code>: List view (including the definition)</li>
+<li><code>SELECT pg_size_pretty(pg_total_relation_size('__table_name__'));</code>: Show DB table space in use</li>
+<li><code>SELECT pg_size_pretty(pg_database_size('__database_name__'));</code>: Show DB space in use</li>
+<li><code>show statement_timeout;</code>: Show current user’s statement timeout</li>
+<li><code>SELECT * FROM pg_indexes WHERE tablename='__table_name__' AND schemaname='__schema_name__';</code>: Show table indexes</li>
+<li>Get all indexes from all tables of a schema:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb6-2" title="2">   t.relname <span class="kw">AS</span> table_name,</a>
+<a class="sourceLine" id="cb6-3" title="3">   i.relname <span class="kw">AS</span> index_name,</a>
+<a class="sourceLine" id="cb6-4" title="4">   a.attname <span class="kw">AS</span> column_name</a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb6-6" title="6">   pg_class t,</a>
+<a class="sourceLine" id="cb6-7" title="7">   pg_class i,</a>
+<a class="sourceLine" id="cb6-8" title="8">   pg_index ix,</a>
+<a class="sourceLine" id="cb6-9" title="9">   pg_attribute a,</a>
+<a class="sourceLine" id="cb6-10" title="10">    pg_namespace n</a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb6-12" title="12">   t.<span class="kw">oid</span> <span class="op">=</span> ix.indrelid</a>
+<a class="sourceLine" id="cb6-13" title="13">   <span class="kw">AND</span> i.<span class="kw">oid</span> <span class="op">=</span> ix.indexrelid</a>
+<a class="sourceLine" id="cb6-14" title="14">   <span class="kw">AND</span> a.attrelid <span class="op">=</span> t.<span class="kw">oid</span></a>
+<a class="sourceLine" id="cb6-15" title="15">   <span class="kw">AND</span> a.attnum <span class="op">=</span> <span class="kw">ANY</span>(ix.indkey)</a>
+<a class="sourceLine" id="cb6-16" title="16">   <span class="kw">AND</span> t.relnamespace <span class="op">=</span> n.<span class="kw">oid</span></a>
+<a class="sourceLine" id="cb6-17" title="17">    <span class="kw">AND</span> n.nspname <span class="op">=</span> <span class="st">&#39;kartones&#39;</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="kw">ORDER</span> <span class="kw">BY</span></a>
+<a class="sourceLine" id="cb6-19" title="19">   t.relname,</a>
+<a class="sourceLine" id="cb6-20" title="20">   i.relname</a></code></pre></div>
+<ul>
+<li>Execution data:
+<ul>
+<li>Queries being executed at a certain DB:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">SELECT</span> datname, application_name, pid, backend_start, query_start, state_change, state, <span class="kw">query</span> </a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">FROM</span> pg_stat_activity </a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">WHERE</span> datname<span class="op">=</span><span class="st">&#39;__database_name__&#39;</span>;</a></code></pre></div>
+<ul>
+<li>Get all queries from all dbs waiting for data (might be hung):</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> pg_stat_activity <span class="kw">WHERE</span> waiting<span class="op">=</span><span class="st">&#39;t&#39;</span></a></code></pre></div>
+<ul>
+<li>Currently running queries with process pid:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">SELECT</span> pg_stat_get_backend_pid(s.backendid) <span class="kw">AS</span> procpid, </a>
+<a class="sourceLine" id="cb9-2" title="2">pg_stat_get_backend_activity(s.backendid) <span class="kw">AS</span> current_query</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">FROM</span> (<span class="kw">SELECT</span> pg_stat_get_backend_idset() <span class="kw">AS</span> backendid) <span class="kw">AS</span> s;</a></code></pre></div></li>
+</ul>
+<p>Casting: - <code>CAST (column AS type)</code> or <code>column::type</code> - <code>'__table_name__'::regclass::oid</code>: Get oid having a table name</p>
+<p>Query analysis: - <code>EXPLAIN __query__</code>: see the query plan for the given query - <code>EXPLAIN ANALYZE __query__</code>: see and execute the query plan for the given query - <code>ANALYZE [__table__]</code>: collect statistics</p>
+<p>Generating random data (<a href="https://www.citusdata.com/blog/2019/07/17/postgres-tips-for-average-and-power-user/">source</a>): - <code>INSERT INTO some_table (a_float_value) SELECT random() * 100000 FROM generate_series(1, 1000000) i;</code></p>
+<h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
+<ul>
+<li><code>CTRL</code> + <code>R</code>: reverse-i-search</li>
+</ul>
+<h2 id="tools">Tools</h2>
+<ul>
+<li><code>ptop</code> and <code>pg_top</code>: <code>top</code> for PG. Available on the APT repository from <code>apt.postgresql.org</code>.</li>
+<li><a href="https://github.com/julmon/pg_activity">pg_activity</a>: Command line tool for PostgreSQL server activity monitoring.</li>
+<li><a href="https://dba.stackexchange.com/questions/63453/is-there-a-psql-equivalent-of-bashs-reverse-search-history">Unix-like reverse search in psql</a>:</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="bu">echo</span> <span class="st">&quot;bind &quot;</span>^R<span class="st">&quot; em-inc-search-prev&quot;</span> <span class="op">&gt;</span> <span class="va">$HOME</span>/.editrc</a>
+<a class="sourceLine" id="cb10-2" title="2">$ <span class="bu">source</span> <span class="va">$HOME</span>/.editrc</a></code></pre></div>
+<ul>
+<li><a href="https://pgexercises.com/">PostgreSQL Exercises</a>: An awesome resource to learn to learn SQL, teaching you with simple examples in a great visual way. <strong>Highly recommended</strong>.</li>
+<li><a href="https://severalnines.com/blog/performance-cheat-sheet-postgresql">A Performance Cheat Sheet for PostgreSQL</a>: Great explanations of <code>EXPLAIN</code>, <code>EXPLAIN ANALYZE</code>, <code>VACUUM</code>, configuration parameters and more. Quite interesting if you need to tune-up a postgres setup.</li>
+<li><code>psql -c "\l+" -H -q postgres &gt; out.html</code>: Generate a html report of your databases (source: <a href="https://twitter.com/westermanndanie/status/1242117182982586372">Daniel Westermann</a>)</li>
+</ul>

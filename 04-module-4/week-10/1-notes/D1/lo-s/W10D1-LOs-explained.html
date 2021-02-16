@@ -1,0 +1,217 @@
+<h3 id="rdbms-and-database-entities">RDBMS and Database Entities</h3>
+<ol type="1">
+<li>Define what a relational database management system is</li>
+</ol>
+<ul>
+<li>RDBMS stands for Relational Database Management System</li>
+<li>A software application that you run that your programs can connect to so that they can store, modify, and retrieve data.</li>
+<li>An RDBMS can track many databases. We will use PostgreSQL, or “postgres”, primarily for our RDBMS and it will be able to create individual databases for each of our projects.</li>
+</ul>
+<ol start="2" type="1">
+<li>Describe what relational data is</li>
+</ol>
+<ul>
+<li>In general, relational data is information that is connected to other pieces of information.</li>
+<li>When working with relational databases, we can connect two entries together utilizing foreign keys (explained below).</li>
+<li>In a pets database, we could be keeping track of dogs and cats as well as the toys that each of them own. That “ownership” of a cat to a toy is the “relational” aspect of relational data. Two pieces of information that can be connected together to show some sort of meaning.</li>
+</ul>
+<ol start="3" type="1">
+<li>Define what a database is</li>
+</ol>
+<ul>
+<li>The actual location that data is stored.</li>
+<li>A database can be made up of many tables that each store specific kinds of information.</li>
+<li>We could have a pets database that stores information about many different types of animals. Each animal type could potentially be represented by a different table.</li>
+</ul>
+<ol start="4" type="1">
+<li>Define what a database table is</li>
+</ol>
+<ul>
+<li>Within a database, a table stores one specific kind of information.</li>
+<li>The records (entries) on these tables can be connected to records on other tables through the use of foreign keys</li>
+<li>In our pets database, we could have a <code>dogs</code> table, with individual records</li>
+</ul>
+<ol start="5" type="1">
+<li>Describe the purpose of a primary key</li>
+</ol>
+<ul>
+<li>A primary key is used in the database as a unique identifier for the table.</li>
+<li>We often use an “id” field that simply increments with each entry. The incrementing ensures that each record has a unique identifier, even if their are other fields of the record that are repeated (two people with the same name would still need to have a unique identifier, for example).</li>
+<li>With a unique identifier, we can easily connect records within the table to records from other tables.</li>
+</ul>
+<ol start="6" type="1">
+<li>Describe the purpose of a foreign key</li>
+</ol>
+<ul>
+<li>A foreign key is used as the connector from this record to the primary key of another table’s record.</li>
+<li>In our pets example, we can imagine two tables to demonstrate: a table to represent cats and a table to represent toys. Each of these tables has a primary key of “id” that is used as the unique identifier. In order to make a connection between a toy and a cat, we can add another field to the cat table called “owner_id”, indicating that it is a foreign key for the cat table. By setting a toy’s “owner_id” to the same value as a particular cat’s “id”, we can indicate that the cat is the owner of that toy.</li>
+</ul>
+<ol start="7" type="1">
+<li>Describe how to properly name things in PostgreSQL</li>
+</ol>
+<ul>
+<li>Names within postgres should generally consist of only lowercase letters, numbers, and underscores.</li>
+<li>Tables within a database are plural by convention, so a table for cats would typically be “cats” and office locations would be “office_locations” (all lowercase, underscores to replace spaces, plural)</li>
+</ul>
+<ol start="8" type="1">
+<li>Install and configure PostgreSQL 12, its client tools, and a GUI client for it named Postbird</li>
+</ol>
+<ul>
+<li>macOS: https://open.appacademy.io/learn/js-py—aug-2020-online/week-10-aug-2020-online/installing-postgresql-on-macos</li>
+<li>Ubuntu: The section starting with “Installing PostgreSQL Client Tools on Ubuntu”: https://open.appacademy.io/learn/js-py—aug-2020-online/week-10-aug-2020-online/installing-postgresql-on-windows
+<ul>
+<li>Additional resource: https://help.ubuntu.com/community/PostgreSQL</li>
+</ul></li>
+<li>WSL2: https://github.com/appacademy-starters/postgres-docker</li>
+<li>WSL1: https://open.appacademy.io/learn/js-py—aug-2020-online/week-10-aug-2020-online/installing-postgresql-on-windows</li>
+</ul>
+<ol start="9" type="1">
+<li>Connect to an instance of PostgreSQL with the command line tool psql</li>
+</ol>
+<ul>
+<li>The <code>psql</code> command by default will try to connect to a database and username that matches your system’s username</li>
+<li>We connect to a different database by providing an argument to the psql command
+<ul>
+<li><code>psql pets</code></li>
+</ul></li>
+<li>To connect with a different username we can use the <code>-U</code> flag followed by the username we would like to use. To connect to the <code>pets</code> database as <code>pets_user</code>
+<ul>
+<li><code>psql -U pets_user pets</code></li>
+</ul></li>
+<li>If there is a password for the user, we can tell psql that we would like a prompt for the password to show up by using the <code>-W</code> flag.
+<ul>
+<li><code>psql -U pets_user -W pets</code> (the order of our flags doesn’t matter, as long as any arguments associated with them are together, such as <code>pets_user</code> directly following <code>-U</code> in this example)</li>
+</ul></li>
+</ul>
+<ol start="10" type="1">
+<li>Identify whether a user is a normal user or a superuser by the prompt in the psql shell</li>
+</ol>
+<ul>
+<li>You can tell if you are logged in as a superuser or normal user by the prompt in the terminal.</li>
+<li>If the prompt shows <code>=&gt;</code>, the user is a normal user</li>
+<li>If the prompt show <code>=#</code>, the user is a superuser</li>
+</ul>
+<ol start="11" type="1">
+<li>Create a user for the relational database management system</li>
+</ol>
+<ul>
+<li>Within psql, we can create a user with the <code>CREATE USER {username} {WITH options}</code> command.</li>
+<li>The most common options we’ll want to use are <code>WITH PASSWORD 'mypassword'</code> to provide a password for the user we are creating, <code>CREATEDB</code> to allow the user to create new databases, or <code>SUPERUSER</code> to create a user with all elevated permissions.</li>
+</ul>
+<ol start="12" type="1">
+<li>Create a database in the database management system</li>
+</ol>
+<ul>
+<li>We can use the command <code>CREATE DATABASE {database name} {options}</code> inside psql to create a new database.</li>
+<li>A popular option we may utilize is <code>WITH OWNER {owner name}</code> to set another user as the owner of the database we are making.</li>
+</ul>
+<ol start="13" type="1">
+<li>Configure a database so that only the owner (and superusers) can connect to it</li>
+</ol>
+<ul>
+<li>We can <code>GRANT</code> and <code>REVOKE</code> privileges from a database to users or categories of users.</li>
+<li>In order to remove connection privileges to a database from the public we can use <code>REVOKE CONNECT ON DATABASE {db_name} FROM PUBLIC;</code>, removing all public connection access.</li>
+<li>If we wanted to grant it back, or to a specific user, we could similarly do <code>GRANT CONNECT ON DATABASE {db_name} FROM {specific user, PUBLIC, etc.};</code></li>
+</ul>
+<ol start="14" type="1">
+<li>View a list of databases in an installation of PostgreSQL</li>
+</ol>
+<ul>
+<li>To list all databases we can use the <code>\l</code> or <code>\list</code> command in psql.</li>
+</ul>
+<ol start="15" type="1">
+<li>Create tables in a database</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> {<span class="kw">table</span> name} (</a>
+<a class="sourceLine" id="cb1-2" title="2">  {columnA} {typeA},</a>
+<a class="sourceLine" id="cb1-3" title="3">  {columnB} {typeB},</a>
+<a class="sourceLine" id="cb1-4" title="4">  etc<span class="op">..</span>.</a>
+<a class="sourceLine" id="cb1-5" title="5">);</a></code></pre></div>
+<ul>
+<li>The whitespace does not matter. Creating the SQL statements on multiple lines is easier to read, but just like JavaScript, they can be presented differently.</li>
+<li>One common issue is that SQL does not like trailing commas, so the last column cannot have a comma after its type in this example.</li>
+</ul>
+<ol start="16" type="1">
+<li>View a list of tables in a database</li>
+</ol>
+<ul>
+<li>To list all database tables, use the <code>\dt</code> command.</li>
+</ul>
+<ol start="17" type="1">
+<li>Identify and describe the common data types used in PostgreSQL</li>
+</ol>
+<ul>
+<li>There are many different data types that we can use in our tables, here are some common examples:
+<ul>
+<li><code>SERIAL</code>: autoincrementing, very useful for IDs</li>
+<li><code>VARCHAR(n)</code>: a string with a character limit of <code>n</code></li>
+<li><code>TEXT</code>: doesn’t have character limit, but less performant</li>
+<li><code>BOOLEAN</code>: true/false</li>
+<li><code>SMALLINT</code>: signed two-byte integer (-32768 to 32767)</li>
+<li><code>INTEGER</code>: signed four-byte integer (standard)</li>
+<li><code>BIGINT</code>: signed eight-byte integer (very large numbers)</li>
+<li><code>NUMERIC</code>: or <code>DECIMAL</code>, can store exact decimal values</li>
+<li><code>TIMESTAMP</code>: date and time</li>
+</ul></li>
+</ul>
+<ol start="18" type="1">
+<li>Describe the purpose of the UNIQUE and NOT NULL constraints, and create columns in database tables that have them</li>
+</ol>
+<ul>
+<li>In addition to the data type, we can provide flags for constraints to place on our column data.</li>
+<li>The <code>UNIQUE</code> flag indicates that the data for the column must not be repeated.</li>
+<li>By default we can create entries in our tables that are missing data from columns. When creating a pet, maybe we don’t provide an age because we don’t know it, for example. If we want to require that the data be present in order to create a new record, we can indicate that column must be <code>NOT NULL</code>.</li>
+<li>In the example below, we are requiring our pets to have unique names and for them to be present (both UNIQUE and NOT NULL). We have no such constraints on the age column, allowing repetition of ages or their complete absence.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> pets (</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb2-3" title="3">  name <span class="dt">VARCHAR</span>(<span class="dv">255</span>) <span class="kw">UNIQUE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb2-4" title="4">  age <span class="dt">SMALLINT</span></a>
+<a class="sourceLine" id="cb2-5" title="5">);</a></code></pre></div>
+<ol start="19" type="1">
+<li>Create a primary key for a table</li>
+</ol>
+<ul>
+<li>When creating a table we can indicate the primary key by passing in the column name to parentheses like so:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> people (</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">id</span> SERIAL,</a>
+<a class="sourceLine" id="cb3-3" title="3">  first_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb3-4" title="4">  last_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb3-6" title="6">);</a></code></pre></div>
+<ul>
+<li>We could have also used the <code>PRIMARY KEY</code> flag on the column definition itself:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> people (</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb4-3" title="3">  first_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb4-4" title="4">  last_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb4-5" title="5">);</a></code></pre></div>
+<ol start="20" type="1">
+<li>Create foreign key constraints to relate tables</li>
+</ol>
+<ul>
+<li>In our table definition, we can use the line <code>FOREIGN KEY (foreign_key_stored_in_this_table) REFERENCE {other table} ({other_tables_key_name})</code> to connect two tables.</li>
+<li>This is probably easier to see in an example:</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> people (</a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb5-3" title="3">  first_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb5-4" title="4">  last_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb5-5" title="5">);</a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="kw">CREATE</span> <span class="kw">TABLE</span> pets (</a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb5-9" title="9">  name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</a>
+<a class="sourceLine" id="cb5-10" title="10">  age <span class="dt">SMALLINT</span>,</a>
+<a class="sourceLine" id="cb5-11" title="11">  person_id <span class="dt">INTEGER</span>,</a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (person_id) <span class="kw">REFERENCES</span> people (<span class="kw">id</span>)</a>
+<a class="sourceLine" id="cb5-13" title="13">);</a></code></pre></div>
+<ol start="21" type="1">
+<li>Explain that SQL is not case sensitive for its keywords but is for its entity names</li>
+</ol>
+<ul>
+<li>Exactly as the LO states, <code>CREATE TABLE</code> and <code>create table</code> are interpreted the same way. Using capitalization is a good convention in order to distinguish your keywords.</li>
+<li>The entity names that we use ARE case-sensitive, however. So a table named <code>pets</code> is unique from a table named <code>Pets</code>. In general, we prefer to use all lowercase for our entities to avoid any of this confusion.</li>
+</ul>

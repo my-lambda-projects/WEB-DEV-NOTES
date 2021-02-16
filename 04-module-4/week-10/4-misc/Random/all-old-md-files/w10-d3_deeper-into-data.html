@@ -1,0 +1,1527 @@
+<p>t # WEEK-10 DAY-3<br><em>Deeper Into Data</em> {ignore=true} ________________________________________________________________________________ <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=2 orderedList=false} --></p>
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#week-10-day-3brdeeper-into-data">WEEK-10 DAY-3<br><em>Deeper Into Data</em> {ignore=true}</a></li>
+<li><a href="#orm-learning-objectives">ORM Learning Objectives</a></li>
+<li><a href="#creating-a-schema-for-relational-database-design">Creating A Schema For Relational Database Design</a>
+<ul>
+<li><a href="#what-is-relational-database-design">What is Relational Database Design?</a></li>
+<li><a href="#stages-of-relational-database-design">Stages of Relational Database Design</a>
+<ul>
+<li><a href="#1-define-database-purpose-and-entities">1. Define database purpose and entities</a></li>
+<li><a href="#2-identify-primary-keys">2. Identify primary keys</a></li>
+<li><a href="#3-establish-table-relationships">3. Establish table relationships</a></li>
+<li><a href="#4-apply-normalization-rules">4. Apply normalization rules</a></li>
+</ul></li>
+<li><a href="#schema-design-tools">Schema design tools</a></li>
+<li><a href="#what-we-learned">What we learned:</a></li>
+</ul></li>
+<li><a href="#using-sql-transactions">Using SQL Transactions</a>
+<ul>
+<li><a href="#what-is-a-transaction">What is a transaction?</a></li>
+<li><a href="#implicit-vs-explicit-transactions">Implicit vs. explicit transactions</a>
+<ul>
+<li><a href="#postgresql-transactional-commands">PostgreSQL transactional commands</a></li>
+</ul></li>
+<li><a href="#when-to-use-transactions-and-why">When to use transactions and why</a></li>
+<li><a href="#transaction-properties-acid">Transaction properties: ACID</a>
+<ul>
+<li><a href="#banking-transaction-example">Banking transaction example</a></li>
+</ul></li>
+<li><a href="#helpful-links">Helpful links:</a></li>
+</ul></li>
+<li><a href="#joins-vs-subqueries">Joins vs. Subqueries</a>
+<ul>
+<li><a href="#what-is-a-join">What is a JOIN?</a></li>
+<li><a href="#what-is-a-subquery">What is a subquery?</a>
+<ul>
+<li><a href="#single-value-subquery">Single-value subquery</a></li>
+<li><a href="#multiple-row-subquery">Multiple-row subquery</a></li>
+</ul></li>
+<li><a href="#using-joins-vs-subqueries">Using joins vs. subqueries</a>
+<ul>
+<li><a href="#should-i-use-a-join-or-a-subquery">Should I use a JOIN or a subquery?</a></li>
+</ul></li>
+<li><a href="#helpful-links-1">Helpful links:</a></li>
+</ul></li>
+<li><a href="#postgresql-indexes">PostgreSQL Indexes</a>
+<ul>
+<li><a href="#what-is-a-postgresql-index">What is a PostgreSQL index?</a></li>
+<li><a href="#how-to-create-an-index">How to create an index</a>
+<ul>
+<li><a href="#types-of-indexes">Types of indexes</a></li>
+</ul></li>
+<li><a href="#when-to-use-an-index">When to use an index</a></li>
+<li><a href="#helpful-links-2">Helpful links:</a></li>
+<li><a href="#what-we-learned-1">What we learned:</a></li>
+</ul></li>
+<li><a href="#node-postgres-and-prepared-statements">Node-Postgres And Prepared Statements</a>
+<ul>
+<li><a href="#connecting">Connecting</a></li>
+<li><a href="#prepared-statement">Prepared Statement</a></li>
+<li><a href="#try-it-out-for-yourself">Try it out for yourself</a></li>
+<li><a href="#what-youve-learned">What you’ve learned</a></li>
+</ul></li>
+<li><a href="#transactions-with-sequelize">Transactions With Sequelize</a>
+<ul>
+<li><a href="#the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</a></li>
+<li><a href="#the-solution-database-transactions">The Solution: Database Transactions</a></li>
+<li><a href="#the-bankaccounts-schema">The <code>BankAccounts</code> Schema</a></li>
+<li><a href="#example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</a></li>
+<li><a href="#incorrect-solutions">Incorrect Solutions</a></li>
+<li><a href="#using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</a></li>
+<li><a href="#aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</a></li>
+<li><a href="#transactions-prevent-urace-conditionsu">Transactions Prevent <em>Race Conditions</em></a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul></li>
+<li><a href="#recipe-box-project">Recipe Box Project</a>
+<ul>
+<li><a href="#the-data-model-analysis">The data model analysis</a></li>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#your-sql">Your SQL</a></li>
+<li><a href="#the-application">The application</a></li>
+<li><a href="#directions">Directions</a>
+<ul>
+<li><a href="#home-page">Home Page</a></li>
+<li><a href="#recipesid"><code>/recipes/:id</code></a></li>
+<li><a href="#recipesnew"><code>/recipes/new</code></a></li>
+<li><a href="#recipesidedit"><code>/recipes/:id/edit</code></a></li>
+<li><a href="#recipestermsearchterm"><code>/recipes?term={searchTerm}</code></a></li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<hr />
+<h1 id="orm-learning-objectives">ORM Learning Objectives</h1>
+<p>To ease the use of SQL, the object-relational mapping tool was invented. This allows developers to focus on their application code and let a library generate all of the SQL for them. Depending on which developer you ask, this is a miracle or a travesty. Either way, those developers use them because writing all of the SQL by hand is a chore that most software developers just don’t want to do.</p>
+<p>In this section, you will learn:</p>
+<ul>
+<li>How to install, configure, and use Sequelize, an ORM for JavaScript</li>
+<li>How to use database migrations to make your database grow with your application in a source-control enabled way</li>
+<li>How to perform CRUD operations with Sequelize</li>
+<li>How to query using Sequelize</li>
+<li>How to perform data validations with Sequelize</li>
+<li>How to use transactions with Sequelize</li>
+</ul>
+<hr />
+<h1 id="creating-a-schema-for-relational-database-design">Creating A Schema For Relational Database Design</h1>
+<p>Schemas allow use to easily visualize database tables and their relationships to one another, so that we can identify areas that need clarity, refinement, or redesign.</p>
+<p>In this reading, we’re going to cover the stages of relational database design and how to create schema that depicts database table relationships.</p>
+<h2 id="what-is-relational-database-design">What is Relational Database Design?</h2>
+<p>According to Technopedia, <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">Relational Database Design</a> (or RDD) differs from other databases in terms of data organization and transactions: “In an RDD, the data are organized into tables and all types of data access are carried out via controlled transactions.”</p>
+<p>In previous readings, we created relational database tables and accessed data from these tables through PostgreSQL queries. These tables (a.k.a. <em>entities</em>) contain rows (a.k.a. <em>records</em>) and columns (a.k.a. <em>fields</em>). We also learned how to uniquely identify table records by adding a <code>PRIMARY KEY</code> and how to create a table association by adding a <code>FOREIGN KEY</code>.</p>
+<p>A relational database usually contains multiple tables. It’s useful to create schema to help us visualize these tables, keep track of primary keys and foreign keys, and create relationships among tables. This is a key part of the RDD process defined below.</p>
+<h2 id="stages-of-relational-database-design">Stages of Relational Database Design</h2>
+<p>There are four generally-agreed-upon stages of Relational Database Design:</p>
+<ol type="1">
+<li>Define the purpose/entities of the relational DB.</li>
+<li>Identify primary keys.</li>
+<li>Establish table relationships.</li>
+<li>Apply normalization rules.</li>
+</ol>
+<h3 id="define-database-purpose-and-entities">1. Define database purpose and entities</h3>
+<p>The first stage is identifying the purpose of the database (<em>Why is the database being created? What problem is it solving? What is the data used for?</em>), as well as identifying the main entities, or <em>tables</em>, that need to be created. It also typically involves identifying the table’s attributes (i.e. <em>columns</em> and <em>rows</em>).</p>
+<p>For example, if we were creating a database for order processing on an e-commerce application, we would need a database with at least three tables: a <code>products</code> table, an <code>orders</code> tables, and a <code>users</code> (i.e. customers) table. We know that a product will probably have an ID, name, and price, and an order will contain one or more product IDs. We also know that users can create multiple orders.</p>
+<figure>
+<img src="images/orders-erd-entities.svg" alt="Orders ERD entities" /><figcaption>Orders ERD entities</figcaption>
+</figure>
+<h3 id="identify-primary-keys">2. Identify primary keys</h3>
+<p>The second stage is to identify the primary key (<em>PK</em>) of each table. As we previously learned, a table’s primary key contains a unique value, or values, that identify each distinct record. For our above example of online orders, we would probably create IDs to serve as the primary key for each table: a product ID, an order ID, and a user ID.</p>
+<figure>
+<img src="images/orders-erd-primary-keys.svg" alt="orders-erd-primary-keys.svg" /><figcaption>orders-erd-primary-keys.svg</figcaption>
+</figure>
+<h3 id="establish-table-relationships">3. Establish table relationships</h3>
+<p>The third stage is to establish the relationships among the tables in the database. There are three types of relational database table relationships:</p>
+<ul>
+<li>One-to-one</li>
+<li>One-to-many</li>
+<li>Many-to-many</li>
+</ul>
+<p><strong>One-to-one relationship</strong></p>
+<p>In a one-to-one relationship, one record in a table is associated with only one record in another table. We could say that only one record in Table B belongs to only one record in Table A.</p>
+<p>A one-to-one relationship is the least common type of table relationship. While the two tables above could be combined into a single table, we may want to keep some less-used data separate from the main <code>products</code> table.</p>
+<figure>
+<img src="images/products-erd-one-to-one.svg" alt="products-erd-one-to-one.svg" /><figcaption>products-erd-one-to-one.svg</figcaption>
+</figure>
+<p>The above schema depicts two tables: a “products” table and a “product_details” table. A <code>product_details</code> record belongs to only one product record. We’ve used an arrow to indicate the one-to-one relationship between the tables. Both tables have the same primary key – <code>product_id</code> – which we can use in a <a href="https://www.postgresql.org/docs/9.1/using-explain.html"><code>JOIN</code></a> operation to get data from both tables.</p>
+<p>This table relationship would produce the following example data (note that not all columns are shown below):</p>
+<p><strong>Products</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1597</td>
+<td>Glass Coffee Mug</td>
+</tr>
+<tr class="even">
+<td>1598</td>
+<td>Metallic Coffee Mug</td>
+</tr>
+<tr class="odd">
+<td>1599</td>
+<td>Smart Coffee Mug</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Product Details</strong></p>
+<table>
+<colgroup>
+<col style="width: 1%" />
+<col style="width: 4%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>product_id</th>
+<th>full_description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1597</td>
+<td>Sturdy tempered glass coffee mug with natural cork band and silicone lid. Barista standard - fits under commercial coffee machine heads and most cup-holders.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1598</td>
+<td>Fun coffee mug that comes in various metallic colors. Sleek, stylish, and easy to wash. Makes a great addition to your kitchen. Take it on the go by attaching the secure lid.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1599</td>
+<td>This smart mug goes beyond being a simple coffee receptacle. Its smart features let you set and maintain an exact drinking temperature for up to 1.5 hours, so your coffee is never too hot or too cold.</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that the “Metallic Coffee Mug” is a “Fun coffee mug that comes in various metallic colors.”</p>
+<p><strong>One-to-many relationship</strong></p>
+<p>In a one-to-many relationship, each record in Table A is associated with multiple records in Table B. Each record in Table B is associated with only one record in Table A.</p>
+<figure>
+<img src="images/orders-erd-one-to-many.svg" alt="orders-erd-one-to-many.svg" /><figcaption>orders-erd-one-to-many.svg</figcaption>
+</figure>
+<p>The above schema depicts a one-to-many relationship between the “users” table and the <code>orders</code> table: One user can create multiple orders. The primary key of the “orders” table (<code>id</code>) is a foreign key in the “users” table (<code>order_id</code>). We can use this foreign key in a <code>JOIN</code> operation to get data from both tables.</p>
+<p>This table relationship would produce the following example data (note that not all columns are shown below):</p>
+<p><strong>Users</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orders</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>purchaser_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that “Alice” has made two orders and “Bob” has made one order.</p>
+<p><strong>Many-to-many relationship</strong></p>
+<p>In a many-to-many relationship, multiple records in Table A are associated with multiple records in Table B. You would normally create a third table for this relationship called a <em><strong>join table</strong></em>, which contains the primary keys from both tables.</p>
+<figure>
+<img src="images/orders-erd-many-to-many.svg" alt="orders-erd-many-to-many.svg" /><figcaption>orders-erd-many-to-many.svg</figcaption>
+</figure>
+<p>The above schema depicts a many-to-many relationship between the <code>products</code> table and the <code>orders</code> table. A single order can have multiple products, and a single product can belong to multiple orders. We created a third join table called <code>order_details</code>, which contains both the<code>order_id</code> and <code>product_id</code> fields as foreign keys.</p>
+<p>This table relationship would produce the following example data(note that not all columns are shown below):</p>
+<p><strong>Products</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1597</td>
+<td>Glass Coffee Mug</td>
+</tr>
+<tr class="even">
+<td>1598</td>
+<td>Metallic Coffee Mug</td>
+</tr>
+<tr class="odd">
+<td>1599</td>
+<td>Smart Coffee Mug</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Users</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orders</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>purchaser_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Order Details</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>order_id</th>
+<th>product_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>10</td>
+<td>1599</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>11</td>
+<td>1597</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>11</td>
+<td>1598</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>12</td>
+<td>1597</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>12</td>
+<td>1598</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>12</td>
+<td>1599</td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to analyze the data above. Using the foreign keys, you should be able to reason out that “Alice” has two orders. One order containing a “Smart Coffee Mug” and another order containing both a “Glass Coffee Mug” and “Metallic Coffee Mug”.</p>
+<h3 id="apply-normalization-rules">4. Apply normalization rules</h3>
+<p>The fourth stage in RDD is <em><strong>normalization</strong></em>. Normalization is the process of optimizing the database structure so that redundancy and confusion are eliminated.</p>
+<p>The rules of normalization are called “normal forms” and are as follows:</p>
+<ol type="1">
+<li>First normal form</li>
+<li>Second normal form</li>
+<li>Third normal form</li>
+<li>Boyce-Codd normal form</li>
+<li>Fifth normal form</li>
+</ol>
+<p>The first three forms are widely used in practice, while the fourth and fifth are less often used.</p>
+<p><strong>First normal form rules:</strong></p>
+<ul>
+<li>Eliminate repeating groups in individual tables.</li>
+<li>Create a separate table for each set of related data.</li>
+<li>Identify each set of related data with a primary key.</li>
+</ul>
+<p><strong>Second normal form rules:</strong></p>
+<ul>
+<li>Create separate tables for sets of values that apply to multiple records.</li>
+<li>Relate these tables with a foreign key.</li>
+</ul>
+<p><strong>Third normal form rules:</strong></p>
+<ul>
+<li>Eliminate fields that do not depend on the table’s key.</li>
+</ul>
+<p><em>Note: For examples of how to apply these forms, read <a href="https://www.postgresql.org/docs/9.1/indexes.html">“Description of the database normalization basics”</a> from Microsoft.</em></p>
+<h2 id="schema-design-tools">Schema design tools</h2>
+<p>Many people draw their relational database design schema with good ol’ pen and paper, or on a whiteboard. However, there are also lots of online tools created for this purpose if you’d like to use something easily exportable/shareable. Feel free to check out the ERD (short for “Entity Relationship Diagram”) tools below.</p>
+<p>Free Database Diagram (ERD) Design Tools:</p>
+<ul>
+<li><a href="https://www.postgresql.org/docs/8.1/performance-tips.html">Lucidchart</a></li>
+<li><a href="https://devcenter.heroku.com/articles/postgresql-indexes">draw.io</a></li>
+<li><a href="https://crate.io/a/sql-subquery-vs-left-join/">dbdiagram.io</a></li>
+<li><a href="http://www.postgresqltutorial.com/postgresql-subquery/">QuickDBD</a></li>
+</ul>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>Stages of Relational Database Design (RDD)</li>
+<li>Examples of schema depicting table relationships</li>
+<li>Normalization rules</li>
+<li>Schema drawing tools</li>
+</ul>
+<hr />
+<h1 id="using-sql-transactions">Using SQL Transactions</h1>
+<p>Transactions allow us to make changes to a SQL database in a consistent and durable way, and it’s a best practice to use them regularly.</p>
+<p>In this reading, we’ll cover what a transaction is and why we want to use it, as well as how to write explicit transactions.</p>
+<h2 id="what-is-a-transaction">What is a transaction?</h2>
+<p>A transaction is a single unit of work, which can contain multiple operations, performed on a database. According to the <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">PostgreSQL docs</a>, the important thing to note about a transaction is that “it bundles multiple steps into a single, all-or-nothing operation”. If any operation within the transaction fails, then the entire transaction fails. If all the operations succeed, then the entire transaction succeeds.</p>
+<h2 id="implicit-vs.-explicit-transactions">Implicit vs. explicit transactions</h2>
+<p>Every SQL statement is effectively a transaction. When you insert a new table row into a database table, for example, you are creating a transaction. The following <code>INSERT</code> statement is a transaction:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> hobbits(name,purpose)</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">VALUES</span>(<span class="st">&#39;Frodo&#39;</span>,<span class="st">&#39;Destroy the One Ring of power.&#39;</span>);</a></code></pre></div>
+<p>The above code is known as an <em>implicit</em> transaction. With an implicit transaction, changes to the database happen immediately, and we have no way to undo or roll back these changes. We can only make subsequent changes/ transactions.</p>
+<p>An <em>explicit</em> transaction, however, allows us to create save points and roll back to whatever point in time we choose. An explicit transaction begins with the command <code>BEGIN</code>, followed by the SQL statement, and then ends with either a <code>COMMIT</code> or <code>ROLLBACK</code>.</p>
+<h3 id="postgresql-transactional-commands">PostgreSQL transactional commands</h3>
+<p><strong><a href="https://www.postgresql.org/docs/9.1/indexes.html">BEGIN</a></strong> – Initiates a transaction block. All statements after a BEGIN command will be executed in a single transaction until an explicit COMMIT or ROLLBACK is given.</p>
+<p>Starting a transaction:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">INSERT</span> <span class="kw">INTO</span> hobbits(name,purpose)</a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">VALUES</span>(<span class="st">&#39;Frodo&#39;</span>,<span class="st">&#39;Destroy the One Ring of power.&#39;</span>);</a></code></pre></div>
+<p><strong><a href="https://www.postgresql.org/docs/8.1/performance-tips.html">COMMIT</a></strong> – Commits the current transaction. All changes made by the transaction become visible to others and are guaranteed to be durable if a crash occurs.</p>
+<p>Committing a transaction:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">INSERT</span> <span class="kw">INTO</span> hobbits(name,purpose)</a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="kw">VALUES</span>(<span class="st">&#39;Frodo&#39;</span>,<span class="st">&#39;Destroy the One Ring of power.&#39;</span>);</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">COMMIT</span>;</a></code></pre></div>
+<p><strong><a href="https://devcenter.heroku.com/articles/postgresql-indexes">ROLLBACK</a></strong> – Rolls back the current transaction and causes all the updates made by the transaction to be discarded. Can only undo transactions since the last COMMIT or ROLLBACK command was issued.</p>
+<p>Rolling back a transaction (i.e. abort all changes):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">INSERT</span> <span class="kw">INTO</span> hobbits(name,purpose)</a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="kw">VALUES</span>(<span class="st">&#39;Frodo&#39;</span>,<span class="st">&#39;Destroy the One Ring of power.&#39;</span>);</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">ROLLBACK</span>;</a></code></pre></div>
+<p><strong><a href="https://crate.io/a/sql-subquery-vs-left-join/">SAVEPOINT</a></strong> – Establishes a new save point within the current transaction. Allows all commands executed after the save point to be rolled back, restoring the transaction state to what it was at the time of the save point.</p>
+<p>Syntax to create save point: <code>SAVEPOINT savepoint_name;</code> Syntax to delete a save point: <code>RELEASE SAVEPOINT savepoint_name;</code></p>
+<p>Let’s say we had the following table called <code>fellowship</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Frodo</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>Samwise</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>Merry</td>
+<td>36</td>
+</tr>
+<tr class="even">
+<td>Pippin</td>
+<td>28</td>
+</tr>
+<tr class="odd">
+<td>Aragorn</td>
+<td>87</td>
+</tr>
+<tr class="even">
+<td>Boromir</td>
+<td>40</td>
+</tr>
+<tr class="odd">
+<td>Legolas</td>
+<td>2000</td>
+</tr>
+<tr class="even">
+<td>Gandalf</td>
+<td>2000</td>
+</tr>
+</tbody>
+</table>
+<p>We’ll create a transaction on this table containing a few operations. Inside the transaction, we’ll establish a save point that we’ll roll back to before committing.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="kw">DELETE</span> <span class="kw">FROM</span> fellowship</a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="kw">WHERE</span> age <span class="op">&gt;</span> <span class="dv">100</span>;</a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="kw">SAVEPOINT</span> first_savepoint;</a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="kw">DELETE</span> <span class="kw">FROM</span> fellowship</a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">WHERE</span> age <span class="op">&gt;</span> <span class="dv">80</span>;</a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="kw">DELETE</span> <span class="kw">FROM</span> fellowship</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="kw">WHERE</span> age <span class="op">&gt;=</span> <span class="dv">40</span>;</a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="kw">ROLLBACK</span> <span class="kw">TO</span> first_savepoint;</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="kw">COMMIT</span>;</a></code></pre></div>
+<p>Once our transaction is committed, our table would look like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Frodo</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>Samwise</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>Merry</td>
+<td>36</td>
+</tr>
+<tr class="even">
+<td>Pippin</td>
+<td>28</td>
+</tr>
+<tr class="odd">
+<td>Aragorn</td>
+<td>87</td>
+</tr>
+<tr class="even">
+<td>Boromir</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that the deletion that happened just prior to the savepoint creation was preserved.</p>
+<p><strong><a href="http://www.postgresqltutorial.com/postgresql-subquery/">SET TRANSACTION</a></strong> – Sets the characteristics of the current transaction. (_Note: To set characteristics for subsequent transactions in a session, use <code>SET SESSION   CHARACTERISTICS</code>.) The available transaction characteristics are the transaction isolation level, the transaction access mode (read/write or read-only), and the deferrable mode. (<em>Read more about these characteristics in the <a href="http://www.postgresqltutorial.com/postgresql-subquery/">PostgreSQL docs</a>.</em>)</p>
+<p>Example of setting transaction characteristics:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="kw">SET</span> <span class="kw">TRANSACTION</span> <span class="kw">READ</span> <span class="kw">ONLY</span>;</a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="op">..</span>.</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">COMMIT</span>;</a></code></pre></div>
+<h2 id="when-to-use-transactions-and-why">When to use transactions and why</h2>
+<p>It is generally a good idea to use explicit SQL transactions when making any updates, insertions, or deletions, to a database. However, you generally wouldn’t write an explicit transaction for a simple <code>SELECT</code> query.</p>
+<p>Transactions help you deal with crashes, failures, data consistency, and error handling. The ability to create savepoints and roll back to earlier points is tremendously helpful when doing multiple updates and helps maintain data integrity.</p>
+<p>Another benefit of transactions is the <em><strong>atomic</strong></em>, or “all-or-nothing”, nature of their operations. Because all of the operations in a transaction must succeed or else be aborted, partial or incomplete updates to the database will not be made. End-users will see only the final result of the transaction.</p>
+<h2 id="transaction-properties-acid">Transaction properties: ACID</h2>
+<p>A SQL transaction has four properties known collectively as “ACID” – which is an acronym for <em>Atomic, Consistent, Isolated, and Durable</em>. The following descriptions come from the IBM doc “<a href="https://www.postgresql.org/docs/9.1/using-explain.html">ACID properties of transactions</a>”:</p>
+<p><strong>Atomicity</strong> – All changes to data are performed as if they are a single operation. That is, all the changes are performed, or none of them are.</p>
+<p>For example, in an application that transfers funds from one account to another, the atomicity property ensures that, if a debit is made successfully from one account, the corresponding credit is made to the other account.</p>
+<p><strong>Consistency</strong> – Data is in a consistent state when a transaction starts and when it ends.</p>
+<p>For example, in an application that transfers funds from one account to another, the consistency property ensures that the total value of funds in both the accounts is the same at the start and end of each transaction.</p>
+<p><strong>Isolation</strong> – The intermediate state of a transaction is invisible to other transactions. As a result, transactions that run concurrently appear to be serialized.</p>
+<p>For example, in an application that transfers funds from one account to another, the isolation property ensures that another transaction sees the transferred funds in one account or the other, but not in both, nor in neither.</p>
+<p><strong>Durability</strong> – After a transaction successfully completes, changes to data persist and are not undone, even in the event of a system failure.</p>
+<p>For example, in an application that transfers funds from one account to another, the durability property ensures that the changes made to each account will not be reversed.</p>
+<h3 id="banking-transaction-example">Banking transaction example</h3>
+<p>Let’s look at an example from the <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">PostgreSQL Transactions doc</a> that demonstrates the ACID properties of a transaction. We have a bank database that contains customer account balances, as well as total deposit balances for branches. We want to record a payment of $100.00 from Alice’s account to Bob’s account, as well as update the total branch balances. The transaction would look like the code below.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="cf">BEGIN</span>;</a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb7-3" title="3">      <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Alice&#39;</span>;</a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="kw">UPDATE</span> branches <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb7-5" title="5">      <span class="kw">WHERE</span> name <span class="op">=</span> (<span class="kw">SELECT</span> branch_name <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Alice&#39;</span>);</a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Bob&#39;</span>;</a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="kw">UPDATE</span> branches <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="fl">100.00</span></a>
+<a class="sourceLine" id="cb7-9" title="9">      <span class="kw">WHERE</span> name <span class="op">=</span> (<span class="kw">SELECT</span> branch_name <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> name <span class="op">=</span> <span class="st">&#39;Bob&#39;</span>);</a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="kw">COMMIT</span>;</a></code></pre></div>
+<p>There are several updates happening above. The bank wants to make sure that all of the updates happen or none happen, in order to ensure that funds are transferred from the proper account (i.e. Alice’s account) to the proper recipient’s account (i.e. Bob’s account). If any of the updates fails, none of them will take effect. That is, if something goes wrong either with withdrawing funds from Alice’s account or transferring the funds into Bob’s account, then the entire transaction will be aborted and no changes will occur. This prevents Alice or Bob from seeing a transaction in their account summaries that isn’t supposed to be there.</p>
+<p>There are many other scenarios where we would want to use an atomic operation to ensure a successful end result. Transactions are ideal for such scenarios, and we should use them whenever they’re applicable.</p>
+<h2 id="helpful-links">Helpful links:</h2>
+<ul>
+<li><a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">PostgreSQL: Transactions</a></li>
+<li><a href="https://www.postgresql.org/docs/8.3/functions-subquery.html">PostgreSQL Tutorial: PostgreSQL Transaction</a></li>
+<li><a href="https://www.postgresql.org/docs/9.1/indexes.html">PostgreSQL: BEGIN</a></li>
+<li><a href="https://www.postgresql.org/docs/8.1/performance-tips.html">PostgreSQL: COMMIT</a></li>
+<li><a href="https://devcenter.heroku.com/articles/postgresql-indexes">PostgreSQL: ROLLBACK</a></li>
+<li><a href="https://crate.io/a/sql-subquery-vs-left-join/">PostgreSQL: SAVEPOINT</a></li>
+<li><a href="https://crate.io/a/sql-subquery-vs-left-join/">PostgreSQL: SET TRANSACTION</a></li>
+</ul>
+<hr />
+<h1 id="joins-vs.-subqueries">Joins vs. Subqueries</h1>
+<p>To select, or not to select? That is the query. We’ve barely scratched the surface of SQL queries. Previously, we went over how to write simple SQL queries using the <code>SELECT</code> statement, and we learned how to incorporate a <code>WHERE</code> clause into our queries.</p>
+<p>There’s a lot more we could add to our queries to get more refined results. In this reading, we’ll go over joins and subqueries and talk about when we would use one over the other.</p>
+<h2 id="what-is-a-join">What is a JOIN?</h2>
+<p>We briefly looked at the <code>JOIN</code> operation after we created foreign keys in a previous reading. The <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">JOIN operation</a> allows us to retrieve rows from multiple tables.</p>
+<p>To review, we had two tables: a “breeds” table and a “puppies” table. The two tables shared information through a foreign key. The foreign key <code>breed_id</code> lives on the “puppies” table and is related to the primary key <code>id</code> of the “breeds” table.</p>
+<p>We wrote the following <code>INNER JOIN</code> operation to get only the rows from the “puppies” table with a matching <code>breed_id</code> in the “friends” table:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">INNER</span> <span class="kw">JOIN</span> breeds <span class="kw">ON</span> (puppies.breed_id <span class="op">=</span> breeds.<span class="kw">id</span>);</a></code></pre></div>
+<p><a href="https://www.postgresql.org/docs/9.1/using-explain.html">INNER JOIN</a> can be represented as a Venn Diagram, which produces rows from Table A that match some information in Table B.</p>
+<figure>
+<img src="images/inner-join-venn-diagram.png" alt="inner-join-venn-diagram" /><figcaption>inner-join-venn-diagram</figcaption>
+</figure>
+<p>We got the following table rows back from our <code>INNER JOIN</code> on the “puppies” table. These rows represent the center overlapping area of the two circles. We can see that the data from “puppies” appears first, followed by the joined data from the “friends” table.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" title="1"> <span class="kw">id</span> |   name   | age_yrs | breed_id | weight_lbs | microchipped | <span class="kw">id</span> |        name</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">----+----------+---------+----------+------------+--------------+----+---------------------</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dv">1</span> | Cooper   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">18</span> | t            |  <span class="dv">8</span> | Miniature Schnauzer</a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dv">2</span> | Indie    |     <span class="fl">0.5</span> |        <span class="dv">9</span> |         <span class="dv">13</span> | t            |  <span class="dv">9</span> | Yorkshire Terrier</a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="dv">3</span> | Kota     |     <span class="fl">0.7</span> |        <span class="dv">1</span> |         <span class="dv">26</span> | f            |  <span class="dv">1</span> | Australian Shepherd</a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="dv">4</span> | Zoe      |     <span class="fl">0.8</span> |        <span class="dv">6</span> |         <span class="dv">32</span> | t            |  <span class="dv">6</span> | Korean Jindo</a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="dv">5</span> | Charley  |     <span class="fl">1.5</span> |        <span class="dv">2</span> |         <span class="dv">25</span> | f            |  <span class="dv">2</span> | Basset Hound</a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="dv">6</span> | Ladybird |     <span class="fl">0.6</span> |        <span class="dv">7</span> |         <span class="dv">20</span> | t            |  <span class="dv">7</span> | Labradoodle</a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="dv">7</span> | Callie   |     <span class="fl">0.9</span> |        <span class="dv">4</span> |         <span class="dv">16</span> | f            |  <span class="dv">4</span> | Corgi</a>
+<a class="sourceLine" id="cb9-10" title="10">  <span class="dv">8</span> | Jaxson   |     <span class="fl">0.4</span> |        <span class="dv">3</span> |         <span class="dv">19</span> | t            |  <span class="dv">3</span> | Beagle</a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="dv">9</span> | Leinni   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">25</span> | t            |  <span class="dv">8</span> | Miniature Schnauzer</a>
+<a class="sourceLine" id="cb9-12" title="12"> <span class="dv">10</span> | <span class="fu">Max</span>      |     <span class="fl">1.6</span> |        <span class="dv">5</span> |         <span class="dv">65</span> | f            |  <span class="dv">5</span> | German Shepherd</a></code></pre></div>
+<p>There are different types of <code>JOIN</code> operations. The ones you’ll use most often are:</p>
+<ol type="1">
+<li><strong>Inner Join</strong> – Returns a result set containing rows in the left table that match rows in the right table.</li>
+<li><strong>Left Join</strong> – Returns a result set containing all rows from the left table with the matching rows from the right table. If there is no match, the right side will have null values.</li>
+<li><strong>Right Join</strong> – Returns a result set containing all rows from the right table with matching rows from the left table. If there is no match, the left side will have null values.</li>
+<li><strong>Full Outer Join</strong> – Returns a result set containing all rows from both the left and right tables, with the matching rows from both sides where available. If there is no match, the missing side contains null values.</li>
+<li><strong>Self-Join</strong> – A self-join is a query in which a table is joined to itself. Self-joins are useful for comparing values in a column of rows within the same table.</li>
+</ol>
+<p>(<em>See this tutorial doc on <a href="https://www.postgresql.org/docs/9.1/indexes.html">PostgreSQL Joins</a> for more information on the different <code>JOIN</code> operations.</em>)</p>
+<h2 id="what-is-a-subquery">What is a subquery?</h2>
+<p>A subquery is essentially a <code>SELECT</code> statement nested inside another <code>SELECT</code> statement. A subquery can return a single (“scalar”) value or multiple rows.</p>
+<h3 id="single-value-subquery">Single-value subquery</h3>
+<p>Let’s see an example of how to use a subquery to return a single value. Take the “puppies” table from before. We had a column called <code>age_yrs</code> in that table (see below).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1">postgres<span class="op">=</span># <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> puppies;</a>
+<a class="sourceLine" id="cb10-2" title="2"> <span class="kw">id</span> |   name   | age_yrs | breed_id | weight_lbs | microchipped</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">----+----------+---------+----------+------------+--------------</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dv">1</span> | Cooper   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">18</span> | t</a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="dv">2</span> | Indie    |     <span class="fl">0.5</span> |        <span class="dv">9</span> |         <span class="dv">13</span> | t</a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="dv">3</span> | Kota     |     <span class="fl">0.7</span> |        <span class="dv">1</span> |         <span class="dv">26</span> | f</a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="dv">4</span> | Zoe      |     <span class="fl">0.8</span> |        <span class="dv">6</span> |         <span class="dv">32</span> | t</a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="dv">5</span> | Charley  |     <span class="fl">1.5</span> |        <span class="dv">2</span> |         <span class="dv">25</span> | f</a>
+<a class="sourceLine" id="cb10-9" title="9">  <span class="dv">6</span> | Ladybird |     <span class="fl">0.6</span> |        <span class="dv">7</span> |         <span class="dv">20</span> | t</a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="dv">7</span> | Callie   |     <span class="fl">0.9</span> |        <span class="dv">4</span> |         <span class="dv">16</span> | f</a>
+<a class="sourceLine" id="cb10-11" title="11">  <span class="dv">8</span> | Jaxson   |     <span class="fl">0.4</span> |        <span class="dv">3</span> |         <span class="dv">19</span> | t</a>
+<a class="sourceLine" id="cb10-12" title="12">  <span class="dv">9</span> | Leinni   |     <span class="fl">1.0</span> |        <span class="dv">8</span> |         <span class="dv">25</span> | t</a>
+<a class="sourceLine" id="cb10-13" title="13"> <span class="dv">10</span> | <span class="fu">Max</span>      |     <span class="fl">1.6</span> |        <span class="dv">5</span> |         <span class="dv">65</span> | f</a>
+<a class="sourceLine" id="cb10-14" title="14">(<span class="dv">10</span> <span class="kw">rows</span>)</a></code></pre></div>
+<p>We’ll use the <a href="https://www.postgresql.org/docs/8.1/performance-tips.html">PostgreSQL aggregate function</a> <code>AVG</code> to get an average puppy age.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">AVG</span> (age_yrs)</a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  puppies;</a></code></pre></div>
+<p>Assuming our previous “puppies” table still exists in our database, if we entered the above statement into psql we’d get an <em><strong>average age of 0.9</strong></em>. (<em>Note: Try it out yourself in psql! Refer to the reading “Retrieving Rows From A Table Using SELECT” if you need help remembering how we set up the “puppies” table.</em>)</p>
+<p>Let’s say that we wanted to find all of the puppies that are older than the average age of 0.9. We could write the following query:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  name,</a>
+<a class="sourceLine" id="cb12-3" title="3">  age_yrs,</a>
+<a class="sourceLine" id="cb12-4" title="4">  breed</a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb12-6" title="6">  puppies</a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb12-8" title="8">  age_yrs <span class="op">&gt;</span> <span class="fl">0.9</span>;</a></code></pre></div>
+<p>In the above query, we compared <code>age_yrs</code> to an actual number (0.9). However, as more puppies get added to our table, the average age could change at any time. To make our statement more dynamic, we can plug in the query we wrote to find the average age into another statement as a <em>subquery</em> (surrounded by parentheses).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  puppies.name,</a>
+<a class="sourceLine" id="cb13-3" title="3">  age_yrs,</a>
+<a class="sourceLine" id="cb13-4" title="4">  breeds.name</a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb13-6" title="6">  puppies</a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="kw">INNER</span> <span class="kw">JOIN</span></a>
+<a class="sourceLine" id="cb13-8" title="8">  breeds <span class="kw">ON</span> (breeds.<span class="kw">id</span> <span class="op">=</span> puppies.breed_id)</a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb13-10" title="10">  age_yrs <span class="op">&gt;</span> (</a>
+<a class="sourceLine" id="cb13-11" title="11">    <span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb13-12" title="12">      <span class="fu">AVG</span> (age_yrs)</a>
+<a class="sourceLine" id="cb13-13" title="13">    <span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb13-14" title="14">      puppies</a>
+<a class="sourceLine" id="cb13-15" title="15">  );</a></code></pre></div>
+<p>We should get the following table rows, which include only the puppies older than 9 months:</p>
+<pre class="shell"><code>  name   | age_yrs |        breed
+---------+---------+---------------------
+ Cooper  |     1.0 | Miniature Schnauzer
+ Charley |     1.5 | Basset Hound
+ Leinni  |     1.0 | Miniature Schnauzer
+ Max     |     1.6 | German Shepherd</code></pre>
+<h3 id="multiple-row-subquery">Multiple-row subquery</h3>
+<p>We could also write a subquery that returns multiple rows.</p>
+<p>In the reading “Creating A Table In An Existing PostgreSQL Database”, we created a “friends” table. In “Foreign Keys And The JOIN Operation”, we set up a primary key in the “puppies” table that is a foreign key in the “friends” table – <code>puppy_id</code>. We’ll use this ID in our subquery and outer query.</p>
+<p><strong>“friends” table</strong></p>
+<pre class="shell"><code>id | first_name | last_name | puppy_id
+----+------------+-----------+----------
+  1 | Amy        | Pond      |        4
+  2 | Rose       | Tyler     |        5
+  3 | Martha     | Jones     |        6
+  4 | Donna      | Noble     |        7
+  5 | River      | Song      |        8</code></pre>
+<p>Let’s say we wanted to find all the puppies that are younger than 6 months old.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">SELECT</span> puppy_id</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  age_yrs <span class="op">&lt;</span> <span class="fl">0.6</span>;</a></code></pre></div>
+<p>This would return two rows:</p>
+<pre class="shell"><code>puppy_id
+----------
+        2
+        8
+(2 rows)</code></pre>
+<p>Now we want to use the above statement as a subquery (inside parentheses) in another query. You’ll notice we’re using a <code>WHERE</code> clause with the <a href="https://devcenter.heroku.com/articles/postgresql-indexes">IN</a> operator to check if the <code>puppy_id</code> from the “friends” table meets the conditions in the subquery.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">FROM</span> friends</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb18-4" title="4">  puppy_id <span class="kw">IN</span> (</a>
+<a class="sourceLine" id="cb18-5" title="5">    <span class="kw">SELECT</span> puppy_id</a>
+<a class="sourceLine" id="cb18-6" title="6">    <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb18-7" title="7">    <span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb18-8" title="8">      age_yrs <span class="op">&lt;</span> <span class="fl">0.6</span></a>
+<a class="sourceLine" id="cb18-9" title="9">  );</a></code></pre></div>
+<p>We should get just one row back. River Song has a puppy younger than 6 months old.</p>
+<pre class="shell"><code> id | first_name | last_name | puppy_id
+----+------------+-----------+----------
+  5 | River      | Song      |        8
+(1 row)</code></pre>
+<h2 id="using-joins-vs.-subqueries">Using joins vs. subqueries</h2>
+<p>We can use either a <code>JOIN</code> operation or a subquery to filter for the same information. Both methods can be used to get info from multiple tables. Take the query/subquery from above:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">FROM</span> friends</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  puppy_id <span class="kw">IN</span>  (</a>
+<a class="sourceLine" id="cb20-5" title="5">    <span class="kw">SELECT</span> puppy_id</a>
+<a class="sourceLine" id="cb20-6" title="6">    <span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb20-7" title="7">    <span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb20-8" title="8">      age_yrs <span class="op">&lt;</span> <span class="fl">0.6</span></a>
+<a class="sourceLine" id="cb20-9" title="9">  );</a></code></pre></div>
+<p>Which produced the following result:</p>
+<pre class="shell"><code> id | first_name | last_name | puppy_id
+----+------------+-----------+----------
+  5 | River      | Song      |        8
+(1 row)</code></pre>
+<p>Instead of using a <code>WHERE</code> clause with a subquery, we could use a <code>JOIN</code> operation:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">FROM</span> friends</a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="kw">INNER</span> <span class="kw">JOIN</span> puppies <span class="kw">ON</span> (puppies.puppy_id <span class="op">=</span> friends.puppy_id)</a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb22-5" title="5">  puppies.age_yrs <span class="op">&lt;</span> <span class="fl">0.6</span>;</a></code></pre></div>
+<p>Again, we’d get back one result, but because we used an <code>INNER JOIN</code> we have information from both the “puppies” and “friends” tables.</p>
+<pre class="shell"><code>id | first_name | last_name | puppy_id |  name  | age_yrs | breed  | weight_lbs | microchipped | puppy_id
+----+------------+-----------+----------+--------+---------+--------+------------+--------------+----------
+  5 | River      | Song      |        8 | Jaxson |     0.4 | Beagle |         19 | t            |        8
+(1 row)</code></pre>
+<h3 id="should-i-use-a-join-or-a-subquery">Should I use a JOIN or a subquery?</h3>
+<p>As stated earlier, we could use either a JOIN operation or a subquery to filter for table rows. However, you might want to think about whether using a JOIN or a subquery is more appropriate for retrieving data.</p>
+<p>A JOIN operation is ideal when you want to combine rows from one or more tables based on a match condition. Subqueries work great when you’re returning a single value. When you’re returning multiple rows, you could opt for a subquery or a JOIN.</p>
+<p>Executing a query using a JOIN could potentially be faster than executing a subquery that would return the same data. (A subquery will execute once for each row returned in the outer query, whereas the <code>INNER JOIN</code> only has to make one pass through the data.) However, this isn’t always the case. Performance depends on the size of your data, what you’re filtering for, and how the server optimizes the query. With smaller datasets, the difference in performance of a JOIN and subquery is imperceptible. However, there are use cases where a subquery would improve performance.</p>
+<p>(<em>See this article for more info: <a href="https://crate.io/a/sql-subquery-vs-left-join/">When is a SQL Subquery 260x Faster than a Left Join?</a></em>)</p>
+<p>We can use the the <a href="http://www.postgresqltutorial.com/postgresql-explain/">EXPLAIN</a> statement to see runtime statistics of our queries that help with debugging slow queries. (We’ll get into this more later!)</p>
+<h2 id="helpful-links-1">Helpful links:</h2>
+<ul>
+<li>PostgreSQL Tutorial: <a href="https://www.postgresql.org/docs/9.1/indexes.html">PostgreSQL Joins</a></li>
+<li>PostgreSQL Tutorial: <a href="http://www.postgresqltutorial.com/postgresql-subquery/">PostgreSQL Subquery</a></li>
+<li>PostgreSQL Docs: <a href="https://www.postgresql.org/docs/8.3/functions-subquery.html">Subquery Expressions</a></li>
+<li>Essential SQL: <a href="https://www.essentialsql.com/what-is-the-difference-between-a-join-and-subquery/">Subqueries versus Joins</a></li>
+<li>Essential SQL: <a href="https://www.essentialsql.com/get-ready-to-learn-sql-server-20-using-subqueries-in-the-select-statement/">Using Subqueries with the Select Statement</a></li>
+</ul>
+<hr />
+<h1 id="postgresql-indexes">PostgreSQL Indexes</h1>
+<p>PostgreSQL indexes can help us optimize our queries for faster performance. In this reading, we’ll learn how to create an index, when to use an index, and when to avoid using them.</p>
+<h2 id="what-is-a-postgresql-index">What is a PostgreSQL index?</h2>
+<p>A PostgreSQL index works like an index in the back of a book. It points to information contained elsewhere and can be a faster method of looking up the information we want.</p>
+<p>A book index contains a list of references with page numbers. Instead of having to scan all the pages of the book to find the places where specific information appears, a reader can simply check the index. In similar fashion, PostgreSQL indexes, which are special lookup tables, let us make faster database queries.</p>
+<p>Let’s say we had the following table:</p>
+<table>
+<thead>
+<tr class="header">
+<th>addresses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>address_id</td>
+</tr>
+<tr class="even">
+<td>address</td>
+</tr>
+<tr class="odd">
+<td>address2</td>
+</tr>
+<tr class="even">
+<td>city_id</td>
+</tr>
+<tr class="odd">
+<td>postal_code</td>
+</tr>
+<tr class="even">
+<td>phone_number</td>
+</tr>
+</tbody>
+</table>
+<p>And we made a query to the database like the following:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> addresses <span class="kw">WHERE</span> phone_number <span class="op">=</span> <span class="st">&#39;5556667777&#39;</span>;</a></code></pre></div>
+<p>The above query would scan every row of the “addresses” table to find matching rows based on the given phone number. If “addresses” is a large table (let’s say with millions of entries), and we only expect to get a small number of results back (one row, or a few rows), then such a query would be an inefficient way to retrieve data. Instead of scanning every row, we could create an index for the phone column for faster data retrieval.</p>
+<h2 id="how-to-create-an-index">How to create an index</h2>
+<p>To create a <a href="https://www.postgresql.org/docs/9.1/sql-createindex.html">PostgreSQL index</a>, use the following syntax:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (column_name);</a></code></pre></div>
+<p>We can create a phone number index for the above “addresses” table with the following:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number);</a></code></pre></div>
+<p>You can delete an index using the <code>DROP INDEX</code> command:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">DROP</span> <span class="kw">INDEX</span> addresses_phone_index;</a></code></pre></div>
+<p>After an index has been created, the system will take care of the rest – it will update an index when the table is modified and use the index in queries when it improves performance over a full table scan.</p>
+<h3 id="types-of-indexes">Types of indexes</h3>
+<p>PostgreSQL provides several index types: B-tree, Hash, GiST and GIN. The CREATE INDEX command creates B-tree indexes by default, which fit the most common situations. While it’s good to know other index types exist, you’ll probably find yourself using the default B-tree most often.</p>
+<p><strong>Single-Column Indexes</strong> Uses only one table column.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (column_name);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number);</a></code></pre></div>
+<p><strong>Multiple-Column Indexes</strong> Uses more than one table column.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name (col1_name, col2_name);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_addresses_city_post_code <span class="kw">ON</span> table_name (city_id, postal_code);</a></code></pre></div>
+<p><strong>Partial Indexes</strong> Uses subset of a table defined by a conditional expression.</p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name <span class="kw">WHERE</span> (conditional_expression);</a></code></pre></div>
+<p>Addresses Example:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> addresses_phone_index <span class="kw">ON</span> addresses (phone_number) <span class="kw">WHERE</span> (city_id <span class="op">=</span> <span class="dv">2</span>);</a></code></pre></div>
+<p><strong>Note</strong>: Check out <a href="https://www.postgresql.org/docs/9.1/indexes.html">Chapter 11 on Indexes</a> in the PostgreSQL docs for more about types of indexes.</p>
+<h2 id="when-to-use-an-index">When to use an index</h2>
+<p>Indexes are intended to enhance database performance and are generally thought to be a faster data retrieval method than a sequential (or row-by-row) table scan. However, there are instances where using an index would not improve efficiency, such as the following:</p>
+<ul>
+<li>When working with a relatively small table (i.e. not a lot of rows)</li>
+<li>When a table has frequent, large-batch update or insert operations</li>
+<li>When working with columns that contain many NULL values</li>
+<li>When working with columns that are frequently manipulated</li>
+</ul>
+<p>An important thing to note about indexes is that, while they can optimize READ (i.e. table query) speed, they can also hamper WRITE (i.e. table updates/insertions) speed. The latter’s performance is affected due to the system having to spend time updating indexes whenever a change or insertion is made to the table.</p>
+<p>The system optimizes database performance and decides whether to use an index in a query or to perform a sequential table scan, but we can analyze query performance ourselves to debug slow queries using <code>EXPLAIN</code> and <code>EXPLAIN ANALYZE</code>.</p>
+<p>Here is an example of using <code>EXPLAIN</code> from the <a href="https://www.postgresql.org/docs/9.1/using-explain.html">PostgreSQL docs</a>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> tenk1;</a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3">                         <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb34-4" title="4"><span class="co">-------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb34-5" title="5"> Seq <span class="kw">Scan</span> <span class="kw">on</span> tenk1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">458.00</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">10000</span> width<span class="op">=</span><span class="dv">244</span>)</a></code></pre></div>
+<p>In the QUERY PLAN above, we can see that a sequential table scan (<code>Seq Scan</code>) was performed on the table called “tenk1”. In parentheses, we see performance information:</p>
+<ul>
+<li>Estimated start-up cost (or time expended before the scan can start): 0.00</li>
+<li>Estimated total cost: 458.00</li>
+<li>Estimated number of rows output: 10000</li>
+<li>Estimated average width (in bytes) of rows: 244</li>
+</ul>
+<p>It’s important to note that, although we might mistake the number next to <code>cost</code> for milliseconds, <code>cost</code> is not measured in any particular unit and is an arbitrary measurement relatively based on other query costs.</p>
+<p>If we use the <code>ANALYZE</code> keyword after <code>EXPLAIN</code> on a <code>SELECT</code> statement, we can get more information about query performance:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="kw">FROM</span> tenk1 t1, tenk2 t2</a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="kw">WHERE</span> t1.unique1 <span class="op">&lt;</span> <span class="dv">100</span> <span class="kw">AND</span> t1.unique2 <span class="op">=</span> t2.unique2;</a>
+<a class="sourceLine" id="cb35-4" title="4"></a>
+<a class="sourceLine" id="cb35-5" title="5">                                                            <span class="kw">QUERY</span> <span class="kw">PLAN</span></a>
+<a class="sourceLine" id="cb35-6" title="6"><span class="co">----------------------------------------------------------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb35-7" title="7"> <span class="kw">Nested</span> <span class="cf">Loop</span>  (<span class="kw">cost</span><span class="op">=</span><span class="dv">2</span>.<span class="dv">37</span><span class="op">..</span><span class="fl">553.11</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">488</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">1</span>.<span class="dv">392</span><span class="op">..</span><span class="fl">12.700</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb35-8" title="8">   <span class="op">-&gt;</span>  <span class="kw">Bitmap</span> <span class="kw">Heap</span> <span class="kw">Scan</span> <span class="kw">on</span> tenk1 t1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">2</span>.<span class="dv">37</span><span class="op">..</span><span class="fl">232.35</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">244</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">878</span><span class="op">..</span><span class="fl">2.367</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb35-9" title="9">         Recheck Cond: (unique1 <span class="op">&lt;</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb35-10" title="10">         <span class="op">-&gt;</span>  <span class="kw">Bitmap</span> <span class="kw">Index</span> <span class="kw">Scan</span> <span class="kw">on</span> tenk1_unique1  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">2.37</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">106</span> width<span class="op">=</span><span class="dv">0</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">546</span><span class="op">..</span><span class="fl">0.546</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">100</span> loops<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb35-11" title="11">               <span class="kw">Index</span> Cond: (unique1 <span class="op">&lt;</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb35-12" title="12">   <span class="op">-&gt;</span>  <span class="kw">Index</span> <span class="kw">Scan</span> <span class="kw">using</span> tenk2_unique2 <span class="kw">on</span> tenk2 t2  (<span class="kw">cost</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">00</span><span class="op">..</span><span class="fl">3.01</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">1</span> width<span class="op">=</span><span class="dv">244</span>) (actual <span class="dt">time</span><span class="op">=</span><span class="dv">0</span>.<span class="dv">067</span><span class="op">..</span><span class="fl">0.078</span> <span class="kw">rows</span><span class="op">=</span><span class="dv">1</span> loops<span class="op">=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb35-13" title="13">         <span class="kw">Index</span> Cond: (unique2 <span class="op">=</span> t1.unique2)</a>
+<a class="sourceLine" id="cb35-14" title="14"> Total runtime: <span class="fl">14.452</span> ms</a></code></pre></div>
+<p>We can see in the QUERY PLAN above that there are other types of scans happening: Bitmap Heap Scan, Bitmap Index Scan, and Index Scan. We know that an index has been created, and the system is using it to scan for results instead of performing a sequential scan. At the bottom, we also have a total runtime of 14.42 ms, which is pretty fast.</p>
+<h2 id="helpful-links-2">Helpful links:</h2>
+<ul>
+<li><a href="https://www.postgresql.org/docs/9.1/indexes.html">PostgreSQL docs: Indexes</a></li>
+<li><a href="https://www.postgresql.org/docs/8.1/performance-tips.html">PostgreSQL docs: Performance Tips</a></li>
+<li><a href="https://devcenter.heroku.com/articles/postgresql-indexes">Heroku DevCenter: Efficient Use of PostgreSQL Indexes</a></li>
+</ul>
+<h2 id="what-we-learned-1">What we learned:</h2>
+<ul>
+<li>How to create a PostgreSQL index</li>
+<li>Types of indexes</li>
+<li>Use cases for indexes and when to avoid them</li>
+<li>How to use <code>EXPLAIN</code> to analyze query performance</li>
+</ul>
+<hr />
+<h1 id="node-postgres-and-prepared-statements">Node-Postgres And Prepared Statements</h1>
+<p>The library <a href="https://node-postgres.com">node-postgres</a> is, not too surprisingly, the library that Node.js applications use to connect to a database managed by a PostgreSQL RDBMS. The applications that you deal with will use this library to make connections to the database and get rows returned from your SQL <code>SELECT</code> statements.</p>
+<h2 id="connecting">Connecting</h2>
+<p>The <strong>node-postgres</strong> library provides two ways to connect to it. You can use a single <code>Client</code> object, or you can use a <code>Pool</code> of <code>Client</code> objects. Normally, you want to use a <code>Pool</code> because creating and opening single connections to any database server is a “costly” operation in terms of CPU and network resources. A <code>Pool</code> creates a group of those <code>Client</code> connections and lets your code use them whenever it needs to.</p>
+<p>To use a <code>Pool</code>, you specify any specific portions of the following connection parameters that you need. The default values for each parameter is listed with each parameter.</p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 42%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Connection parameter</th>
+<th>What it indicates</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>user</td>
+<td>The name of the user you want to connect as</td>
+<td>The user name that runs the application</td>
+</tr>
+<tr class="even">
+<td>password</td>
+<td>The password to use</td>
+<td>The password set in your configuration</td>
+</tr>
+<tr class="odd">
+<td>database</td>
+<td>The name of the database to connect to</td>
+<td>The user’s database</td>
+</tr>
+<tr class="even">
+<td>port</td>
+<td>The port over which to connect</td>
+<td>5432</td>
+</tr>
+<tr class="odd">
+<td>host</td>
+<td>The name of the server to connect to</td>
+<td>localhost</td>
+</tr>
+</tbody>
+</table>
+<p>Normally, you will only override the user and password fields, and sometimes the database if it doesn’t match the user’s name. You do that by instantiating a new <code>Pool</code> object and passing in an object with those key/value pairs.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-2" title="2"></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb36-4" title="4">  <span class="dt">user</span><span class="op">:</span> <span class="st">&#39;application_user&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb36-5" title="5">  <span class="dt">password</span><span class="op">:</span> <span class="st">&#39;iy7qTEcZ&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Once you have an instance of the <code>Pool</code> class, you can use the <code>query</code> method on it to run queries. (The <code>query</code> method returns a Promise, so it’s nice to just use <code>await</code> for it to finish.)</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(<span class="vs">`</span></a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="vs">  SELECT id, name, age_yrs</span></a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-5" title="5"></a>
+<a class="sourceLine" id="cb37-6" title="6"><span class="va">console</span>.<span class="at">log</span>(results)<span class="op">;</span></a></code></pre></div>
+<p>When this runs, you will get an object that contains a property named “rows”. The value of “rows” will be an array of the rows that match the statement. Here’s an example output from the code above.</p>
+<pre><code>{
+  rows:
+    [ { id: 1, name: &#39;Cooper&#39;, age_yrs: &#39;1.0&#39; },
+      { id: 2, name: &#39;Indie&#39;, age_yrs: &#39;0.5&#39; },
+      { id: 3, name: &#39;Kota&#39;, age_yrs: &#39;0.7&#39; },
+      { id: 4, name: &#39;Zoe&#39;, age_yrs: &#39;0.8&#39; },
+      { id: 5, name: &#39;Charley&#39;, age_yrs: &#39;1.5&#39; },
+      { id: 6, name: &#39;Ladybird&#39;, age_yrs: &#39;0.6&#39; },
+      { id: 7, name: &#39;Callie&#39;, age_yrs: &#39;0.9&#39; },
+      { id: 8, name: &#39;Jaxson&#39;, age_yrs: &#39;0.4&#39; },
+      { id: 9, name: &#39;Leinni&#39;, age_yrs: &#39;1.0&#39; },
+      { id: 10, name: &#39;Max&#39;, age_yrs: &#39;1.6&#39; } ],
+}</code></pre>
+<p>You can see that the “rows” property contains an array of objects. Each object represents a row in the “puppies” table that matches the query. Each object has a property named after the column selected in the <code>SELECT</code> statement. The query read <code>SELECT id, name, age_yrs</code> and each object has an “id”, “name”, and an “age_yrs” property.</p>
+<p>You can then use that array to loop over and do things with it. For example, you could print them to the console like this:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb39-1" title="1"><span class="cf">for</span> (<span class="kw">let</span> row <span class="kw">of</span> <span class="va">results</span>.<span class="at">rows</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb39-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">row</span>.<span class="at">id</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">row</span>.<span class="at">name</span><span class="sc">}</span><span class="vs"> is </span><span class="sc">${</span><span class="va">row</span>.<span class="at">age_yrs</span><span class="sc">}</span><span class="vs"> old&lt;/li&gt;`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb39-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>Which would show</p>
+<pre><code>1. Cooper is 1.0 years old
+2. Indie is 0.5 years old
+3. Kots is 0.7 years old
+...</code></pre>
+<h2 id="prepared-statement">Prepared Statement</h2>
+<p>Prepared statements are SQL statements that have parameters in them that you can use to substitute values. The parameters are normally part of the <code>WHERE</code> clause in all statements. You will also use then in the <code>SET</code> portion of <code>UPDATE</code> statements and the <code>VALUES</code> portion of <code>INSERT</code> statements.</p>
+<p>For example, say your application collected the information to create a new row in the puppy table by asking for the puppy’s name, age, breed, weight, and if it was microchipped. You’d have those values stored in variables somewhere. You’d want to create an <code>INSERT</code> statement that inserts the data from those variables into a SQL statement that the RDBMS could then execute to insert a new row.</p>
+<p>Think about what a generic <code>INSERT</code> statement would look like. It would have to have the</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> puppies (name, age_yrs, breed, weight_lbs, microchipped)</a></code></pre></div>
+<p>portion of the statement. The part that would change with each time you inserted would be the specific values that would go into the <code>VALUES</code> section of the <code>INSERT</code> statement. With prepared statements, you use <em>positional parameters</em> to act as placeholders for the actual values that you will provide the query.</p>
+<p>For example, the generic <code>INSERT</code> statement from above would look like this.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> puppies (name, age_yrs, breed, weight_lbs, microchipped)</a>
+<a class="sourceLine" id="cb42-2" title="2"><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>, $<span class="dv">3</span>, $<span class="dv">4</span>, $<span class="dv">5</span>);</a></code></pre></div>
+<p>Each of the “$” placeholders is a positional argument for the parameters that you pass in. That means, the value that pass in for the first parameter will be put where the “$1” placeholder is, which is the value for the “name” of the puppy. The “$2” corresponds to the “age_yrs” column, so it should contain the age of the puppy. This continues for the third, fourth, and fifth parameters, as well.</p>
+<p>Assume that in your code, you have the variables <code>name</code>, <code>age</code>, <code>breedName</code>, <code>weight</code>, and <code>isMicrochipped</code> containing the values that the user provided for the new puppy. Then, your use of the <code>query</code> method will now include another argument, the values that you want to pass in inside an array.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb43-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(<span class="vs">`</span></a>
+<a class="sourceLine" id="cb43-2" title="2"><span class="vs">  INSERT INTO puppies (name, age_yrs, breed, weight_lbs, microchipped)</span></a>
+<a class="sourceLine" id="cb43-3" title="3"><span class="vs">  VALUES ($1, $2, $3, $4, $5);</span></a>
+<a class="sourceLine" id="cb43-4" title="4"><span class="vs">`</span><span class="op">,</span> [name<span class="op">,</span> age<span class="op">,</span> breedName<span class="op">,</span> weight<span class="op">,</span> isMicrochipped])<span class="op">;</span></a></code></pre></div>
+<p>You can see that the variable <code>name</code> is in the first position of the array, so it will be substituted into the placeholder “$1”. The <code>age</code> variable is in the second position of the array, so it will be substituted into the “$2” placeholder.</p>
+<p>The full documentation for how to use queries with <strong>node-postgres</strong> can be found on the <a href="https://node-postgres.com/features/queries">Queries</a> documentation page on their Web site.</p>
+<h2 id="try-it-out-for-yourself">Try it out for yourself</h2>
+<p>Make sure you have a database with a table that has data in it. If you don’t, create a new database and run the following SQL.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> puppies (</a>
+<a class="sourceLine" id="cb44-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
+<a class="sourceLine" id="cb44-3" title="3">  name <span class="dt">VARCHAR</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb44-4" title="4">  age_yrs <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb44-5" title="5">  breed <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb44-6" title="6">  weight_lbs <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb44-7" title="7">  microchipped <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span></a>
+<a class="sourceLine" id="cb44-8" title="8">);</a>
+<a class="sourceLine" id="cb44-9" title="9"></a>
+<a class="sourceLine" id="cb44-10" title="10"><span class="kw">insert</span> <span class="kw">into</span> puppies(name, age_yrs, breed, weight_lbs, microchipped)</a>
+<a class="sourceLine" id="cb44-11" title="11"><span class="kw">values</span></a>
+<a class="sourceLine" id="cb44-12" title="12">(<span class="st">&#39;Cooper&#39;</span>, <span class="dv">1</span>, <span class="st">&#39;Miniature Schnauzer&#39;</span>, <span class="dv">18</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb44-13" title="13">(<span class="st">&#39;Indie&#39;</span>, <span class="fl">0.5</span>, <span class="st">&#39;Yorkshire Terrier&#39;</span>, <span class="dv">13</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb44-14" title="14">(<span class="st">&#39;Kota&#39;</span>, <span class="fl">0.7</span>, <span class="st">&#39;Australian Shepherd&#39;</span>, <span class="dv">26</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb44-15" title="15">(<span class="st">&#39;Zoe&#39;</span>, <span class="fl">0.8</span>, <span class="st">&#39;Korean Jindo&#39;</span>, <span class="dv">32</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb44-16" title="16">(<span class="st">&#39;Charley&#39;</span>, <span class="fl">1.5</span>, <span class="st">&#39;Basset Hound&#39;</span>, <span class="dv">25</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb44-17" title="17">(<span class="st">&#39;Ladybird&#39;</span>, <span class="fl">0.6</span>, <span class="st">&#39;Labradoodle&#39;</span>, <span class="dv">20</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb44-18" title="18">(<span class="st">&#39;Callie&#39;</span>, <span class="fl">0.9</span>, <span class="st">&#39;Corgi&#39;</span>, <span class="dv">16</span>, <span class="st">&#39;no&#39;</span>),</a>
+<a class="sourceLine" id="cb44-19" title="19">(<span class="st">&#39;Jaxson&#39;</span>, <span class="fl">0.4</span>, <span class="st">&#39;Beagle&#39;</span>, <span class="dv">19</span>, <span class="st">&#39;yes&#39;</span>),</a>
+<a class="sourceLine" id="cb44-20" title="20">(<span class="st">&#39;Leinni&#39;</span>, <span class="dv">1</span>, <span class="st">&#39;Miniature Schnauzer&#39;</span>, <span class="dv">25</span>, <span class="st">&#39;yes&#39;</span> ),</a>
+<a class="sourceLine" id="cb44-21" title="21">(<span class="st">&#39;Max&#39;</span>, <span class="fl">1.6</span>, <span class="st">&#39;German Shepherd&#39;</span>, <span class="dv">65</span>, <span class="st">&#39;no&#39;</span>);</a></code></pre></div>
+<p>Now that you have ten rows in the “puppies” table of a database, you can create a simple Node.js project to access it.</p>
+<p>Create a new directory somewhere that’s not part of an existing project. Run <code>npm init -y</code> to initialize the <strong>package.json</strong> file. Then, run <code>npm install pg</code> to install the library from this section. (Why is the name of the library “node-postgres” but you install “pg”? Dunno.) Finally, open Visual Studio Code for the current directory with <code>code .</code>.</p>
+<p>Create a new file named <strong>sql-test.js</strong>.</p>
+<p>The first thing you need to do is import the <code>Pool</code> class from the <strong>node-postgres</strong> library. The name of the library in the <strong>node_modules</strong> directory is “pg”. That line of code looks like this and can be found all over the <a href="https://node-postgres.com">node-postgres</a> documentation.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>Now, write some SQL that will select all of the records from the “puppies” table. (This is assuming you want to select puppies. If you’re using a different table with different data, write the appropriate SQL here.)</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb46-2" title="2"></a>
+<a class="sourceLine" id="cb46-3" title="3"><span class="kw">const</span> allPuppies <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb46-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb46-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb46-6" title="6"><span class="vs">`</span><span class="op">;</span></a></code></pre></div>
+<p>You will now use that with a new <code>Pool</code> object. You will need to know the name of the database that the “puppies” table is in (or whatever database you want to connect to).</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb47-2" title="2"></a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="kw">const</span> allPuppies <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb47-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb47-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb47-6" title="6"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb47-7" title="7"></a>
+<a class="sourceLine" id="cb47-8" title="8"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb47-9" title="9">  <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;«database name»&#39;</span></a>
+<a class="sourceLine" id="cb47-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Of course, replace “«database name»” with the name of your database. Otherwise, when you run it, you will see this error message.</p>
+<pre><code>UnhandledPromiseRejectionWarning: error: database &quot;«database name»&quot; does not exist</code></pre>
+<p>This will, by default, connect to “localhost” on port “5432” with your user credentials because you did not specify any other parameters.</p>
+<p>Once you have the pool, you can execute the query that you have in <code>allPuppies</code>. Remember that the <code>query</code> method returns a Promise. This code wraps the call to <code>query</code> in an <code>async function</code> so that it can use the <code>await</code> keyword for simplicity’s sake. Then, it prints out the rows that it fetched to the console. Finally, it calls <code>end</code> on the connection pool object to tell <strong>node-postgres</strong> to close all the connections and quit. Otherwise, your application will just hang and you’ll have to close it with Control+C.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb49-1" title="1"><span class="kw">const</span> <span class="op">{</span> Pool <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;pg&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-2" title="2"></a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="kw">const</span> allPuppiesSql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb49-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb49-5" title="5"><span class="vs">  FROM puppies;</span></a>
+<a class="sourceLine" id="cb49-6" title="6"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb49-7" title="7"></a>
+<a class="sourceLine" id="cb49-8" title="8"><span class="kw">const</span> pool <span class="op">=</span> <span class="kw">new</span> <span class="at">Pool</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb49-9" title="9">  <span class="dt">database</span><span class="op">:</span> <span class="st">&#39;«database name»&#39;</span></a>
+<a class="sourceLine" id="cb49-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-11" title="11"></a>
+<a class="sourceLine" id="cb49-12" title="12"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectAllPuppies</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb49-13" title="13">  <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(allPuppiesSql)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-15" title="15">  <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb49-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb49-17" title="17"></a>
+<a class="sourceLine" id="cb49-18" title="18"><span class="at">selectAllPuppies</span>()<span class="op">;</span></a></code></pre></div>
+<p>When you run this with <code>node sql-test.js</code>, you should see some output like this although likely in a nicer format.</p>
+<pre><code>[ { id: 1, name: &#39;Cooper&#39;, age_yrs: &#39;1.0&#39;, breed: &#39;Miniature Schnauzer&#39;, weight_lbs: 18, microchipped: true },
+  { id: 2, name: &#39;Indie&#39;, age_yrs: &#39;0.5&#39;, breed: &#39;Yorkshire Terrier&#39;, weight_lbs: 13, microchipped: true },
+  { id: 3, name: &#39;Kota&#39;, age_yrs: &#39;0.7&#39;, breed: &#39;Australian Shepherd&#39;, weight_lbs: 26, microchipped: false },
+  { id: 4, name: &#39;Zoe&#39;, age_yrs: &#39;0.8&#39;, breed: &#39;Korean Jindo&#39;, weight_lbs: 32, microchipped: true },
+  { id: 5, name: &#39;Charley&#39;, age_yrs: &#39;1.5&#39;, breed: &#39;Basset Hound&#39;, weight_lbs: 25, microchipped: false },
+  { id: 6, name: &#39;Ladybird&#39;, age_yrs: &#39;0.6&#39;, breed: &#39;Labradoodle&#39;, weight_lbs: 20, microchipped: true },
+  { id: 7, name: &#39;Callie&#39;, age_yrs: &#39;0.9&#39;, breed: &#39;Corgi&#39;, weight_lbs: 16, microchipped: false },
+  { id: 8, name: &#39;Jaxson&#39;, age_yrs: &#39;0.4&#39;, breed: &#39;Beagle&#39;, weight_lbs: 19, microchipped: true },
+  { id: 9, name: &#39;Leinni&#39;, age_yrs: &#39;1.0&#39;, breed: &#39;Miniature Schnauzer&#39;, weight_lbs: 25, microchipped: true },
+  { id: 10, name: &#39;Max&#39;, age_yrs: &#39;1.6&#39;, breed: &#39;German Shepherd&#39;, weight_lbs: 65, microchipped: false } ]</code></pre>
+<p>Now, try one of those parameterized queries. Comment out the <code>selectAllPuppies</code> function and invocation.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb51-1" title="1"><span class="co">// async function selectAllPuppies() {</span></a>
+<a class="sourceLine" id="cb51-2" title="2"><span class="co">//   const results = await pool.query(allPuppiesSql);</span></a>
+<a class="sourceLine" id="cb51-3" title="3"><span class="co">//   console.log(results.rows);</span></a>
+<a class="sourceLine" id="cb51-4" title="4"><span class="co">//   pool.end();</span></a>
+<a class="sourceLine" id="cb51-5" title="5"><span class="co">// }</span></a>
+<a class="sourceLine" id="cb51-6" title="6"></a>
+<a class="sourceLine" id="cb51-7" title="7"><span class="co">// selectAllPuppies();</span></a></code></pre></div>
+<p>Add the following content to the bottom of the file.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb52-1" title="1"><span class="co">// Define the parameterized query where it will select a puppy</span></a>
+<a class="sourceLine" id="cb52-2" title="2"><span class="co">// based on an id</span></a>
+<a class="sourceLine" id="cb52-3" title="3"><span class="kw">const</span> singlePuppySql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb52-4" title="4"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb52-5" title="5"><span class="vs">  FROM puppies</span></a>
+<a class="sourceLine" id="cb52-6" title="6"><span class="vs">  WHERE ID = $1;</span></a>
+<a class="sourceLine" id="cb52-7" title="7"><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb52-8" title="8"></a>
+<a class="sourceLine" id="cb52-9" title="9"><span class="co">// Run the parameterized SQL by passing in an array that contains</span></a>
+<a class="sourceLine" id="cb52-10" title="10"><span class="co">// the puppyId to the query method. Then, print the results and</span></a>
+<a class="sourceLine" id="cb52-11" title="11"><span class="co">// end the pool.</span></a>
+<a class="sourceLine" id="cb52-12" title="12"><span class="kw">async</span> <span class="kw">function</span> <span class="at">selectOnePuppy</span>(puppyId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb52-13" title="13">  <span class="kw">const</span> results <span class="op">=</span> <span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId])<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">results</span>.<span class="at">rows</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-15" title="15">  <span class="va">pool</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-16" title="16"><span class="op">}</span></a>
+<a class="sourceLine" id="cb52-17" title="17"></a>
+<a class="sourceLine" id="cb52-18" title="18"><span class="co">// Get the id from the command line and store it</span></a>
+<a class="sourceLine" id="cb52-19" title="19"><span class="co">// in the variable &quot;id&quot;. Pass that value to the</span></a>
+<a class="sourceLine" id="cb52-20" title="20"><span class="co">// selectOnePuppy function.</span></a>
+<a class="sourceLine" id="cb52-21" title="21"><span class="kw">const</span> id <span class="op">=</span> <span class="va">Number</span>.<span class="at">parseInt</span>(<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb52-22" title="22"><span class="at">selectOnePuppy</span>(id)<span class="op">;</span></a></code></pre></div>
+<p>Now, when you run the program, include a number after the command. For example, if you run <code>node sql-test.js 1</code>, it will print out</p>
+<pre><code>[ { id: 1,
+    name: &#39;Cooper&#39;,
+    age_yrs: &#39;1.0&#39;,
+    breed: &#39;Miniature Schnauzer&#39;,
+    weight_lbs: 18,
+    microchipped: true } ]</code></pre>
+<p>If you run <code>node sql-test.js 4</code>, it will print out</p>
+<pre><code>[ { id: 4,
+    name: &#39;Zoe&#39;,
+    age_yrs: &#39;0.8&#39;,
+    breed: &#39;Korean Jindo&#39;,
+    weight_lbs: 32,
+    microchipped: true } ]</code></pre>
+<p>That’s because the number that you type on the command line is being substituted in for the “$1” in the parameterized query. That means, when you pass in “4”, It’s like the RDMBS takes the parameterized query</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">SELECT</span> <span class="kw">id</span>, name, age_yrs, breed, weight_lbs, microchipped</a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb55-3" title="3"><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> $<span class="dv">1</span>;</a></code></pre></div>
+<p>and your value “4”</p>
+<p>and mushes them together to make</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb56-1" title="1"><span class="kw">SELECT</span> <span class="kw">id</span>, name, age_yrs, breed, weight_lbs, microchipped</a>
+<a class="sourceLine" id="cb56-2" title="2"><span class="kw">FROM</span> puppies</a>
+<a class="sourceLine" id="cb56-3" title="3"><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> <span class="dv">4</span>; <span class="co">-- Value substituted here by PostgreSQL.</span></a></code></pre></div>
+<p>That happens because when you run the query, you call the <code>query</code> method like this.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb57-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId])<span class="op">;</span></a></code></pre></div>
+<p>which passes along the sql stored in <code>singlePuppySql</code> and the value stored in <code>puppyId</code> (as the first parameter) to PostgreSQL.</p>
+<p>What do you think will happen if you change <code>singlePuppySql</code> to have <em>two</em> parameters instead of one, but only pass in one parameter through the <code>query</code> method?</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb58-1" title="1"><span class="kw">const</span> singlePuppySql <span class="op">=</span> <span class="vs">`</span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="vs">  SELECT id, name, age_yrs, breed, weight_lbs, microchipped</span></a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="vs">  FROM puppies</span></a>
+<a class="sourceLine" id="cb58-4" title="4"><span class="vs">  WHERE ID = $1</span></a>
+<a class="sourceLine" id="cb58-5" title="5"><span class="vs">  AND age_yrs &gt; $2;</span></a>
+<a class="sourceLine" id="cb58-6" title="6"><span class="vs">`</span><span class="op">;</span></a></code></pre></div>
+<p>PostgreSQL is smart enough to see that you’ve only provided one parameter value but it needs <em>two</em> positional parameters. It gives you the error message</p>
+<pre><code>error: bind message supplies 1 parameters, but prepared statement &quot;&quot; requires 2</code></pre>
+<p>In this error message, the term “bind message” is the kind of message that the <code>query</code> method sends to PostgreSQL when you provide parameters to it.</p>
+<p>Change the query back to how it was. Now, add an extra parameter to the invocation of the <code>query</code> method. What do you think will</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb60-1" title="1"><span class="cf">await</span> <span class="va">pool</span>.<span class="at">query</span>(singlePuppySql<span class="op">,</span> [puppyId<span class="op">,</span> <span class="st">&#39;extra parameter&#39;</span>])<span class="op">;</span></a></code></pre></div>
+<p>Again, PostgreSQL gives you an error message about a mismatch in the number of placeholders in the SQL and the number of values you passed to it.</p>
+<pre><code>error: bind message supplies 2 parameters, but prepared statement &quot;&quot; requires 1</code></pre>
+<h2 id="what-youve-learned">What you’ve learned</h2>
+<p>Here, you’ve seen how to connect to a PostgreSQL database using the <strong>node-postgres</strong> library named “pg”. You saw how to run simple SQL statements against it and handle the results. You also saw how to create parameterized queries so that you can pass in values to be substituted.</p>
+<p>If you are using the <strong>node-postgres</strong> library and running your own handcrafted SQL, you will most often use parameterized queries. It’s good to get familiar with them.</p>
+<hr />
+<h1 id="transactions-with-sequelize">Transactions With Sequelize</h1>
+<p>In this reading, we will learn about database <em>transactions</em> and how we use them via Sequelize. We will learn how to group multiple update operations into a single atomic, indivisible unit.</p>
+<p>At the end of the reading, you should know:</p>
+<ol type="1">
+<li>How to write code that is resilient to SQL operation failures,</li>
+<li>How to group multiple operations into a database transaction using Sequelize (the <code>sequelize.transaction</code> method),</li>
+<li>How to prevent “race conditions” using transactions.</li>
+</ol>
+<h2 id="the-problem-database-updates-can-fail">The Problem: Database Updates Can Fail</h2>
+<p>Imagine a scenario with a banking database. Markov wants to transfer $7,500 to Curie. To perform the transfer, we will perform two database update operations:</p>
+<ol type="1">
+<li>Reduce Markov’s account balance by $7,500,</li>
+<li>Increase Curie’s account balance by $7,500.</li>
+</ol>
+<p>When transferring money, it’s very important that <em>both</em> operations be performed. If we reduce Markov’s balance but fail to increase Curie’s balance, the bank effectively steals money from Markov. If we increase Curie’s balance without reducing Markov’s balance, the bank effectively gives away free money to Curie. Neither is acceptable.</p>
+<p>We must keep in mind that any attempt to perform a database update can sometimes <em>fail</em>. It can fail for a number of reasons:</p>
+<ol type="1">
+<li>The command is sent, but the database has previously been shut down by the database administrator. Because the database is not running, the database is not listening for our update, won’t receive it, and thus won’t process it.</li>
+<li>A bug in the database or operating system software has caused the database or operating system to crash. Again, the database is not running, so it can neither receive nor process our update.</li>
+<li>Power has been lost to the machine running the database. The database is not running.</li>
+<li>The internet connection that connects us to the database machine is disrupted. The database may be running and listening for SQL requests to process. However, our update request cannot get through to the database machine. Because the database cannot receive our request, the database cannot process it.</li>
+<li>The update asks the database to violate a pre-defined constraint. For example: the database may have a constraint that an account balance must never be less than zero. Any update that asks the database to reduce an account balance to less than zero will be rejected and therefore fail.</li>
+</ol>
+<p>Only this last scenario is “our fault.” The fact is that database updates can fail <strong>through no fault of our own</strong>. With regard to our example: our first SQL request to reduce Markov’s account balance may succeed, but the database may then crash before we have sent the request to increase Curie’s balance. Through no fault of our own, the bank has stolen money from Markov without giving it to Curie.</p>
+<p>How can we write code that avoids this fundamental problem?</p>
+<h2 id="the-solution-database-transactions">The Solution: Database Transactions</h2>
+<p>One way to solve the problem is to “group” or “pair” the two update operations somehow. We want to tell the database “Reduce Markov’s balance AND increment Curie’s balance.” We want to tell the database: “If for any reason you cannot perform <strong>both</strong> operations, make sure not to perform <strong>either</strong>.” We want to tell the database: “If you crash after reducing Markov’s balance, make sure to either (a) increase Curie’s balance when you restart, or (b) undo the increase to Markov’s balance when you restart.”</p>
+<p>We want to ask the database to treat the pair of updates as one <em>atomic</em> (meaning <strong>indivisible</strong>) unit. SQL lets you do this using a feature called <em>transactions</em>.</p>
+<p>You’ve previously seen how to use SQL transactions:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb62-1" title="1"><span class="kw">START</span> <span class="kw">TRANSACTION</span>;</a>
+<a class="sourceLine" id="cb62-2" title="2"><span class="co">-- Reduce Markov&#39;s balance by $7500</span></a>
+<a class="sourceLine" id="cb62-3" title="3"><span class="kw">UPDATE</span> <span class="ot">&quot;BankAccounts&quot;</span> <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="dv">7500</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb62-4" title="4"><span class="co">-- Increment Curie&#39;s balance by $7500</span></a>
+<a class="sourceLine" id="cb62-5" title="5"><span class="kw">UPDATE</span> <span class="ot">&quot;BankAccounts&quot;</span> <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="dv">7500</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">2</span>;</a>
+<a class="sourceLine" id="cb62-6" title="6"><span class="kw">COMMIT</span> <span class="kw">TRANSACTION</span>;</a></code></pre></div>
+<p>SQL guarantees to you that everything between <code>START TRANSACTION</code> and <code>COMMIT TRANSACTION</code> will be processed <em>atomically</em>. If any update operation fails, none of the updates will be performed. The transaction is “all-or-nothing.”</p>
+<p>In this reading you will learn how to use SQL transactions with the Sequelize ORM.</p>
+<h2 id="the-bankaccounts-schema">The <code>BankAccounts</code> Schema</h2>
+<p>For our example in this reading, I will use a single table with two accounts.</p>
+<pre><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   10000 | ...
+(2 rows)</code></pre>
+<p>I have generated a Sequelize model corresponding to the <code>BankAccounts</code> table:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb64-1" title="1"><span class="co">// ./models/bank_account.js</span></a>
+<a class="sourceLine" id="cb64-2" title="2"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb64-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (sequelize<span class="op">,</span> DataTypes) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-4" title="4">  <span class="co">// Define BankAccount model.</span></a>
+<a class="sourceLine" id="cb64-5" title="5">  <span class="kw">const</span> BankAccount <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;BankAccount&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-6" title="6">    <span class="co">// Define clientName attribute.</span></a>
+<a class="sourceLine" id="cb64-7" title="7">    <span class="dt">clientName</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-8" title="8">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-9" title="9">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-10" title="10">      <span class="co">// Define validations on clientName.</span></a>
+<a class="sourceLine" id="cb64-11" title="11">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-12" title="12">        <span class="co">// clientName must not be null.</span></a>
+<a class="sourceLine" id="cb64-13" title="13">        <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-14" title="14">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;clientName must not be NULL&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-15" title="15">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-16" title="16">        <span class="co">// clientName must not be empty.</span></a>
+<a class="sourceLine" id="cb64-17" title="17">        <span class="dt">notEmpty</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-18" title="18">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;clientName must not be empty&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-19" title="19">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-20" title="20">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-21" title="21">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-22" title="22"></a>
+<a class="sourceLine" id="cb64-23" title="23">    <span class="co">// Define balance attribute.</span></a>
+<a class="sourceLine" id="cb64-24" title="24">    <span class="dt">balance</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-25" title="25">      <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-26" title="26">      <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-27" title="27">      <span class="co">// Define validations on balance.</span></a>
+<a class="sourceLine" id="cb64-28" title="28">      <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-29" title="29">        <span class="co">// balance must not be less than zero.</span></a>
+<a class="sourceLine" id="cb64-30" title="30">        <span class="dt">min</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb64-31" title="31">          <span class="dt">args</span><span class="op">:</span> [<span class="dv">0</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb64-32" title="32">          <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;balance must not be less than zero&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-33" title="33">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-34" title="34">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-35" title="35">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb64-36" title="36">  <span class="op">},</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb64-37" title="37"></a>
+<a class="sourceLine" id="cb64-38" title="38">  <span class="cf">return</span> BankAccount<span class="op">;</span></a>
+<a class="sourceLine" id="cb64-39" title="39"><span class="op">};</span></a></code></pre></div>
+<p>Notice that the <code>min</code> validation on <code>balance</code> will not allow us to save an account balance that is below zero.</p>
+<h2 id="example-an-update-fails-because-of-validation-failure">Example: An Update Fails Because Of Validation Failure</h2>
+<p>Let’s imagine that Markov wants to transfer $7,500 to Curie. Unfortunately, Markov has only $5,000 in his account! Decrementing Markov’s account balance by $7,500 would put it in the negative, which our validation will not allow. Thus the transfer must fail.</p>
+<p>Imagine that Markov is unaware that his account balance cannot cover the transfer. He tries to perform the transfer anyway:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb65-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb65-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize <span class="op">,</span> BankAccount <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-3" title="3"></a>
+<a class="sourceLine" id="cb65-4" title="4"><span class="co">// This code will try to transfer $7,500 from Markov to Curie.</span></a>
+<a class="sourceLine" id="cb65-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb65-6" title="6">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb65-7" title="7">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-8" title="8">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-9" title="9"></a>
+<a class="sourceLine" id="cb65-10" title="10">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb65-11" title="11">    <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb65-12" title="12">    <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb65-13" title="13">    <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-14" title="14"></a>
+<a class="sourceLine" id="cb65-15" title="15">    <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb65-16" title="16">    <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb65-17" title="17">    <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-18" title="18">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb65-19" title="19">    <span class="co">// Report if anything goes wrong.</span></a>
+<a class="sourceLine" id="cb65-20" title="20">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Error!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-21" title="21"></a>
+<a class="sourceLine" id="cb65-22" title="22">    <span class="cf">for</span> (<span class="kw">const</span> e <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb65-23" title="23">      <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb65-24" title="24">        <span class="vs">`</span><span class="sc">${</span><span class="va">e</span>.<span class="va">instance</span>.<span class="at">clientName</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">e</span>.<span class="at">message</span><span class="sc">}</span><span class="vs">`</span></a>
+<a class="sourceLine" id="cb65-25" title="25">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-26" title="26">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb65-27" title="27">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb65-28" title="28"></a>
+<a class="sourceLine" id="cb65-29" title="29">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb65-30" title="30"><span class="op">}</span></a>
+<a class="sourceLine" id="cb65-31" title="31"></a>
+<a class="sourceLine" id="cb65-32" title="32"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints the following:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (default): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Error!
+Markov: balance must not be less than zero</code></pre>
+<p>Everything starts out fine. We fetch Markov and Curie’s accounts. We increase Curie’s balance. But then we hit a snag: when we call <code>markovAccount.save()</code>, Sequelize detects that we are trying to set Markov’s balance below zero. Sequelize therefore <strong>does not</strong> send a SQL request to update Markov’s account balance. Instead, <code>markovAccount.save()</code> throws an exception. We print the error: Markov’s balance must not be less than zero.</p>
+<p>We thus avoid saving a negative balance for Markov. But other damage has already been done. If we now check account balances, we will see:</p>
+<pre><code>catsdb=&gt; SELECT * FROM &quot;BankAccounts&quot;;
+ id | clientName | balance | ...
+----+------------+---------+-----
+  1 | Markov     |    5000 | ...
+  2 | Curie      |   17500 | ...
+(2 rows)</code></pre>
+<p>The bank has given free money to Curie! We should have “rolledback” the increase of Curie’s balance. We will learn how to do that!</p>
+<h2 id="incorrect-solutions">Incorrect Solutions</h2>
+<p>One may suggest a fix: make sure to decrement Markov’s account balance before incrementing Curie’s balance! If Markov’s balance is insufficient, we can stop the transfer before giving Curie any money.</p>
+<p>We <em>could</em> swap the order of the updates, and it would indeed fix this specific problem. But imagine if Markov tries to transfer $2,500 (an amount he can afford). We first decrement Markov’s account balance and then – the operating system crashes before the second update can be submitted. Curie’s balance is not incremented. The bank has stolen Markov’s money!</p>
+<p>The problem is fundamental: no matter what order we perform the two updates in, the database can always fail <em>after</em> processing the first, but <em>before</em> processing the second. For our code to be resilient to unavoidable failures, there is no other choice but to use a database transaction.</p>
+<h2 id="using-a-database-transaction-with-sequelize">Using A Database Transaction With Sequelize</h2>
+<p>Let’s return to our previous example of trying to transfer $7,500 from Markov to Curie. Specifically, we will rewrite this key part:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb68-1" title="1"><span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb68-2" title="2"><span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb68-3" title="3"><span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb68-4" title="4"></a>
+<a class="sourceLine" id="cb68-5" title="5"><span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb68-6" title="6"><span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb68-7" title="7"><span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>()<span class="op">;</span></a></code></pre></div>
+<p>To ask Sequelize to perform the two updates in a SQL database transaction, we use the <code>sequelize.transaction</code> method. We will write this like so, instead:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb69-1" title="1"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb69-2" title="2">  <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb69-3" title="3">  <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb69-4" title="4">  <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb69-5" title="5"></a>
+<a class="sourceLine" id="cb69-6" title="6">  <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb69-7" title="7">  <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb69-8" title="8">  <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb69-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Let’s go through the transaction code and explain each part:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb70-1" title="1"><span class="co">// Start a transaction. Queries run inside the callback can be part of</span></a>
+<a class="sourceLine" id="cb70-2" title="2"><span class="co">// the transaction.</span></a>
+<a class="sourceLine" id="cb70-3" title="3"><span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb70-4" title="4">  <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb70-5" title="5">  <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb70-6" title="6">  <span class="co">// Pass the `tx` transaction object so that Sequelize knows to</span></a>
+<a class="sourceLine" id="cb70-7" title="7">  <span class="co">// update Curie&#39;s account as part of this transaction (rather than</span></a>
+<a class="sourceLine" id="cb70-8" title="8">  <span class="co">// &quot;on its own&quot; per usual).</span></a>
+<a class="sourceLine" id="cb70-9" title="9">  <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb70-10" title="10"></a>
+<a class="sourceLine" id="cb70-11" title="11">  <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb70-12" title="12">  <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb70-13" title="13">  <span class="co">// Again, pass the `tx` transaction object. Thus both updates are part</span></a>
+<a class="sourceLine" id="cb70-14" title="14">  <span class="co">// of the same transaction.</span></a>
+<a class="sourceLine" id="cb70-15" title="15">  <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb70-16" title="16"></a>
+<a class="sourceLine" id="cb70-17" title="17">  <span class="co">// If no exceptions have been thrown, `sequelize.transaction` will</span></a>
+<a class="sourceLine" id="cb70-18" title="18">  <span class="co">// `COMMIT` the transaction after the end of the callback.</span></a>
+<a class="sourceLine" id="cb70-19" title="19">  <span class="co">//</span></a>
+<a class="sourceLine" id="cb70-20" title="20">  <span class="co">// If any error gets thrown, `sequelize.transaction` will abort</span></a>
+<a class="sourceLine" id="cb70-21" title="21">  <span class="co">// the transaction by issuing a `ROLLBACK`. This will cancel all</span></a>
+<a class="sourceLine" id="cb70-22" title="22">  <span class="co">// updates.</span></a>
+<a class="sourceLine" id="cb70-23" title="23"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Let’s put the transaction code back into our original program:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb71-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb71-2" title="2"><span class="kw">const</span> <span class="op">{</span> sequelize<span class="op">,</span> BankAccount <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;./models&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-3" title="3"></a>
+<a class="sourceLine" id="cb71-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb71-5" title="5">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb71-6" title="6">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-7" title="7">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-8" title="8"></a>
+<a class="sourceLine" id="cb71-9" title="9">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb71-10" title="10">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb71-11" title="11">      <span class="co">// Increment Curie&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb71-12" title="12">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb71-13" title="13">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-14" title="14"></a>
+<a class="sourceLine" id="cb71-15" title="15">      <span class="co">// Decrement Markov&#39;s balance by $7,500.</span></a>
+<a class="sourceLine" id="cb71-16" title="16">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">7500</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb71-17" title="17">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-18" title="18">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-19" title="19">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb71-20" title="20">    <span class="co">// Report if anything goes wrong.</span></a>
+<a class="sourceLine" id="cb71-21" title="21">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;Error!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-22" title="22"></a>
+<a class="sourceLine" id="cb71-23" title="23">    <span class="cf">for</span> (<span class="kw">const</span> e <span class="kw">of</span> <span class="va">err</span>.<span class="at">errors</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb71-24" title="24">      <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb71-25" title="25">        <span class="vs">`</span><span class="sc">${</span><span class="va">e</span>.<span class="va">instance</span>.<span class="at">clientName</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">e</span>.<span class="at">message</span><span class="sc">}</span><span class="vs">`</span></a>
+<a class="sourceLine" id="cb71-26" title="26">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-27" title="27">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb71-28" title="28">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb71-29" title="29"></a>
+<a class="sourceLine" id="cb71-30" title="30">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb71-31" title="31"><span class="op">}</span></a>
+<a class="sourceLine" id="cb71-32" title="32"></a>
+<a class="sourceLine" id="cb71-33" title="33"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Running this code prints:</p>
+<pre><code>Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (default): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): START TRANSACTION;
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (208b3951-9ab9-489b-97f0-afb49aaff807): ROLLBACK;
+Error!
+Markov: balance must not be less than zero</code></pre>
+<p>Let’s review what happened. We again start by fetching both <code>BankAccount</code>s. We next <code>START TRANSACTION</code>. We issue the update to Curie’s account.</p>
+<p>Then Sequelize detects the validation failure when trying to run <code>markovAccount.save({ transaction: tx })</code>. Markov doesn’t have enough money in his account! Sequelize throws an exception. The <code>sequelize.transaction</code> method <em>catches the exception</em> and issues a <code>ROLLBACK</code> for the transaction. This tells the database to undo the prior increment of Curie’s account balance.</p>
+<p>Having rolled back the transaction, the <code>sequelize.transaction</code> method <em>rethrows</em> the error, so that our logging code gets a chance to learn about the error and print its details.</p>
+<h2 id="aside-what-is-the-transaction-object">Aside: What Is The <code>Transaction</code> Object?</h2>
+<p><em>This is bonus information in case you are troubled by what the <code>tx</code> parameter to <code>sequelize.transaction</code> is for. You can use transactions correctly without knowing this bonus information.</em></p>
+<p>What is the mysterious <code>tx</code> that is passed by <code>sequelize.transaction</code> to our callback? It is basically just a unique ID. In this case, the ID is: <code>208b3951-9ab9-489b-97f0-afb49aaff807</code>. You can see this ID in the logs above.</p>
+<p>When we say <code>curieAccount.save({ transaction: tx })</code>, we are telling Sequelize: “update Curie’s account as part of transaction number <code>208b3951-9ab9-489b-97f0-afb49aaff807</code>.”</p>
+<p>Sequelize needs transaction IDs because it can be running many SQL transactions <em>concurrently</em> (loosely speaking: “in parallel”). One part of the application could be transferring money from Markov to Curie at the same time another part of the application is transferring money from Kate to Ned.</p>
+<p>If Sequelize did not keep track of transaction IDs, it would not know that <code>curieAccount.save()</code> should be a part of the Markov/Curie transaction rather than the Kate/Ned transaction.</p>
+<h2 id="transactions-prevent-race-conditions">Transactions Prevent <em>Race Conditions</em></h2>
+<p>There is still a subtle mistake in my bank transfer code. There is a potential problem if someone modifies Markov’s or Curie’s account in between (1) the initial fetch of their accounts, and (2) the transaction to update the accounts.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb73-1" title="1"><span class="co">// ./index.js</span></a>
+<a class="sourceLine" id="cb73-2" title="2"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb73-3" title="3">  <span class="co">// I will transfer only $5,000 so that Markov&#39;s balance can cover the</span></a>
+<a class="sourceLine" id="cb73-4" title="4">  <span class="co">// amount. Markov starts out with $5,000.</span></a>
+<a class="sourceLine" id="cb73-5" title="5"></a>
+<a class="sourceLine" id="cb73-6" title="6">  <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb73-7" title="7">  <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-8" title="8">  <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(<span class="dv">2</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-9" title="9"></a>
+<a class="sourceLine" id="cb73-10" title="10">  <span class="co">// ***</span></a>
+<a class="sourceLine" id="cb73-11" title="11">  <span class="co">// Imagine that right now some other program transfers the $5,000 out</span></a>
+<a class="sourceLine" id="cb73-12" title="12">  <span class="co">// of Markov&#39;s account. Markov&#39;s true account **in the database** now</span></a>
+<a class="sourceLine" id="cb73-13" title="13">  <span class="co">// has a balance of $0. But `markovAccount.balance` is still $5,000,</span></a>
+<a class="sourceLine" id="cb73-14" title="14">  <span class="co">// because we fetched Markov&#39;s `BankAccount` **before** the transfer</span></a>
+<a class="sourceLine" id="cb73-15" title="15">  <span class="co">// was made!</span></a>
+<a class="sourceLine" id="cb73-16" title="16">  <span class="co">// ***</span></a>
+<a class="sourceLine" id="cb73-17" title="17"></a>
+<a class="sourceLine" id="cb73-18" title="18">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb73-19" title="19">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb73-20" title="20">      <span class="co">// Increment Curie&#39;s balance by $5,000 (to $15,000).</span></a>
+<a class="sourceLine" id="cb73-21" title="21">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb73-22" title="22">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-23" title="23"></a>
+<a class="sourceLine" id="cb73-24" title="24">      <span class="co">// Decrement `markovAccount.balance` by $5,000.</span></a>
+<a class="sourceLine" id="cb73-25" title="25">      <span class="co">// `markovAccount.balance` is set to zero.</span></a>
+<a class="sourceLine" id="cb73-26" title="26">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb73-27" title="27">      <span class="co">// Save and set Markov&#39;s balance to zero.</span></a>
+<a class="sourceLine" id="cb73-28" title="28">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-29" title="29"></a>
+<a class="sourceLine" id="cb73-30" title="30">      <span class="co">// Problem: Markov&#39;s balance in the database was *already* zero.</span></a>
+<a class="sourceLine" id="cb73-31" title="31">      <span class="co">// Markov had no money to transfer. He should not have been able</span></a>
+<a class="sourceLine" id="cb73-32" title="32">      <span class="co">// to transfer the $5,000.</span></a>
+<a class="sourceLine" id="cb73-33" title="33">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-34" title="34">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb73-35" title="35">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb73-36" title="36">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb73-37" title="37"></a>
+<a class="sourceLine" id="cb73-38" title="38">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb73-39" title="39"><span class="op">}</span></a>
+<a class="sourceLine" id="cb73-40" title="40"></a>
+<a class="sourceLine" id="cb73-41" title="41"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>Because another program can “race in between” (1) the reading of the account balances and (2) the updating of the balances, we call this potential problem a <em>race condition</em>. The easiest way to fix the race condition is to prohibit anyone else from modifying Markov’s account balance in between (1) and (2).</p>
+<p>Luckily, the solution is simple. Any data used in a transaction will be <em>locked</em> until the transaction completes. Data that is locked can be neither read nor written by other transactions. If our transaction reads (or writes) data, no one else can read or write that data until our transaction completes. When we <code>COMMIT</code> (or <code>ROLLBACK</code>) all the locked data is freed (the locks are <em>released</em>).</p>
+<p>We don’t have to lock the data ourselves. Simply by doing all our queries inside the same transaction, the database will lock the data for us. Therefore, to fix the problem, we should move the initial account fetching by <code>findByPk</code> into the transaction (i.e., pass it <code>{ transaction: tx }</code>):</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb74-2" title="2">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb74-3" title="3">    <span class="co">// Do all database access within the transaction.</span></a>
+<a class="sourceLine" id="cb74-4" title="4">    <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">transaction</span>(<span class="kw">async</span> (tx) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb74-5" title="5">      <span class="co">// Fetch Markov and Curie&#39;s accounts.</span></a>
+<a class="sourceLine" id="cb74-6" title="6">      <span class="kw">const</span> markovAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(</a>
+<a class="sourceLine" id="cb74-7" title="7">        <span class="dv">1</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">},</span></a>
+<a class="sourceLine" id="cb74-8" title="8">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-9" title="9">      <span class="kw">const</span> curieAccount <span class="op">=</span> <span class="cf">await</span> <span class="va">BankAccount</span>.<span class="at">findByPk</span>(</a>
+<a class="sourceLine" id="cb74-10" title="10">        <span class="dv">2</span><span class="op">,</span> <span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span></a>
+<a class="sourceLine" id="cb74-11" title="11">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-12" title="12"></a>
+<a class="sourceLine" id="cb74-13" title="13">      <span class="co">// No one can mess with Markov or Curie&#39;s accounts until the</span></a>
+<a class="sourceLine" id="cb74-14" title="14">      <span class="co">// transaction completes! The account data has been locked!</span></a>
+<a class="sourceLine" id="cb74-15" title="15"></a>
+<a class="sourceLine" id="cb74-16" title="16">      <span class="co">// Increment Curie&#39;s balance by $5,000.</span></a>
+<a class="sourceLine" id="cb74-17" title="17">      <span class="va">curieAccount</span>.<span class="at">balance</span> <span class="op">+=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb74-18" title="18">      <span class="cf">await</span> <span class="va">curieAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-19" title="19"></a>
+<a class="sourceLine" id="cb74-20" title="20">      <span class="co">// Decrement Markov&#39;s balance by $5,000.</span></a>
+<a class="sourceLine" id="cb74-21" title="21">      <span class="va">markovAccount</span>.<span class="at">balance</span> <span class="op">-=</span> <span class="dv">5000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb74-22" title="22">      <span class="cf">await</span> <span class="va">markovAccount</span>.<span class="at">save</span>(<span class="op">{</span> <span class="dt">transaction</span><span class="op">:</span> tx <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-23" title="23">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-24" title="24">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb74-25" title="25">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb74-26" title="26">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb74-27" title="27"></a>
+<a class="sourceLine" id="cb74-28" title="28">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb74-29" title="29"><span class="op">}</span></a>
+<a class="sourceLine" id="cb74-30" title="30"></a>
+<a class="sourceLine" id="cb74-31" title="31"><span class="at">main</span>()<span class="op">;</span></a></code></pre></div>
+<p>This prints:</p>
+<pre><code>Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): START TRANSACTION;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 1;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): SELECT &quot;id&quot;, &quot;clientName&quot;, &quot;balance&quot;, &quot;createdAt&quot;, &quot;updatedAt&quot; FROM &quot;BankAccounts&quot; AS &quot;BankAccount&quot; WHERE &quot;BankAccount&quot;.&quot;id&quot; = 2;
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): UPDATE &quot;BankAccounts&quot; SET &quot;balance&quot;=$1,&quot;updatedAt&quot;=$2 WHERE &quot;id&quot; = $3
+Executing (76321a03-93c5-47c0-861a-cf24c3e6f3bf): COMMIT;</code></pre>
+<p>Notice that now <em>everything</em> is done in the transaction <code>76321a03-93c5-47c0-861a-cf24c3e6f3bf</code>. This includes the initial fetching of the accounts. Because the fetching is done within the transaction, other users are not allowed to modify the accounts until the transaction is finished.</p>
+<p>Moving our read operations into the transaction has solved our race condition problem. Every Sequelize operation - whether reading or writing - can take a <code>transaction: tx</code> option. This includes:</p>
+<ol type="1">
+<li><code>findByPk</code></li>
+<li><code>findAll</code></li>
+<li><code>save</code></li>
+<li><code>create</code></li>
+<li><code>destroy</code></li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Having completed this reading, here are the important things to take away:</p>
+<ol type="1">
+<li>You should know that any SQL update operation may fail, often through no fault of your own.</li>
+<li>You should know that you must write code resilient to SQL failures.</li>
+<li>You should know that when performing multiple update operations as part of a group, you must use a transaction.</li>
+<li>You should know how to use <code>sequelize.transaction</code> to run commands within a SQL transaction.</li>
+<li>You should know how to pass a transaction object as the <code>{ transaction: tx }</code> parameter to a Sequelize command (such as <code>save</code>).</li>
+<li>You should know what a <em>race condition</em> is: the possibility that someone else modifies previously fetched data before you are finished using/updating it.</li>
+<li>You should know how to use transactions to guard against race conditions. That is: you should know that both reading and writing operations should be put in the same transaction.</li>
+</ol>
+<hr />
+<h1 id="recipe-box-project">Recipe Box Project</h1>
+<p>In this project, you will build the Data Access Layer to power a Web application. This means that you will provide all of the SQL that it takes to get data into and from the database. You will do this in SQL files that the application will load and read.</p>
+<p><strong>Note</strong>: This is not a good way to create a database-backed application. This project is structured this way so that it isolates the activity of SQL writing. Do not use this project as a template for your future projects.</p>
+<h2 id="the-data-model-analysis">The data model analysis</h2>
+<p>What goes into a recipe box? Why, recipes, of course! Here’s an example recipe card.</p>
+<figure>
+<img src="images/sql-recipe-card.jpeg" alt="Recipe card" /><figcaption>Recipe card</figcaption>
+</figure>
+<p>You can see that a recipe is made up of three basic parts:</p>
+<ul>
+<li>A title,</li>
+<li>A list of ingredients, and</li>
+<li>A list of instructions.</li>
+</ul>
+<p>You’re going to add a little more to that, too. It will also have</p>
+<ul>
+<li>The date/time that it was entered into the recipe box, and</li>
+<li>The date/time it was last updated in the recipe box.</li>
+</ul>
+<p>These are good pieces of data to have so that you can show them “most recent” for example.</p>
+<p>Ingredients themselves are complex data types and need their own structure. They “belong” to a recipe. That means they’ll need to reference that recipe. That means an ingredient is made up of:</p>
+<ul>
+<li>An amount (optional),</li>
+<li>A unit of measure (optional),</li>
+<li>The actual food stuff, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That unit of measure is a good candidate for normalization, don’t you think? It’s a predefined list of options that should not change and that you don’t want people just typing whatever they want in there, not if you want to maintain data integrity. Otherwise, you’ll end up with “C”, “c”, “cup”, “CUP”, “Cup”, and all the other permutations, each of which is a distinct value but means the same thing.</p>
+<p>Instructions are also complex objects, but not by looking at them. Initially, one might only see text that comprises an instruction. But, very importantly, instructions have <em>order</em>. They also <em>belong</em> to the recipe. With that in mind, an instruction is made up of:</p>
+<ul>
+<li>The text of the instruction,</li>
+<li>The order that it appears in the recipe, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That is enough to make a good model for the recipe box.</p>
+<figure>
+<img src="images/sql-recipe-box-data-model.png" alt="recipe box data model" /><figcaption>recipe box data model</figcaption>
+</figure>
+<h2 id="getting-started">Getting started</h2>
+<ul>
+<li>Download the starter project from https://github.com/appacademy-starters/sql-recipe-box</li>
+<li>Run <code>npm install</code> to install the packages</li>
+<li>Run <code>npm start</code> to start the server on port 3000</li>
+</ul>
+<p>You’ll do all of your work in the <strong>data-access-layer</strong> directory. In there, you will find a series of SQL files. In each, you will find instructions of what to do to make the user interface to work. They are numbered in an implied order for you to complete them. The only real requirement is that you finish the SQL for the <strong>00a-schema.sql</strong> and <strong>00b-seed.sql</strong> files first. That way, as you make your way through the rest of the SQL files, the tables and some of the data will already exist for you. You can run the command <code>npm run seed</code> to run both of those files or pipe each it into <code>psql</code> as you’ve been doing.</p>
+<p>Either way that you decide to seed the database, you’ll need to stop your server. The seed won’t correctly run while the application maintains a connection to the application database. You may also need to exit all of the active <code>psql</code> instances that you have running to close out all of the active connections. When you run the seed, if it reports that it can’t do something because of active connections, look for a running instance of the server, Postbird, or <code>psql</code> with that connection.</p>
+<p><strong>Warning</strong>: running the seed files will destroy all data that you have in the database.</p>
+<h2 id="your-sql">Your SQL</h2>
+<p>When you write the SQL, they will mostly be parameterized queries. The first couple of files will show you how it needs to be done, where you will place the parameter placeholders “$1”, “$2”, and so on. If you need to, refer to the <a href="https://node-postgres.com/features/queries#Parameterized%20query">Parameterized query</a> section of the documentation for <strong>node-postgres</strong>.</p>
+<p>In each of the following files in the <strong>data-access-layer</strong>, you will find one or more lines with the content <code>-- YOUR CODE HERE</code>. It is your job to write the SQL statement described in the block above that code. Each file is named with the intent of the SQL that it should contain.</p>
+<h2 id="the-application">The application</h2>
+<p>The application is a standard <a href="https://www.expressjs.com">express.js</a> application using the <a href="https://pugjs.org">pug</a> library to generate the HTML and the <a href="https://node-postgres.com">node-postgres</a> library to connect to the database.</p>
+<p>It reads your SQL files whenever it wants to make a database call. If your file throws an error, then the UI handles it by telling you what needs to be fixed so that the UI will work. The application will also output error messages for missing functionality.</p>
+<p>The SQL files contain a description of what the content is and where it’s used in the application. Tying those together, you’ll know you’re done when you have all of the SQL files containing queries and there are no errors in the UI or console.</p>
+<h2 id="directions">Directions</h2>
+<p>Fill out the <strong>00a-schema.sql</strong> and <strong>00b-seed.sql</strong> files first. Then seed the database with command, <code>npm run seed</code>.</p>
+<h3 id="home-page">Home Page</h3>
+<p>Start the server by running <code>npm run dev</code>. Then go to <code>localhost:3000</code> you should see the home page with “Latest Recipes”. To show the latest recipes properly, complete the <code>01-get-ten-most-recent-recipes.sql</code> file.</p>
+<p>After completing the file, make sure you correctly defined the sql query so that the first recipe listed is the most recently updated recipe.</p>
+<h3 id="recipesid"><code>/recipes/:id</code></h3>
+<p>If you click on one of the recipes in the list of recipes on the home page, it will direct you to that recipe’s Detail Page. Complete the following files that correspond to this page and make sure to test a file right after you fill out the file by refreshing the page: - <code>02a-get-recipe-by-id.sql</code> - <code>02b-get-ingredients-by-recipe-id.sql</code> - <code>02c-get-instructions-by-recipe-id.sql</code></p>
+<p>Make sure to read the instructions well! In all the above sql queries, the <code>$1</code> parameter will be the recipe id.</p>
+<h3 id="recipesnew"><code>/recipes/new</code></h3>
+<p>Click on <code>ADD A RECIPE</code> button on the Navigation Bar to direct you to the New Recipe Form page. Fill out the <code>03a-insert-new-recipe.sql</code> file so you can create a new recipe.</p>
+<h3 id="recipesidedit"><code>/recipes/:id/edit</code></h3>
+<p>After creating a new recipe, you will be directed to the Recipe Edit page where you can add instructions and ingredients to a recipe. Complete the following files that correspond to this page and make sure to test a file right after you fill out the file: - <code>03b-get-units-of-measure.sql</code> - <code>04-insert-new-ingredient.sql</code> - <code>05-insert-new-instruction.sql</code> - <code>06-delete-recipe.sql</code></p>
+<h3 id="recipestermsearchterm"><code>/recipes?term={searchTerm}</code></h3>
+<p>Allow users to find recipes by a part of their name using the Search Bar in the Navigation Bar. Complete <code>07-search-recipes.sql</code> for this feature.</p>

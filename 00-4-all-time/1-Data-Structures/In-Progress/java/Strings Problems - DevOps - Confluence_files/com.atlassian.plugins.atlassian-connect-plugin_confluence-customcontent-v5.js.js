@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.plugins.atlassian-connect-plugin:confluence-customcontent-v5', location = 'v5/js/confluence/customcontent/custom-content-api.js' */
+define("ac/confluence/custom-content-api",[],function(){function e(a){return function(b,f){if(g[a]&&d[a]){var c=d[a];clearTimeout(c.timeout);delete d[a];try{!1===b?c.reject("[object String]"===Object.prototype.toString.call(f)?f:""):c.proceed(b)}finally{c.done&&c.done()}}else AJS.error("Event callback for "+a+" has been invoked before a event happens.")}}function b(){}var g={},d={};b.prototype.intercept=function(a){g[a]=!0};b.prototype.submitCallback=e("confluence.customcontent.submit");b.prototype.submitErrorCallback=
+e("confluence.customcontent.submitError");b.prototype.submitSuccessCallback=e("confluence.customcontent.submitSuccess");b.prototype.cancelCallback=e("confluence.customcontent.cancel");return{trigger:function(a,b,f,c,e){if(!g[a]){if("confluence.customcontent.submit"===a)throw Error("Add-on must intercept confluence.customcontent.submit event");return f()}d[a]&&clearTimeout(d[a].timeout);d[a]={proceed:f,reject:c,done:e,timeout:setTimeout(function(){delete d[a];AJS.error("Event handler for "+a+" did not call callback function in 10000ms.");
+c("Timed out when waiting for callback of "+a+" event.")},1E4)};connectHost.broadcastEvent(a,{},b)},EditComponent:b}});
+}catch(e){WRMCB(e)};

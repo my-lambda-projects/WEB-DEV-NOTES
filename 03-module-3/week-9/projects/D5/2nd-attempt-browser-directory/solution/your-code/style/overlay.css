@@ -1,0 +1,21 @@
+.overlay {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  bottom: 0;
+  color: white;
+  display: flex;
+  font-size: 48px;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.overlay--hidden {
+  display: none;
+}
+
+.overlay--error {
+  background-color: rgba(255, 0, 0, 0.6);
+}

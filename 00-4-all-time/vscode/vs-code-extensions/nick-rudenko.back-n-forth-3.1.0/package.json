@@ -1,0 +1,162 @@
+{
+	"name": "back-n-forth",
+	"displayName": "Back & Forth",
+	"author": {
+		"name": "Nikita Rudenko",
+		"email": "rdnkta@gmail.com"
+	},
+	"license": "MIT",
+	"repository": {
+		"url": "https://github.com/nikita-rudenko/back-n-forth"
+	},
+	"keywords": [
+		"navigation",
+		"buttons",
+		"browser"
+	],
+	"icon": "img/icons/icon.png",
+	"publisher": "nick-rudenko",
+	"description": "Adds go back/forward buttons for easier navigation",
+	"version": "3.1.0",
+	"engines": {
+		"vscode": "^1.37.0"
+	},
+	"extensionKind": [
+		"ui"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.arrowBackBtn",
+				"title": "Go Back",
+				"icon": {
+					"dark": "/img/svg/arrows/arrow-left-dark.svg",
+					"light": "/img/svg/arrows/arrow-left-light.svg"
+				}
+			},
+			{
+				"command": "extension.arrowForwardBtn",
+				"title": "Go Forward",
+				"icon": {
+					"dark": "/img/svg/arrows/arrow-right-dark.svg",
+					"light": "/img/svg/arrows/arrow-right-light.svg"
+				}
+			},
+			{
+				"command": "extension.chevronBackBtn",
+				"title": "Go Back",
+				"icon": {
+					"dark": "/img/svg/chevrons/chevron-left-dark.svg",
+					"light": "/img/svg/chevrons/chevron-left-light.svg"
+				}
+			},
+			{
+				"command": "extension.chevronForwardBtn",
+				"title": "Go Forward",
+				"icon": {
+					"dark": "/img/svg/chevrons/chevron-right-dark.svg",
+					"light": "/img/svg/chevrons/chevron-right-light.svg"
+				}
+			},
+			{
+				"command": "extension.arrowToLastEditLocationBtn",
+				"title": "Go to Last Edit Location",
+				"icon": {
+					"dark": "/img/svg/arrows/arrow-left-asterisk-dark.svg",
+					"light": "/img/svg/arrows/arrow-left-asterisk-light.svg"
+				}
+			},
+			{
+				"command": "extension.chevronToLastEditLocationBtn",
+				"title": "Go to Last Edit Location",
+				"icon": {
+					"dark": "/img/svg/chevrons/chevron-left-asterisk-dark.svg",
+					"light": "/img/svg/chevrons/chevron-left-asterisk-light.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "extension.arrowToLastEditLocationBtn",
+					"group": "navigation@999997",
+					"when": "config.back-n-forth.iconStyle == 'arrow' && config.back-n-forth.withLastEditLocation == true"
+				},
+				{
+					"command": "extension.chevronToLastEditLocationBtn",
+					"group": "navigation@999997",
+					"when": "config.back-n-forth.iconStyle == 'chevron' && config.back-n-forth.withLastEditLocation == true"
+				},
+				{
+					"command": "extension.arrowBackBtn",
+					"group": "navigation@999998",
+					"when": "config.back-n-forth.iconStyle == 'arrow'"
+				},
+				{
+					"command": "extension.arrowForwardBtn",
+					"group": "navigation@999999",
+					"when": "config.back-n-forth.iconStyle == 'arrow'"
+				},
+				{
+					"command": "extension.chevronBackBtn",
+					"group": "navigation@999998",
+					"when": "config.back-n-forth.iconStyle == 'chevron'"
+				},
+				{
+					"command": "extension.chevronForwardBtn",
+					"group": "navigation@999999",
+					"when": "config.back-n-forth.iconStyle == 'chevron'"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Back & Forth",
+			"properties": {
+				"back-n-forth.iconStyle": {
+					"type": "string",
+					"default": "arrow",
+					"enum": [
+						"arrow",
+						"chevron"
+					]
+				},
+				"back-n-forth.withLastEditLocation": {
+					"type": "boolean",
+					"default": false,
+					"description": "Adds an additional icon that returns to the last edit location"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.17.28",
+		"@types/vscode": "^1.37.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.2.0",
+		"tslint": "^5.20.1",
+		"typescript": "^3.9.7",
+		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {},
+	"__metadata": {
+		"id": "a6b9aab7-dcff-4d11-a3eb-f79bf72a8da4",
+		"publisherId": "b28656a7-98d8-46fc-819b-0bd6740d0830",
+		"publisherDisplayName": "Nick Rudenko"
+	}
+}

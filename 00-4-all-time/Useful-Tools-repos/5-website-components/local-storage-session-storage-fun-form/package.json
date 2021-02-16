@@ -1,0 +1,26 @@
+{
+    "name": "local-storage-session-storage-fun-form",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "scss": "node-sass --watch styles/scss -o styles/css",
+        "clean": "rm -rf dist/ && mkdir dist/",
+        "build": "cp -R images jscolor scripts styles dist/ && cp index.html dist/",
+        "deploy": "gh-pages -d dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/interglobalmedia/local-storage-session-storage-fun-form.git"
+    },
+    "author": "Maria D. Campbell",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/interglobalmedia/local-storage-session-storage-fun-form/issues"
+    },
+    "homepage": "https://github.com/interglobalmedia/local-storage-session-storage-fun-form#readme",
+    "dependencies": {
+        "gh-pages": "^2.2.0",
+        "node-sass": "^4.13.1"
+    }
+}

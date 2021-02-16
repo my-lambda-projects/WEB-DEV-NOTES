@@ -1,0 +1,107 @@
+.homepage #catAbb,
+.homepage #go,
+.homepage .leftlinks #cl_app_beta,
+.no-js,
+p.more {
+  display: none;
+}
+
+#logo {
+  font-size: 2.5rem;
+}
+
+.homepage-search .querybox {
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 2px solid #464646;
+  font-size: 16px;
+}
+
+.menu.collapsible > li {
+  cursor: pointer;
+}
+
+.menu.collapsible > li.expand.s ul {
+  display: block;
+}
+
+.menu.collapsible > li ul {
+  display: none;
+}
+
+* {
+  font: "Helvetica Neue", "Helvetica", Sans Serif;
+  background-color: whitesmoke;
+  color: charcoal grey;
+}
+
+a {
+  text-decoration: none;
+}
+ul {
+  padding: 0;
+}
+
+ul > li {
+  list-style: none;
+}
+
+a:hover,
+a > span:hover {
+  color: #800080;
+  font-weight: bold;
+}
+
+#leftbar,
+#center,
+#rightbar {
+  float: left;
+  padding: 0 30px 0 30px;
+  box-sizing: border-box;
+}
+
+footer {
+  clear: both;
+}
+
+#leftbar,
+#rightbar {
+  width: 25%;
+}
+
+#center {
+  width: 50%;
+  border: 1px solid #464646;
+  border-radius: 10px;
+}
+
+#center > div {
+  float: left;
+  width: 33%;
+}
+
+#topban h2 {
+  text-align: center;
+}
+
+ul.clfooter {
+  text-align: center;
+  border-top: 1px solid grey;
+  padding: 10px 0 10px 0;
+}
+ul.clfooter > li {
+  display: inline;
+  padding-right: 5px;
+}
+h4.ban::before {
+  content: "☮️";
+}
+
+td {
+  border: 1px solid #333;
+}
+
+#cal > a {
+  color: green;
+}

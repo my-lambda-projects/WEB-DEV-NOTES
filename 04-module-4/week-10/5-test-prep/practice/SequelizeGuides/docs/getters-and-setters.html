@@ -1,0 +1,38 @@
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/models-definition.html#getters-setters">Official Docs</a></p>
+<p>Getters and setters are ways of customizing what happens when someone ‘gets’ or ‘sets’ a property on an instance. ‘Get’ and ‘set’ are referred to as “meta-operations” in JavaScript.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> someObj <span class="op">=</span> <span class="op">{</span><span class="dt">foo</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">someObj</span>.<span class="at">foo</span> <span class="co">// the &#39;get&#39; meta-operation</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">someObj</span>.<span class="at">foo</span> <span class="op">=</span> <span class="st">&#39;baz&#39;</span> <span class="co">// the &#39;set&#39; meta-operation</span></a></code></pre></div>
+<p>Normally, we expect that ‘getting’ a property will simply return the value at that key in the object, and ‘setting’ a property will set that property in the object.</p>
+<p>‘Getters’ and ‘setters’ allow us to <em>override</em> that expected behavior.</p>
+<h2 id="definition">Definition</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="at">get</span> () <span class="op">{</span> <span class="co">// this defines the &#39;getter&#39;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="co">// &#39;this&#39; refers to the instance (same as an instance method)</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="co">// in a &#39;getter&#39;, you should not refer to the names of the columns directly</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="co">// as this will recursively call the getter and result in a stack overflow,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="co">// instead, use the `this.getDataValue` method</span></a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="cf">return</span> <span class="kw">this</span>.<span class="at">getDataValue</span>(<span class="st">&#39;name&#39;</span>) <span class="op">+</span> <span class="st">&#39; the pug&#39;</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="co">// this getter will automatically append &#39; the pug&#39; to any name</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="at">set</span> (valueToBeSet) <span class="op">{</span> <span class="co">// defines the &#39;setter&#39;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="co">// &#39;this&#39; refers to the instance (same as above)</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="co">// use `this.setDataValue` to actually set the value</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="kw">this</span>.<span class="at">setDataValue</span>(<span class="st">&#39;name&#39;</span><span class="op">,</span> <span class="va">valueToBeSet</span>.<span class="at">toUpperCase</span>())</a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="co">// this setter will automatically set the &#39;name&#39; property to be uppercased</span></a>
+<a class="sourceLine" id="cb2-17" title="17">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="usage">Usage</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// building or creating an instance will trigger the &#39;set&#39; operation, causing the name to be capitalized</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">const</span> createdPug <span class="op">=</span> <span class="cf">await</span> <span class="va">Pug</span>.<span class="at">create</span>(<span class="op">{</span><span class="dt">name</span><span class="op">:</span> <span class="st">&#39;cody&#39;</span><span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3">  </a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">// when we &#39;get&#39; createdPug.name, we get the capitalized &#39;CODY&#39; + &#39; the pug&#39; from our getter</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="va">createdPug</span>.<span class="at">name</span>) <span class="co">// CODY the pug</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">// this is the &#39;set&#39; operation, which will capitalize the name we set</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="va">createdPug</span>.<span class="at">name</span> <span class="op">=</span> <span class="st">&#39;murphy&#39;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="va">console</span>.<span class="at">log</span>(<span class="va">createdPug</span>.<span class="at">name</span>) <span class="co">// MURPHY the pug</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  </a></code></pre></div>

@@ -1,0 +1,57 @@
+{
+	"name": "multi-file-renamer",
+	"displayName": "Multi-File Renamer",
+	"description": "Provides tools to rename multiple files at once",
+	"version": "1.0.0",
+	"engines": {
+		"vscode": "^1.40.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:multiFileRenamer.renameFiles"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "multiFileRenamer.renameFiles",
+					"group": "1_modification",
+					"when": "explorerViewletVisible && listMultiSelection"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "multiFileRenamer.renameFiles",
+				"title": "Rename Multiple Files"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.40.0",
+		"glob": "^7.1.5",
+		"mocha": "^6.2.2",
+		"typescript": "^3.6.4",
+		"tslint": "^5.20.0",
+		"vscode-test": "^1.2.2"
+	},
+	"publisher": "dandidevs",
+	"__metadata": {
+		"id": "455173bb-39c1-4017-a906-ab2b49059e4a",
+		"publisherId": "2f704ac9-99af-47cf-9383-7d972f1fe90d",
+		"publisherDisplayName": "Dandi"
+	}
+}

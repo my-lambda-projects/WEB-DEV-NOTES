@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "3a904bf4-258a-4332-95f9-6bbba2779c9d",
+    "name": "TTT: Giving Up",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/aggregates/tic-tac-toe/reading-step-05-reqs-js.md",
+    "type": "Reading",
+    "timeEstimate": 1800,
+    "urls": [
+      "ttt--giving-up"
+    ],
+    "topic": "Thursday - JSON and Storage",
+    "subtopic": "Tic-Tac-Toe Project",
+    "body": "# Requirement 5: Giving Up\n\nIn this requirement, you will now make the \"Give Up\" button work. To do this,\nyou will need to perform the following:\n\n* When a player clicks the \"Give Up\" button:\n  * Set the status of the game as \"won\" by the \"other\" player. That is, if \"X\" is\n    the current player, when that player clicks the \"Give Up\" button, then \"O\"\n    wins the game.\n  * Show the winner status as won by the \"other\" player.\n  * Disable the \"Give Up\" button.\n  * Enable the \"New Game\" button.\n* When a game is ongoing:\n  * Enable the 'Give Up\" button.\n\nDuring development, you can just refresh the browser to clear the board.\n"
+  },
+  "success": true
+}

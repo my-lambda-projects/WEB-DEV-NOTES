@@ -1,0 +1,135 @@
+<h1 id="dialect-specific-things">Dialect-Specific Things</h1>
+<h2 id="underlying-connector-libraries">Underlying Connector Libraries</h2>
+<h3 id="mysql">MySQL</h3>
+<p>The underlying connector library used by Sequelize for MySQL is the <a href="https://www.npmjs.com/package/mysql2">mysql2</a> npm package (version 1.5.2 or higher).</p>
+<p>You can provide custom options to it using the <code>dialectOptions</code> in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mysql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="co">// Your mysql2 options here</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span>)</a></code></pre></div>
+<h3 id="mariadb">MariaDB</h3>
+<p>The underlying connector library used by Sequelize for MariaDB is the <a href="https://www.npmjs.com/package/mariadb">mariadb</a> npm package.</p>
+<p>You can provide custom options to it using the <code>dialectOptions</code> in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mariadb&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="co">// Your mariadb options here</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="co">// connectTimeout: 1000</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="sqlite">SQLite</h3>
+<p>The underlying connector library used by Sequelize for SQLite is the <a href="https://www.npmjs.com/package/sqlite3">sqlite3</a> npm package (version 4.0.0 or above).</p>
+<p>You specify the storage file in the Sequelize constructor with the <code>storage</code> option (use <code>:memory:</code> for an in-memory SQLite instance).</p>
+<p>You can provide custom options to it using the <code>dialectOptions</code> in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;sqlite&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">storage</span><span class="op">:</span> <span class="st">&#39;path/to/database.sqlite&#39;</span> <span class="co">// or &#39;:memory:&#39;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="co">// Your sqlite3 options here</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="postgresql">PostgreSQL</h3>
+<p>The underlying connector library used by Sequelize for PostgreSQL is the <a href="https://www.npmjs.com/package/pg">pg</a> npm package (version 7.0.0 or above). The module <a href="https://www.npmjs.com/package/pg-hstore">pg-hstore</a> is also necessary.</p>
+<p>You can provide custom options to it using the <code>dialectOptions</code> in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;postgres&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="co">// Your pg options here</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>To connect over a unix domain socket, specify the path to the socket directory in the <code>host</code> option. The socket path must start with <code>/</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;postgres&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">host</span><span class="op">:</span> <span class="st">&#39;/path/to/socket_directory&#39;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="mssql">MSSQL</h3>
+<p>The underlying connector library used by Sequelize for MSSQL is the <a href="https://www.npmjs.com/package/tedious">tedious</a> npm package (version 6.0.0 or above).</p>
+<p>You can provide custom options to it using <code>dialectOptions.options</code> in the Sequelize constructor:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="st">&#39;username&#39;</span><span class="op">,</span> <span class="st">&#39;password&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;postgres&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="co">// Observe the need for this nested `options` field for MSSQL</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="dt">options</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="co">// Your tedious options here</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="dt">useUTC</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-8" title="8">      <span class="dt">dateFirst</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h4 id="mssql-domain-account">MSSQL Domain Account</h4>
+<p>In order to connect with a domain account, use the following format.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&#39;database&#39;</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">dialect</span><span class="op">:</span> <span class="st">&#39;mssql&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">dialectOptions</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="dt">authentication</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">      <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;ntlm&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">      <span class="dt">options</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">        <span class="dt">domain</span><span class="op">:</span> <span class="st">&#39;yourDomain&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8">        <span class="dt">userName</span><span class="op">:</span> <span class="st">&#39;username&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-9" title="9">        <span class="dt">password</span><span class="op">:</span> <span class="st">&#39;password&#39;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="dt">options</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-13" title="13">      <span class="dt">instanceName</span><span class="op">:</span> <span class="st">&#39;SQLEXPRESS&#39;</span></a>
+<a class="sourceLine" id="cb7-14" title="14">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-15" title="15">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="data-type-timestamp-without-time-zone---postgresql-only">Data type: TIMESTAMP WITHOUT TIME ZONE - PostgreSQL only</h2>
+<p>If you are working with the PostgreSQL <code>TIMESTAMP WITHOUT TIME ZONE</code> and you need to parse it to a different timezone, please use the pg library’s own parser:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="at">require</span>(<span class="st">&#39;pg&#39;</span>).<span class="va">types</span>.<span class="at">setTypeParser</span>(<span class="dv">1114</span><span class="op">,</span> stringValue <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="cf">return</span> <span class="kw">new</span> <span class="at">Date</span>(stringValue <span class="op">+</span> <span class="st">&#39;+0000&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="co">// e.g., UTC offset. Use any offset that you would like.</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="data-type-arrayenum---postgresql-only">Data type: ARRAY(ENUM) - PostgreSQL only</h2>
+<p>Array(Enum) type requireS special treatment. Whenever Sequelize will talk to the database, it has to typecast array values with ENUM name.</p>
+<p>So this enum name must follow this pattern <code>enum_&lt;table_name&gt;_&lt;col_name&gt;</code>. If you are using <code>sync</code> then correct name will automatically be generated.</p>
+<h2 id="table-hints---mssql-only">Table Hints - MSSQL only</h2>
+<p>The <code>tableHint</code> option can be used to define a table hint. The hint must be a value from <code>TableHints</code> and should only be used when absolutely necessary. Only a single table hint is currently supported per query.</p>
+<p>Table hints override the default behavior of MSSQL query optimizer by specifing certain options. They only affect the table or view referenced in that clause.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> TableHints <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;sequelize&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="va">Project</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="co">// adding the table hint NOLOCK</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">tableHint</span><span class="op">:</span> <span class="va">TableHints</span>.<span class="at">NOLOCK</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="co">// this will generate the SQL &#39;WITH (NOLOCK)&#39;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="index-hints---mysqlmariadb-only">Index Hints - MySQL/MariaDB only</h2>
+<p>The <code>indexHints</code> option can be used to define index hints. The hint type must be a value from <code>IndexHints</code> and the values should reference existing indexes.</p>
+<p>Index hints <a href="https://dev.mysql.com/doc/refman/5.7/en/index-hints.html">override the default behavior of the MySQL query optimizer</a>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> <span class="op">{</span> IndexHints <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">Project</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">indexHints</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="va">IndexHints</span>.<span class="at">USE</span><span class="op">,</span> <span class="dt">values</span><span class="op">:</span> [<span class="st">&#39;index_project_on_name&#39;</span>] <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="dt">id</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-8" title="8">      [<span class="va">Op</span>.<span class="at">gt</span>]<span class="op">:</span> <span class="dv">623</span></a>
+<a class="sourceLine" id="cb10-9" title="9">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-11" title="11">      [<span class="va">Op</span>.<span class="at">like</span>]<span class="op">:</span> <span class="st">&#39;Foo %&#39;</span></a>
+<a class="sourceLine" id="cb10-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The above will generate a MySQL query that looks like this:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Project <span class="kw">USE</span> <span class="kw">INDEX</span> (index_project_on_name) <span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">&#39;FOO %&#39;</span> <span class="kw">AND</span> <span class="kw">id</span> <span class="op">&gt;</span> <span class="dv">623</span>;</a></code></pre></div>
+<p><code>Sequelize.IndexHints</code> includes <code>USE</code>, <code>FORCE</code>, and <code>IGNORE</code>.</p>
+<p>See <a href="https://github.com/sequelize/sequelize/issues/9421">Issue #9421</a> for the original API proposal.</p>
+<h2 id="engines---mysqlmariadb-only">Engines - MySQL/MariaDB only</h2>
+<p>The default engine for a model is InnoDB.</p>
+<p>You can change the engine for a model with the <code>engine</code> option (e.g., to MyISAM):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> Person <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;person&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="co">/* attributes */</span> <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dt">engine</span><span class="op">:</span> <span class="st">&#39;MYISAM&#39;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Like every option for the definition of a model, this setting can also be changed globally with the <code>define</code> option of the Sequelize constructor:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(db<span class="op">,</span> user<span class="op">,</span> pw<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">define</span><span class="op">:</span> <span class="op">{</span> <span class="dt">engine</span><span class="op">:</span> <span class="st">&#39;MYISAM&#39;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="op">}</span>)</a></code></pre></div>
+<h2 id="table-comments---mysqlmariadbpostgresql-only">Table comments - MySQL/MariaDB/PostgreSQL only</h2>
+<p>You can specify a comment for a table when defining the model:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">class</span> Person <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="va">Person</span>.<span class="at">init</span>(<span class="op">{</span> <span class="co">/* attributes */</span> <span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="dt">comment</span><span class="op">:</span> <span class="st">&quot;I&#39;m a table comment!&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  sequelize</a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="op">}</span>)</a></code></pre></div>
+<p>The comment will be set when calling <code>sync()</code>.</p>

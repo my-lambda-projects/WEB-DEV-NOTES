@@ -1,0 +1,244 @@
+$min-360: "(min-width: 360px)";
+$min-384: "(min-width: 384px)";
+$min-411: "(min-width: 411px)";
+$min-480: "(min-width: 480px)";
+$min-600: "(min-width: 600px)";
+$min-680: "(min-width: 680px)";
+$min-800: "(min-width: 800px)";
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100vh;
+}
+
+html,
+body {
+    margin: 0;
+}
+
+body {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+    justify-content: center;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    align-items: center;
+}
+
+body>.wrapper {
+    width: 90%;
+    max-width: 800px;
+    background-color: rgb(250, 250, 250);
+    padding: 2rem;
+    position: relative;
+    border: 6px solid black;
+    margin-top: 9rem;
+    margin-bottom: 22vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* body wrapper and div for label and selects styling */
+body>div>div {
+    width: 300px;
+}
+
+/* h1 styling */
+h1.title {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: -1.25rem;
+    letter-spacing: 0.06rem;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgb(250, 250, 250);
+    text-shadow: 1px 1px 0 black, 2px 2px 0 black;
+    font-size: 1.3rem;
+
+    @media #{$min-384} {
+        font-size: 1.5rem;
+        top: -1.5rem;
+    }
+
+    @media #{$min-480} {
+        font-size: 2rem;
+        top: -1.9rem;
+    }
+
+    @media #{$min-600} {
+        font-size: 2.5rem;
+        top: -2.25rem;
+    }
+
+    @media #{$min-800} {
+        font-size: 3.25rem;
+        top: -3rem;
+    }
+}
+
+/* form styling by id (more specific) */
+#fun-form {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* general label styling */
+label {
+    margin: 0.75rem 0 0.25rem;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+}
+
+/* textarea styling */
+.note {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* font color input div styling */
+.inputs {
+    display: flex;
+}
+
+/* styling for both font and background color inputs */
+input[name="color"] {
+    width: 100%;
+    width: 250px;
+    height: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for select tags */
+form>div>select {
+    display: block;
+}
+
+select {
+    margin-top: 0.5rem;
+    width: 200px;
+
+    &:first-of-type {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* textarea styling */
+textarea {
+    width: 100%;
+    max-width: 250px;
+    height: 3rem;
+    resize: none;
+    outline: none;
+    overflow-y: auto;
+    padding: 0.5rem;
+    letter-spacing: 0.09rem;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+/* image tag styling */
+img {
+    position: absolute;
+    top: 42.5em;
+    right: 0;
+
+    @media #{$min-360} {
+        top: 40rem;
+    }
+
+    @media #{$min-480} {
+        top: 37rem;
+    }
+
+    @media #{$min-600} {
+        top: 34rem;
+    }
+
+    @media #{$min-680} {
+        top: 13rem;
+        right: 5rem;
+    }
+}
+
+/* image size styling by class (more specific) */
+.image {
+    width: 100%;
+    height: 100%;
+    width: 200px;
+    height: 200px;
+}
+
+.note-btn-wrapper,
+.storage-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 250px;
+}
+
+.storage-buttons {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* clear and empty storage buttons styling */
+.clear,
+.empty {
+    font-size: 1rem;
+    font-family: "PT Sans",
+        sans-serif;
+
+    &:focus,
+    &:hover,
+    &:active {
+        color: #d86262;
+        text-decoration: none;
+    }
+
+}
+
+/* submit note and get note button styling */
+#note-btn,
+#get-note-btn {
+    width: 90px;
+    outline: none;
+    padding: 5px;
+    font-size: 1rem;
+    background: black;
+    color: rgb(250, 250, 250);
+}
+
+/* Footer styling loosely based on Philip Walton's Sticky Footer used with CSS Flexbox */
+.site-footer {
+    height: 50vh;
+    width: 100%;
+    font-size: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    @media #{$min-411} {
+        font-size: 120%;
+    }
+
+    @media #{$min-600} {
+        font-size: 130%;
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "b043084e-1057-41e4-9335-e4193be3e599",
+    "name": "ORM Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/relational-databases/objectives/reading-00-orm-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 0,
+    "urls": [
+      "orm-objectives"
+    ],
+    "topic": "Homework for Thursday",
+    "subtopic": "Learning Objectives",
+    "body": "# ORM Objectives\n\nTo ease the use of SQL, the object-relational mapping tool was invented. This\nallows developers to focus on their application code and let a library generate\nall of the SQL for them. Depending on which developer you ask, this is a miracle\nor a travesty. Either way, those developers use them because writing all of the\nSQL by hand is a chore that most software developers just don't want to do.\n\nIn this section, you will learn:\n\n* How to install, configure, and use Sequelize, an ORM for JavaScript\n* How to use database migrations to make your database grow with your\n  application in a source-control enabled way\n* How to perform CRUD operations with Sequelize\n* How to query using Sequelize\n* How to perform data validations with Sequelize\n* How to use transactions with Sequelize\n"
+  },
+  "success": true
+}

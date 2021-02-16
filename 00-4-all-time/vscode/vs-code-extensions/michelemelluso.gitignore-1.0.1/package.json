@@ -1,0 +1,47 @@
+{
+	"name": "gitignore",
+	"displayName": "gitignore",
+	"description": "Add file to .gitignore",
+	"version": "1.0.1",
+	"publisher": "michelemelluso",
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "gitignore.add",
+				"title": "Add to .gitignore"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "gitignore.add",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^1.8.10",
+		"vscode": "^0.11.13"
+	},
+	"__metadata": {
+		"id": "0fa141d2-0184-49b6-b8f6-b572f965b164",
+		"publisherId": "81220008-de86-48d4-9d4a-a5f250aaee57",
+		"publisherDisplayName": "michelemelluso"
+	}
+}

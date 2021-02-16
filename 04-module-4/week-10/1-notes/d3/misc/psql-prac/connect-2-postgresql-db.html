@@ -1,0 +1,58 @@
+<h1 id="connect-to-postgresql-database">Connect to PostgreSQL Database</h1>
+<blockquote>
+<p>This tutorial shows you different ways to connect to PostgreSQL database by using interactive terminal program called psql and pgAdmin GUI application.</p>
+</blockquote>
+<p><strong>Summary</strong>: in this tutorial, you will learn how to <strong>connect to the PostgreSQL Database Server</strong> via an interactive terminal program called <strong>psql</strong> and via the <strong>pgAdmin</strong> application.</p>
+<p>When you <a href="https://www.postgresqltutorial.com/install-postgresql/" title="Install PostgreSQL">installed the PostgreSQL database server</a>, the PostgreSQL installer also installed some useful tools for working with the PostgreSQL database server. In this tutorial, you will learn how to connect to the PostgreSQL database server via the following tools:</p>
+<ul>
+<li>psql – a terminal-based front-end to PostgreSQL database server.</li>
+<li>pgAdmin – a web-based front-end to PostgreSQL database server.</li>
+</ul>
+<h2 id="connect-to-postgresql-database-server-using-psql">1) Connect to PostgreSQL database server using psql</h2>
+<p>psql is an interactive terminal program provided by PostgreSQL. It allows you to interact with the PostgreSQL database server such as executing SQL statements and managing database objects.</p>
+<p>The following steps show you how to connect to the PostgreSQL database server via the <em>psql</em> program:</p>
+<p>First, launch the <strong>psql</strong> program and connect to the PostgreSQL Database Server using the <strong>postgres</strong> user:</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2020/07/Install-PostgreSQL-psql.png" /></p>
+<p>Second, enter all the information such as Server, Database, Port, Username, and Password. If you press Enter, the program will use the default value specified in the square bracket <code>[]</code> and move the cursor to the new line. For example, <code>localhost</code> is the default database server. In the step for entering the password for user postgres, you need to enter the password the user postgres that you chose during the <a href="https://www.postgresqltutorial.com/install-postgresql/">PostgreSQL installation</a>.</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2020/07/Connect-to-PostgreSQL-via-psql.png" /></p>
+<p>Third, interact with the PostgreSQL Database Server by issuing an SQL statement. The following statement returns the current version of PostgreSQL:</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2020/07/Install-PostgreSQL-psql-verification.png" /></p>
+<p>Please do not forget to end the statement with a semicolon (;). After pressing <strong>Enter</strong>, psql will return the current PostgreSQL version on your system.</p>
+<h2 id="connect-to-postgresql-database-server-using-pgadmin">2) Connect to PostgreSQL database server using pgAdmin</h2>
+<p>The second way to connect to a database is by using a pgAdmin application. The pgAdmin application allows you to interact with the PostgreSQL database server via an intuitive user interface.</p>
+<p>The following illustrates how to connect to a database using pgAdmin GUI application:</p>
+<p>First, launch the pgAdmin application.</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2020/07/Connect-to-PostgreSQL-via-pgAdmin.png" /></p>
+<p>The pgAdmin application will launch on the web browser as shown in the following picture:</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-4.png" /></p>
+<p>Second, right-click the Servers node and select <strong>Create &gt; Server…</strong> menu to create a server</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-create-a-server.png" alt="pgAdmin - create a server" /><figcaption>pgAdmin - create a server</figcaption>
+</figure>
+<p>Third, enter the server name e.g., <strong>PostgreSQL</strong> and click the <strong>Connection</strong> tab:</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-enter-the-server-name.png" alt="pgAdmin - enter the server name" /><figcaption>pgAdmin - enter the server name</figcaption>
+</figure>
+<p>Fourth, enter the host and password for the <strong>postgres</strong> user and click the <strong>Save</strong> button:</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-enter-host-and-user-info.png" /></p>
+<p>Fifth, click on the Servers node to expand the server. By default, PostgreSQL has a database named postgres as shown below:</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-connected-to-PostgreSQL-Database-Server.png" alt="pgAdmin - connected to PostgreSQL Database Server" /><figcaption>pgAdmin - connected to PostgreSQL Database Server</figcaption>
+</figure>
+<p>Sixth, open the query tool by choosing the menu item <strong>Tool &gt; Query Tool</strong> or click the lightning icon.</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2019/05/pgAdmin-query-tool.png" /></p>
+<p>Seventh, enter the query in the <strong>Query Editor</strong>, click the <strong>Execute</strong> button, you will see the result of the query displaying in the <strong>Data Output</strong> tab:</p>
+<p><img src="https://sp.postgresqltutorial.com/wp-content/uploads/2020/07/Connect-to-PostgreSQL-via-pgAdmin-Execute-a-query-1.png" /></p>
+<h2 id="connect-to-postgresql-database-from-other-applications">Connect to PostgreSQL database from other applications</h2>
+<p>Any application that supports ODBC or <a href="https://www.postgresqltutorial.com/postgresql-jdbc/">JDBC</a> can connect to the PostgreSQL database server. In addition, if you develop an application that uses a specific driver, the application can connect to the PostgreSQL database server as well:</p>
+<ul>
+<li><a href="https://www.postgresqltutorial.com/postgresql-php/connect/">Connect to PostgreSQL from PHP</a></li>
+<li><a href="https://www.postgresqltutorial.com/postgresql-python/connect/">Connect to PostgreSQL from Python</a></li>
+<li><a href="https://www.postgresqltutorial.com/postgresql-jdbc/connecting-to-postgresql-database/">Connect to PostgreSQL from Java</a></li>
+</ul>
+<p>In this tutorial, you’ve learned how to connect to the PostgreSQL database server by using different client tools including psql and pgAdmin GUI application.</p>
+<ul>
+<li>Was this tutorial helpful ?</li>
+<li><a href="#">Yes</a><a href="#">No</a></li>
+</ul>
+<p><a href="https://www.postgresqltutorial.com/connect-to-postgresql-database/">Source</a></p>

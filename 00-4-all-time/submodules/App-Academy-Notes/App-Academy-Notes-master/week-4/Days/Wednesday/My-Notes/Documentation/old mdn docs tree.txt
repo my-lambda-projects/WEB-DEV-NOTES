@@ -1,0 +1,71 @@
+
+
+/mnt/c/Users/15512/Google Drive/App Academy August Cohort 2020/Weeks/Week4/Days/Friday/MDN-Docs
+
+
+├── Concepts
+│   ├── Bubbling and capturing.pdf
+│   ├── DOM.pdf
+│   ├── Event.bubbles.pdf
+│   ├── Events.pdf
+│   ├── HTMLinputElement_________-contains .value.pdf
+│   ├── Parse.pdf
+│   └── Working with JSON.pdf
+├── Methods
+│   ├── Console.dir().pdf
+│   ├── Document.createElement().pdf
+│   ├── Document.createTextNode().pdf
+│   ├── Document.getElementById().pdf
+│   ├── Document.querySelector().pdf
+│   ├── Document.querySelectorAll().pdf
+│   ├── Document.setAttribute().pdf
+│   ├── Element.classList.pdf
+│   ├── Element.innerHTML.pdf
+│   ├── Event.cancelBubble.pdf
+│   ├── Event.currentTarget.pdf
+│   ├── Event.preventDefault().pdf
+│   ├── Event.stopImmediatePropagation().pdf
+│   ├── Event.stopPropagation().pdf
+│   ├── EventTarget.addEventListener().pdf
+│   ├── GlobalEventHandlers.onload.pdf
+│   ├── HTMLMediaElement.src.pdf
+│   ├── Node.appendChild().pdf
+│   ├── Node.childNodes.pdf
+│   ├── Storage.setItem().pdf
+│   ├── String.prototype.startsWith().pdf
+│   ├── Window.localStorage.pdf
+│   └── parseInt().pdf
+├── Objects elements operators and such
+│   ├── DOMContentLoaded_Event.pdf
+│   ├── DataTransfer.pdf
+│   ├── Date_Object_JS.pdf
+│   ├── Document Interface.pdf
+│   ├── Dom_Nodes.pdf
+│   ├── Element_innerHTML.pdf
+│   ├── Event Deligation.pdf
+│   ├── Event_target.pdf
+│   ├── For_Of_Loop.pdf
+│   ├── JSON.parse().pdf
+│   ├── Javascript_Get_Date_Object.pdf
+│   ├── Javascript_New_Operator.pdf
+│   ├── Node_List.pdf
+│   ├── Scripts async, defer.pdf
+│   ├── Storage.setItem().pdf
+│   ├── The Input (Form Input) element.pdf
+│   ├── TheEventListener_Callback.pdf
+│   └── cookie.pdf
+└── OverFlow
+    ├── Documentkeydownevent.pdf
+    └── ParentNode.childElementCount.pdf
+
+
+
+questions-discussion
+problem-solving-alt-solutions
+
+
+
+
+
+
+

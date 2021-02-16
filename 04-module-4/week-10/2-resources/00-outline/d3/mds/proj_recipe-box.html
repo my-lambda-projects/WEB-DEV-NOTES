@@ -1,0 +1,87 @@
+<h1 id="recipe-box-project">Recipe Box Project</h1>
+<hr />
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+<ul>
+<li><a href="#the-data-model-analysis">The data model analysis</a></li>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#your-sql">Your SQL</a></li>
+<li><a href="#the-application">The application</a></li>
+<li><a href="#directions">Directions</a>
+<ul>
+<li><a href="#home-page">Home Page</a></li>
+<li><a href="#recipesid"><code>/recipes/:id</code></a></li>
+<li><a href="#recipesnew"><code>/recipes/new</code></a></li>
+<li><a href="#recipesidedit"><code>/recipes/:id/edit</code></a></li>
+<li><a href="#recipestermsearchterm"><code>/recipes?term={searchTerm}</code></a></li>
+</ul></li>
+</ul>
+<!-- /code_chunk_output -->
+<hr />
+<p>In this project, you will build the Data Access Layer to power a Web application. This means that you will provide all of the SQL that it takes to get data into and from the database. You will do this in SQL files that the application will load and read.</p>
+<p><strong>Note</strong>: This is not a good way to create a database-backed application. This project is structured this way so that it isolates the activity of SQL writing. Do not use this project as a template for your future projects.</p>
+<h2 id="the-data-model-analysis">The data model analysis</h2>
+<p>What goes into a recipe box? Why, recipes, of course! Here’s an example recipe card.</p>
+<figure>
+<img src="images/sql-recipe-card.jpeg" alt="Recipe card" /><figcaption>Recipe card</figcaption>
+</figure>
+<p>You can see that a recipe is made up of three basic parts:</p>
+<ul>
+<li>A title,</li>
+<li>A list of ingredients, and</li>
+<li>A list of instructions.</li>
+</ul>
+<p>You’re going to add a little more to that, too. It will also have</p>
+<ul>
+<li>The date/time that it was entered into the recipe box, and</li>
+<li>The date/time it was last updated in the recipe box.</li>
+</ul>
+<p>These are good pieces of data to have so that you can show them “most recent” for example.</p>
+<p>Ingredients themselves are complex data types and need their own structure. They “belong” to a recipe. That means they’ll need to reference that recipe. That means an ingredient is made up of:</p>
+<ul>
+<li>An amount (optional),</li>
+<li>A unit of measure (optional),</li>
+<li>The actual food stuff, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That unit of measure is a good candidate for normalization, don’t you think? It’s a predefined list of options that should not change and that you don’t want people just typing whatever they want in there, not if you want to maintain data integrity. Otherwise, you’ll end up with “C”, “c”, “cup”, “CUP”, “Cup”, and all the other permutations, each of which is a distinct value but means the same thing.</p>
+<p>Instructions are also complex objects, but not by looking at them. Initially, one might only see text that comprises an instruction. But, very importantly, instructions have <em>order</em>. They also <em>belong</em> to the recipe. With that in mind, an instruction is made up of:</p>
+<ul>
+<li>The text of the instruction,</li>
+<li>The order that it appears in the recipe, and</li>
+<li>The id of the recipe that it belongs to.</li>
+</ul>
+<p>That is enough to make a good model for the recipe box.</p>
+<figure>
+<img src="images/sql-recipe-box-data-model.png" alt="recipe box data model" /><figcaption>recipe box data model</figcaption>
+</figure>
+<h2 id="getting-started">Getting started</h2>
+<ul>
+<li>Download the starter project from https://github.com/appacademy-starters/sql-recipe-box</li>
+<li>Run <code>npm install</code> to install the packages</li>
+<li>Run <code>npm start</code> to start the server on port 3000</li>
+</ul>
+<p>You’ll do all of your work in the <strong>data-access-layer</strong> directory. In there, you will find a series of SQL files. In each, you will find instructions of what to do to make the user interface to work. They are numbered in an implied order for you to complete them. The only real requirement is that you finish the SQL for the <strong>00a-schema.sql</strong> and <strong>00b-seed.sql</strong> files first. That way, as you make your way through the rest of the SQL files, the tables and some of the data will already exist for you. You can run the command <code>npm run seed</code> to run both of those files or pipe each it into <code>psql</code> as you’ve been doing.</p>
+<p>Either way that you decide to seed the database, you’ll need to stop your server. The seed won’t correctly run while the application maintains a connection to the application database. You may also need to exit all of the active <code>psql</code> instances that you have running to close out all of the active connections. When you run the seed, if it reports that it can’t do something because of active connections, look for a running instance of the server, Postbird, or <code>psql</code> with that connection.</p>
+<p><strong>Warning</strong>: running the seed files will destroy all data that you have in the database.</p>
+<h2 id="your-sql">Your SQL</h2>
+<p>When you write the SQL, they will mostly be parameterized queries. The first couple of files will show you how it needs to be done, where you will place the parameter placeholders “$1”, “$2”, and so on. If you need to, refer to the <a href="https://node-postgres.com/features/queries#Parameterized%20query">Parameterized query</a> section of the documentation for <strong>node-postgres</strong>.</p>
+<p>In each of the following files in the <strong>data-access-layer</strong>, you will find one or more lines with the content <code>-- YOUR CODE HERE</code>. It is your job to write the SQL statement described in the block above that code. Each file is named with the intent of the SQL that it should contain.</p>
+<h2 id="the-application">The application</h2>
+<p>The application is a standard <a href="https://www.expressjs.com">express.js</a> application using the <a href="https://pugjs.org">pug</a> library to generate the HTML and the <a href="https://node-postgres.com">node-postgres</a> library to connect to the database.</p>
+<p>It reads your SQL files whenever it wants to make a database call. If your file throws an error, then the UI handles it by telling you what needs to be fixed so that the UI will work. The application will also output error messages for missing functionality.</p>
+<p>The SQL files contain a description of what the content is and where it’s used in the application. Tying those together, you’ll know you’re done when you have all of the SQL files containing queries and there are no errors in the UI or console.</p>
+<h2 id="directions">Directions</h2>
+<p>Fill out the <strong>00a-schema.sql</strong> and <strong>00b-seed.sql</strong> files first. Then seed the database with command, <code>npm run seed</code>.</p>
+<h3 id="home-page">Home Page</h3>
+<p>Start the server by running <code>npm run dev</code>. Then go to <code>localhost:3000</code> you should see the home page with “Latest Recipes”. To show the latest recipes properly, complete the <code>01-get-ten-most-recent-recipes.sql</code> file.</p>
+<p>After completing the file, make sure you correctly defined the sql query so that the first recipe listed is the most recently updated recipe.</p>
+<h3 id="recipesid"><code>/recipes/:id</code></h3>
+<p>If you click on one of the recipes in the list of recipes on the home page, it will direct you to that recipe’s Detail Page. Complete the following files that correspond to this page and make sure to test a file right after you fill out the file by refreshing the page: - <code>02a-get-recipe-by-id.sql</code> - <code>02b-get-ingredients-by-recipe-id.sql</code> - <code>02c-get-instructions-by-recipe-id.sql</code></p>
+<p>Make sure to read the instructions well! In all the above sql queries, the <code>$1</code> parameter will be the recipe id.</p>
+<h3 id="recipesnew"><code>/recipes/new</code></h3>
+<p>Click on <code>ADD A RECIPE</code> button on the Navigation Bar to direct you to the New Recipe Form page. Fill out the <code>03a-insert-new-recipe.sql</code> file so you can create a new recipe.</p>
+<h3 id="recipesidedit"><code>/recipes/:id/edit</code></h3>
+<p>After creating a new recipe, you will be directed to the Recipe Edit page where you can add instructions and ingredients to a recipe. Complete the following files that correspond to this page and make sure to test a file right after you fill out the file: - <code>03b-get-units-of-measure.sql</code> - <code>04-insert-new-ingredient.sql</code> - <code>05-insert-new-instruction.sql</code> - <code>06-delete-recipe.sql</code></p>
+<h3 id="recipestermsearchterm"><code>/recipes?term={searchTerm}</code></h3>
+<p>Allow users to find recipes by a part of their name using the Search Bar in the Navigation Bar. Complete <code>07-search-recipes.sql</code> for this feature.</p>

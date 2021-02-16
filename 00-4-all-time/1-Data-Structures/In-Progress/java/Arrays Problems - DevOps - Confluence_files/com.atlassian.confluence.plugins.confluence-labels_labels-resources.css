@@ -1,0 +1,69 @@
+/* module-key = 'com.atlassian.confluence.plugins.confluence-labels:labels-resources', location = 'com/atlassian/confluence/plugins/labels/labels.css' */
+.labels-content {
+  position: relative
+}
+
+.label-list .no-labels-message {
+  display: inline-block;
+  color: #707070
+}
+
+.label-list {
+  padding: 0;
+  margin: 0
+}
+
+.label-list.label-list-right {
+  text-align: right
+}
+
+.label-list.label-list-right.has-pen {
+  padding-right: 20px
+}
+
+.label-list .labels-edit-container {
+  display: inline-block;
+  max-width: 16px;
+  overflow: hidden;
+  vertical-align: middle
+}
+
+.label-list .labels-edit-container .aui-iconfont-edit-small {
+  color: #707070
+}
+
+.label-list.label-list-right.has-pen .labels-edit-container {
+  position: absolute;
+  top: 0;
+  right: 0
+}
+
+.tag-cloud.label-list .aui-label {
+  border: 0;
+  background: 0;
+  margin: 0
+}
+
+#dialog-label-list {
+  margin-top: 15px
+}
+
+#label-operation-error-container .aui-message {
+  margin: 0 0 20px 0
+}
+
+#add-labels-editor-button {
+  margin-left: 8px
+}
+
+.plus-label:before {
+  content: "+ "
+}
+
+.minus-label:before {
+  content: "- "
+}
+
+.label-list .aui-label {
+  margin: 0 5px 5px 0
+}

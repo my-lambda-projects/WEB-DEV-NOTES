@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "todo_list_app",
+    "password": "todo_list_app",
+    "database": "todo_list_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "logging": false
+  },
+  "test": {
+    "username": "todo_list_app",
+    "password": "todo_list_app",
+    "database": "todo_list_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "logging": false
+  },
+  "production": {
+    "username": "todo_list_app",
+    "password": "todo_list_app",
+    "database": "todo_list_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "logging": false
+  }
+}

@@ -1,0 +1,202 @@
+<h1 id="validations-constraints">Validations &amp; Constraints</h1>
+<p>In this tutorial you will learn how to setup validations and constraints for your models in Sequelize.</p>
+<p>For this tutorial, the following setup will be assumed:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> Op<span class="op">,</span> Model<span class="op">,</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> sequelize <span class="op">=</span> <span class="kw">new</span> <span class="at">Sequelize</span>(<span class="st">&quot;sqlite::memory:&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">const</span> User <span class="op">=</span> <span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&quot;user&quot;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">username</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">hashedPassword</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span>(<span class="dv">64</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="dt">is</span><span class="op">:</span> <span class="ss">/</span><span class="sc">^[0-9a-f]{64}$</span><span class="ss">/i</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-14" title="14">})<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-15" title="15"></a>
+<a class="sourceLine" id="cb1-16" title="16">(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-17" title="17">  <span class="cf">await</span> <span class="va">sequelize</span>.<span class="at">sync</span>(<span class="op">{</span> <span class="dt">force</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-18" title="18">  <span class="co">// Code here</span></a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="op">}</span>)()<span class="op">;</span></a></code></pre></div>
+<h2 id="difference-between-validations-and-constraints">Difference between Validations and Constraints</h2>
+<p>Validations are checks performed in the Sequelize level, in pure JavaScript. They can be arbitrarily complex if you provide a custom validator function, or can be one of the built-in validators offered by Sequelize. If a validation fails, no SQL query will be sent to the database at all.</p>
+<p>On the other hand, constraints are rules defined at SQL level. The most basic example of constraint is an Unique Constraint. If a constraint check fails, an error will be thrown by the database and Sequelize will forward this error to JavaScript (in this example, throwing a <code>SequelizeUniqueConstraintError</code>). Note that in this case, the SQL query was performed, unlike the case for validations.</p>
+<h2 id="unique-constraint">Unique Constraint</h2>
+<p>Our code example above defines a unique constraint on the <code>username</code> field:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">/* ... */</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">username</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span> <span class="co">/* ... */</span></a></code></pre></div>
+<p>When this model is synchronized (by calling <code>sequelize.sync</code> for example), the <code>username</code> field will be created in the table as <code>`name` TEXT UNIQUE</code>, and an attempt to insert an username that already exists there will throw a <code>SequelizeUniqueConstraintError</code>.</p>
+<h2 id="allowingdisallowing-null-values">Allowing/disallowing null values</h2>
+<p>By default, <code>null</code> is an allowed value for every column of a model. This can be disabled setting the <code>allowNull: false</code> option for a column, as it was done in the <code>username</code> field from our code example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">/* ... */</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">username</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="op">}</span> <span class="co">/* ... */</span></a></code></pre></div>
+<p>Without <code>allowNull: false</code>, the call <code>User.create({})</code> would work.</p>
+<h3 id="note-about-allownull-implementation">Note about <code>allowNull</code> implementation</h3>
+<p>The <code>allowNull</code> check is the only check in Sequelize that is a mix of a <em>validation</em> and a <em>constraint</em> in the senses described at the beginning of this tutorial. This is because:</p>
+<ul>
+<li>If an attempt is made to set <code>null</code> to a field that does not allow null, a <code>ValidationError</code> will be thrown <em>without any SQL query being performed</em>.</li>
+<li>In addition, after <code>sequelize.sync</code>, the column that has <code>allowNull: false</code> will be defined with a <code>NOT NULL</code> SQL constraint. This way, direct SQL queries that attempt to set the value to <code>null</code> will also fail.</li>
+</ul>
+<h2 id="validators">Validators</h2>
+<p>Model validators allow you to specify format/content/inheritance validations for each attribute of the model. Validations are automatically run on <code>create</code>, <code>update</code> and <code>save</code>. You can also call <code>validate()</code> to manually validate an instance.</p>
+<h3 id="per-attribute-validations">Per-attribute validations</h3>
+<p>You can define your custom validators or use several built-in validators, implemented by <a href="https://github.com/chriso/validator.js">validator.js (10.11.0)</a>, as shown below.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">sequelize</span>.<span class="at">define</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">bar</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">      <span class="dt">is</span><span class="op">:</span> <span class="ss">/</span><span class="sc">^[a-z]+$</span><span class="ss">/i</span><span class="op">,</span>          <span class="co">// matches this RegExp</span></a>
+<a class="sourceLine" id="cb4-6" title="6">      <span class="dt">is</span><span class="op">:</span> [<span class="st">&quot;^[a-z]+$&quot;</span><span class="op">,</span><span class="st">&#39;i&#39;</span>]<span class="op">,</span>     <span class="co">// same as above, but constructing the RegExp from a string</span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="dt">not</span><span class="op">:</span> <span class="ss">/</span><span class="sc">^[a-z]+$</span><span class="ss">/i</span><span class="op">,</span>         <span class="co">// does not match this RegExp</span></a>
+<a class="sourceLine" id="cb4-8" title="8">      <span class="dt">not</span><span class="op">:</span> [<span class="st">&quot;^[a-z]+$&quot;</span><span class="op">,</span><span class="st">&#39;i&#39;</span>]<span class="op">,</span>    <span class="co">// same as above, but constructing the RegExp from a string</span></a>
+<a class="sourceLine" id="cb4-9" title="9">      <span class="dt">isEmail</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>            <span class="co">// checks for email format (foo@bar.com)</span></a>
+<a class="sourceLine" id="cb4-10" title="10">      <span class="dt">isUrl</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>              <span class="co">// checks for url format (http://foo.com)</span></a>
+<a class="sourceLine" id="cb4-11" title="11">      <span class="dt">isIP</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>               <span class="co">// checks for IPv4 (129.89.23.1) or IPv6 format</span></a>
+<a class="sourceLine" id="cb4-12" title="12">      <span class="dt">isIPv4</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>             <span class="co">// checks for IPv4 (129.89.23.1)</span></a>
+<a class="sourceLine" id="cb4-13" title="13">      <span class="dt">isIPv6</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>             <span class="co">// checks for IPv6 format</span></a>
+<a class="sourceLine" id="cb4-14" title="14">      <span class="dt">isAlpha</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>            <span class="co">// will only allow letters</span></a>
+<a class="sourceLine" id="cb4-15" title="15">      <span class="dt">isAlphanumeric</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>     <span class="co">// will only allow alphanumeric characters, so &quot;_abc&quot; will fail</span></a>
+<a class="sourceLine" id="cb4-16" title="16">      <span class="dt">isNumeric</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>          <span class="co">// will only allow numbers</span></a>
+<a class="sourceLine" id="cb4-17" title="17">      <span class="dt">isInt</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>              <span class="co">// checks for valid integers</span></a>
+<a class="sourceLine" id="cb4-18" title="18">      <span class="dt">isFloat</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>            <span class="co">// checks for valid floating point numbers</span></a>
+<a class="sourceLine" id="cb4-19" title="19">      <span class="dt">isDecimal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>          <span class="co">// checks for any numbers</span></a>
+<a class="sourceLine" id="cb4-20" title="20">      <span class="dt">isLowercase</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>        <span class="co">// checks for lowercase</span></a>
+<a class="sourceLine" id="cb4-21" title="21">      <span class="dt">isUppercase</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>        <span class="co">// checks for uppercase</span></a>
+<a class="sourceLine" id="cb4-22" title="22">      <span class="dt">notNull</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>            <span class="co">// won&#39;t allow null</span></a>
+<a class="sourceLine" id="cb4-23" title="23">      <span class="dt">isNull</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>             <span class="co">// only allows null</span></a>
+<a class="sourceLine" id="cb4-24" title="24">      <span class="dt">notEmpty</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>           <span class="co">// don&#39;t allow empty strings</span></a>
+<a class="sourceLine" id="cb4-25" title="25">      <span class="dt">equals</span><span class="op">:</span> <span class="st">&#39;specific value&#39;</span><span class="op">,</span> <span class="co">// only allow a specific value</span></a>
+<a class="sourceLine" id="cb4-26" title="26">      <span class="dt">contains</span><span class="op">:</span> <span class="st">&#39;foo&#39;</span><span class="op">,</span>          <span class="co">// force specific substrings</span></a>
+<a class="sourceLine" id="cb4-27" title="27">      <span class="dt">notIn</span><span class="op">:</span> [[<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="st">&#39;bar&#39;</span>]]<span class="op">,</span>  <span class="co">// check the value is not one of these</span></a>
+<a class="sourceLine" id="cb4-28" title="28">      <span class="dt">isIn</span><span class="op">:</span> [[<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="st">&#39;bar&#39;</span>]]<span class="op">,</span>   <span class="co">// check the value is one of these</span></a>
+<a class="sourceLine" id="cb4-29" title="29">      <span class="dt">notContains</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span><span class="op">,</span>       <span class="co">// don&#39;t allow specific substrings</span></a>
+<a class="sourceLine" id="cb4-30" title="30">      <span class="dt">len</span><span class="op">:</span> [<span class="dv">2</span><span class="op">,</span><span class="dv">10</span>]<span class="op">,</span>              <span class="co">// only allow values with length between 2 and 10</span></a>
+<a class="sourceLine" id="cb4-31" title="31">      <span class="dt">isUUID</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span>                <span class="co">// only allow uuids</span></a>
+<a class="sourceLine" id="cb4-32" title="32">      <span class="dt">isDate</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>             <span class="co">// only allow date strings</span></a>
+<a class="sourceLine" id="cb4-33" title="33">      <span class="dt">isAfter</span><span class="op">:</span> <span class="st">&quot;2011-11-05&quot;</span><span class="op">,</span>    <span class="co">// only allow date strings after a specific date</span></a>
+<a class="sourceLine" id="cb4-34" title="34">      <span class="dt">isBefore</span><span class="op">:</span> <span class="st">&quot;2011-11-05&quot;</span><span class="op">,</span>   <span class="co">// only allow date strings before a specific date</span></a>
+<a class="sourceLine" id="cb4-35" title="35">      <span class="dt">max</span><span class="op">:</span> <span class="dv">23</span><span class="op">,</span>                  <span class="co">// only allow values &lt;= 23</span></a>
+<a class="sourceLine" id="cb4-36" title="36">      <span class="dt">min</span><span class="op">:</span> <span class="dv">23</span><span class="op">,</span>                  <span class="co">// only allow values &gt;= 23</span></a>
+<a class="sourceLine" id="cb4-37" title="37">      <span class="dt">isCreditCard</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>       <span class="co">// check for valid credit card numbers</span></a>
+<a class="sourceLine" id="cb4-38" title="38"></a>
+<a class="sourceLine" id="cb4-39" title="39">      <span class="co">// Examples of custom validators:</span></a>
+<a class="sourceLine" id="cb4-40" title="40">      <span class="at">isEven</span>(value) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-41" title="41">        <span class="cf">if</span> (<span class="at">parseInt</span>(value) <span class="op">%</span> <span class="dv">2</span> <span class="op">!==</span> <span class="dv">0</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-42" title="42">          <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Only even values are allowed!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-43" title="43">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-44" title="44">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-45" title="45">      <span class="at">isGreaterThanOtherField</span>(value) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-46" title="46">        <span class="cf">if</span> (<span class="at">parseInt</span>(value) <span class="op">&lt;=</span> <span class="at">parseInt</span>(<span class="kw">this</span>.<span class="at">otherField</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-47" title="47">          <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Bar must be greater than otherField.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-48" title="48">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-49" title="49">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-50" title="50">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-51" title="51">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-52" title="52"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Note that where multiple arguments need to be passed to the built-in validation functions, the arguments to be passed must be in an array. But if a single array argument is to be passed, for instance an array of acceptable strings for <code>isIn</code>, this will be interpreted as multiple string arguments instead of one array argument. To work around this pass a single-length array of arguments, such as <code>[['foo', 'bar']]</code> as shown above.</p>
+<p>To use a custom error message instead of that provided by <a href="https://github.com/chriso/validator.js">validator.js</a>, use an object instead of the plain value or array of arguments, for example a validator which needs no argument can be given a custom message with</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1">isInt<span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;Must be an integer number of pennies&quot;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>or if arguments need to also be passed add an <code>args</code> property:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1">isIn<span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">args</span><span class="op">:</span> [[<span class="st">&#39;en&#39;</span><span class="op">,</span> <span class="st">&#39;zh&#39;</span>]]<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">msg</span><span class="op">:</span> <span class="st">&quot;Must be English or Chinese&quot;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="op">}</span></a></code></pre></div>
+<p>When using custom validator functions the error message will be whatever message the thrown <code>Error</code> object holds.</p>
+<p>See <a href="https://github.com/chriso/validator.js">the validator.js project</a> for more details on the built in validation methods.</p>
+<p><strong>Hint:</strong> You can also define a custom function for the logging part. Just pass a function. The first parameter will be the string that is logged.</p>
+<h3 id="allownull-interaction-with-other-validators"><code>allowNull</code> interaction with other validators</h3>
+<p>If a particular field of a model is set to not allow null (with <code>allowNull: false</code>) and that value has been set to <code>null</code>, all validators will be skipped and a <code>ValidationError</code> will be thrown.</p>
+<p>On the other hand, if it is set to allow null (with <code>allowNull: true</code>) and that value has been set to <code>null</code>, only the built-in validators will be skipped, while the custom validators will still run.</p>
+<p>This means you can, for instance, have a string field which validates its length to be between 5 and 10 characters, but which also allows <code>null</code> (since the length validator will be skipped automatically when the value is <code>null</code>):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">class</span> User <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">User</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">username</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="dt">len</span><span class="op">:</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">10</span>]</a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>You also can conditionally allow <code>null</code> values, with a custom validator, since it won’t be skipped:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">class</span> User <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="va">User</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">age</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-8" title="8">      <span class="at">customValidator</span>(value) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-9" title="9">        <span class="cf">if</span> (value <span class="op">===</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> <span class="kw">this</span>.<span class="at">age</span> <span class="op">!==</span> <span class="dv">10</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">          <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&quot;name can&#39;t be null unless age is 10&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>You can customize <code>allowNull</code> error message by setting the <code>notNull</code> validator:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">class</span> User <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="va">User</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-7" title="7">      <span class="dt">notNull</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-8" title="8">        <span class="dt">msg</span><span class="op">:</span> <span class="st">&#39;Please enter your name&#39;</span></a>
+<a class="sourceLine" id="cb9-9" title="9">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="op">},</span> <span class="op">{</span> sequelize <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="model-wide-validations">Model-wide validations</h3>
+<p>Validations can also be defined to check the model after the field-specific validators. Using this you could, for example, ensure either neither of <code>latitude</code> and <code>longitude</code> are set or both, and fail if one but not the other is set.</p>
+<p>Model validator methods are called with the model object’s context and are deemed to fail if they throw an error, otherwise pass. This is just the same as with custom field-specific validators.</p>
+<p>Any error messages collected are put in the validation result object alongside the field validation errors, with keys named after the failed validation method’s key in the <code>validate</code> option object. Even though there can only be one error message for each model validation method at any one time, it is presented as a single string error in an array, to maximize consistency with the field errors.</p>
+<p>An example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">class</span> Place <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">Place</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">address</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="dt">latitude</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-8" title="8">      <span class="dt">min</span><span class="op">:</span> <span class="dv">-90</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-9" title="9">      <span class="dt">max</span><span class="op">:</span> <span class="dv">90</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-11" title="11">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-12" title="12">  <span class="dt">longitude</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-13" title="13">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-14" title="14">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-15" title="15">      <span class="dt">min</span><span class="op">:</span> <span class="dv">-180</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-16" title="16">      <span class="dt">max</span><span class="op">:</span> <span class="dv">180</span></a>
+<a class="sourceLine" id="cb10-17" title="17">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-18" title="18">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="op">},</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-20" title="20">  sequelize<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-21" title="21">  <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-22" title="22">    <span class="at">bothCoordsOrNone</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-23" title="23">      <span class="cf">if</span> ((<span class="kw">this</span>.<span class="at">latitude</span> <span class="op">===</span> <span class="kw">null</span>) <span class="op">!==</span> (<span class="kw">this</span>.<span class="at">longitude</span> <span class="op">===</span> <span class="kw">null</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-24" title="24">        <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Either both latitude and longitude, or neither!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-25" title="25">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-26" title="26">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-27" title="27">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-28" title="28"><span class="op">}</span>)</a></code></pre></div>
+<p>In this simple case an object fails validation if either latitude or longitude is given, but not both. If we try to build one with an out-of-range latitude and no longitude, <code>somePlace.validate()</code> might return:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="st">&#39;latitude&#39;</span><span class="op">:</span> [<span class="st">&#39;Invalid number: latitude&#39;</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="st">&#39;bothCoordsOrNone&#39;</span><span class="op">:</span> [<span class="st">&#39;Either both latitude and longitude, or neither!&#39;</span>]</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="op">}</span></a></code></pre></div>
+<p>Such validation could have also been done with a custom validator defined on a single attribute (such as the <code>latitude</code> attribute, by checking <code>(value === null) !== (this.longitude === null)</code>), but the model-wide validation approach is cleaner.</p>

@@ -1,0 +1,21 @@
+<h1>How to Get a Microsoft Excel Look With HTML/CSS Tables</h1>
+<p>Occasionally we will want to present our Excel spreadsheet data in a web page and find the options lacking. If you have ever exported a Microsoft Office document you will know the garbage formatting instructions that get sent along with the information. How can we preserve the Excel look without the Office markup? You are in luck, we have a solution!</p>
+<p>With a little bit of CSS magic we can in fact replicate the major Excel versions look and feel quite realistically in your plain ol' HTML tables. Not only that, but the Cogniview code magicians have given you a choice of which version of Excel you would like to emulate.</p>
+<p><a href="excel-look-alike.zip">Go here to download a zip file</a> containing the example web page (shown below) and the CSS files. There is one style sheet for each version of Excel, plus a couple of images to give the special 2007 fancy graduated shading bits.</p>
+<img src="fancy-graduated-shading-bits.png">
+<p>When you open up the zip file and launch the web page, you will see we have grabbed some example data from InfoPlease.com representing the US City populations. At the top of the page is a drop-down list allowing you to select the look and feel you want to display. This drop-down changes the CSS for the shown table.</p>
+<p>To use the CSS stylings in your own projects, first you must tell your web page which style sheet you wish to use:</p>
+<pre>link rel="stylesheet" type="text/css" href="excel-2007.css"</pre>
+<p>Next, in your table, give the class that you want to use:</p>
+<pre>&lt;table class="ExcelTable2007"&gt;</pre>
+<p>In the above examples I have used 2007, just change those to the version you would like.</p>
+<p>Use the TH tag for the first row of your table ("table header") and set the 'heading' class for the first column. For example:</p>
+<pre>&lt;tr&gt;&lt;th class="heading"&gt;&nbsp;&lt;/th&gt;&lt;th&gt;A&lt;/th&gt;&lt;th&gt;B&lt;/th&gt;&lt;th&gt;C&lt;/th&gt;&lt;/tr&gt;</pre>
+<pre>&lt;tr&gt;&lt;td class="heading"&gt;2&lt;/td&gt;&lt;td&gt;some data&lt;/td&gt;&lt;/tr&gt;</pre>
+<p>There we have it, a Microsoft Excel look in our web pages!</p>
+<p>Obviously there is one major limitation of this exercise... people might think they can interact with your faux spreadsheet as if they were using Excel and be disappointed. Not much we can do about that without a whole new project, but at least this beats doing a bunch of screenshots or using the horrible Office export tools.</p>
+<h2>About the author</h2>
+<p>Yoav Ezer co-authors the technology and productivity blog Codswallop. He is also the CEO of a company that produces <a href="http://www.cogniview.com/articles/pdf-to-xls-converter.php">PDF to XLS</a> conversion software.</p>
+<p>For more Excel tips from Yoav, join him on <a href="http://www.facebook.com/Cogniview.Codswallop">Facebook</a> or <a href="http://twitter.com/cogniview">Twitter</a></p>
+
+

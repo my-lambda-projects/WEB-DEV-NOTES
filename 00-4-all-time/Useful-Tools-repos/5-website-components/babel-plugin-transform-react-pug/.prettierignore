@@ -1,0 +1,9 @@
+# Dist files
+dist
+
+# Generated files
+/flow-typed/babel-nodes.js
+/src/lib
+
+# Files handled by others
+package.json

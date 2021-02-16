@@ -1,0 +1,2682 @@
+{
+    "console.log with Commmentary": {
+      "description": "console.log with Commmentary",
+      "prefix": "logC",
+      "body": ["console.log(\"$1:\",$1)$0"]
+    },
+    "console.log with Template Expression": {
+      "description": "console.log with Template Expression",
+      "prefix": "logEx",
+      "body": ["console.log(`$1: ${${1: expression}}`)$0"]
+    },
+    "console.dir": {
+      "description": "console.dir",
+      "prefix": "dir",
+      "body": ["console.dir($1)$0"]
+    },
+    "let instead var?": {
+      "description": "let instead var?",
+      "prefix": "var",
+      "body": ["let $0"]
+    },
+    "/*MultiLine comment*/": {
+      "description": "/*MultiLine comment*/",
+      "prefix": "//",
+      "body": ["/*", "  $1", "*/", "$0"]
+    },
+    "use strict: Strict Mode": {
+      "description": "use strict: Strict Mode",
+      "prefix": "strict",
+      "body": ["'use strict'$0"]
+    },
+    "return": {
+      "description": "return",
+      "prefix": "return",
+      "body": ["return $0"]
+    },
+    "import": {
+      "description": "import",
+      "prefix": "import",
+      "body": ["import {${1: member1,member2}} from './${2: module}'$0"]
+    },
+    "import default": {
+      "description": "import default",
+      "prefix": "importDefault",
+      "body": [
+        "import ${1: defaultName},${2: member1,member2}} from './${3: module}'$0"
+      ]
+    },
+    "import * all as name from './module'": {
+      "description": "import * all as name from './module'",
+      "prefix": "importAll",
+      "body": ["import * as ${1: name} from './${2: module}'$0"]
+    },
+    "import member1 as name1 from './module'": {
+      "description": "import member1 as name1 from './module'",
+      "prefix": "importAs",
+      "body": ["import ${1: member1} as ${2: name1} from './${3: module}'$0"]
+    },
+    "export {name1,name2} exports a function declared earlier": {
+      "description": "export {name1,name2} exports a function declared earlier",
+      "prefix": "export",
+      "body": ["export {${1: name1,name2}}$0"]
+    },
+    "export expression": {
+      "description": "export expression",
+      "prefix": "exportExpression",
+      "body": ["export ${1: expression}$0"]
+    },
+    "export default expression": {
+      "description": "export default expression",
+      "prefix": "exportDefaultExpression",
+      "body": ["export default ${1: expression}$0"]
+    },
+    "export {name1 as default}": {
+      "description": "export {name1 as default}",
+      "prefix": "exportAsDefault",
+      "body": ["export {${1: name1} as default}$0"]
+    },
+    "export {name1 as default,variable1 as name2}": {
+      "description": "export {name1 as default,variable1 as name2}",
+      "prefix": "exportAsDefaultMore",
+      "body": ["export {${1: name1} as default,${2: variable1 as name2}}$0"]
+    },
+    "export let name1": {
+      "description": "export let name1",
+      "prefix": "exportLet",
+      "body": ["export let ${1: name1}$0"]
+    },
+    "export let name1,name2": {
+      "description": "export let name1,name2",
+      "prefix": "exportLetMore",
+      "body": ["export let ${1: name1,name2}$0"]
+    },
+    "export const name1": {
+      "description": "export const name1",
+      "prefix": "exportConst",
+      "body": ["export const ${1: name1}$0"]
+    },
+    "export const name1,name2": {
+      "description": "export const name1,name2",
+      "prefix": "exportConstMore",
+      "body": ["export const ${1: name1,name2}$0"]
+    },
+    "export * from './module'": {
+      "description": "export * from './module'",
+      "prefix": "exportAllFrom",
+      "body": ["export * from './${1: module}'$0"]
+    },
+    "export {name1,name2} from './module'": {
+      "description": "export {name1,name2} from './module'",
+      "prefix": "exportFrom",
+      "body": ["export {${1: name1,name2}} from './${2: module}'$0"]
+    },
+    "export {name1 as default} from './module'": {
+      "description": "export {name1 as default} from './module'",
+      "prefix": "exportAsDefaultFrom",
+      "body": ["export {${1: name1} as default} from './${2: module}'$0"]
+    },
+    "export {name1 as default,variable1 as name2} from './module'": {
+      "description": "export {name1 as default,variable1 as name2} from './module'",
+      "prefix": "exportAsDefaultFromMore",
+      "body": [
+        "export {${1: name1} as default,${2: variable1 as name2}} from './${3: module}'$0"
+      ]
+    },
+    "destructuring Object": {
+      "description": "destructuring Object",
+      "prefix": "destructObj",
+      "body": ["let {${2: ${3: property}: ${4: newEl}}} = ${1: obj}$0"]
+    },
+    "destructuring Array": {
+      "description": "destructuring Array",
+      "prefix": "destructArr",
+      "body": ["let [${2: ${3: firstEl},${4: secondEl}}] = ${1: arr}$0"]
+    },
+    "destructuring to Separate values": {
+      "description": "destructuring to Separate values",
+      "prefix": "destructVal",
+      "body": ["[${1: e},${2: el}]$0"]
+    },
+    "while": {
+      "description": "while",
+      "prefix": "while",
+      "body": ["while(${1: conditional}){", "  $2", "  z++", "}$0"]
+    },
+    "Ternary: condition ? ifTrue : ifFalse": {
+      "description": "Ternary: condition ? ifTrue : ifFalse",
+      "prefix": "ternary",
+      "body": ["${1: condition} ? ${2: ifTrue} : ${3: ifFalse}$0"]
+    },
+    "Ternary Multiline: condition ? (expr1,expr2) : (expr3,expr4)": {
+      "description": "Ternary Multiline: condition ? (expr1,expr2) : (expr3,expr4)",
+      "prefix": "ternaryMultiLine",
+      "body": [
+        "${1: condition} ? (",
+        "    ${2: expr1},",
+        "    ${3: expr2}",
+        ") : (",
+        "    ${4: expr3},",
+        "    ${5: expr4}",
+        ")$0"
+      ]
+    },
+    "if (error) throw error": {
+      "description": "if (error) throw error",
+      "prefix": "ifThrowErr",
+      "body": ["if (error) throw error$0"]
+    },
+    "Switch Case Break Default": {
+      "description": "Switch Case Break Default",
+      "prefix": "switc",
+      "body": [
+        "switch($1){",
+        "  case $2: ",
+        "    $3",
+        "    break",
+        "  default: ",
+        "    $4",
+        "}$0"
+      ]
+    },
+    "for": {
+      "description": "for",
+      "prefix": "fo",
+      "body": ["for (let i = 0; i < $1.length; i++){", "  ${2: $1[i]}", "}$0"]
+    },
+    "for...of": {
+      "description": "for...of",
+      "prefix": "foof",
+      "body": ["for (let e of ${1: iterable}){", "  $2", "}$0"]
+    },
+    "for...in": {
+      "description": "for...in",
+      "prefix": "foin",
+      "body": ["for (let e in ${1: object}){", "  $2", "}$0,"]
+    },
+    "setAttribute(attribute,value): add or change value": {
+      "description": "setAttribute(attribute,value): add or change value",
+      "prefix": "setAttr",
+      "body": ["setAttribute(${1: attribute},${2: value})$0"]
+    },
+    "getAttribute(attribute): add or change value": {
+      "description": "getAttribute(attribute): add or change value",
+      "prefix": "getAttr",
+      "body": ["getAttribute(${1: attribute})$0"]
+    },
+    "hasAttribute(attribute) Boolean": {
+      "description": "hasAttribute(attribute) Boolean",
+      "prefix": "hasAttr",
+      "body": ["hasAttribute(${1: attribute})$0"]
+    },
+    "hasAttributes() Boolean": {
+      "description": "hasAttributes() Boolean",
+      "prefix": "hasAttrs",
+      "body": ["hasAttributes()$0"]
+    },
+    "location.reload(true): true: Reload from Server": {
+      "description": "location.reload(true): true: Reload from Server",
+      "prefix": "reload",
+      "body": ["location.reload(${1: true})$0"]
+    },
+    "createElement": {
+      "description": "createElement",
+      "prefix": "createElement",
+      "body": ["document.createElement('$1')$0"]
+    },
+    "replace": {
+      "description": "replace",
+      "prefix": "replace",
+      "body": ["replace($1,$2)$0"]
+    },
+    "typeof(String,Number,Object)": {
+      "description": "typeof(String,Number,Object)",
+      "prefix": "typeof",
+      "body": ["typeof($1)$0"]
+    },
+    "value As Number": {
+      "description": "value As Number",
+      "prefix": "valueAsNum",
+      "body": ["valueAsNumber($1)$0"]
+    },
+    "innerHTML": {
+      "description": "innerHTML",
+      "prefix": "innerHTML",
+      "body": ["innerHTML = $0"]
+    },
+    "getElementById()": {
+      "description": "getElementById()",
+      "prefix": "getElementById",
+      "body": ["document.getElementById($1)$0"]
+    },
+    "getElementsByClassName()": {
+      "description": "getElementsByClassName()",
+      "prefix": "getElementsByClassName",
+      "body": ["document.getElementsByClassName($1)$0"]
+    },
+    "getElementsByName()": {
+      "description": "getElementsByName()",
+      "prefix": "getElementsByName",
+      "body": ["document.getElementsByName($1)$0"]
+    },
+    "getElementsByTagName()": {
+      "description": "getElementsByTagName()",
+      "prefix": "getElementsByTagName",
+      "body": ["document.getElementsByTagName($1)$0"]
+    },
+    "querySelector": {
+      "description": "querySelector",
+      "prefix": "querySelec",
+      "body": ["document.querySelector('${1: el}')$0"]
+    },
+    "querySelectorAll": {
+      "description": "querySelectorAll",
+      "prefix": "querySelecAll",
+      "body": ["document.querySelectorAll('${1: el}')$0"]
+    },
+    "textContent": {
+      "description": "textContent",
+      "prefix": "textCont",
+      "body": ["textContent$0"]
+    },
+    "window.sessionStorage": {
+      "description": "window.sessionStorage",
+      "prefix": "sessionStorage",
+      "body": ["sessionStorage$0"]
+    },
+    "window.localStorage": {
+      "description": "window.localStorage",
+      "prefix": "localStorage",
+      "body": ["localStorage$0"]
+    },
+    "setItem": {
+      "description": "setItem",
+      "prefix": "setItem",
+      "body": ["setItem($1)$0"]
+    },
+    "getItem": {
+      "description": "getItem",
+      "prefix": "getItem",
+      "body": ["getItem($1)$0"]
+    },
+    "removeItem": {
+      "description": "removeItem",
+      "prefix": "removeItem",
+      "body": ["removeItem($1)$0"]
+    },
+    "checked": {
+      "description": "checked",
+      "prefix": "checked",
+      "body": ["checked$0"]
+    },
+    "parseInt": {
+      "description": "parseInt",
+      "prefix": "parseInt",
+      "body": ["parseInt(${1: string},${2: radix})$0"]
+    },
+    "parseFloat": {
+      "description": "parseFloat",
+      "prefix": "parseFloat",
+      "body": ["parseFloat(${1: string})$0"]
+    },
+    "toString(radix)": {
+      "description": "toString(radix)",
+      "prefix": "toStringRadix",
+      "body": ["toString(${1: radix})$0"]
+    },
+    "Math.E: Base of Natural Logarithms": {
+      "description": "Math.E: Base of Natural Logarithms",
+      "prefix": "MathE",
+      "body": ["Math.E$0"]
+    },
+    "Math.LN2: Natural Logarithm of 2": {
+      "description": "Math.LN2: Natural Logarithm of 2",
+      "prefix": "MathLN2",
+      "body": ["Math.LN2$0"]
+    },
+    "Math.LN10: Natural Logarithm of 10": {
+      "description": "Math.LN10: Natural Logarithm of 10",
+      "prefix": "MathLN10",
+      "body": ["Math.LN10$0"]
+    },
+    "Math.LOG2E: Base 2 Logarithm of E": {
+      "description": "Math.LOG2E: Base 2 Logarithm of E",
+      "prefix": "MathLOG2E",
+      "body": ["Math.LOG2E$0"]
+    },
+    "Math.LOG10E: Base 10 Logarithm of E": {
+      "description": "Math.LOG10E: Base 10 Logarithm of E",
+      "prefix": "MathLOG10E",
+      "body": ["Math.LOG10E$0"]
+    },
+    "Math.PI: Ratio of the Circumference of a Circle to its Diameter": {
+      "description": "Math.PI: Ratio of the Circumference of a Circle to its Diameter",
+      "prefix": "MathPI",
+      "body": ["Math.PI$0"]
+    },
+    "Math.SQRT1_2: Square Root of 1/2": {
+      "description": "Math.SQRT1_2: Square Root of 1/2",
+      "prefix": "MathSQRT1_2",
+      "body": ["Math.SQRT1_2$0"]
+    },
+    "Math.SQRT2: Square Root of 2": {
+      "description": "Math.SQRT2: Square Root of 2",
+      "prefix": "MathSQRT2",
+      "body": ["Math.SQRT2$0"]
+    },
+    "Math.abs(x): Aabsolute Value": {
+      "description": "Math.abs(x): Aabsolute Value",
+      "prefix": "MathAbs",
+      "body": ["Math.abs($1)$0"]
+    },
+    "Math.acos(x): Arccosine (in Radians)": {
+      "description": "Math.acos(x): Arccosine (in Radians)",
+      "prefix": "MathAcos",
+      "body": ["Math.acos($1)$0"]
+    },
+    "Math.acosh(x): Hyperbolic Arc-cosine": {
+      "description": "Math.acosh(x): Hyperbolic Arc-cosine",
+      "prefix": "MathAcosh",
+      "body": ["Math.acosh($1)$0"]
+    },
+    "Math.asin(x): Arcsine (in Radians)": {
+      "description": "Math.asin(x): Arcsine (in Radians)",
+      "prefix": "MathAsin",
+      "body": ["Math.asin($1)$0"]
+    },
+    "Math.asinh(x): Hyperbolic Arcsine": {
+      "description": "Math.asinh(x): Hyperbolic Arcsine",
+      "prefix": "MathAsinh",
+      "body": ["Math.asinh($1)$0"]
+    },
+    "Math.atan(x): Arctangent (in Radians)": {
+      "description": "Math.atan(x): Arctangent (in Radians)",
+      "prefix": "MathAtan",
+      "body": ["Math.atan($1)$0"]
+    },
+    "Math.atanh(x): Hyperbolic Arctangent": {
+      "description": "Math.atanh(x): Hyperbolic Arctangent",
+      "prefix": "MathAtanh",
+      "body": ["Math.atanh($1)$0"]
+    },
+    "Math.atan2(x,y): Arctangent of the Quotient of its Arguments": {
+      "description": "Math.atan2(x,y): Arctangent of the Quotient of its Arguments",
+      "prefix": "MathAtan2",
+      "body": ["Math.atan2(${1: x},${2: y})$0"]
+    },
+    "Math.cbrt(x): Cube Root": {
+      "description": "Math.cbrt(x): Cube Root",
+      "prefix": "MathCbrt",
+      "body": ["Math.cbrt($1)$0"]
+    },
+    "Math.ceil(x): Smallest Integer Greater Than or Equal": {
+      "description": "Math.ceil(x): Smallest Integer Greater Than or Equal",
+      "prefix": "MathCeil",
+      "body": ["Math.ceil($1)$0"]
+    },
+    "Math.clz32(x): Number of Leading Zero Bits in the 32-bit Binary": {
+      "description": "Math.clz32(x): Number of Leading Zero Bits in the 32-bit Binary",
+      "prefix": "MathClz32",
+      "body": ["Math.clz32($1)$0"]
+    },
+    "Math.cos(x): Cosine": {
+      "description": "Math.cos(x): Cosine",
+      "prefix": "MathCos",
+      "body": ["Math.cos($1)$0"]
+    },
+    "Math.cosh(x): Hyperbolic Cosine": {
+      "description": "Math.cosh(x): Hyperbolic Cosine",
+      "prefix": "MathCosh",
+      "body": ["Math.cosh($1)$0"]
+    },
+    "Math.exp(x): e˟ x(argument) e(Euler's Number)": {
+      "description": "Math.exp(x): e˟ x(argument) e(Euler's Number)",
+      "prefix": "MathExp",
+      "body": ["Math.exp($1)$0"]
+    },
+    "Math.expm1(x): e˟-1,x(argument),e(Base of the Natural Logarithms)": {
+      "description": "Math.expm1(x): e˟-1,x(argument),e(Base of the Natural Logarithms)",
+      "prefix": "MathExpm1",
+      "body": ["Math.expm1($1)$0"]
+    },
+    "Math.floor(x): Largest Integer Less than or Equal": {
+      "description": "Math.floor(x): Largest Integer Less than or Equal",
+      "prefix": "MathFloor",
+      "body": ["Math.floor($1)$0"]
+    },
+    "Math.fround(x): Nearest Single Precision Float Representation": {
+      "description": "Math.fround(x): Nearest Single Precision Float Representation",
+      "prefix": "MathFround",
+      "body": ["Math.fround($1)$0"]
+    },
+    "Math.hypot(x,y,...): Square Root of the Sum of Squares of its Arguments": {
+      "description": "Math.hypot(x,y,...): Square Root of the Sum of Squares of its Arguments",
+      "prefix": "MathHypot",
+      "body": ["Math.hypot(${1: x},${2: y})$0"]
+    },
+    "Math.imul(x,y): C-like 32-bit Multiplication": {
+      "description": "Math.imul(x,y): C-like 32-bit Multiplication",
+      "prefix": "MathImul",
+      "body": ["Math.imul(${1: x},${2: y})$0"]
+    },
+    "Math.log(x): Natural Logarithm (base e)": {
+      "description": "Math.log(x): Natural Logarithm (base e)",
+      "prefix": "MathLog",
+      "body": ["Math.log($1)$0"]
+    },
+    "Math.log1p(x): Natural Logarithm (base e) of 1 + x": {
+      "description": "Math.log1p(x): Natural Logarithm (base e) of 1 + x",
+      "prefix": "MathLog1p",
+      "body": ["Math.log1p($1)$0"]
+    },
+    "Math.log10(x): Base 10 Logarithm": {
+      "description": "Math.log10(x): Base 10 Logarithm",
+      "prefix": "MathLog10",
+      "body": ["Math.log10($1)$0"]
+    },
+    "Math.log2(x): Base 2 Logarithm": {
+      "description": "Math.log2(x): Base 2 Logarithm",
+      "prefix": "MathLog2",
+      "body": ["Math.log2($1)$0"]
+    },
+    "Math.max(x,y,...): Largest of Zero or More Numbers": {
+      "description": "Math.max(x,y,...): Largest of Zero or More Numbers",
+      "prefix": "MathMax",
+      "body": ["Math.max(${1: x},${2: y})$0"]
+    },
+    "Math.min(x,y,...): Smallest of Zero or More Numbers": {
+      "description": "Math.min(x,y,...): Smallest of Zero or More Numbers",
+      "prefix": "MathMin",
+      "body": ["Math.min(${1: x},${2: y})$0"]
+    },
+    "Math.pow(base,expoent): Base to the Exponent Power": {
+      "description": "Math.pow(base,expoent): Base to the Exponent Power",
+      "prefix": "MathPow",
+      "body": ["Math.pow(${1: base},${2: expoent})$0"]
+    },
+    "Math.random(): Floating-point,Pseudo-Random Number in the Range [0,1)": {
+      "description": "Math.random(): Floating-point,Pseudo-Random Number in the Range [0,1)",
+      "prefix": "MathRandom",
+      "body": ["Math.random()$0"]
+    },
+    "Math.floor(Math.random() * 100): Integer Random Number": {
+      "description": "Math.floor(Math.random() * 100): Integer Random Number",
+      "prefix": "MathRandomCompleteFunc",
+      "body": [
+        "const random = (min,max) => Math.floor(Math.random() * (max - min + 1)) + min$0"
+      ]
+    },
+    "Math.floor(Math.random() * 100): Int Random Number": {
+      "description": "Math.floor(Math.random() * 100): Int Random Number",
+      "prefix": "randomCompleteFunc",
+      "body": [
+        "const random = (min,max) => Math.floor(Math.random() * (max - min + 1)) + min$0"
+      ]
+    },
+    "Math.round(x): Rounded to the Nearest Integer": {
+      "description": "Math.round(x): Rounded to the Nearest Integer",
+      "prefix": "MathRound",
+      "body": ["Math.round($1)$0"]
+    },
+    "Math.sign(x): Sign (Positive,Negative or Zero)": {
+      "description": "Math.sign(x): Sign (Positive,Negative or Zero)",
+      "prefix": "MathSign",
+      "body": ["Math.sign($1)$0"]
+    },
+    "Math.sin(x): Sine": {
+      "description": "Math.sin(x): Sine",
+      "prefix": "MathSin",
+      "body": ["Math.sin($1)$0"]
+    },
+    "Math.sinh(x): Hyperbolic Sine": {
+      "description": "Math.sinh(x): Hyperbolic Sine",
+      "prefix": "MathSinh",
+      "body": ["Math.sinh($1)$0"]
+    },
+    "Math.sqrt(x): Square Root": {
+      "description": "Math.sqrt(x): Square Root",
+      "prefix": "MathSqrt",
+      "body": ["Math.sqrt($1)$0"]
+    },
+    "Math.tan(x): Tangent": {
+      "description": "Math.tan(x): Tangent",
+      "prefix": "MathTan",
+      "body": ["Math.tan($1)$0"]
+    },
+    "Math.tanh(x): Hyperbolic Tangent": {
+      "description": "Math.tanh(x): Hyperbolic Tangent",
+      "prefix": "MathTanh",
+      "body": ["Math.tanh($1)$0"]
+    },
+    "Math.toSource(): Returns the string 'Math'": {
+      "description": "Math.toSource(): Returns the string 'Math'",
+      "prefix": "MathToSource",
+      "body": ["Math.toSource($1)$0"]
+    },
+    "Math.trunc(x): Integer Part by Removing any Fractional Digits": {
+      "description": "Math.trunc(x): Integer Part by Removing any Fractional Digits",
+      "prefix": "MathTrunc",
+      "body": ["Math.trunc($1)$0"]
+    },
+    "=> Arrow function": {
+      "description": "=> Arrow function",
+      "prefix": "funcArrow",
+      "body": ["e => {", "  $1", "}$0"]
+    },
+    "=> Arrow function Advanced": {
+      "description": "=> Arrow function Advanced",
+      "prefix": "funcArrowAd",
+      "body": ["() => $0"]
+    },
+    "(Anonymous) Function": {
+      "description": "(Anonymous) Function",
+      "prefix": "funcAnon",
+      "body": ["(function(){", "  $1", "})()$0"]
+    },
+    "Anonymous Function Associated": {
+      "description": "Anonymous Function Associated",
+      "prefix": "funcAnonAsso",
+      "body": ["function(){", "  $2", "}()$0"]
+    },
+    "function name()": {
+      "description": "function name()",
+      "prefix": "func",
+      "body": ["function ${1: name}(){", "  $2", "}", "$0"]
+    },
+    "call(): Calls a Function with a Given This Value and Arguments Provided Individually": {
+      "description": "call(): Calls a Function with a Given This Value and Arguments Provided Individually",
+      "prefix": "call",
+      "body": ["call(${1: thisArg})$0"]
+    },
+    "document.write": {
+      "description": "document.write",
+      "prefix": "write",
+      "body": ["document.write(${1: markup})$0"]
+    },
+    "document.writeln: Write and adds a newline": {
+      "description": "document.writeln: Write and adds a newline",
+      "prefix": "writeln",
+      "body": ["document.writeln(${1: line})$0"]
+    },
+    "do...while": {
+      "description": "do...while",
+      "prefix": "dowhile",
+      "body": ["do{", "  $1", "z++", "} while(${2: conditional})$0"]
+    },
+    "split()": {
+      "description": "split()",
+      "prefix": "split",
+      "body": ["split($1)$0"]
+    },
+    "[array]": {
+      "description": "[array]",
+      "prefix": "array",
+      "body": ["[$1]$0"]
+    },
+    "Array[element]": {
+      "description": "Array[element]",
+      "prefix": "arrayEl",
+      "body": ["${1: ArrayName}[${2: 0}] = '${4: value}'$0"]
+    },
+    "push() add new last Array element": {
+      "description": "push() add new last Array element",
+      "prefix": "push",
+      "body": ["push($1)$0"]
+    },
+    "unshift() add new first Array element": {
+      "description": "unshift() add new first Array element",
+      "prefix": "unshift",
+      "body": ["unshift($1)$0"]
+    },
+    "pop() remove last Array element": {
+      "description": "pop() remove last Array element",
+      "prefix": "pop",
+      "body": ["pop()$0"]
+    },
+    "shift() remove first Array element": {
+      "description": "shift() remove first Array element",
+      "prefix": "shift",
+      "body": ["shift()$0"]
+    },
+    "reverse() Array": {
+      "description": "reverse() Array",
+      "prefix": "reverse",
+      "body": ["reverse()$0"]
+    },
+    "sort() Array": {
+      "description": "sort() Array",
+      "prefix": "sort",
+      "body": ["sort()$0"]
+    },
+    "join() Array": {
+      "description": "join() Array",
+      "prefix": "join",
+      "body": ["join(${1: ' '})$0"]
+    },
+    "splice() Array": {
+      "description": "splice() Array",
+      "prefix": "splice",
+      "body": ["splice(${1: start},${2: 0 or deleteCount},${3: new})$0"]
+    },
+    "fill() Array elements": {
+      "description": "fill() Array elements",
+      "prefix": "fill",
+      "body": ["fill($1,${2: start},${3: end})$0"]
+    },
+    "copyWithin() Array": {
+      "description": "copyWithin() Array",
+      "prefix": "copyWithin",
+      "body": ["copyWithin(${3: target},${1: start},${2: end})$0"]
+    },
+    "concat() Array": {
+      "description": "concat() Array",
+      "prefix": "concat",
+      "body": ["concat(${1: ArrayName})$0"]
+    },
+    "entries() new Array Iterator": {
+      "description": "entries() new Array Iterator",
+      "prefix": "entries",
+      "body": ["entries()$0"]
+    },
+    "every() Return if Every element pass on Test": {
+      "description": "every() Return if Every element pass on Test",
+      "prefix": "every",
+      "body": ["every($1)$0"]
+    },
+    "filter() new Array all Filtred Array elements": {
+      "description": "filter() new Array all Filtred Array elements",
+      "prefix": "filter",
+      "body": ["filter($1)$0"]
+    },
+    "find() first Array element that pass on Test": {
+      "description": "find() first Array element that pass on Test",
+      "prefix": "find",
+      "body": ["find($1)$0"]
+    },
+    "findIndex() first Array Index that pass on Test": {
+      "description": "findIndex() first Array Index that pass on Test",
+      "prefix": "findIndex",
+      "body": ["findIndex($1)$0"]
+    },
+    "forEach() Array element": {
+      "description": "forEach() Array element",
+      "prefix": "forEach",
+      "body": ["forEach(${1: function})$0"]
+    },
+    "forEach() Element,Index,Array": {
+      "description": "forEach() Element,Index,Array",
+      "prefix": "forEachComplete",
+      "body": ["forEach((e,i,a) => {", "  $1", "})$0"]
+    },
+    "includes() Array has it": {
+      "description": "includes() Array has it",
+      "prefix": "includes",
+      "body": ["includes(${1: el})$0"]
+    },
+    "Array.from() array-like or iterable object": {
+      "description": "Array.from() array-like or iterable object",
+      "prefix": "arrFrom",
+      "body": ["Array.from(${1: el})$0"]
+    },
+    "... Spread Syntax": {
+      "description": "... Spread Syntax",
+      "prefix": "spread",
+      "body": ["...$0"]
+    },
+    "... Rest Parameters": {
+      "description": "... Rest Parameters",
+      "prefix": "rest",
+      "body": ["...$0"]
+    },
+    "keys() Array Key each Index": {
+      "description": "keys() Array Key each Index",
+      "prefix": "keys",
+      "body": ["keys()$0"]
+    },
+    "values() new Iterator object contains the values,Boolean": {
+      "description": "values() new Iterator object contains the values,Boolean",
+      "prefix": "values",
+      "body": ["values()$0"]
+    },
+    "map() key/value map": {
+      "description": "map() key/value map",
+      "prefix": "map",
+      "body": ["map($1)$0"]
+    },
+    "Set() store unique values": {
+      "description": "Set() store unique values",
+      "prefix": "set",
+      "body": ["Set($1)$0"]
+    },
+    "add() to the end": {
+      "description": "add() to the end",
+      "prefix": "add",
+      "body": ["add($1)$0"]
+    },
+    "delete() remove specified element": {
+      "description": "delete() remove specified element",
+      "prefix": "delete",
+      "body": ["delete($1)$0"]
+    },
+    "has() boolean element exists": {
+      "description": "has() boolean element exists",
+      "prefix": "has",
+      "body": ["has($1)$0"]
+    },
+    "clear()": {
+      "description": "clear()",
+      "prefix": "clear",
+      "body": ["clear()$0"]
+    },
+    "next() Object with done and value,next iterator": {
+      "description": "next() Object with done and value,next iterator",
+      "prefix": "next",
+      "body": ["next()$0"]
+    },
+    "Generator: function with iteraction": {
+      "description": "Generator: function with iteraction",
+      "prefix": "generator",
+      "body": ["function* gen(){", "  yield $1", "}", "$0"]
+    },
+    "yield": {
+      "description": "yield",
+      "prefix": "yield",
+      "body": ["yield $0"]
+    },
+    "reduce() Array Accumulator: Previous and Current value": {
+      "description": "reduce() Array Accumulator: Previous and Current value",
+      "prefix": "reduce",
+      "body": ["reduce((${1: prev,curr}) => {", "  $2", "}${3: ,initialValue})"]
+    },
+    "reduceRight() Array right-to-left Accumulator: Previous and Current value": {
+      "description": "reduceRight() Array right-to-left Accumulator: Previous and Current value",
+      "prefix": "reduceR",
+      "body": ["reduceRight((prev,curr) => $1)$0"]
+    },
+    "slice() Array to new Array": {
+      "description": "slice() Array to new Array",
+      "prefix": "slice",
+      "body": ["slice(${1: start},${2: end})$0"]
+    },
+    "some() Return if Some element pass on Test": {
+      "description": "some() Return if Some element pass on Test",
+      "prefix": "some",
+      "body": ["some($1)$0"]
+    },
+    "toString()": {
+      "description": "toString()",
+      "prefix": "toString",
+      "body": ["toString()$0"]
+    },
+    "toString().trim()": {
+      "description": "toString().trim()",
+      "prefix": "toStringTrim",
+      "body": ["toString().trim()$0"]
+    },
+    "toString(base) To String Radix base": {
+      "description": "toString(base) To String Radix base",
+      "prefix": "toStringRadixBase",
+      "body": ["toString(${1: RadixBase})$0"]
+    },
+    "Array.toSource() Array's Code as String": {
+      "description": "Array.toSource() Array's Code as String",
+      "prefix": "ArrayToSource",
+      "body": ["Array.toSource()$0"]
+    },
+    "Object.assign(target,...sources) Copies the values of all enumerable own properties from one or more source objects to a target object": {
+      "description": "Object.assign(target,...sources) Copies the values of all enumerable own properties from one or more source objects to a target object",
+      "prefix": "objAssign",
+      "body": ["Object.assign({},${1: source(s)})$0"]
+    },
+    "Object.create(proto[,propertiesObject]) creates a new object with the specified prototype object and properties": {
+      "description": "Object.create(proto[,propertiesObject]) creates a new object with the specified prototype object and properties",
+      "prefix": "objCreate",
+      "body": ["Object.create(${1: obj}.prototype)$0"]
+    },
+    "Object.defineProperty(obj,prop,descriptor) Adds the named property described by a given descriptor to an object": {
+      "description": "Object.defineProperty(obj,prop,descriptor) Adds the named property described by a given descriptor to an object",
+      "prefix": "objDefineProperty",
+      "body": ["Object.defineProperty(${1: obj},${2: prop},${3: descriptor})$0"]
+    },
+    "Object.defineProperties(obj,props) Adds the named properties described by the given descriptors to an object": {
+      "description": "Object.defineProperties(obj,props) Adds the named properties described by the given descriptors to an object",
+      "prefix": "objDefineProperties",
+      "body": ["Object.defineProperties(${1: obj},${2: props})$0"]
+    },
+    "Object.entries(obj) Returns an array of a given object's own enumerable property [key,value] pairs": {
+      "description": "Object.entries(obj) Returns an array of a given object's own enumerable property [key,value] pairs",
+      "prefix": "objEntries",
+      "body": ["Object.entries(${1: obj})$0"]
+    },
+    "Object.freeze(obj) Freezes an object: other code can't delete or change any properties": {
+      "description": "Object.freeze(obj) Freezes an object: other code can't delete or change any properties",
+      "prefix": "objFreeze",
+      "body": ["Object.freeze(${1: obj})$0"]
+    },
+    "Object.getOwnPropertyDescriptor(obj,prop) Returns a property descriptor for a named property on an object": {
+      "description": "Object.getOwnPropertyDescriptor(obj,prop) Returns a property descriptor for a named property on an object",
+      "prefix": "objGetOwnPropertyDescriptor",
+      "body": ["Object.getOwnPropertyDescriptor(${1: obj},${2: prop})$0"]
+    },
+    "Object.getOwnPropertyDescriptors(obj) Returns an object containing all own property descriptors for an object": {
+      "description": "Object.getOwnPropertyDescriptors(obj) Returns an object containing all own property descriptors for an object",
+      "prefix": "objGetOwnPropertyDescriptors",
+      "body": ["Object.getOwnPropertyDescriptors(${1: obj})$0"]
+    },
+    "Object.getOwnPropertyNames(obj) Returns an array containing the names of all of the given object's own enumerable and non-enumerable properties": {
+      "description": "Object.getOwnPropertyNames(obj) Returns an array containing the names of all of the given object's own enumerable and non-enumerable properties",
+      "prefix": "objGetOwnPropertyNames",
+      "body": ["Object.getOwnPropertyNames(${1: obj})$0"]
+    },
+    "Object.getOwnPropertySymbols(obj) Returns an array of all symbol properties found directly upon a given object": {
+      "description": "Object.getOwnPropertySymbols(obj) Returns an array of all symbol properties found directly upon a given object",
+      "prefix": "objGetOwnPropertySymbols",
+      "body": ["Object.getOwnPropertySymbols(${1: obj})$0"]
+    },
+    "Object.getPrototypeOf(obj) Returns an array of all symbol properties found directly upon a given object": {
+      "description": "Object.getPrototypeOf(obj) Returns an array of all symbol properties found directly upon a given object",
+      "prefix": "objGetPrototypeOf",
+      "body": ["Object.getPrototypeOf(${1: obj})$0"]
+    },
+    "Object.is(value1,value2) Compares if two values are distinguishable (ie. the same)": {
+      "description": "Object.is(value1,value2) Compares if two values are distinguishable (ie. the same)",
+      "prefix": "objIs",
+      "body": ["Object.is(${1: value1},${2: value2})$0"]
+    },
+    "Object.isExtensible(obj) Determines if extending of an object is allowed": {
+      "description": "Object.isExtensible(obj) Determines if extending of an object is allowed",
+      "prefix": "objIsExtensible",
+      "body": ["Object.isExtensible(${1: obj})$0"]
+    },
+    "Object.isFrozen(obj) Determines if an object was frozen": {
+      "description": "Object.isFrozen(obj) Determines if an object was frozen",
+      "prefix": "objIsFrozen",
+      "body": ["Object.isFrozen(${1: obj})$0"]
+    },
+    "Object.isSealed(obj) Determines if an object is sealed": {
+      "description": "Object.isSealed(obj) Determines if an object is sealed",
+      "prefix": "objIsSealed",
+      "body": ["Object.isSealed(${1: obj})$0"]
+    },
+    "Object.keys(obj) Returns an array containing the names of all of the given object's own enumerable properties": {
+      "description": "Object.keys(obj) Returns an array containing the names of all of the given object's own enumerable properties",
+      "prefix": "objKeys",
+      "body": ["Object.keys(${1: obj})$0"]
+    },
+    "Object.preventExtensions(obj) Prevents any extensions of an object": {
+      "description": "Object.preventExtensions(obj) Prevents any extensions of an object",
+      "prefix": "objPreventExtensions",
+      "body": ["Object.preventExtensions(${1: obj})$0"]
+    },
+    "Object.seal(obj) Prevents other code from deleting properties of an object": {
+      "description": "Object.seal(obj) Prevents other code from deleting properties of an object",
+      "prefix": "objSeal",
+      "body": ["Object.seal(${1: obj})$0"]
+    },
+    "Object.setPrototypeOf(obj,prototype) Sets the prototype (i.e.,the internal [[Prototype]] property)": {
+      "description": "Object.setPrototypeOf(obj,prototype) Sets the prototype (i.e.,the internal [[Prototype]] property)",
+      "prefix": "objSetPrototypeOf",
+      "body": ["Object.setPrototypeOf(${1: obj},${2: prototype})$0"]
+    },
+    "Object.values(obj) Returns an array of a given object's own enumerable values": {
+      "description": "Object.values(obj) Returns an array of a given object's own enumerable values",
+      "prefix": "objValues",
+      "body": ["Object.values(${1: obj})$0"]
+    },
+    "Object.toSource() Object's Code as String": {
+      "description": "Object.toSource() Object's Code as String",
+      "prefix": "ObjectToSource",
+      "body": ["Object.toSource()$0"]
+    },
+    "{} Object": {
+      "description": "{} Object",
+      "prefix": "obj",
+      "body": ["{$1}$0"]
+    },
+    "{} Object structure": {
+      "description": "{} Object structure",
+      "prefix": "objStructure",
+      "body": [
+        "{",
+        "  ${1: property}: ${2: value},",
+        "  ${3: property}: ${4: value}",
+        "}$0"
+      ]
+    },
+    "hasOwnProperty Object Boolean": {
+      "description": "hasOwnProperty Object Boolean",
+      "prefix": "hasOwnProp",
+      "body": ["hasOwnProperty(${1: prop})$0"]
+    },
+    "prototype.constructor": {
+      "description": "prototype.constructor",
+      "prefix": "prototypeConstructor",
+      "body": ["prototype.constructor$0"]
+    },
+    "Boolean.toSource() Boolean's Code as String": {
+      "description": "Boolean.toSource() Boolean's Code as String",
+      "prefix": "BooleanToSource",
+      "body": ["Boolean.toSource()$0"]
+    },
+    "Error.toSource() Error's Code as String": {
+      "description": "Error.toSource() Error's Code as String",
+      "prefix": "ErrorToSource",
+      "body": ["Error.toSource()$0"]
+    },
+    "Function.toSource() Function's Code as String": {
+      "description": "Function.toSource() Function's Code as String",
+      "prefix": "FunctionToSource",
+      "body": ["Function.toSource()$0"]
+    },
+    "Number.toSource() Number's Code as String": {
+      "description": "Number.toSource() Number's Code as String",
+      "prefix": "NumberToSource",
+      "body": ["Number.toSource()$0"]
+    },
+    "RegExp.toSource() RegExp's Code as String": {
+      "description": "RegExp.toSource() RegExp's Code as String",
+      "prefix": "RegExpToSource",
+      "body": ["RegExp.toSource()$0"]
+    },
+    "String.toSource() String's Code as String": {
+      "description": "String.toSource() String's Code as String",
+      "prefix": "StringToSource",
+      "body": ["String.toSource()$0"]
+    },
+    "Symbol.toSource() Symbol's Code as String": {
+      "description": "Symbol.toSource() Symbol's Code as String",
+      "prefix": "SymbolToSource",
+      "body": ["Symbol.toSource()$0"]
+    },
+    "backgroundColor": {
+      "description": "backgroundColor",
+      "prefix": "backgroundColor",
+      "body": ["backgroundColor = $1"]
+    },
+    "backgroundImage": {
+      "description": "backgroundImage",
+      "prefix": "backgroundImage",
+      "body": ["backgroundImage = `url('${$1}')`"]
+    },
+    "className": {
+      "description": "className",
+      "prefix": "className",
+      "body": ["className = $1"]
+    },
+    "classList.add() Add class": {
+      "description": "classList.add() Add class",
+      "prefix": "classListAdd",
+      "body": ["classList.add($1)$0"]
+    },
+    "classList.remove() Remove class": {
+      "description": "classList.remove() Remove class",
+      "prefix": "classListRemove",
+      "body": ["classList.remove($1)$0"]
+    },
+    "classList.item() Class index": {
+      "description": "classList.item() Class index",
+      "prefix": "classListItem",
+      "body": ["classList.item(${1: 0})$0"]
+    },
+    "classList.toggle() Toggle class": {
+      "description": "classList.toggle() Toggle class",
+      "prefix": "classListToggle",
+      "body": ["classList.toggle($1)$0"]
+    },
+    "classList.toggle() set class and remove after conditional": {
+      "description": "classList.toggle() set class and remove after conditional",
+      "prefix": "classListToggleConditional",
+      "body": ["classList.toggle($1,${2: i < 10})$0"]
+    },
+    "classList.contains() Class exists,Boolean": {
+      "description": "classList.contains() Class exists,Boolean",
+      "prefix": "classListContains",
+      "body": ["classList.contains($1)$0"]
+    },
+    "'String'": {
+      "description": "'String'",
+      "prefix": "str",
+      "body": ["'$1'$0"]
+    },
+    "'String' Long Literal": {
+      "description": "'String' Long Literal",
+      "prefix": "strLongLit",
+      "body": ["'$1 \\\\", "$2'$0"]
+    },
+    "`Template` String": {
+      "description": "`Template` String",
+      "prefix": "strTempl",
+      "body": ["`$1`$0"]
+    },
+    "`String` Template MultiLine": {
+      "description": "`String` Template MultiLine",
+      "prefix": "strMultiLine",
+      "body": ["`$1", "$2`$0"]
+    },
+    "`String` Expression": {
+      "description": "`String` Expression",
+      "prefix": "strExp",
+      "body": ["`$2${${1: expression}}$3`$0"]
+    },
+    "Expression": {
+      "description": "Expression",
+      "prefix": "ex",
+      "body": ["${${1: expression}}$0"]
+    },
+    "substr()": {
+      "description": "substr()",
+      "prefix": "substr",
+      "body": ["substr(${1: start},${2: length})$0"]
+    },
+    "substring()": {
+      "description": "substring()",
+      "prefix": "substring",
+      "body": ["substring(${1: indexStart},${2: indexEnd})$0"]
+    },
+    "charAt()": {
+      "description": "charAt()",
+      "prefix": "charAt",
+      "body": ["charAt(${1: index})$0"]
+    },
+    "charCodeAt() UTF-16 code": {
+      "description": "charCodeAt() UTF-16 code",
+      "prefix": "charCodeAt",
+      "body": ["charCodeAt($1)$0"]
+    },
+    "length or window.length": {
+      "description": "length or window.length",
+      "prefix": "length",
+      "body": ["length$0"]
+    },
+    "String.fromCharCode(UTF-16 Code)": {
+      "description": "String.fromCharCode(UTF-16 Code)",
+      "prefix": "fromCharCode",
+      "body": ["String.fromCharCode(${1: UTF-16 Code})$0"]
+    },
+    "toLowerCase()": {
+      "description": "toLowerCase()",
+      "prefix": "toLowerCase",
+      "body": ["toLowerCase()$0"]
+    },
+    "toLowerCase().trim()": {
+      "description": "toLowerCase().trim()",
+      "prefix": "toLowerCaseTrim",
+      "body": ["toLowerCase().trim()$0"]
+    },
+    "toUpperCase()": {
+      "description": "toUpperCase()",
+      "prefix": "toUpperCase",
+      "body": ["toUpperCase()$0"]
+    },
+    "toUpperCase().trim()": {
+      "description": "toUpperCase().trim()",
+      "prefix": "toUpperCaseTrim",
+      "body": ["toUpperCase().trim()$0"]
+    },
+    "toLocaleLowerCase()": {
+      "description": "toLocaleLowerCase()",
+      "prefix": "toLocaleLowerCase",
+      "body": ["toLocaleLowerCase()$0"]
+    },
+    "trim()": {
+      "description": "trim()",
+      "prefix": "trim",
+      "body": ["trim()$0"]
+    },
+    "toLocaleLowerCase().trim()": {
+      "description": "toLocaleLowerCase().trim()",
+      "prefix": "toLocaleLowerCaseTrim",
+      "body": ["toLocaleLowerCase().trim()$0"]
+    },
+    "toLocaleUpperCase()": {
+      "description": "toLocaleUpperCase()",
+      "prefix": "toLocaleUpperCase",
+      "body": ["toLocaleUpperCase()$0"]
+    },
+    "toLocaleUpperCase().trim()": {
+      "description": "toLocaleUpperCase().trim()",
+      "prefix": "toLocaleUpperCaseTrim",
+      "body": ["toLocaleUpperCase().trim()$0"]
+    },
+    "ignoreCase": {
+      "description": "ignoreCase",
+      "prefix": "ignoreCase",
+      "body": ["ignoreCase$0"]
+    },
+    "indexOf()": {
+      "description": "indexOf()",
+      "prefix": "indexOf",
+      "body": ["indexOf(${1: el})$0"]
+    },
+    "lastIndexOf() Last Index of element": {
+      "description": "lastIndexOf() Last Index of element",
+      "prefix": "lastIndexOf",
+      "body": ["lastIndexOf(${1: el})$0"]
+    },
+    "hasChildNodes() Boolean": {
+      "description": "hasChildNodes() Boolean",
+      "prefix": "hasChildNodes",
+      "body": ["hasChildNodes()$0"]
+    },
+    "isEqualNode": {
+      "description": "isEqualNode",
+      "prefix": "isEqualNode",
+      "body": ["isEqualNode(${1: otherNode})$0"]
+    },
+    "nodeName": {
+      "description": "nodeName",
+      "prefix": "nodeName",
+      "body": ["nodeName$0"]
+    },
+    "nodeType": {
+      "description": "nodeType",
+      "prefix": "nodeType",
+      "body": ["nodeType$0"]
+    },
+    "nodeValue": {
+      "description": "nodeValue",
+      "prefix": "nodeValue",
+      "body": ["nodeValue$0"]
+    },
+    "childNodes": {
+      "description": "childNodes",
+      "prefix": "childNodes",
+      "body": ["childNodes$0"]
+    },
+    "firstChild": {
+      "description": "firstChild",
+      "prefix": "firstChild",
+      "body": ["firstChild$0"]
+    },
+    "lastChild": {
+      "description": "lastChild",
+      "prefix": "lastChild",
+      "body": ["lastChild$0"]
+    },
+    "cloneNode": {
+      "description": "cloneNode",
+      "prefix": "cloneNode",
+      "body": ["cloneNode(${1: true})$0"]
+    },
+    "parentElement": {
+      "description": "parentElement",
+      "prefix": "parentElement",
+      "body": ["parentElement$0"]
+    },
+    "parentNode": {
+      "description": "parentNode",
+      "prefix": "parentNode",
+      "body": ["parentNode$0"]
+    },
+    "compareDocumentPosition(otherNode)": {
+      "description": "compareDocumentPosition(otherNode)",
+      "prefix": "compareDocumentPosition",
+      "body": ["compareDocumentPosition(otherNode)$0"]
+    },
+    "appendChild": {
+      "description": "appendChild",
+      "prefix": "appendChild",
+      "body": ["appendChild(${1: aChild})$0"]
+    },
+    "prepend": {
+      "description": "prepend",
+      "prefix": "prepend",
+      "body": ["prepend(${1: aChild})$0"]
+    },
+    "nextSibling": {
+      "description": "nextSibling",
+      "prefix": "nextSibling",
+      "body": ["nextSibling$0"]
+    },
+    "previousSibling": {
+      "description": "previousSibling",
+      "prefix": "previousSibling",
+      "body": ["previousSibling$0"]
+    },
+    "nextElementSibling": {
+      "description": "nextElementSibling",
+      "prefix": "nextElementSibling",
+      "body": ["nextElementSibling$0"]
+    },
+    "previousElementSibling": {
+      "description": "previousElementSibling",
+      "prefix": "previousElementSibling",
+      "body": ["previousElementSibling$0"]
+    },
+    "insertBefore": {
+      "description": "insertBefore",
+      "prefix": "insertBefore",
+      "body": ["insertBefore(${1: newNode},${2: referenceNode})$0"]
+    },
+    "insertAfter": {
+      "description": "insertAfter",
+      "prefix": "insertAfter",
+      "body": ["insertBefore(${1: newNode},${2: referenceNode}.nextSibling)$0"]
+    },
+    "removeChild": {
+      "description": "removeChild",
+      "prefix": "removeChild",
+      "body": ["removeChild(${1: child})$0"]
+    },
+    "replaceChild": {
+      "description": "replaceChild",
+      "prefix": "replaceChild",
+      "body": ["replaceChild(${1: newChild},${2: oldChild})$0"]
+    },
+    "replaceWith": {
+      "description": "replaceWith",
+      "prefix": "replaceWith",
+      "body": ["replaceWith(${1: newNode})$0"]
+    },
+    "focus() or window.focus()": {
+      "description": "focus() or window.focus()",
+      "prefix": "focus",
+      "body": ["focus()$0"]
+    },
+    "blur() or window.blur()": {
+      "description": "blur() or window.blur()",
+      "prefix": "blur",
+      "body": ["blur()$0"]
+    },
+    "click()": {
+      "description": "click()",
+      "prefix": "click",
+      "body": ["click()$0"]
+    },
+    "addEventListener('event',listener)": {
+      "description": "addEventListener('event',listener)",
+      "prefix": "addEventListener",
+      "body": ["addEventListener('$1',${1: ActionName})$0"]
+    },
+    "addEventListener('event',listener,{passive: true})": {
+      "description": "addEventListener('event',listener,{passive: true})",
+      "prefix": "addEventListenerPassive",
+      "body": ["addEventListener('$1',${1: ActionName},{passive: true})$0"]
+    },
+    "removeEventListener('event',listener)": {
+      "description": "removeEventListener('event',listener)",
+      "prefix": "removeEventListener",
+      "body": ["removeEventListener('$1',$1)$0"]
+    },
+    "removeEventListener('event',listener,{passive: true})": {
+      "description": "removeEventListener('event',listener,{passive: true})",
+      "prefix": "removeEventListenerPassive",
+      "body": ["removeEventListener('$1',${1: ActionName},{passive: true})$0"]
+    },
+    "preventDefault() Behavior": {
+      "description": "preventDefault() Behavior",
+      "prefix": "preventDef",
+      "body": ["preventDefault()$0"]
+    },
+    "fetch": {
+      "description": "fetch",
+      "prefix": "fetch",
+      "body": [
+        "fetch(${1: url})",
+        "  .then(response => response$2)",
+        "  .then(data => {",
+        "    console.log('data:', data)$0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch(url,{method: 'GET',headers: {'Authorization': 'Basic ' +credential}})": {
+      "description": "fetch(url,{method: 'GET',headers: {'Authorization': 'Basic ' +credential}})",
+      "prefix": "fetchGET",
+      "body": [
+        "fetch(url,{",
+        "  method: 'GET',",
+        "  headers: {",
+        "    Authorization: 'Basic ' +credential",
+        "  }",
+        "})",
+        "  .then(response => response)",
+        "  .then(data => {",
+        "    console.log(`data: `,data)$0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch(url,{method: 'POST',body: JSON.stringify(body)})": {
+      "description": "fetch(url,{method: 'POST',body: JSON.stringify(body)})",
+      "prefix": "fetchPOST",
+      "body": [
+        "fetch(url,{",
+        "  method: 'POST',",
+        "  headers: {",
+        "    Accept: 'application/json',",
+        "    'Content-Type': 'application/json',",
+        "    Authorization: 'Basic ' +credential",
+        "  },",
+        "  body: JSON.stringify(body)",
+        "})",
+        "  .then(response => response)",
+        "  .then(data => {",
+        "    if (data.status === 200) console.log(`Success`)",
+        "    $0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch(url,{method: 'PUT',body: JSON.stringify(body)})": {
+      "description": "fetch(url,{method: 'PUT',body: JSON.stringify(body)})",
+      "prefix": "fetchPUT",
+      "body": [
+        "fetch(url,{",
+        "  method: 'PUT',",
+        "  headers: {",
+        "    Accept: 'application/json',",
+        "    'Content-Type': 'application/json',",
+        "    Authorization: 'Basic ' +credential",
+        "  },",
+        "  body: JSON.stringify(body)",
+        "})",
+        "  .then(response => response)",
+        "  .then(data => {",
+        "    if (data.status === 200) console.log(`Success`)",
+        "    $0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch(url,{method: 'DELETE',body: JSON.stringify(body)})": {
+      "description": "fetch(url,{method: 'DELETE',body: JSON.stringify(body)})",
+      "prefix": "fetchDELETE",
+      "body": [
+        "fetch(url,{",
+        "  method: 'DELETE',",
+        "  headers: {",
+        "    Accept: 'application/json',",
+        "    'Content-Type': 'application/json',",
+        "    Authorization: 'Basic ' +credential",
+        "  },",
+        "  body: JSON.stringify(body)",
+        "})",
+        "  .then(response => response)",
+        "  .then(data => {",
+        "    if (data.status === 200) console.log(`Success`)",
+        "    $0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch response to Text": {
+      "description": "fetch response to Text",
+      "prefix": "fetchText",
+      "body": [
+        "fetch(${1: url})",
+        "  .then(response => response.text())",
+        "  .then(data => {",
+        "    console.log('data:', data)$0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch response to JSON": {
+      "description": "fetch response to JSON",
+      "prefix": "fetchJSON",
+      "body": [
+        "fetch(${1: url})",
+        "  .then(response => response.json())",
+        "  .then(data => {",
+        "    console.log('data:', data)$0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "fetch response to Blob": {
+      "description": "fetch response to Blob",
+      "prefix": "fetchBlob",
+      "body": [
+        "fetch(${1: url})",
+        "  .then(response => response.blob())",
+        "  .then(data => {",
+        "    console.log('data:', data)$0",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))"
+      ]
+    },
+    "then": {
+      "description": "then",
+      "prefix": "then",
+      "body": ["then($1)$0"]
+    },
+    "catch": {
+      "description": "catch",
+      "prefix": "catch",
+      "body": ["catch((error) => {", "  console.log(error)", "})$0"]
+    },
+    "text": {
+      "description": "text",
+      "prefix": "text",
+      "body": ["text()$0"]
+    },
+    "blob": {
+      "description": "blob",
+      "prefix": "blob",
+      "body": ["blob()$0"]
+    },
+    "arrayBuffer": {
+      "description": "arrayBuffer",
+      "prefix": "arrayBuffer",
+      "body": ["arrayBuffer()$0"]
+    },
+    "formData": {
+      "description": "formData",
+      "prefix": "formData",
+      "body": ["formData()$0"]
+    },
+    "json()": {
+      "description": "json()",
+      "prefix": "json",
+      "body": ["json()$0"]
+    },
+    "JSON.stringify()": {
+      "description": "JSON.stringify()",
+      "prefix": "JSONStringify",
+      "body": ["JSON.stringify($1)$0"]
+    },
+    "JSON.parse()": {
+      "description": "JSON.parse()",
+      "prefix": "JSONParse",
+      "body": ["JSON.parse($1)$0"]
+    },
+    "Class,Class expression named/unamed": {
+      "description": "Class,Class expression named/unamed",
+      "prefix": "clas",
+      "body": [
+        "class ${1: ClassName}{",
+        "  constructor($2){",
+        "    $3",
+        "  }",
+        "}",
+        "$0"
+      ]
+    },
+    "Class: constructor": {
+      "description": "Class: constructor",
+      "prefix": "construc",
+      "body": ["constructor($1){", "  $2", "}", "$0"]
+    },
+    "Class: extends,child of class": {
+      "description": "Class: extends,child of class",
+      "prefix": "ext",
+      "body": ["extends ${1: ClassName}"]
+    },
+    "Class: super() to allow override existing methods": {
+      "description": "Class: super() to allow override existing methods",
+      "prefix": "super",
+      "body": ["super()$0"]
+    },
+    "Class: static method": {
+      "description": "Class: static method",
+      "prefix": "static",
+      "body": ["static ${1: staticMethod}(){", "  $2", "}", "$0,"]
+    },
+    "Promise": {
+      "description": "Promise",
+      "prefix": "promise",
+      "body": [
+        "new Promise((resolve,reject) => {",
+        "  resolve($1)",
+        "  reject($2)",
+        "})$0"
+      ]
+    },
+    "Promise.all": {
+      "description": "Promise.all",
+      "prefix": "promiseAll",
+      "body": [
+        "Promise.all([${1: p1},${2: p2}])",
+        "  .then((data) => {",
+        "    $3",
+        "  })",
+        "  .catch(error => console.log('ERROR:', error))$0"
+      ]
+    },
+    "window.window": {
+      "description": "window.window",
+      "prefix": "window",
+      "body": ["window$0"]
+    },
+    "window.messageManager": {
+      "description": "window.messageManager",
+      "prefix": "messageManager",
+      "body": ["window.messageManager$0"]
+    },
+    "window.windowState": {
+      "description": "window.windowState",
+      "prefix": "windowState",
+      "body": ["window.windowState$0"]
+    },
+    "window.confirm(message)": {
+      "description": "window.confirm(message)",
+      "prefix": "confirm",
+      "body": ["confirm(${1: message})$0"]
+    },
+    "window.alert(message)": {
+      "description": "window.alert(message)",
+      "prefix": "alert",
+      "body": ["alert(${1: message})$0"]
+    },
+    "window.applicationCache": {
+      "description": "window.applicationCache",
+      "prefix": "applicationCache",
+      "body": ["applicationCache$0"]
+    },
+    "window.closed": {
+      "description": "window.closed",
+      "prefix": "closed",
+      "body": ["closed$0"]
+    },
+    "window.crypto": {
+      "description": "window.crypto",
+      "prefix": "crypto",
+      "body": ["crypto$0"]
+    },
+    "window.devicePixelRatio": {
+      "description": "window.devicePixelRatio",
+      "prefix": "devicePixelRatio",
+      "body": ["devicePixelRatio$0"]
+    },
+    "window.document": {
+      "description": "window.document",
+      "prefix": "document",
+      "body": ["document$0"]
+    },
+    "window.frameElement": {
+      "description": "window.frameElement",
+      "prefix": "frameElement",
+      "body": ["frameElement$0"]
+    },
+    "window.frames": {
+      "description": "window.frames",
+      "prefix": "frames",
+      "body": ["frames$0"]
+    },
+    "window.fullScreen": {
+      "description": "window.fullScreen",
+      "prefix": "fullScreen",
+      "body": ["fullScreen$0"]
+    },
+    "window.history": {
+      "description": "window.history",
+      "prefix": "history",
+      "body": ["history$0"]
+    },
+    "window.innerHeight": {
+      "description": "window.innerHeight",
+      "prefix": "innerHeight",
+      "body": ["innerHeight$0"]
+    },
+    "window.innerWidth": {
+      "description": "window.innerWidth",
+      "prefix": "innerWidth",
+      "body": ["innerWidth$0"]
+    },
+    "window.isSecureContext": {
+      "description": "window.isSecureContext",
+      "prefix": "isSecureContext",
+      "body": ["isSecureContext$0"]
+    },
+    "window.location": {
+      "description": "window.location",
+      "prefix": "location",
+      "body": ["location$0"]
+    },
+    "window.locationbar": {
+      "description": "window.locationbar",
+      "prefix": "locationbar",
+      "body": ["locationbar$0"]
+    },
+    "window.menubar": {
+      "description": "window.menubar",
+      "prefix": "menubar",
+      "body": ["menubar$0"]
+    },
+    "window.name": {
+      "description": "window.name",
+      "prefix": "name",
+      "body": ["name$0"]
+    },
+    "window.navigator": {
+      "description": "window.navigator",
+      "prefix": "navigator",
+      "body": ["navigator$0"]
+    },
+    "window.onappinstalled": {
+      "description": "window.onappinstalled",
+      "prefix": "onappinstalled",
+      "body": ["onappinstalled$0"]
+    },
+    "window.onbeforeinstallprompt": {
+      "description": "window.onbeforeinstallprompt",
+      "prefix": "onbeforeinstallprompt",
+      "body": ["onbeforeinstallprompt$0"]
+    },
+    "window.ondevicelight": {
+      "description": "window.ondevicelight",
+      "prefix": "ondevicelight",
+      "body": ["ondevicelight$0"]
+    },
+    "window.ondevicemotion": {
+      "description": "window.ondevicemotion",
+      "prefix": "ondevicemotion",
+      "body": ["ondevicemotion$0"]
+    },
+    "window.ondeviceorientation": {
+      "description": "window.ondeviceorientation",
+      "prefix": "ondeviceorientation",
+      "body": ["ondeviceorientation$0"]
+    },
+    "window.onuserproximity": {
+      "description": "window.onuserproximity",
+      "prefix": "onuserproximity",
+      "body": ["onuserproximity$0"]
+    },
+    "window.onvrdisplayactivate": {
+      "description": "window.onvrdisplayactivate",
+      "prefix": "onvrdisplayactivate",
+      "body": ["onvrdisplayactivate$0"]
+    },
+    "window.onvrdisplayconnect": {
+      "description": "window.onvrdisplayconnect",
+      "prefix": "onvrdisplayconnect",
+      "body": ["onvrdisplayconnect$0"]
+    },
+    "window.onvrdisplaydeactivate": {
+      "description": "window.onvrdisplaydeactivate",
+      "prefix": "onvrdisplaydeactivate",
+      "body": ["onvrdisplaydeactivate$0"]
+    },
+    "window.onvrdisplaydisconnect": {
+      "description": "window.onvrdisplaydisconnect",
+      "prefix": "onvrdisplaydisconnect",
+      "body": ["onvrdisplaydisconnect$0"]
+    },
+    "window.onvrdisplaypresentchange": {
+      "description": "window.onvrdisplaypresentchange",
+      "prefix": "onvrdisplaypresentchange",
+      "body": ["onvrdisplaypresentchange$0"]
+    },
+    "window.opener": {
+      "description": "window.opener",
+      "prefix": "opener",
+      "body": ["opener$0"]
+    },
+    "window.outerHeight": {
+      "description": "window.outerHeight",
+      "prefix": "outerHeight",
+      "body": ["outerHeight$0"]
+    },
+    "window.outerWidth": {
+      "description": "window.outerWidth",
+      "prefix": "outerWidth",
+      "body": ["outerWidth$0"]
+    },
+    "window.pageXOffset": {
+      "description": "window.pageXOffset",
+      "prefix": "pageXOffset",
+      "body": ["pageXOffset$0"]
+    },
+    "window.pageYOffset": {
+      "description": "window.pageYOffset",
+      "prefix": "pageYOffset",
+      "body": ["pageYOffset$0"]
+    },
+    "window.parent": {
+      "description": "window.parent",
+      "prefix": "parent",
+      "body": ["parent$0"]
+    },
+    "window.performance": {
+      "description": "window.performance",
+      "prefix": "performance",
+      "body": ["performance$0"]
+    },
+    "window.personalbar": {
+      "description": "window.personalbar",
+      "prefix": "personalbar",
+      "body": ["personalbar$0"]
+    },
+    "window.screen": {
+      "description": "window.screen",
+      "prefix": "screen",
+      "body": ["screen$0"]
+    },
+    "window.screenX": {
+      "description": "window.screenX",
+      "prefix": "screenX",
+      "body": ["screenX$0"]
+    },
+    "window.screenY": {
+      "description": "window.screenY",
+      "prefix": "screenY",
+      "body": ["screenY$0"]
+    },
+    "window.scrollbars": {
+      "description": "window.scrollbars",
+      "prefix": "scrollbars",
+      "body": ["scrollbars$0"]
+    },
+    "window.scrollX": {
+      "description": "window.scrollX",
+      "prefix": "scrollX",
+      "body": ["scrollX$0"]
+    },
+    "window.scrollY": {
+      "description": "window.scrollY",
+      "prefix": "scrollY",
+      "body": ["scrollY$0"]
+    },
+    "window.self": {
+      "description": "window.self",
+      "prefix": "self",
+      "body": ["self$0"]
+    },
+    "window.speechSynthesis": {
+      "description": "window.speechSynthesis",
+      "prefix": "speechSynthesis",
+      "body": ["speechSynthesis$0"]
+    },
+    "window.status": {
+      "description": "window.status",
+      "prefix": "status",
+      "body": ["status$0"]
+    },
+    "window.statusbar": {
+      "description": "window.statusbar",
+      "prefix": "statusbar",
+      "body": ["statusbar$0"]
+    },
+    "window.toolbar": {
+      "description": "window.toolbar",
+      "prefix": "toolbar",
+      "body": ["toolbar$0"]
+    },
+    "window.top": {
+      "description": "window.top",
+      "prefix": "top",
+      "body": ["top$0"]
+    },
+    "window.URL": {
+      "description": "window.URL",
+      "prefix": "URL",
+      "body": ["URL$0"]
+    },
+    "window.print()": {
+      "description": "window.print()",
+      "prefix": "print",
+      "body": ["window.print()$0"]
+    },
+    "window.close()": {
+      "description": "window.close()",
+      "prefix": "close",
+      "body": ["close()$0"]
+    },
+    "window.getAttention()": {
+      "description": "window.getAttention()",
+      "prefix": "getAttention",
+      "body": ["getAttention()$0"]
+    },
+    "window.getSelection()": {
+      "description": "window.getSelection()",
+      "prefix": "getSelection",
+      "body": ["getSelection()$0"]
+    },
+    "window.minimize()": {
+      "description": "window.minimize()",
+      "prefix": "minimize",
+      "body": ["minimize()$0"]
+    },
+    "window.stop()": {
+      "description": "window.stop()",
+      "prefix": "stop",
+      "body": ["stop()$0"]
+    },
+    "window.cancelAnimationFrame(requestID)": {
+      "description": "window.cancelAnimationFrame(requestID)",
+      "prefix": "cancelAnimationFrame",
+      "body": ["cancelAnimationFrame(${1: requestID})$0"]
+    },
+    "window.cancelIdleCallback(handle)": {
+      "description": "window.cancelIdleCallback(handle)",
+      "prefix": "cancelIdleCallback",
+      "body": ["cancelIdleCallback(${1: handle})$0"]
+    },
+    "window.clearImmediate(immediateID)": {
+      "description": "window.clearImmediate(immediateID)",
+      "prefix": "clearImmediate",
+      "body": ["clearImmediate(${1: immediateID})$0"]
+    },
+    "window.matchMedia(mediaQueryString)": {
+      "description": "window.matchMedia(mediaQueryString)",
+      "prefix": "matchMedia",
+      "body": ["matchMedia(${1: mediaQueryString})$0"]
+    },
+    "window.requestAnimationFrame(callback)": {
+      "description": "window.requestAnimationFrame(callback)",
+      "prefix": "requestAnimationFrame",
+      "body": ["requestAnimationFrame(${1: callback})$0"]
+    },
+    "window.requestIdleCallback(callback)": {
+      "description": "window.requestIdleCallback(callback)",
+      "prefix": "requestIdleCallback",
+      "body": ["requestIdleCallback(${1: callback})$0"]
+    },
+    "window.updateCommands('sCommandName')": {
+      "description": "window.updateCommands('sCommandName')",
+      "prefix": "updateCommands",
+      "body": ["updateCommands('${1: sCommandName}')$0"]
+    },
+    "window.getComputedStyle(elem,null)": {
+      "description": "window.getComputedStyle(elem,null)",
+      "prefix": "getComputedStyle",
+      "body": ["getComputedStyle(${1: elem},null)$0"]
+    },
+    "window.moveBy(deltaX,deltaY)": {
+      "description": "window.moveBy(deltaX,deltaY)",
+      "prefix": "moveBy",
+      "body": ["moveBy(${1: deltaX},${2: deltaY})$0"]
+    },
+    "window.resizeBy(deltaX,deltaY)": {
+      "description": "window.resizeBy(deltaX,deltaY)",
+      "prefix": "resizeBy",
+      "body": ["resizeBy(${1: xDelta},${2: Ydelta})$0"]
+    },
+    "window.resizeTo(aWidth,aHeight)": {
+      "description": "window.resizeTo(aWidth,aHeight)",
+      "prefix": "resizeTo",
+      "body": ["resizeTo(${1: aWidth},${2: aHeight})$0"]
+    },
+    "window.moveTo(x,y)": {
+      "description": "window.moveTo(x,y)",
+      "prefix": "moveTo",
+      "body": ["moveTo(${1: x},${2: y})$0"]
+    },
+    "window.scrollBy(x,y)": {
+      "description": "window.scrollBy(x,y)",
+      "prefix": "scrollBy",
+      "body": ["scrollBy(${1: x},${2: y})$0"]
+    },
+    "window.scroll(x-coord,y-coord)": {
+      "description": "window.scroll(x-coord,y-coord)",
+      "prefix": "scroll",
+      "body": ["scroll(${1: x-coord},${2: y-coord})$0"]
+    },
+    "window.scrollTo(x-coord,y-coord)": {
+      "description": "window.scrollTo(x-coord,y-coord)",
+      "prefix": "scrollTo",
+      "body": ["scrollTo(${1: x-coord},${2: y-coord})$0"]
+    },
+    "window.open(url,windowName,windowFeatures)": {
+      "description": "window.open(url,windowName,windowFeatures)",
+      "prefix": "open",
+      "body": ["open(${1: url},${2: windowName},${3: windowFeatures})$0"]
+    },
+    "window.postMessage(message, targetOrigin, [transfer])": {
+      "description": "window.postMessage(message, targetOrigin, [transfer])",
+      "prefix": "postMessage",
+      "body": ["postMessage(${1: message},${2: targetOrigin},${3: transfer})$0"]
+    },
+    "window.prompt": {
+      "description": "window.prompt",
+      "prefix": "prompt",
+      "body": ["prompt(${1: message},${2: defaultValue})$0"]
+    },
+    "performance.mark(name)": {
+      "description": "performance.mark(name)",
+      "prefix": "performanceMark",
+      "body": ["performance.mark(${1: name})$0"]
+    },
+    "mark(name) Performance": {
+      "description": "mark(name) Performance",
+      "prefix": "mark",
+      "body": ["mark(${1: name})$0"]
+    },
+    "performance.now()": {
+      "description": "performance.now()",
+      "prefix": "performanceNow",
+      "body": ["performance.now()$0"]
+    },
+    "performance.timing": {
+      "description": "performance.timing",
+      "prefix": "performanceTiming",
+      "body": ["performance.timing$0"]
+    },
+    "timing Performance": {
+      "description": "timing Performance",
+      "prefix": "timing",
+      "body": ["timing$0"]
+    },
+    "performance.navigation": {
+      "description": "performance.navigation",
+      "prefix": "performanceNavigation",
+      "body": ["performance.navigation$0"]
+    },
+    "navigation Performance": {
+      "description": "navigation Performance",
+      "prefix": "navigation",
+      "body": ["navigation$0"]
+    },
+    "performance.memory [Chrome]JS": {
+      "description": "performance.memory [Chrome]JS",
+      "prefix": "performanceMemory",
+      "body": ["performance.memory$0"]
+    },
+    "memory Performance [Chrome]JS": {
+      "description": "memory Performance [Chrome]JS",
+      "prefix": "memory",
+      "body": ["memory$0"]
+    },
+    "setInterval()": {
+      "description": "setInterval()",
+      "prefix": "setInterval",
+      "body": ["setInterval(${1: function},${2: 3000})$0"]
+    },
+    "clearInterval()": {
+      "description": "clearInterval()",
+      "prefix": "clearInterval",
+      "body": ["clearInterval(${1: function})$0"]
+    },
+    "setTimeout()": {
+      "description": "setTimeout()",
+      "prefix": "setTimeout",
+      "body": ["setTimeout(${1: function},${2: 3000})$0"]
+    },
+    "clearTimeout()": {
+      "description": "clearTimeout()",
+      "prefix": "clearTimeout",
+      "body": ["clearTimeout(${1: function})$0"]
+    },
+    "execCommand('backColor')": {
+      "description": "execCommand('backColor')",
+      "prefix": "execBackColor",
+      "body": ["document.execCommand('backColor')$0"]
+    },
+    "execCommand('bold')": {
+      "description": "execCommand('bold')",
+      "prefix": "execBold",
+      "body": ["document.execCommand('bold')$0"]
+    },
+    "execCommand('contentReadOnly')": {
+      "description": "execCommand('contentReadOnly')",
+      "prefix": "execContentReadOnly",
+      "body": ["document.execCommand('contentReadOnly')$0"]
+    },
+    "execCommand('copy')": {
+      "description": "execCommand('copy')",
+      "prefix": "execCopy",
+      "body": ["document.execCommand('copy')$0"]
+    },
+    "execCommand('createLink')": {
+      "description": "execCommand('createLink')",
+      "prefix": "execCreateLink",
+      "body": ["document.execCommand('createLink')$0"]
+    },
+    "execCommand('cut')": {
+      "description": "execCommand('cut')",
+      "prefix": "execCut",
+      "body": ["document.execCommand('cut')$0"]
+    },
+    "execCommand('decreaseFontSize')": {
+      "description": "execCommand('decreaseFontSize')",
+      "prefix": "execDecreaseFontSize",
+      "body": ["document.execCommand('decreaseFontSize')$0"]
+    },
+    "execCommand('delete')": {
+      "description": "execCommand('delete')",
+      "prefix": "execDelete",
+      "body": ["document.execCommand('delete')$0"]
+    },
+    "execCommand('enableInlineTableEditing')": {
+      "description": "execCommand('enableInlineTableEditing')",
+      "prefix": "execEnableInlineTableEditing",
+      "body": ["document.execCommand('enableInlineTableEditing')$0"]
+    },
+    "execCommand('enableObjectResizing')": {
+      "description": "execCommand('enableObjectResizing')",
+      "prefix": "execEnableObjectResizing",
+      "body": ["document.execCommand('enableObjectResizing')$0"]
+    },
+    "execCommand('fontName')": {
+      "description": "execCommand('fontName')",
+      "prefix": "execFontName",
+      "body": ["document.execCommand('fontName')$0"]
+    },
+    "execCommand('fontSize')": {
+      "description": "execCommand('fontSize')",
+      "prefix": "execFontSize",
+      "body": ["document.execCommand('fontSize')$0"]
+    },
+    "execCommand('foreColor')": {
+      "description": "execCommand('foreColor')",
+      "prefix": "execForeColor",
+      "body": ["document.execCommand('foreColor')$0"]
+    },
+    "execCommand('formatBlock')": {
+      "description": "execCommand('formatBlock')",
+      "prefix": "execFormatBlock",
+      "body": ["document.execCommand('formatBlock')$0"]
+    },
+    "execCommand('forwardDelete')": {
+      "description": "execCommand('forwardDelete')",
+      "prefix": "execForwardDelete",
+      "body": ["document.execCommand('forwardDelete')$0"]
+    },
+    "execCommand('heading')": {
+      "description": "execCommand('heading')",
+      "prefix": "execHeading",
+      "body": ["document.execCommand('heading')$0"]
+    },
+    "execCommand('hiliteColor')": {
+      "description": "execCommand('hiliteColor')",
+      "prefix": "execHiliteColor",
+      "body": ["document.execCommand('hiliteColor')$0"]
+    },
+    "execCommand('increaseFontSize')": {
+      "description": "execCommand('increaseFontSize')",
+      "prefix": "execIncreaseFontSize",
+      "body": ["document.execCommand('increaseFontSize')$0"]
+    },
+    "execCommand('indent')": {
+      "description": "execCommand('indent')",
+      "prefix": "execIndent",
+      "body": ["document.execCommand('indent')$0"]
+    },
+    "execCommand('insertBrOnReturn')": {
+      "description": "execCommand('insertBrOnReturn')",
+      "prefix": "execInsertBrOnReturn",
+      "body": ["document.execCommand('insertBrOnReturn')$0"]
+    },
+    "execCommand('insertHorizontalRule')": {
+      "description": "execCommand('insertHorizontalRule')",
+      "prefix": "execInsertHorizontalRule",
+      "body": ["document.execCommand('insertHorizontalRule')$0"]
+    },
+    "execCommand('insertHTML')": {
+      "description": "execCommand('insertHTML')",
+      "prefix": "execInsertHTML",
+      "body": ["document.execCommand('insertHTML')$0"]
+    },
+    "execCommand('insertImage')": {
+      "description": "execCommand('insertImage')",
+      "prefix": "execInsertImage",
+      "body": ["document.execCommand('insertImage')$0"]
+    },
+    "execCommand('insertOrderedList')": {
+      "description": "execCommand('insertOrderedList')",
+      "prefix": "execInsertOrderedList",
+      "body": ["document.execCommand('insertOrderedList')$0"]
+    },
+    "execCommand('insertUnorderedList')": {
+      "description": "execCommand('insertUnorderedList')",
+      "prefix": "execInsertUnorderedList",
+      "body": ["document.execCommand('insertUnorderedList')$0"]
+    },
+    "execCommand('insertParagraph')": {
+      "description": "execCommand('insertParagraph')",
+      "prefix": "execInsertParagraph",
+      "body": ["document.execCommand('insertParagraph')$0"]
+    },
+    "execCommand('insertText')": {
+      "description": "execCommand('insertText')",
+      "prefix": "execInsertText",
+      "body": ["document.execCommand('insertText')$0"]
+    },
+    "execCommand('italic')": {
+      "description": "execCommand('italic')",
+      "prefix": "execItalic",
+      "body": ["document.execCommand('italic')$0"]
+    },
+    "execCommand('justifyCenter')": {
+      "description": "execCommand('justifyCenter')",
+      "prefix": "execJustifyCenter",
+      "body": ["document.execCommand('justifyCenter')$0"]
+    },
+    "execCommand('justifyFull')": {
+      "description": "execCommand('justifyFull')",
+      "prefix": "execJustifyFull",
+      "body": ["document.execCommand('justifyFull')$0"]
+    },
+    "execCommand('justifyLeft')": {
+      "description": "execCommand('justifyLeft')",
+      "prefix": "execJustifyLeft",
+      "body": ["document.execCommand('justifyLeft')$0"]
+    },
+    "execCommand('justifyRight')": {
+      "description": "execCommand('justifyRight')",
+      "prefix": "execJustifyRight",
+      "body": ["document.execCommand('justifyRight')$0"]
+    },
+    "execCommand('outdent')": {
+      "description": "execCommand('outdent')",
+      "prefix": "execOutdent",
+      "body": ["document.execCommand('outdent')$0"]
+    },
+    "execCommand('paste')": {
+      "description": "execCommand('paste')",
+      "prefix": "execPaste",
+      "body": ["document.execCommand('paste')$0"]
+    },
+    "execCommand('redo')": {
+      "description": "execCommand('redo')",
+      "prefix": "execRedo",
+      "body": ["document.execCommand('redo')$0"]
+    },
+    "execCommand('removeFormat')": {
+      "description": "execCommand('removeFormat')",
+      "prefix": "execRemoveFormat",
+      "body": ["document.execCommand('removeFormat')$0"]
+    },
+    "execCommand('selectAll')": {
+      "description": "execCommand('selectAll')",
+      "prefix": "execSelectAll",
+      "body": ["document.execCommand('selectAll')$0"]
+    },
+    "execCommand('strikeThrough')": {
+      "description": "execCommand('strikeThrough')",
+      "prefix": "execStrikeThrough",
+      "body": ["document.execCommand('strikeThrough')$0"]
+    },
+    "execCommand('subscript')": {
+      "description": "execCommand('subscript')",
+      "prefix": "execSubscript",
+      "body": ["document.execCommand('subscript')$0"]
+    },
+    "execCommand('superscript')": {
+      "description": "execCommand('superscript')",
+      "prefix": "execSuperscript",
+      "body": ["document.execCommand('superscript')$0"]
+    },
+    "execCommand('underline')": {
+      "description": "execCommand('underline')",
+      "prefix": "execUnderline",
+      "body": ["document.execCommand('underline')$0"]
+    },
+    "execCommand('undo')": {
+      "description": "execCommand('undo')",
+      "prefix": "execUndo",
+      "body": ["document.execCommand('undo')$0"]
+    },
+    "execCommand('unlink')": {
+      "description": "execCommand('unlink')",
+      "prefix": "execUnlink",
+      "body": ["document.execCommand('unlink')$0"]
+    },
+    "execCommand('styleWithCSS')": {
+      "description": "execCommand('styleWithCSS')",
+      "prefix": "execStyleWithCSS",
+      "body": ["document.execCommand('styleWithCSS')$0"]
+    },
+    "canvas with c = canvas.getContext('2d')": {
+      "description": "canvas with c = canvas.getContext('2d')",
+      "prefix": "canvas2d",
+      "body": [
+        "const canvas = document.querySelector('canvas')",
+        "const c = canvas.getContext('2d')"
+      ]
+    },
+    "canvas.getContext('2d')": {
+      "description": "canvas.getContext('2d')",
+      "prefix": "getContext2d",
+      "body": ["canvas.getContext('2d')$0"]
+    },
+    "canvas.width": {
+      "description": "canvas.width",
+      "prefix": "canvasWidth",
+      "body": ["canvas.width$0"]
+    },
+    "canvas.height": {
+      "description": "canvas.height",
+      "prefix": "canvasHeight",
+      "body": ["canvas.height$0"]
+    },
+    "clearRect(0,0,canvas.width,canvas.height)": {
+      "description": "clearRect(0,0,canvas.width,canvas.height)",
+      "prefix": "clearRect",
+      "body": ["clearRect(0,0,canvas.width,canvas.height)$0"]
+    },
+    "drawImage(img,dx,dy,dw,dh)": {
+      "description": "drawImage(img,dx,dy,dw,dh)",
+      "prefix": "drawImage",
+      "body": ["drawImage(img,dx,dy,dw,dh)$0"]
+    },
+    "drawImage(img,sx,sy,sw,sh,posx,posy,dw,dh)": {
+      "description": "drawImage(img,sx,sy,sw,sh,posx,posy,dw,dh)",
+      "prefix": "drawImageSprite",
+      "body": ["drawImage(img,sx,sy,sw,sh,posx,posy,dw,dh)$0"]
+    },
+    "canvas.toBlob": {
+      "description": "canvas.toBlob",
+      "prefix": "toBlob",
+      "body": ["toBlob(${2: callback},${2: mimeType},${3: quality})$0"]
+    },
+    "src = path": {
+      "description": "src = path",
+      "prefix": "src",
+      "body": ["src = ${1: path}$0"]
+    },
+    "new Image()": {
+      "description": "new Image()",
+      "prefix": "newImage",
+      "body": ["new Image()$0"]
+    },
+    "new BlobBuilder()": {
+      "description": "new BlobBuilder()",
+      "prefix": "newBlobBuilder",
+      "body": ["new BlobBuilder()$0"]
+    },
+    "new Date()": {
+      "description": "new Date()",
+      "prefix": "newDate",
+      "body": ["new Date()$0"]
+    },
+    "new Map()": {
+      "description": "new Map()",
+      "prefix": "newMap",
+      "body": ["new Map()$0"]
+    },
+    "new FormData()": {
+      "description": "new FormData()",
+      "prefix": "newFormData",
+      "body": ["new FormData()$0"]
+    },
+    "new Number()": {
+      "description": "new Number()",
+      "prefix": "newNumber",
+      "body": ["new Number($1)$0"]
+    },
+    "new String()": {
+      "description": "new String()",
+      "prefix": "newString",
+      "body": ["new String($1)$0"]
+    },
+    "new Symbol()": {
+      "description": "new Symbol()",
+      "prefix": "newSymbol",
+      "body": ["new Symbol($1)$0"]
+    },
+    "new Function()": {
+      "description": "new Function()",
+      "prefix": "newFunction",
+      "body": ["new Function($1)$0"]
+    },
+    "new RegExp()": {
+      "description": "new RegExp()",
+      "prefix": "newRegExp",
+      "body": ["new RegExp($1)$0"]
+    },
+    "new Object()": {
+      "description": "new Object()",
+      "prefix": "newObject",
+      "body": ["new Object($1)$0"]
+    },
+    "new Array()": {
+      "description": "new Array()",
+      "prefix": "newArray",
+      "body": ["new Array($1)$0"]
+    },
+    "new Animation(effect,timeline)": {
+      "description": "new Animation(effect,timeline)",
+      "prefix": "newAnimation",
+      "body": ["new Animation(${1: effect},${2: timeline})$0"]
+    },
+    "new Blob(array,options)": {
+      "description": "new Blob(array,options)",
+      "prefix": "newBlob",
+      "body": ["new Blob(${1: array},${2: options})$0"]
+    },
+    "new URL(pathname,hostname)": {
+      "description": "new URL(pathname,hostname)",
+      "prefix": "newURL",
+      "body": ["new URL('${1: pathname}','${2: hostname}')$0"]
+    },
+    "new URLSearchParams(init)": {
+      "description": "new URLSearchParams(init)",
+      "prefix": "newURLSearchParams",
+      "body": ["new URLSearchParams(${1: init})$0"]
+    },
+    "Date()": {
+      "description": "Date()",
+      "prefix": "date",
+      "body": ["Date()$0"]
+    },
+    "Date.now()": {
+      "description": "Date.now()",
+      "prefix": "dateNow",
+      "body": ["Date.now()$0"]
+    },
+    "now(), Date.now() or performance.now()": {
+      "description": "now(), Date.now() or performance.now()",
+      "prefix": "now",
+      "body": ["now()$0"]
+    },
+    "Date.parse()": {
+      "description": "Date.parse()",
+      "prefix": "dateParse",
+      "body": ["Date.parse($1)$0"]
+    },
+    "parse()": {
+      "description": "parse()",
+      "prefix": "parse",
+      "body": ["parse($1)$0"]
+    },
+    "Date.UTC()": {
+      "description": "Date.UTC()",
+      "prefix": "dateUTC",
+      "body": ["Date.UTC($1)$0"]
+    },
+    "UTC()": {
+      "description": "UTC()",
+      "prefix": "UTC",
+      "body": ["UTC($1)$0"]
+    },
+    "getDate()": {
+      "description": "getDate()",
+      "prefix": "getDate",
+      "body": ["getDate()$0"]
+    },
+    "getDay()": {
+      "description": "getDay()",
+      "prefix": "getDay",
+      "body": ["getDay()$0"]
+    },
+    "getFullYear()": {
+      "description": "getFullYear()",
+      "prefix": "getFullYear",
+      "body": ["getFullYear()$0"]
+    },
+    "getHours()": {
+      "description": "getHours()",
+      "prefix": "getHours",
+      "body": ["getHours()$0"]
+    },
+    "getMilliseconds()": {
+      "description": "getMilliseconds()",
+      "prefix": "getMilliseconds",
+      "body": ["getMilliseconds()$0"]
+    },
+    "getMinutes()": {
+      "description": "getMinutes()",
+      "prefix": "getMinutes",
+      "body": ["getMinutes()$0"]
+    },
+    "getMonth()": {
+      "description": "getMonth()",
+      "prefix": "getMonth",
+      "body": ["getMonth()$0"]
+    },
+    "getSeconds()": {
+      "description": "getSeconds()",
+      "prefix": "getSeconds",
+      "body": ["getSeconds()$0"]
+    },
+    "getTime()": {
+      "description": "getTime()",
+      "prefix": "getTime",
+      "body": ["getTime()$0"]
+    },
+    "getTimezoneOffset()": {
+      "description": "getTimezoneOffset()",
+      "prefix": "getTimezoneOffset",
+      "body": ["getTimezoneOffset()$0"]
+    },
+    "getUTCDate()": {
+      "description": "getUTCDate()",
+      "prefix": "getUTCDate",
+      "body": ["getUTCDate()$0"]
+    },
+    "getUTCDay()": {
+      "description": "getUTCDay()",
+      "prefix": "getUTCDay",
+      "body": ["getUTCDay()$0"]
+    },
+    "getUTCFullYear()": {
+      "description": "getUTCFullYear()",
+      "prefix": "getUTCFullYear",
+      "body": ["getUTCFullYear()$0"]
+    },
+    "getUTCHours()": {
+      "description": "getUTCHours()",
+      "prefix": "getUTCHours",
+      "body": ["getUTCHours()$0"]
+    },
+    "getUTCMilliseconds()": {
+      "description": "getUTCMilliseconds()",
+      "prefix": "getUTCMilliseconds",
+      "body": ["getUTCMilliseconds()$0"]
+    },
+    "getUTCMinutes()": {
+      "description": "getUTCMinutes()",
+      "prefix": "getUTCMinutes",
+      "body": ["getUTCMinutes()$0"]
+    },
+    "getUTCMonth()": {
+      "description": "getUTCMonth()",
+      "prefix": "getUTCMonth",
+      "body": ["getUTCMonth()$0"]
+    },
+    "getUTCSeconds()": {
+      "description": "getUTCSeconds()",
+      "prefix": "getUTCSeconds",
+      "body": ["getUTCSeconds()$0"]
+    },
+    "setDate()": {
+      "description": "setDate()",
+      "prefix": "setDate",
+      "body": ["setDate($1)$0"]
+    },
+    "setFullYear()": {
+      "description": "setFullYear()",
+      "prefix": "setFullYear",
+      "body": ["setFullYear($1)$0"]
+    },
+    "setHours()": {
+      "description": "setHours()",
+      "prefix": "setHours",
+      "body": ["setHours($1)$0"]
+    },
+    "setMilliseconds()": {
+      "description": "setMilliseconds()",
+      "prefix": "setMilliseconds",
+      "body": ["setMilliseconds($1)$0"]
+    },
+    "setMinutes()": {
+      "description": "setMinutes()",
+      "prefix": "setMinutes",
+      "body": ["setMinutes($1)$0"]
+    },
+    "setMonth()": {
+      "description": "setMonth()",
+      "prefix": "setMonth",
+      "body": ["setMonth($1)$0"]
+    },
+    "setSeconds()": {
+      "description": "setSeconds()",
+      "prefix": "setSeconds",
+      "body": ["setSeconds($1)$0"]
+    },
+    "setTime()": {
+      "description": "setTime()",
+      "prefix": "setTime",
+      "body": ["setTime($1)$0"]
+    },
+    "setUTCDate()": {
+      "description": "setUTCDate()",
+      "prefix": "setUTCDate",
+      "body": ["setUTCDate($1)$0"]
+    },
+    "setUTCFullYear()": {
+      "description": "setUTCFullYear()",
+      "prefix": "setUTCFullYear",
+      "body": ["setUTCFullYear($1)$0"]
+    },
+    "setUTCHours()": {
+      "description": "setUTCHours()",
+      "prefix": "setUTCHours",
+      "body": ["setUTCHours($1)$0"]
+    },
+    "setUTCMilliseconds()": {
+      "description": "setUTCMilliseconds()",
+      "prefix": "setUTCMilliseconds",
+      "body": ["setUTCMilliseconds($1)$0"]
+    },
+    "setUTCMinutes()": {
+      "description": "setUTCMinutes()",
+      "prefix": "setUTCMinutes",
+      "body": ["setUTCMinutes($1)$0"]
+    },
+    "setUTCMonth()": {
+      "description": "setUTCMonth()",
+      "prefix": "setUTCMonth",
+      "body": ["setUTCMonth($1)$0"]
+    },
+    "setUTCSeconds()": {
+      "description": "setUTCSeconds()",
+      "prefix": "setUTCSeconds",
+      "body": ["setUTCSeconds($1)$0"]
+    },
+    "toDateString()": {
+      "description": "toDateString()",
+      "prefix": "toDateString",
+      "body": ["toDateString()$0"]
+    },
+    "toISOString()": {
+      "description": "toISOString()",
+      "prefix": "toISOString",
+      "body": ["toISOString()$0"]
+    },
+    "toJSON()": {
+      "description": "toJSON()",
+      "prefix": "toJSON",
+      "body": ["toJSON()$0"]
+    },
+    "toLocaleDateString()": {
+      "description": "toLocaleDateString()",
+      "prefix": "toLocaleDateString",
+      "body": ["toLocaleDateString()$0"]
+    },
+    "toLocaleString(): Array, TypedArray, Date, Number, Object": {
+      "description": "toLocaleString(): Array, TypedArray, Date, Number, Object",
+      "prefix": "toLocaleString",
+      "body": ["toLocaleString()$0"]
+    },
+    "toLocaleTimeString()": {
+      "description": "toLocaleTimeString()",
+      "prefix": "toLocaleTimeString",
+      "body": ["toLocaleTimeString()$0"]
+    },
+    "Date.toSource() Date's Code as String": {
+      "description": "Date.toSource() Date's Code as String",
+      "prefix": "DateToSource",
+      "body": ["Date.toSource()$0"]
+    },
+    "toSource()": {
+      "description": "toSource()",
+      "prefix": "toSource",
+      "body": ["toSource()$0"]
+    },
+    "toTimeString()": {
+      "description": "toTimeString()",
+      "prefix": "toTimeString",
+      "body": ["toTimeString()$0"]
+    },
+    "toUTCString()": {
+      "description": "toUTCString()",
+      "prefix": "toUTCString",
+      "body": ["toUTCString()$0"]
+    },
+    "valueOf()": {
+      "description": "valueOf()",
+      "prefix": "valueOf",
+      "body": ["valueOf()$0"]
+    },
+    "blob.size": {
+      "description": "blob.size",
+      "prefix": "sizeBlob",
+      "body": ["size$0"]
+    },
+    "blob.type": {
+      "description": "blob.type",
+      "prefix": "typeBlob",
+      "body": ["type$0"]
+    },
+    "blob.slice(start,end)": {
+      "description": "blob.slice(start,end)",
+      "prefix": "sliceBlob",
+      "body": ["slice(${1: start},${2: end})$0"]
+    },
+    "URL.createObjectURL(file/blob)": {
+      "description": "URL.createObjectURL(file/blob)",
+      "prefix": "URLcreateObjectURL",
+      "body": ["URL.createObjectURL(${1: file/blob})$0"]
+    },
+    "createObjectURL(file/blob)": {
+      "description": "createObjectURL(file/blob)",
+      "prefix": "createObjectURL",
+      "body": ["createObjectURL(${1: file/blob})$0"]
+    },
+    "URL.revokeObjectURL(objectURL)": {
+      "description": "URL.revokeObjectURL(objectURL)",
+      "prefix": "URLrevokeObjectURL",
+      "body": ["URL.revokeObjectURL(${1: objectURL})$0"]
+    },
+    "revokeObjectURL(objectURL)": {
+      "description": "revokeObjectURL(objectURL)",
+      "prefix": "revokeObjectURL",
+      "body": ["revokeObjectURL(${1: objectURL})$0"]
+    },
+    "URLObject.origin": {
+      "description": "URLObject.origin",
+      "prefix": "origin",
+      "body": ["origin$0"]
+    },
+    "URL.searchParams": {
+      "description": "URL.searchParams",
+      "prefix": "searchParams",
+      "body": ["searchParams$0"]
+    },
+    "MimeType = {}": {
+      "description": "MimeType = {}",
+      "prefix": "mimeTypeObject",
+      "body": [
+        "MimeType = {",
+        "  txt: 'text/plain',",
+        "  html: 'text/html',",
+        "  css: 'text/css',",
+        "  js: 'text/javascript',",
+        "  json: 'application/json',",
+        "  ico: 'image/x-icon',",
+        "  jpg: 'image/jpeg',",
+        "  png: 'image/png',",
+        "  gif: 'image/gif',",
+        "  webp: 'image/webp',",
+        "  bmp: 'image/bmp',",
+        "  svg: 'image/svg+xml',",
+        "  ogg: 'audio/ogg',",
+        "  webm: 'audio/webm',",
+        "  wav: 'audio/wav',",
+        "  xwav: 'audio/x-wav',",
+        "  wave: 'audio/wave',",
+        "  mpeg: 'audio/mpeg',",
+        "  midi: 'audio/midi',",
+        "  xpn: 'audio/x-pn',",
+        "  ogv: 'video/ogg',",
+        "  webv: 'video/webm',",
+        "  mp4: 'video/mp4',",
+        "  xhtml: 'application/xhtml+xml',",
+        "  xml: 'application/xml',",
+        "  pdf: 'application/pdf',",
+        "  bin: 'application/octet-stream',",
+        "  pkcs12: 'application/pkcs12',",
+        "  mspowerpoint: 'application/vnd.mspowerpoint',",
+        "  oggapp: 'application/ogg',",
+        "  rar: 'application/x-rar-compressed',",
+        "  formdata: 'multipart/form-data',",
+        "  byteranges: 'multipart/byteranges'",
+        "}$0"
+      ]
+    }
+  }
+  

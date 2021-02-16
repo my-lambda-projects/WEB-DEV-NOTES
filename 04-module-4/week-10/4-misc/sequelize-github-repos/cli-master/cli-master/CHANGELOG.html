@@ -1,0 +1,555 @@
+<h1 id="change-log">Change Log</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<h2 id="future">Future</h2>
+<h2 id="v6.2.0---5th-july-2020">v6.2.0 - 5th, July 2020</h2>
+<h3 id="feature">Feature</h3>
+<ul>
+<li>feat: support migrations files with ts file extension <a href="https://github.com/sequelize/cli/issues/915">#915</a></li>
+</ul>
+<h2 id="v6.1.0---27th-june-2020">v6.1.0 - 27th, June 2020</h2>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>fix(timestamps): support for timestamps in migration tables <a href="https://github.com/sequelize/cli/issues/663">#899</a></li>
+</ul>
+<h2 id="v6.0.0---24th-june-2020">v6.0.0 - 24th, June 2020</h2>
+<h3 id="fixed-1">Fixed</h3>
+<ul>
+<li>fix: support for <code>sequelize@6</code></li>
+</ul>
+<h2 id="v6.0.0-beta.3---21st-june-2020">v6.0.0-beta.3 - 21st, June 2020</h2>
+<h3 id="fixed-2">Fixed</h3>
+<ul>
+<li>fix: print correct migration name <a href="https://github.com/sequelize/cli/issues/663">#663</a></li>
+</ul>
+<h3 id="feature-1">Feature</h3>
+<ul>
+<li>feat: modernize skeleton with async <a href="https://github.com/sequelize/cli/pull/909">#909</a></li>
+</ul>
+<h2 id="v6.0.0-beta.2---21st-june-2020">v6.0.0-beta.2 - 21st, June 2020</h2>
+<h3 id="fixed-3">Fixed</h3>
+<ul>
+<li><code>db:seed:undo</code> now reverts last seed <a href="https://github.com/sequelize/cli/pull/908">#908</a></li>
+</ul>
+<h3 id="feature-2">Feature</h3>
+<ul>
+<li>feat: <code>cjs</code> extension support <a href="https://github.com/sequelize/cli/pull/905">#905</a></li>
+</ul>
+<h2 id="v6.0.0-beta.1---7th-june-2020">v6.0.0-beta.1 - 7th, June 2020</h2>
+<h3 id="breaking">Breaking</h3>
+<ul>
+<li>Only Node 10 or up supported</li>
+<li>Only Sequelize 5 or up supported</li>
+<li>Removed Bluebird usage internally</li>
+</ul>
+<h3 id="fixed-4">Fixed</h3>
+<ul>
+<li>fix: <code>sequelize.import</code> is still used <a href="https://github.com/sequelize/cli/issues/895">#895</a></li>
+</ul>
+<h2 id="v5.5.1---31st-august-2019">v5.5.1 - 31st, August 2019</h2>
+<h3 id="fixed-5">Fixed</h3>
+<ul>
+<li>change: use sequelize-cli as an alias for the binary <a href="https://github.com/sequelize/cli/pull/812">#812</a></li>
+</ul>
+<h2 id="v5.5.0---11th-june-2019">v5.5.0 - 11th, June 2019</h2>
+<h3 id="fixed-6">Fixed</h3>
+<ul>
+<li>fix: special characters in password are not escaped <a href="https://github.com/sequelize/cli/pull/722">#722</a></li>
+<li>change: default config for operator aliases <a href="https://github.com/sequelize/cli/pull/743">#743</a></li>
+</ul>
+<h2 id="v5.4.0---1st-dec-2018">v5.4.0 - 1st, Dec 2018</h2>
+<h3 id="fixed-7">Fixed</h3>
+<ul>
+<li>fix: show commands with –help <a href="https://github.com/sequelize/cli/pull/719">#719</a></li>
+</ul>
+<h2 id="v5.3.0---4th-nov-2018">v5.3.0 - 4th, Nov 2018</h2>
+<h3 id="fixed-8">Fixed</h3>
+<ul>
+<li>fix(db:create): syntax errors with mssql create statement <a href="https://github.com/sequelize/cli/pull/711">#711</a></li>
+<li>style: grammar mistake in seeder skeleton <a href="https://github.com/sequelize/cli/pull/705">#705</a></li>
+</ul>
+<h3 id="feature-3">Feature</h3>
+<ul>
+<li>feat(mode:generate) add enum support <a href="https://github.com/sequelize/cli/pull/704">#704</a></li>
+</ul>
+<h2 id="v5.2.0---20th-oct-2018">v5.2.0 - 20th, Oct 2018</h2>
+<h3 id="feature-4">Feature</h3>
+<ul>
+<li>feat(db:create): support options on db:create with sequelize@4 <a href="https://github.com/sequelize/cli/pull/700">#700</a></li>
+</ul>
+<h2 id="v5.1.0---14th-oct-2018">v5.1.0 - 14th, Oct 2018</h2>
+<h3 id="feature-5">Feature</h3>
+<ul>
+<li>feat(postgres): migrationStorageTableSchema <a href="https://github.com/sequelize/cli/pull/635">#635</a></li>
+</ul>
+<h2 id="v5.0.0---13th-oct-2018">v5.0.0 - 13th, Oct 2018</h2>
+<h3 id="fixed-9">Fixed</h3>
+<ul>
+<li>fix(init): relative config path for windows <a href="https://github.com/sequelize/cli/pull/648">#648</a></li>
+<li>fix(mode:generate): use force arg correctly <a href="https://github.com/sequelize/cli/pull/691">#691</a></li>
+<li>updated dependencies</li>
+</ul>
+<h3 id="breaking-1">Breaking</h3>
+<ul>
+<li>Node 6 or up is supported</li>
+</ul>
+<h2 id="v4.1.0---19th-aug-2018">v4.1.0 - 19th, Aug 2018</h2>
+<h3 id="fixed-10">Fixed</h3>
+<ul>
+<li>fix(model:generate) attribute datatype validation <a href="https://github.com/sequelize/cli/issues/682">#682</a></li>
+<li>fix: add force flag to model:create <a href="https://github.com/sequelize/cli/issues/680">#680</a></li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li>Use const in generated files</li>
+</ul>
+<h2 id="v4.0.0---15th-feb-2018">v4.0.0 - 15th, Feb 2018</h2>
+<h3 id="changed-1">Changed</h3>
+<ul>
+<li>Removed warning about v4</li>
+<li>Support for v4 <a href="https://github.com/sequelize/cli/pull/620">#620</a> <a href="https://github.com/sequelize/cli/issues/441">#441</a></li>
+</ul>
+<h2 id="v3.2.0---3rd-dec-2017">v3.2.0 - 3rd, Dec 2017</h2>
+<h3 id="fixed-11">Fixed</h3>
+<ul>
+<li>Better messages when files/folders already exists <a href="https://github.com/sequelize/cli/issues/569">#569</a></li>
+<li>Specify ARRAY type with <code>model:create</code> <a href="https://github.com/sequelize/cli/issues/155">#155</a></li>
+</ul>
+<h3 id="changed-2">Changed</h3>
+<ul>
+<li>Revert: safer configuration using environment variables for production <a href="https://github.com/sequelize/cli/pull/594">#594</a></li>
+</ul>
+<h2 id="v3.1.0---18th-nov-2017">v3.1.0 - 18th, Nov 2017</h2>
+<h3 id="fixed-12">Fixed</h3>
+<ul>
+<li>Pass full config to sequelize constructor <a href="https://github.com/sequelize/cli/issues/584">#584</a></li>
+</ul>
+<h3 id="added">Added</h3>
+<ul>
+<li><code>db:migrate</code> support for from / to arguments <a href="https://github.com/sequelize/cli/pull/581">#581</a></li>
+</ul>
+<h3 id="changed-3">Changed</h3>
+<ul>
+<li><p>Safer configuration using environment variables for production <a href="https://github.com/sequelize/cli/pull/579">#579</a></p></li>
+<li><p>Updated dependencies</p></li>
+</ul>
+<h2 id="v3.0.0---23rd-sep-2017">v3.0.0 - 23rd, Sep 2017</h2>
+<h3 id="fixed-13">Fixed</h3>
+<ul>
+<li><code>db:create/drop</code> should properly quote database name <a href="https://github.com/sequelize/cli/issues/545">#545</a></li>
+</ul>
+<h3 id="added-1">Added</h3>
+<ul>
+<li><code>--debug</code> support, print full stack for errors, when available <a href="https://github.com/sequelize/cli/pull/552">#552</a></li>
+</ul>
+<h3 id="changed-4">Changed</h3>
+<ul>
+<li>All errors are now properly formatted and outputted to <code>console.error</code> <a href="https://github.com/sequelize/cli/pull/552">#552</a></li>
+</ul>
+<h3 id="internal">Internal</h3>
+<ul>
+<li>Refactor to use centralized <code>log/error/warn</code> methods <a href="https://github.com/sequelize/cli/pull/552">#552</a></li>
+</ul>
+<h2 id="v3.0.0-3---16th-sep-2017">v3.0.0-3 - 16th, Sep 2017</h2>
+<h3 id="fixed-14">Fixed</h3>
+<ul>
+<li>Error when creating nested config path <a href="https://github.com/sequelize/cli/issues/534">#534</a></li>
+</ul>
+<h3 id="added-2">Added</h3>
+<ul>
+<li><code>db:create</code> and <code>db:drop</code> for MySQL, Postgres and MSSQL <a href="https://github.com/sequelize/cli/issues/70">#70</a></li>
+</ul>
+<h2 id="v3.0.0-2---10th-sep-2017">v3.0.0-2 - 10th, Sep 2017</h2>
+<h3 id="fixed-15">Fixed</h3>
+<ul>
+<li><code>.sequelizerc</code> is not properly read <a href="https://github.com/sequelize/cli/issues/536">#536</a></li>
+</ul>
+<h2 id="v3.0.0-1---9th-sep-2017">v3.0.0-1 - 9th, Sep 2017</h2>
+<h3 id="added-3">Added</h3>
+<ul>
+<li>Warning with Sequelize v4</li>
+</ul>
+<h3 id="changed-5">Changed</h3>
+<ul>
+<li>Skeletons are now ES6 based <a href="https://github.com/sequelize/cli/issues/482">#482</a></li>
+</ul>
+<h2 id="v3.0.0-0---8th-sep-2017">v3.0.0-0 - 8th, Sep 2017</h2>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><code>db:migrate:old_schema</code></li>
+<li><code>--coffee</code> support</li>
+<li><code>help:*</code> commands</li>
+</ul>
+<h3 id="fixed-16">Fixed</h3>
+<ul>
+<li>Drop Gulp <a href="https://github.com/sequelize/cli/issues/344">#344</a></li>
+<li>NSP Vulnerability <a href="https://github.com/sequelize/cli/issues/466">#466</a></li>
+<li>Non functional with Node 7 <a href="https://github.com/sequelize/cli/issues/383">#383</a></li>
+<li>Unable to find Gulp <a href="https://github.com/sequelize/cli/issues/138">#138</a></li>
+<li>Reintegrate Gulp <a href="https://github.com/sequelize/cli/issues/5">#5</a></li>
+<li>Unable to seed multiple files <a href="https://github.com/sequelize/cli/issues/523">#523</a></li>
+<li>No Gulpfile found <a href="https://github.com/sequelize/cli/issues/480">#480</a></li>
+<li>Exit Code(1) when migration undo fail <a href="https://github.com/sequelize/cli/issues/394">#394</a></li>
+<li><code>--coffee</code> flag dont work with <code>.rc</code> file <a href="https://github.com/sequelize/cli/issues/244">#244</a></li>
+<li>CLI dont halt on error <a href="https://github.com/sequelize/cli/issues/106">#106</a></li>
+</ul>
+<h3 id="improvements">Improvements</h3>
+<ul>
+<li>No Gulp, better startup time</li>
+<li>Proper exit codes</li>
+<li>Remove dependency on <code>moment</code> , <code>findup-sync</code>, <code>gulp</code> and <code>gulp-help</code></li>
+</ul>
+<h2 id="v2.8.0---2017-08-04">v2.8.0 - 2017-08-04</h2>
+<h3 id="added-4">Added</h3>
+<ul>
+<li>Timestamps db:migrate:schema:timestamps:add <a href="https://github.com/sequelize/cli/pull/460">#460</a></li>
+<li>Support for db:migrate:undo:all with <code>--to</code>, which allow reverting to a specific version <a href="https://github.com/sequelize/cli/pull/459">#459</a></li>
+</ul>
+<h3 id="changed-6">Changed</h3>
+<ul>
+<li>Updated dependencies</li>
+</ul>
+<h3 id="docs">Docs</h3>
+<ul>
+<li>FAQ section <a href="https://github.com/sequelize/cli/pull/486">#486</a></li>
+</ul>
+<h2 id="v2.7.0---2017-03-25">v2.7.0 - 2017-03-25</h2>
+<h3 id="added-5">Added</h3>
+<ul>
+<li>Named db:migrate:undo <a href="https://github.com/sequelize/cli/pull/387">#387</a></li>
+</ul>
+<h3 id="changed-7">Changed</h3>
+<ul>
+<li>Fixed promise warning in gulp-helper <a href="https://github.com/sequelize/cli/issues/439">#439</a></li>
+</ul>
+<h2 id="v2.6.0---2017-03-17">v2.6.0 - 2017-03-17</h2>
+<h3 id="added-6">Added</h3>
+<ul>
+<li>Async configuration support <a href="https://github.com/sequelize/cli/pull/359">#359</a></li>
+</ul>
+<h3 id="changed-8">Changed</h3>
+<ul>
+<li>Print error stack when reporting seeder errors <a href="https://github.com/sequelize/cli/pull/411">#411</a></li>
+<li>Fixed seed:undo:all with <code>none</code> storage <a href="https://github.com/sequelize/cli/pull/433">#433</a></li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="v2.5.0---2016-12-07">v2.5.0 - 2016-12-07</h2>
+<h3 id="added-7">Added</h3>
+<ul>
+<li>Add underscored option to generated model when created with –underscored <a href="https://github.com/sequelize/cli/issues/380">#380</a></li>
+<li>Add db:migrate:status <a href="https://github.com/sequelize/cli/issues/385">#385</a></li>
+</ul>
+<h3 id="changed-9">Changed</h3>
+<ul>
+<li>Make it possible to use “:” in passwords in a DSN <a href="https://github.com/sequelize/cli/issues/334">#334</a></li>
+<li>Catch error for db:migrate:undo[:all][#353](https://github.com/sequelize/cli/issues/353)</li>
+<li>Example usage of raw sql in migration <a href="https://github.com/sequelize/cli/issues/363">#363</a></li>
+<li>Fixed typo: containts -&gt; contains <a href="https://github.com/sequelize/cli/issues/381">#381</a></li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="v2.4.0---2016-04-25">v2.4.0 - 2016-04-25</h2>
+<h3 id="added-8">Added</h3>
+<ul>
+<li>Log filtering helper</li>
+</ul>
+<h3 id="changed-10">Changed</h3>
+<ul>
+<li>Fixed some promises that were not being returned</li>
+<li>Updated dependencies</li>
+<li>Migration and seed filenames now use UTC date instead of local date</li>
+<li>Output filtering</li>
+</ul>
+<h2 id="v2.3.1---2016-01-14">v2.3.1 - 2016-01-14</h2>
+<h3 id="changed-11">Changed</h3>
+<ul>
+<li>Update lodash to 4.0.0</li>
+</ul>
+<h2 id="v2.3.0---2016-01-11">v2.3.0 - 2016-01-11</h2>
+<h3 id="changed-12">Changed</h3>
+<ul>
+<li>Default use of <code>seeder</code> memorizes nothing</li>
+<li>Update umzug to 1.8.0</li>
+</ul>
+<h2 id="v2.2.1---2015-11-24">v2.2.1 - 2015-11-24</h2>
+<h3 id="fixed-17">Fixed</h3>
+<ul>
+<li>Filtering of js files in models/index.js</li>
+</ul>
+<h2 id="v2.2.0---2015-11-23">v2.2.0 - 2015-11-23</h2>
+<h3 id="changed-13">Changed</h3>
+<ul>
+<li>Respect <code>url</code> property in configuration</li>
+</ul>
+<h2 id="v2.1.1---2015-11-19">v2.1.1 - 2015-11-19</h2>
+<h3 id="changed-14">Changed</h3>
+<ul>
+<li>Respect <code>dialectOptions</code> property when instantiating sequelize</li>
+</ul>
+<h2 id="v2.1.0---2015-11-01">v2.1.0 - 2015-11-01</h2>
+<h3 id="added-9">Added</h3>
+<ul>
+<li>Option for usage of snake case timestamp columns in migrations (e.g. <code>sequelize model:create --underscored</code>)</li>
+</ul>
+<h2 id="v2.0.0---2015-10-14">v2.0.0 - 2015-10-14</h2>
+<h3 id="added-10">Added</h3>
+<ul>
+<li>Read configuration from config.js if available</li>
+</ul>
+<h3 id="changed-15">Changed</h3>
+<ul>
+<li>Replace deprecated fs.existsSync method</li>
+</ul>
+<h2 id="v1.9.2---2015-10-14">v1.9.2 - 2015-10-14</h2>
+<h3 id="changed-16">Changed</h3>
+<ul>
+<li>Make options path process relative</li>
+</ul>
+<h2 id="v1.9.1---2015-09-08">v1.9.1 - 2015-09-08</h2>
+<h3 id="changed-17">Changed</h3>
+<ul>
+<li>Move gulp path resolution to function</li>
+<li>Fix handling of duplicate CLI options</li>
+<li>Add options object to seed template</li>
+</ul>
+<h2 id="v1.9.0---2015-09-01">v1.9.0 - 2015-09-01</h2>
+<h3 id="added-11">Added</h3>
+<ul>
+<li>Seeding mechanism</li>
+</ul>
+<h2 id="v1.8.3---2015-08-28">v1.8.3 - 2015-08-28</h2>
+<h3 id="changed-18">Changed</h3>
+<ul>
+<li>Cascade package resolution</li>
+</ul>
+<h3 id="removed-1">Removed</h3>
+<ul>
+<li>Duplicate reference to gulp</li>
+</ul>
+<h2 id="v1.8.2---2015-08-27">v1.8.2 - 2015-08-27</h2>
+<h3 id="changed-19">Changed</h3>
+<ul>
+<li>Use node’s native module resolution mechanism</li>
+</ul>
+<h2 id="v1.8.1---2015-08-27">v1.8.1 - 2015-08-27</h2>
+<h3 id="changed-20">Changed</h3>
+<ul>
+<li>Filter password from parsed URL</li>
+</ul>
+<h2 id="v1.8.0---2015-08-27">v1.8.0 - 2015-08-27</h2>
+<h3 id="added-12">Added</h3>
+<ul>
+<li>Support for env variable usage in model/index.js</li>
+</ul>
+<h2 id="v1.7.4---2015-07-28">v1.7.4 - 2015-07-28</h2>
+<h3 id="changed-21">Changed</h3>
+<ul>
+<li>Return exit code 1 when migrations failed</li>
+</ul>
+<h2 id="v1.7.3---2015-07-26">v1.7.3 - 2015-07-26</h2>
+<h3 id="changed-22">Changed</h3>
+<ul>
+<li>Fix check of associate method</li>
+</ul>
+<h2 id="v1.7.2---2015-07-16">v1.7.2 - 2015-07-16</h2>
+<h3 id="added-13">Added</h3>
+<ul>
+<li>Sequelize v3 to build matrix</li>
+</ul>
+<h3 id="changed-23">Changed</h3>
+<ul>
+<li>Compatibility with Sequelize v3</li>
+</ul>
+<h2 id="v1.7.1---2015-07-09">v1.7.1 - 2015-07-09</h2>
+<h3 id="added-14">Added</h3>
+<ul>
+<li>Documentation about env variable</li>
+<li>Test for use<em>env</em>variable</li>
+</ul>
+<h3 id="changed-24">Changed</h3>
+<ul>
+<li>Fix env variable use for sqlite</li>
+<li>Update available tasks</li>
+</ul>
+<h2 id="v1.7.0---2015-04-19">v1.7.0 - 2015-04-19</h2>
+<h3 id="added-15">Added</h3>
+<ul>
+<li>More gulp tasks</li>
+</ul>
+<h3 id="changed-25">Changed</h3>
+<ul>
+<li>Generate new migration style</li>
+<li>Adopt new JSHint/JSCS rules</li>
+<li>Update JSHint and JSCS rules</li>
+</ul>
+<h2 id="v1.6.0---2015-04-02">v1.6.0 - 2015-04-02</h2>
+<h3 id="added-16">Added</h3>
+<ul>
+<li>Possibility to use a different table name for the meta data</li>
+</ul>
+<h2 id="v1.5.0---2015-03-24">v1.5.0 - 2015-03-24</h2>
+<h3 id="added-17">Added</h3>
+<ul>
+<li><code>sequelize db:migrate:undo:all</code> that rolls back all migrations.</li>
+</ul>
+<h2 id="v1.4.0---2015-03-13">v1.4.0 - 2015-03-13</h2>
+<h3 id="added-18">Added</h3>
+<ul>
+<li>Possibility to log executed migrations to a JSON file</li>
+</ul>
+<h2 id="v1.3.2---2015-03-13">v1.3.2 - 2015-03-13</h2>
+<h3 id="changed-26">Changed</h3>
+<ul>
+<li>Fix gulp resolution for Windows</li>
+</ul>
+<h2 id="section">1.3.1</h2>
+<h3 id="changed-27">Changed</h3>
+<ul>
+<li>Update umzug to 1.6.0</li>
+</ul>
+<h2 id="section-1">1.3.0</h2>
+<h3 id="changed-28">Changed</h3>
+<ul>
+<li>Add builds for different sequelize versions</li>
+<li>Fix raw queries in sequelize 2.0</li>
+</ul>
+<h2 id="section-2">1.2.0</h2>
+<h3 id="changed-29">Changed</h3>
+<ul>
+<li>Add logging of statements and improve messages</li>
+</ul>
+<h2 id="section-3">1.1.0</h2>
+<h3 id="changed-30">Changed</h3>
+<ul>
+<li>Update dependencies</li>
+</ul>
+<h2 id="section-4">1.0.8</h2>
+<h3 id="changed-31">Changed</h3>
+<ul>
+<li>Fix usage of js2coffee 2.0</li>
+</ul>
+<h2 id="section-5">1.0.7</h2>
+<h3 id="changed-32">Changed</h3>
+<ul>
+<li>Fix regexp application for non migration files.</li>
+</ul>
+<h2 id="section-6">1.0.6</h2>
+<h3 id="changed-33">Changed</h3>
+<ul>
+<li>Add support for more fine-granular harmony flags</li>
+</ul>
+<h2 id="section-7">1.0.5</h2>
+<h3 id="changed-34">Changed</h3>
+<ul>
+<li>Added support for auto-migrate from old schema <a href="https://github.com/sequelize/cli/issues/82">#82</a></li>
+</ul>
+<h2 id="section-8">1.0.4</h2>
+<h3 id="changed-35">Changed</h3>
+<ul>
+<li>Fix output filtering</li>
+<li>Fix EventEmitter deprecation warnings.</li>
+</ul>
+<h2 id="section-9">1.0.3</h2>
+<h3 id="changed-36">Changed</h3>
+<ul>
+<li>Use the url module to parse database URLs</li>
+</ul>
+<h2 id="section-10">1.0.1</h2>
+<h3 id="changed-37">Changed</h3>
+<ul>
+<li>Fix global installation of the CLI</li>
+</ul>
+<h2 id="section-11">1.0.0</h2>
+<h3 id="changed-38">Changed</h3>
+<ul>
+<li>Big migration refactoring which uses a new schema table and the umzug lib.</li>
+</ul>
+<h2 id="section-12">0.3.3</h2>
+<h3 id="changed-39">Changed</h3>
+<ul>
+<li>Fix for default attributes in generated migrations.</li>
+<li>Auto-generate coffee files with js2coffee.</li>
+</ul>
+<h2 id="section-13">0.3.2</h2>
+<h3 id="changed-40">Changed</h3>
+<ul>
+<li>Add default attributes to generated migrations.</li>
+</ul>
+<h2 id="section-14">0.3.1</h2>
+<h3 id="changed-41">Changed</h3>
+<ul>
+<li>Fix alignment of comment in generated model file</li>
+<li>Fix global installation</li>
+</ul>
+<h2 id="section-15">0.3.0</h2>
+<h3 id="changed-42">Changed</h3>
+<ul>
+<li>Add Node.JS version to the teaser</li>
+<li>Add dialect and the respective version to the teaser</li>
+</ul>
+<h2 id="section-16">0.2.6</h2>
+<h3 id="changed-43">Changed</h3>
+<ul>
+<li>Do not load lodash in <code>models/index.js</code>.</li>
+</ul>
+<h2 id="section-17">0.2.5</h2>
+<h3 id="changed-44">Changed</h3>
+<ul>
+<li>Prefer <code>--env</code> over the environment variable <code>NODE_ENV</code>.</li>
+<li>Search by default for a file called <code>.sequelizerc</code> and treat it as <code>--options-path</code>.</li>
+</ul>
+<h2 id="section-18">0.2.4</h2>
+<h3 id="changed-45">Changed</h3>
+<ul>
+<li>Fix unqualified sequelize instantiation which enforced the mysql module.</li>
+</ul>
+<h2 id="section-19">0.2.3</h2>
+<h3 id="changed-46">Changed</h3>
+<ul>
+<li>Fix <code>--migrations-path</code> for relative paths.</li>
+</ul>
+<h2 id="section-20">0.2.2</h2>
+<h3 id="changed-47">Changed</h3>
+<ul>
+<li>Fix for MS Windows.</li>
+</ul>
+<h2 id="section-21">0.2.1</h2>
+<h3 id="changed-48">Changed</h3>
+<ul>
+<li>Fix <code>_.includes</code>.</li>
+</ul>
+<h2 id="section-22">0.2.0</h2>
+<h3 id="changed-49">Changed</h3>
+<ul>
+<li><code>sequelize model:create</code> creates a model and its respective migration file.</li>
+</ul>
+<h2 id="section-23">0.1.1</h2>
+<h3 id="changed-50">Changed</h3>
+<ul>
+<li>Fix illegal character.</li>
+</ul>
+<h2 id="section-24">0.1.0</h2>
+<h3 id="changed-51">Changed</h3>
+<ul>
+<li><code>sequelize init</code> now creates a <code>models</code> folder and a <code>models/index.js</code> file. <a href="https://github.com/sequelize/cli/pull/11">#11</a></li>
+</ul>
+<h2 id="section-25">0.0.4</h2>
+<h3 id="changed-52">Changed</h3>
+<ul>
+<li>Fix –config flag. <a href="https://github.com/sequelize/cli/pull/4">#4</a></li>
+<li>Fix custom logging option. <a href="https://github.com/sequelize/cli/pull/3">#3</a></li>
+</ul>
+<h2 id="section-26">0.0.3</h2>
+<h3 id="changed-53">Changed</h3>
+<ul>
+<li>Fix conflict within projects that are already shipping gulp. <a href="https://github.com/sequelize/cli/pull/2">#2</a></li>
+<li>Add harmony support. <a href="https://github.com/sequelize/cli/pull/6">#6</a></li>
+</ul>
+<h2 id="section-27">0.0.2</h2>
+<h3 id="changed-54">Changed</h3>
+<ul>
+<li>Added the binary to the package.json</li>
+</ul>
+<h2 id="section-28">0.0.1</h2>
+<h3 id="changed-55">Changed</h3>
+<ul>
+<li>First working version</li>
+</ul>

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "5e08f115-18b5-4e8f-8810-e4c43cc1bd1d",
+    "name": "Storage Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/objectives/reading-storage-learning-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 300,
+    "urls": [
+      "storage-learning-objectives"
+    ],
+    "topic": "Homework for Thursday",
+    "subtopic": "Learning Objectives",
+    "body": "# Storage Lesson Learning Objectives\n\nBelow is a complete list of the terminal learning objectives for this lesson.\nWhen you complete this lesson, you should be able to perform each of the\nfollowing objectives. These objectives capture how you may be evaluated on the\nassessment for this lesson.\n\n1. Write JavaScript to store the value \"I <3 falafel\" with the key \"eatz\" in the\n   browser's local storage.\n2. Write JavaScript to read the value stored in local storage for the key\n   \"paper-trail\".\n"
+  },
+  "success": true
+}

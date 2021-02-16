@@ -1,0 +1,168 @@
+{
+	"name": "hungry-delete",
+	"displayName": "Hungry Delete",
+	"description": "To delete an entire block of whitespace or tab, and reduce the time programmers need to press backspace",
+	"version": "1.6.0",
+	"publisher": "jasonlhy",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"license": "MIT",
+	"icon": "images/icon.png",
+	"categories": [
+		"Keymaps",
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.hungryDelete",
+		"onCommand:extension.smartBackspace"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.hungryDelete",
+				"title": "Hungry Delete"
+			},
+			{
+				"command": "extension.smartBackspace",
+				"title": "Smart Backspace"
+			}
+		],
+		"keybindings": [
+			{
+				"key": "ctrl+backspace",
+				"mac": "alt+backspace",
+				"command": "extension.hungryDelete",
+				"when": "editorTextFocus && !editorReadonly"
+			},
+			{
+				"key": "backspace",
+				"mac": "backspace",
+				"command": "extension.smartBackspace",
+				"when": "config.hungryDelete.enableSmartBackspace && editorTextFocus && !editorReadonly"
+			}
+		],
+		"configuration": {
+			"title": "Hungry Delete Configuration",
+			"type": "object",
+			"properties": {
+				"hungryDelete.enableSmartBackspace": {
+					"type": "boolean",
+					"description": "Enable Smart Backsapce",
+					"default": true
+				},
+				"hungryDelete.keepOneSpace": {
+					"type": "boolean",
+					"description": "Keep at least one space after last word of previous line with smart backspace",
+					"default": false
+				},
+				"hungryDelete.keepOneSpaceException": {
+					"type": "string",
+					"description": "Keep One Space except when it encounters following characters"
+				},
+				"hungryDelete.considerIncreaseIndentPattern": {
+					"type": "boolean",
+					"description": "Consider increaseIndentPattern in indentationRules for smart backspace",
+					"default": false
+				},
+				"hungryDelete.followAbovelineIndent": {
+					"type": "boolean",
+					"description": "Consider the indentation of above line for smart backspace if increaseIndentPattern do not match above line",
+					"default": false
+				},
+				"hungryDelete.languageConfigurations": {
+					"type": "array",
+					"description": "Provide language configuration which affects the behaviour of smart backspace",
+					"default": [
+						{
+							"languageId": "html",
+							"indentationRules": {
+								"increaseIndentPattern": "<(?!\\?|(?:area|base|br|col|frame|hr|html|img|input|link|meta|param)\\b|[^>]*\\/>)([-_\\.A-Za-z0-9]+)(?=\\s|>)\\b[^>]*>(?!.*<\\/\\1>)|<!--(?!.*-->)|\\{[^}\"']*$",
+								"decreaseIndentPattern": "^\\s*(<\\/(?!html)[-_\\.A-Za-z0-9]+\\b[^>]*>|-->|\\})"
+							}
+						},
+						{
+							"languageId": "go",
+							"indentationRules": {
+								"increaseIndentPattern": "^.*(\\bcase\\b.*:|\\bdefault\\b:|(\\b(func|if|else|switch|select|for|struct)\\b.*)?{[^}\"'`]*|\\([^)\"'`]*)$",
+								"decreaseIndentPattern": "^\\s*(\\bcase\\b.*:|\\bdefault\\b:|}[)}]*[),]?|\\)[,]?)$"
+							}
+						},
+						{
+							"languageId": "json",
+							"indentationRules": {
+								"increaseIndentPattern": "^.*(\\{[^}]*|\\[[^\\]]*)$",
+								"decreaseIndentPattern": "^\\s*[}\\]],?\\s*$"
+							}
+						},
+						{
+							"languageId": "less",
+							"indentationRules": {
+								"increaseIndentPattern": "(^.*\\{[^}]*$)",
+								"decreaseIndentPattern": "^\\s*\\}"
+							}
+						},
+						{
+							"languageId": "lua",
+							"indentationRules": {
+								"increaseIndentPattern": "^((?!(\\-\\-)).)*((\\b(else|function|then|do|repeat)\\b((?!\\b(end|until)\\b).)*)|(\\{\\s*))$",
+								"decreaseIndentPattern": "^\\s*((\\b(elseif|else|end|until)\\b)|(\\})|(\\)))"
+							}
+						},
+						{
+							"languageId": "php",
+							"indentationRules": {
+								"increaseIndentPattern": "({(?!.+}).*|\\(|\\[|((else(\\s)?)?if|else|for(each)?|while|switch).*:)\\s*(/[/*].*)?$",
+								"decreaseIndentPattern": "^(.*\\*\\/)?\\s*((\\})|(\\)+[;,])|(\\][;,])|\\b(else:)|\\b((end(if|for(each)?|while|switch));))"
+							}
+						},
+						{
+							"languageId": "ruby",
+							"indentationRules": {
+								"increaseIndentPattern": "^\\s*((begin|class|(private|protected)\\s+def|def|else|elsif|ensure|for|if|module|rescue|unless|until|when|while|case)|([^#]*\\sdo\\b)|([^#]*=\\s*(case|if|unless)))\\b([^#\\{;]|(\"|'|/).*\\4)*(#.*)?$",
+								"decreaseIndentPattern": "^\\s*([}\\]]([,)]?\\s*(#|$)|\\.[a-zA-Z_]\\w*\\b)|(end|rescue|ensure|else|elsif|when)\\b)"
+							}
+						},
+						{
+							"languageId": "typescript",
+							"indentationRules": {
+								"increaseIndentPattern": "^((?!.*?\\/\\*).*\\*\\/)?\\s*[\\}\\]].*$",
+								"decreaseIndentPattern": "^((?!\\/\\/).)*(\\{[^}\"'`]*|\\([^)\"'`]*|\\[[^\\]\"'`]*)$"
+							}
+						},
+						{
+							"languageId": "yaml",
+							"indentationRules": {
+								"increaseIndentPattern": "^\\s*.*(:|-) ?(&amp;\\w+)?(\\{[^}\"']*|\\([^)\"']*)?$",
+								"decreaseIndentPattern": "^\\s+\\}$"
+							}
+						}
+					]
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.32",
+		"@types/node": "^6.0.40",
+		"mocha": "^6.1.4",
+		"typescript": "^2.0.3",
+		"vscode": "^1.1.33"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Jasonlhy/VSCode-Hungry-Delete"
+	},
+	"__metadata": {
+		"id": "e86acd7a-7484-4006-bf9f-5e9ddacb84d8",
+		"publisherId": "14e8cdbb-c06f-492e-b6c6-85ac37b9206b",
+		"publisherDisplayName": "jasonlhy"
+	}
+}

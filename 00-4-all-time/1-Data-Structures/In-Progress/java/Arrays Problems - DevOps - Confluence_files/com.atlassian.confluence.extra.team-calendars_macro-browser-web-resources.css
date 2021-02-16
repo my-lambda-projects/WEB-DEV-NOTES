@@ -1,0 +1,84 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:macro-browser-web-resources', location = 'com/atlassian/confluence/extra/calendar3/css/select2-overrides.css' */
+div.select2-container.subcalendars-select .select2-choice abbr,
+div.select2-container.subcalendars-select .select2-choice div b,
+div.select2-container.subcalendars-select .select2-search input {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAoCAAAAACH0MYjAAAABGdBTUEAALGPC/xhBQAAAAJ0Uk5TAAB2k804AAABNUlEQVQYGe3BoYqFQBQG4P9pJ07wKU4RJpimTDEIJjfcYJjkE9xgEUwTBoRbDBMEz3qXy65BLnpgw8J+H/CHpDIAU5UgUVEeJkMlJKKh3JCJkOBoiExkiEyGKA8QmQoyhkzAOwuOVWRiLKjCG3ORcCiVkXmqE15u9PSBvZoaHGJmgJnxkgoiMgk7PRENOGUgoh47yRBRkXBKQzX2PujphgNzPgDRzPiWihknGaXHkCnCjwVnjZnSWmUjJDhopXRgiIRMKT1CJGRKa6VHSOQqCyFTBhIzBeZQJEgwM8DM+Pe7hsa62wMi3pa+dXaAwGD9AsyVm3FdXS7YRNvhOuvxxbW4zrV4WmyH61r3wOZue1wXbRWw3J1bIDA6u3G2XSEw333XL962K6RWb9sVUqu3HmJr12DzCRkvvyymS+oUAAAAAElFTkSuQmCC)
+}
+
+div.select2-container.subcalendars-select .select2-results li {
+  line-height: 100%
+}
+
+div.select2-container-multi.subcalendars-select .select2-choices .select2-search-field input {
+  color: #000
+}
+
+div.select2-container-multi.subcalendars-select .select2-choices {
+  background-image: none
+}
+
+div.select2-container-multi.subcalendars-select.select2-container-active .select2-choices {
+  border: 1px solid #5897fb;
+  outline: 0;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, .3)
+}
+
+div.select2-container-multi.subcalendars-select .select2-choices .select2-search-choice {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: #d0dfee;
+  background-image: none;
+  box-shadow: none;
+  border-color: #fff;
+  color: #036;
+  font-size: 13px;
+  margin: 3px 0 0 5px;
+  padding: 3px 18px 3px 5px
+}
+
+div.select2-container-multi.subcalendars-select .select2-choices .select2-search-choice-focus {
+  background-color: #d0dfee;
+  border-color: #326ca6
+}
+
+div.select2-container-multi.subcalendars-select .select2-search-choice-close {
+  left: auto;
+  right: 3px
+}
+
+.subcalendars-select a.select2-search-choice-close {
+  background-image: url(//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1000.0.0-da105be110ec/_/download/resources/com.atlassian.confluence.extra.team-calendars:macro-browser-web-resources/../../../download/resources/confluence.web.resources:labels-editor/../../../images/icons/delete_8_gray.gif) !important;
+  background-repeat: no-repeat !important;
+  background-size: auto !important
+}
+
+.subcalendars-select a.select2-search-choice-close,
+div.select2-container-multi.subcalendars-select .select2-choices .select2-search-choice-focus .select2-search-choice-close,
+div.select2-container-multi.subcalendars-select .select2-choices .select2-search-choice .select2-search-choice-close:hover {
+  background-position: 2px 2px
+}
+
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:macro-browser-web-resources', location = 'com/atlassian/confluence/extra/calendar3/css/calendar3-macro-browser.css' */
+.subcalendars-select {
+  width: 250px !important
+}
+
+#macro-param-div-id .macro-param-desc {
+  display: none
+}
+
+#macro-param-div-id .id-desc {
+  padding: 3px 0 2px 0;
+  color: #505050
+}
+
+#macro-param-div-id .id-desc .add-subcalendar {
+  color: #326ca6
+}
+
+#macro-param-div-id .id-desc .add-subcalendar:hover {
+  cursor: pointer;
+  text-decoration: underline
+}

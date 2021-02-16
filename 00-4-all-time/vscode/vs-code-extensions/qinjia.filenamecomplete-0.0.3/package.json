@@ -1,0 +1,45 @@
+{
+	"name": "filenamecomplete",
+	"displayName": "FileNameComplete",
+	"description": "a vscode extension for completing filename",
+	"version": "0.0.3",
+	"icon": "images/icon.png",
+	"publisher": "qinjia",
+	"engines": {
+		"vscode": "^0.10.6"
+	},
+	"categories": [
+		"Other"
+	],
+	"license": "MIT",
+	"keywords": [
+		"filename complete"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hellopao/filenamecomplete.git"
+	},
+	"homepage": "https://github.com/hellopao/filenamecomplete",
+	"bugs": {
+		"url": "https://github.com/hellopao/filenamecomplete/issues"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {},
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^1.7.5",
+		"vscode": "^0.11.0"
+	},
+	"__metadata": {
+		"id": "8d921f2e-6420-468f-ae81-a91c9d59c67b",
+		"publisherId": "fc5e9493-6ca3-452b-9e0a-8a9be2be7798",
+		"publisherDisplayName": "qinjia"
+	}
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class='Site'>
+
+    <div class='Site-content'>
+        <div class='edit-container'>
+            <header>
+                <% include ../partials/header %>
+            </header>
+            <form method="POST" action="/update">
+                <h1>Edit Message</h1>
+                <fieldset>
+                    <label>ID:</label>
+                    <input name="id" value="<%= result.rows[0].id %>">
+                </fieldset>
+                <fieldset>
+                    <label>Subject:</label>
+                    <input type="text" name="title" value="<%= result.rows[0].title %>" autofocus>
+                </fieldse≈>
+                <fieldset>
+                    <label>Message:</label>
+                    <textarea type="text" wrap="off" cols="30" rows="5" name="body" value="<%= result.rows[0].body %>" autofocus></textarea>
+                </fieldset>
+                <fieldset>
+                    <button id="btn-edit">
+                        <i class="material-icons">mode_edit</i>
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+</body>
+
+</html>

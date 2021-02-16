@@ -1,0 +1,9 @@
+--$boundary
+content-type: application/json
+
+$resource
+--$boundary
+content-type: $mimeType
+
+$media
+--$boundary--

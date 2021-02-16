@@ -1,0 +1,7 @@
+.masthead__menu-and-search-input {
+    display: flex; 
+}
+
+.masthead__menu-and-search-input--hidden {
+    display: none; 
+}

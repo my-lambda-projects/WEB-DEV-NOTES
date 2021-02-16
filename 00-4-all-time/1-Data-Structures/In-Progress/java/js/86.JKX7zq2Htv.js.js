@@ -1,0 +1,1569 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 86, 163 ], {
+    "1uqL": function ( e ) {
+      e.exports = JSON.parse( '{"a":"@atlaskit/radio","b":"5.0.2"}' )
+    },
+    "2iMI": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return l
+      } ) );
+      var n = a( "Iy7w" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "lRcl" );
+      const s = Object( n.a )( "div", {
+          target: "e18cfjdv0"
+        } )( {
+          name: "1kb26de",
+          styles: "width:100%;height:40px;"
+        } ),
+        c = Object( n.a )( "div", {
+          target: "e18cfjdv1"
+        } )( {
+          name: "y9ehu",
+          styles: "width:0;margin:0 auto;min-height:24px;padding:10px 0;"
+        } ),
+        l = ( {
+          onScrollTo: e,
+          testId: t,
+          cursor: a,
+          observerOptions: n
+        } ) => {
+          const l = Object( i.useRef )( null ),
+            [ u, h ] = Object( i.useState )( null ),
+            g = Object( i.useCallback )( t => {
+              var n;
+              ( null == t || null === ( n = t[ 0 ] ) || void 0 === n ? void 0 : n.isIntersecting ) && a !== u && ( h( a ), e() )
+            }, [ e, a, u, h ] );
+          return Object( i.useEffect )( () => {
+            const e = new IntersectionObserver( g, n ),
+              t = null == l ? void 0 : l.current;
+            return t && e.observe( t ), () => {
+              t && e.unobserve( t ), e.disconnect()
+            }
+          }, [ l, g, n ] ), r.a.createElement( s, null, r.a.createElement( d, {
+            ref: l
+          }, r.a.createElement( c, null, r.a.createElement( o.a, {
+            size: "medium",
+            testId: t
+          } ) ) ) )
+        },
+        d = Object( i.forwardRef )( ( {
+          children: e
+        }, t ) => r.a.createElement( "div", {
+          ref: t
+        }, e ) )
+    },
+    "3wug": function ( e, t, a ) {
+      "use strict";
+      var n = a( "Czhu" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "KsTJ" ),
+        s = a( "L21V" ),
+        c = a( "1U1M" ),
+        l = a( "R7V3" ),
+        d = a.n( l ),
+        u = a( "a8dO" ),
+        h = a( "dIe6" ),
+        g = a( "H5qd" );
+      const p = a.n( g ).a `query ArchiveFormattedMessageForPageQuery($contentId:ID!$allowNestedPages:Boolean!){singleContent(id:$contentId){id title archivableDescendantsCount@include(if:$allowNestedPages)visibleDescendantsCount@include(if:$allowNestedPages)}}`;
+      a.d( t, "a", ( function () {
+        return b
+      } ) );
+      const v = o.default.span `
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  font-weight: bold;
+  white-space: nowrap;
+  vertical-align: bottom;
+`,
+        b = ( {
+          contentId: e,
+          i18nMessage: t,
+          shouldTruncate: a = !1,
+          allowNestedPages: i,
+          useArchivableCount: o = !1
+        } ) => {
+          var l, g, b;
+          const {
+            data: m,
+            loading: f,
+            error: y
+          } = Object( c.d )( p, {
+            variables: {
+              contentId: e,
+              allowNestedPages: i
+            }
+          } );
+          if ( f ) return null;
+          if ( y ) return r.a.createElement( h.a, {
+            error: y
+          } );
+          const O = null != ( b = m ) && null != ( b = b.singleContent ) ? b.title : b,
+            k = null != ( g = m ) && null != ( g = g.singleContent ) ? g.visibleDescendantsCount : g,
+            C = null != ( l = m ) && null != ( l = l.singleContent ) ? l.archivableDescendantsCount : l;
+          if ( !O || i && d()( k ) ) return null;
+          const j = a ? r.a.createElement( u.a, {
+            tag: "span",
+            position: "top",
+            content: O
+          }, r.a.createElement( v, null, O ) ) : O;
+          return t ? r.a.createElement( s.b, Object( n.a )( Object( n.a )( {}, t ), {}, {
+            values: {
+              title: j,
+              count: o ? C : k
+            }
+          } ) ) : r.a.createElement( r.a.Fragment, null, j )
+        }
+    },
+    "5w42": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return u
+      } ) );
+      var n = a( "1U1M" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "z9P0" ),
+        s = a( "6z9Z" ),
+        c = a( "ewfN" ),
+        l = a( "UsKe" ),
+        d = a( "OW50" );
+
+      function u( {
+        contentId: e,
+        analyticsSource: t,
+        isArchive: a,
+        isBulk: u = !1,
+        mutation: h,
+        onSuccess: g,
+        source: p,
+        spaceKey: v,
+        TriggerComponent: b,
+        onSuccessLinkClick: m,
+        pageCount: f
+      } ) {
+        const [ y, O ] = Object( i.useState )( !1 ), [ k, C ] = Object( i.useState )( void 0 ), {
+          createAnalyticsEvent: j
+        } = Object( o.a )(), P = Object( i.useContext )( s.a ), [ w, E ] = Object( i.useState )( void 0 ), [ I ] = Object( n.c )( h ), x = Object( i.useCallback )( () => {
+          const t = Object( l.d )( a, u );
+          Object( l.b )( {
+            createAnalyticsEvent: j,
+            action: t + "Started",
+            actionSubject: "page",
+            actionSubjectId: u ? "multiple" : e,
+            source: p
+          } )
+        }, [ e, j, a, u, p ] ), M = Object( i.useCallback )( ( n, i = 3e3, r = 0 ) => {
+          r++, I( {
+            variables: n
+          } ).then( e => {
+            var t, a, n;
+            const i = null == e ? void 0 : e.data,
+              r = ( null == i || null === ( t = i.bulkArchivePages ) || void 0 === t ? void 0 : t.taskId ) || ( null == i || null === ( a = i.bulkUnarchivePages ) || void 0 === a ? void 0 : a.taskId ) || ( null == i || null === ( n = i.archivePages ) || void 0 === n ? void 0 : n.taskId );
+            C( r )
+          } ).catch( o => {
+            r >= 3 ? ( E( o ), P.stopOnError( {
+              name: Object( d.b )( a ),
+              error: o
+            } ) ) : setTimeout( () => {
+              j( {
+                type: "sendTrackEvent",
+                data: {
+                  action: `retry${a?"Archive":"Restore"}Mutation`,
+                  actionSubject: "page",
+                  actionSubjectId: u ? "multiple" : e,
+                  source: t,
+                  attributes: {
+                    attemptNumber: r,
+                    pageCount: f
+                  }
+                }
+              } ).fire(), M( n, 1 === r ? 3e3 : 5e3, r )
+            }, i )
+          } )
+        }, [ t, e, j, P, a, u, I, f ] ), A = Object( i.useCallback )( e => {
+          y || ( O( !0 ), x(), M( e ) )
+        }, [ x, y, M ] );
+        return r.a.createElement( i.Fragment, null, y ? r.a.createElement( d.a, {
+          longTaskId: k,
+          onSuccess: g,
+          isArchive: a,
+          successLinkHref: a ? c.SPACE_ARCHIVED_PAGES.toUrl( {
+            spaceKey: v
+          } ) : c.VIEW_PAGE.toUrl( {
+            spaceKey: v,
+            contentId: e
+          } ),
+          contentId: e,
+          source: p,
+          error: w,
+          isBulk: u,
+          onSuccessLinkClick: m,
+          pageCount: f
+        } ) : null, r.a.createElement( b, {
+          analyticsSource: t,
+          isArchive: a,
+          source: p,
+          spaceKey: v,
+          startMutationCallback: A
+        } ) )
+      }
+    },
+    "6esG": function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return r
+      } ) );
+      var n = a( "ERkP" ),
+        i = a( "6z9Z" );
+
+      function r( {
+        name: e,
+        error: t,
+        attributes: a
+      } ) {
+        const r = Object( n.useContext )( i.a );
+        return Object( n.useEffect )( () => {
+          t ? r.stopOnError( {
+            name: e,
+            error: t,
+            attributes: a
+          } ) : r.succeed( {
+            name: e,
+            attributes: a
+          } )
+        }, [ r, e, a, t ] ), null
+      }
+    },
+    ANgl: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return d
+      } ) );
+      var n = a( "ERkP" ),
+        i = a.n( n ),
+        r = a( "1U1M" ),
+        o = a( "rc7/" ),
+        s = a( "F4Ur" ),
+        c = a( "t0Ff" ),
+        l = a( "6n9r" );
+
+      function d( {
+        children: e
+      } ) {
+        const {
+          data: t,
+          loading: a,
+          error: d
+        } = Object( r.d )( c.a );
+        let u;
+        return d && ( Object( o.b )( d ) ? Object( s.a )( d ) : u = d ), i.a.createElement( n.Fragment, null, e( {
+          edition: Object( l.a )( t ),
+          error: u,
+          loading: a
+        } ) )
+      }
+    },
+    GwSB: function ( e, t, a ) {
+      "use strict";
+      var n = a( "Czhu" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "L21V" ),
+        s = a( "KsTJ" ),
+        c = a( "1U1M" ),
+        l = a( "z9P0" ),
+        d = a( "wn7R" ),
+        u = a( "zJ/j" ),
+        h = a( "cJDk" ),
+        g = a( "MqVv" ),
+        p = a( "dIe6" ),
+        v = a( "6z9Z" ),
+        b = a( "+6Tk" ),
+        m = a( "UsKe" ),
+        f = a( "OW50" ),
+        y = a( "H5qd" );
+      const O = a.n( y ).a `query ArchiveDialogBaseComponentQuery($contentId:ID!$allowNestedPages:Boolean!){singleContent(id:$contentId)@include(if:$allowNestedPages){id archivableDescendantsCount visibleDescendantsCount}}`;
+      var k = a( "W90J" );
+      a.d( t, "b", ( function () {
+        return C
+      } ) ), a.d( t, "a", ( function () {
+        return w
+      } ) );
+      const C = s.default.div `
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`,
+        j = Object( o.f )( {
+          cancelButtonText: {
+            id: "archive-pages.archive.dialog.button.cancel",
+            defaultMessage: "Cancel",
+            description: "Button text for the cancel button on the page archival dialog"
+          },
+          ARCHIVE_nestedPagesTitle: {
+            id: "archive-pages.nested-pages.archive.dialog.title",
+            defaultMessage: "{count, plural, one {Nested page} other {Nested pages}}",
+            description: "The title of the Archive Page modal dialog, warning the user about nested child pages that will be affected by the action"
+          },
+          ARCHIVE_withoutNestedPagesTitle: {
+            id: "archive-pages.without-nested-pages.archive.dialog.title",
+            defaultMessage: "{count, plural, one {Archive without nested page} other {Archive without nested pages}}",
+            description: "The title of the Archive Page modal dialog when user cannot archive any nested pages."
+          },
+          ARCHIVE_nestedPagesButtonText: {
+            id: "archive-pages.archive-nested-pages.dialog.button.archive",
+            defaultMessage: "Archive",
+            description: "Button text for the nested pages archival dialog primary CTA"
+          },
+          ARCHIVE_archiveAnywayButtonText: {
+            id: "archive-pages.archive.dialog.button.archive",
+            defaultMessage: "Archive anyway",
+            description: "Button text for the page archival dialog primary CTA"
+          },
+          ARCHIVE_archiveParentButtonText: {
+            id: "archive-pages.archive-nested-pages.dialog.selection-limit-reached.button.archive",
+            defaultMessage: "Archive parent",
+            description: "Button text for nested pages archival selection limit reached"
+          },
+          UNARCHIVE_pageDialogTitle: {
+            id: "archive-pages.single-page.unarchive.dialog.title",
+            defaultMessage: "Choose destination",
+            description: "The title of the Unarchive Page modal dialog prompting them to select a parent page"
+          },
+          UNARCHIVE_buttonText: {
+            id: "archive-pages.single-page.unarchive.dialog.button.unarchive",
+            defaultMessage: "Restore",
+            description: "Button text for the primary CTA in the un-archive dialog that allows user to restore an archived page"
+          }
+        } ),
+        P = e => e ? "archiveNestedPage" : "restorePageDestination",
+        w = ( {
+          getAdditionalMutationVariables: e,
+          children: t,
+          descriptionText: a,
+          appearance: s,
+          width: y = 520,
+          allowNestedPages: w,
+          includeNestedPages: E,
+          contentId: I,
+          analyticsSource: x,
+          isArchive: M,
+          startMutationCallback: A
+        } ) => {
+          var N;
+          const [ T, D ] = Object( i.useState )( !0 ), {
+            createAnalyticsEvent: R
+          } = Object( l.a )(), {
+            loading: S,
+            error: L,
+            data: B
+          } = Object( c.d )( O, {
+            variables: {
+              contentId: I,
+              allowNestedPages: w
+            }
+          } ), H = Object( i.useContext )( v.a ), _ = parseInt( Object( b.c )( k.d ) ), z = 0 !== _, W = ( null == B || null === ( N = B.singleContent ) || void 0 === N ? void 0 : N.visibleDescendantsCount ) || 0, V = z && W + 1 > _, $ = Object( i.useCallback )( ( e, t, a, i ) => {
+            Object( m.c )( Object( n.a )( {
+              createAnalyticsEvent: R,
+              actionSubject: "button",
+              actionSubjectId: `${P(t)}${e}Button`,
+              source: a
+            }, i && {
+              attributes: i
+            } ) )
+          }, [ R ] ), F = Object( i.useCallback )( () => {
+            D( !1 );
+            const t = e ? e() : null,
+              a = t && t.parentPageId || null,
+              i = Object( n.a )( {
+                includeNestedPages: Boolean( E )
+              }, !M && {
+                parentPageId: a
+              } );
+            $( "Confirm", M, x, i ), D( !1 ), A( Object( n.a )( {
+              pageIDs: [ I ]
+            }, t ) )
+          }, [ I, x, $, e, E, M, A ] ), U = Object( i.useCallback )( Object( i.forwardRef )( ( {
+            children: e
+          }, t ) => r.a.createElement( h.c, {
+            ref: t
+          }, a ? r.a.createElement( o.b, Object( n.a )( {}, a ) ) : null, e ) ), [ a ] ), K = Object( i.useCallback )( () => {
+            $( "Cancel", M, x ), D( !1 ), H.abort( {
+              name: Object( f.b )( M ),
+              reason: "dialog closed"
+            } )
+          }, [ x, $, M, D, H ] ), Y = Object( i.useMemo )( () => M ? V ? j.ARCHIVE_archiveParentButtonText : w ? j.ARCHIVE_nestedPagesButtonText : j.ARCHIVE_archiveAnywayButtonText : j.UNARCHIVE_buttonText, [ w, M, V ] ), q = Object( i.useCallback )( () => r.a.createElement( h.d, null, r.a.createElement( C, null, r.a.createElement( d.a, null, r.a.createElement( u.a, {
+            appearance: "subtle",
+            onClick: K,
+            testId: "button-cancel"
+          }, r.a.createElement( o.b, Object( n.a )( {}, j.cancelButtonText ) ) ), r.a.createElement( u.a, {
+            appearance: V ? "warning" : s || "primary",
+            onClick: F,
+            testId: "button-archive-primary"
+          }, r.a.createElement( o.b, Object( n.a )( {}, Y ) ) ) ) ) ), [ s, F, Y, K, V ] ), J = Object( i.useMemo )( () => {
+            if ( M ) {
+              var e, t;
+              if ( L ) return j.ARCHIVE_nestedPagesTitle;
+              const a = null != ( t = B ) && null != ( t = t.singleContent ) ? t.archivableDescendantsCount : t,
+                i = null != ( e = B ) && null != ( e = e.singleContent ) ? e.visibleDescendantsCount : e;
+              return 0 === a ? Object( n.a )( Object( n.a )( {}, j.ARCHIVE_withoutNestedPagesTitle ), {}, {
+                values: {
+                  count: i
+                }
+              } ) : Object( n.a )( Object( n.a )( {}, j.ARCHIVE_nestedPagesTitle ), {}, {
+                values: {
+                  count: a
+                }
+              } )
+            }
+            return j.UNARCHIVE_pageDialogTitle
+          }, [ B, M, L ] );
+          return S && w ? null : T ? r.a.createElement( r.a.Fragment, null, r.a.createElement( g.a, {
+            autoFocus: !1,
+            components: {
+              Body: U,
+              Footer: q
+            },
+            heading: S && M ? "" : r.a.createElement( o.b, Object( n.a )( {}, J ) ),
+            onClose: K,
+            shouldCloseOnEscapePress: !0,
+            width: y + "px",
+            appearance: "primary" !== s ? s : void 0
+          }, t ), L ? r.a.createElement( p.a, {
+            error: L
+          } ) : null ) : null
+        }
+    },
+    MQCK: function ( e, t, a ) {
+      "use strict";
+      var n = a( "Czhu" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "L21V" ),
+        s = a( "KsTJ" ),
+        c = a( "zmRp" ),
+        l = a( "zJ/j" ),
+        d = a( "3IV/" ),
+        u = a( "1U1M" ),
+        h = a( "R7V3" ),
+        g = a.n( h ),
+        p = a( "z9P0" ),
+        v = a( "dIe6" ),
+        b = a( "+6Tk" ),
+        m = a( "UsKe" ),
+        f = a( "OOEx" ),
+        y = a.n( f ),
+        O = a( "H5qd" ),
+        k = a.n( O );
+      const C = k.a `query ArchiveNestedPagesPermissionWarningQuery($contentId:ID!){singleContent(id:$contentId){id archivableDescendantsCount visibleDescendantsCount}}`,
+        j = s.default.div `
+  background-color: ${d.Y50};
+  display: flex;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 10px;
+`,
+        P = s.default.div `
+  position: absolute;
+  top: 16px;
+  left: 16px;
+`,
+        w = s.default.div `
+  max-width: 480px;
+  margin: 16px 16px 16px 56px;
+`,
+        E = Object( o.f )( {
+          archiveMissingPermissionWarningMessageSingleAmongOthers: {
+            id: "archive-pages.page-nested.archive.missing-permission.message-single-page",
+            defaultMessage: "You don't have permission to archive 1 page. It will remain in the page tree and could lose any inherited permissions restricting who can view it.",
+            description: "Message to a user that he/she doesn't have permission to archive one nested page among other nested pages. This is distinct from the singular count scenario in archive-pages.page-nested.archive.missing-permission.message which refers to one nested page total."
+          },
+          archiveMissingPermissionWarningMessage: {
+            id: "archive-pages.page-nested.archive.missing-permission.message",
+            defaultMessage: "{count, plural, one {You don't have permission to archive the nested page. It will remain in the page tree and could lose any inherited permissions restricting who can view it.} other {You don't have permission to archive {count} pages. They will remain in the page tree and could lose any inherited permissions restricting who can view them.}}",
+            description: "Message to a user that he/she doesn't have permission to archive some of the nested pages. For singular, 'the' is used to indicate that there is only one nested page total, rather than one out of many."
+          },
+          unarchiveMissingPermissionWarningMessage: {
+            id: "archive-pages.page-nested.restore.missing-permission.message",
+            defaultMessage: "{count, plural, one {You don't have permission to restore the nested page. It will remain archived.} other {You don't have permission to restore {count} pages. They will remain archived.}}",
+            description: "Message to a user that he/she doesn't have permission to restore some of the nested pages. For singular, 'the' is used to indicate that there is only one nested page total, rather than one out of many."
+          },
+          unarchiveMissingPermissionWarningMessageSingleAmongOthers: {
+            id: "archive-pages.page-nested.restore.missing-permission.message-single-among-others",
+            defaultMessage: "You don't have permission to restore 1 page. It will remain archived.",
+            description: "Message to a user that he/she doesn't have permission to restore one nested page among other nested pages. This is distinct from the singular count scenario in archive-pages.page-nested.restore.missing-permission.message which refers to one nested page total."
+          },
+          archiveNoPermissionWarningMessage: {
+            id: "archive-pages.page-nested.archive.no-permission.message",
+            defaultMessage: "You don't have permission to archive any of the nested pages. They will remain in the page tree.",
+            description: "Message to a user that he/she doesn't have enough permission to archive any of the multiple nested pages"
+          },
+          unarchiveNoPermissionWarningMessage: {
+            id: "archive-pages.page-nested.restore.no-permission.message",
+            defaultMessage: "You don't have permission to restore any of the nested pages. They will remain archived.",
+            description: "Message to a user that he/she doesn't have enough permission to restore any of the multiple nested pages"
+          },
+          archiveSelectionLimitReachedWarningMessage: {
+            id: "archive-pages.page-nested.archive.selection-limit-reached.message",
+            defaultMessage: "If you continue, all nested pages will remain in the page tree and could lose inherited permissions. To include nested pages, choose a parent page with fewer than {count, plural, one {# nested page} other {# nested pages}}.",
+            description: "Message to a user that he/she has reached the selection limit"
+          },
+          unarchiveSelectionLimitReachedWarningMessage: {
+            id: "archive-pages.page-nested.restore.selection-limit-reached.message",
+            defaultMessage: "If you continue, all nested pages will remain in the Archived pages list and could lose inherited permissions. To include nested pages, choose a parent page with fewer than {count, plural, one {# nested page} other {# nested pages}}.",
+            description: "Message to a user that he/she has reached the selection limit"
+          }
+        } ),
+        I = ( {
+          contentId: e,
+          isArchive: t,
+          selectionLimitReached: a,
+          selectionLimit: s
+        } ) => {
+          var c, l;
+          const h = Object( i.useRef )( !1 ),
+            {
+              createAnalyticsEvent: b
+            } = Object( p.a )(),
+            {
+              data: f,
+              error: O
+            } = Object( u.d )( C, {
+              variables: {
+                contentId: e
+              },
+              fetchPolicy: "cache-and-network"
+            } );
+          if ( O ) return r.a.createElement( v.a, {
+            error: O
+          } );
+          if ( !f ) return null;
+          const k = null != ( l = f ) && null != ( l = l.singleContent ) ? l.archivableDescendantsCount : l,
+            I = null != ( c = f ) && null != ( c = c.singleContent ) ? c.visibleDescendantsCount : c;
+          if ( ( g()( k ) || g()( I ) || k >= I ) && !a ) return null;
+          const x = I - k,
+            M = I > 1 && I - k == 1;
+          return h.current || ( Object( m.a )( {
+            createAnalyticsEvent: b,
+            name: Object( m.d )( t ) + "NestedPagesPermissionWarning"
+          } ), h.current = !0 ), r.a.createElement( j, null, r.a.createElement( P, null, r.a.createElement( y.a, {
+            primaryColor: d.Y300,
+            label: ""
+          } ) ), r.a.createElement( w, null, a ? r.a.createElement( o.b, Object( n.a )( Object( n.a )( {}, t ? E.archiveSelectionLimitReachedWarningMessage : E.unarchiveSelectionLimitReachedWarningMessage ), {}, {
+            values: {
+              count: s
+            }
+          } ) ) : k >= 1 || 1 === I ? r.a.createElement( o.b, Object( n.a )( Object( n.a )( {}, t ? E[ M ? "archiveMissingPermissionWarningMessageSingleAmongOthers" : "archiveMissingPermissionWarningMessage" ] : E[ M ? "unarchiveMissingPermissionWarningMessageSingleAmongOthers" : "unarchiveMissingPermissionWarningMessage" ] ), {}, {
+            values: {
+              count: x
+            }
+          } ) ) : r.a.createElement( o.b, Object( n.a )( {}, t ? E.archiveNoPermissionWarningMessage : E.unarchiveNoPermissionWarningMessage ) ) ) )
+        };
+      var x = a( "3wug" );
+      const M = k.a `query ArchiveConfirmationMessageQuery($contentId:ID!$showCount:Boolean!){singleContent(id:$contentId){id archivableDescendantsCount@include(if:$showCount)visibleDescendantsCount@include(if:$showCount)}}`;
+      var A = a( "W90J" ),
+        N = a( "Iy7w" ),
+        T = a( "XFpn" ),
+        D = a.n( T ),
+        R = a( "wMvT" ),
+        S = a.n( R ),
+        L = a( "bs5R" ),
+        B = a.n( L ),
+        H = a( "lRcl" ),
+        _ = a( "i9vy" ),
+        z = a( "lf6Y" ),
+        W = a( "Cpk3" ),
+        V = a( "Csd+" ),
+        $ = a( "KIuR" ),
+        F = a( "xL/l" ),
+        U = a( "7bzo" ),
+        K = a( "a8dO" ),
+        Y = a( "2iMI" ),
+        q = a( "ewfN" ),
+        J = a( "z0fv" );
+      const G = k.a `query PageTreeWithArchivePermissionsQuery($contentId:ID!$first:Int!$offset:Int!){content(id:$contentId){nodes{children(offset:$offset first:$first){count nodes{id title status operations{operation targetType}visibleDescendantsCount archivableDescendantsCount}pageInfo{hasNextPage}}space{key id}id}}}`,
+        Q = Object( N.a )( "div", {
+          target: "eu39c70"
+        } )( 'overflow-y:scroll;overflow-x:hidden;max-height:30vh;div[role="row"]:hover{background-color:', d.N20, ';border-radius:2px;}div[role="row"]{border-bottom:none;max-height:40px;padding-left:5px;}div[role="rowgroup"] > div{border-bottom:none;}a.rowTitle{color:', d.N700, ";}" ),
+        Z = Object( N.a )( "span", {
+          target: "eu39c71"
+        } )( "color:", d.N90, ';div[role="columnheader"]{padding-right:0px;}div[role="columnheader"]:first-child{padding-left:30px;}div#permission-header{padding-right:25px;justify-content:flex-end;}' ),
+        X = Object( N.a )( _.a, {
+          target: "eu39c72"
+        } )( {
+          name: "l256j9",
+          styles: "display:flex;flex-direction:row-reverse;"
+        } ),
+        ee = Object( N.a )( "div", {
+          target: "eu39c73"
+        } )( {
+          name: "qc6j0o",
+          styles: "width:0;margin:0 auto;padding:10px 0;"
+        } ),
+        te = Object( o.f )( {
+          nestedPagesColumnHeader: {
+            id: "archive-pages.nested-page-tree.nested-pages-column",
+            defaultMessage: "Pages",
+            description: "Header for the column showing nested page titles, in a table showing permissions of a nested page tree"
+          },
+          archivePermissionColumnHeader: {
+            id: "archive-pages.nested-page-tree.archive-permissions-column",
+            defaultMessage: "Permission to archive",
+            description: "Header for the column showing whether the current user has access to archive each page in the nested page tree"
+          },
+          restorePermissionColumnHeader: {
+            id: "archive-pages.nested-page-tree.restore-permissions-column",
+            defaultMessage: "Permission to restore",
+            description: "Header for the column showing whether the current user has access to restore each page in the archived nested page tree"
+          },
+          limitedArchivePermissionTooltip: {
+            id: "archive-pages.nested-page-tree.archive.limited-permissions",
+            defaultMessage: "You don't have permission to archive one or more nested pages.",
+            description: "Tooltip text over a warning icon in the nested page tree hierarchy of the archive nested pages confirmation dialog, explaining that the page shown has nested page(s) for which user does not have archive permission"
+          },
+          limitedRestorePermissionTooltip: {
+            id: "archive-pages.nested-page-tree.restore.limited-permissions",
+            defaultMessage: "You don't have permission to restore one or more nested pages.",
+            description: "Tooltip text over a warning icon in the nested page tree hierarchy of the restore nested pages confirmation dialog, explaining that the page shown has nested page(s) for which user does not have restore permission"
+          },
+          canArchiveLabel: {
+            id: "archive-pages.nested-page-tree.can-archive",
+            defaultMessage: "You have permission to archive",
+            description: "Label text on a green check icon explaining that user has permission to archive this page"
+          },
+          noPermissionArchiveLabel: {
+            id: "archive-pages.nested-page-tree.no-permission",
+            defaultMessage: "You do not have permission to archive",
+            description: "Label text on a red cross circle icon explaining that user does not have permission to archive this page"
+          }
+        } ),
+        ae = new z.a( {
+          key: "id"
+        } );
+      const ne = Object( o.g )( ( function ( {
+          contentId: e,
+          analyticsSource: t,
+          isArchive: a,
+          pageSize: s = 25,
+          intl: c
+        } ) {
+          const [ l, d ] = Object( i.useState )( new Map ), [ h, g ] = Object( i.useState )( [] ), [ v, b ] = Object( i.useState )( [] ), [ f, y ] = Object( i.useState )( void 0 ), {
+            createAnalyticsEvent: O
+          } = Object( p.a )(), {
+            data: k,
+            fetchMore: C,
+            loading: j,
+            error: P
+          } = Object( u.d )( G, {
+            notifyOnNetworkStatusChange: !0,
+            fetchPolicy: "cache-and-network",
+            variables: {
+              contentId: e,
+              first: s,
+              offset: 0
+            }
+          } );
+          Object( i.useEffect )( () => {
+            Object( m.a )( {
+              createAnalyticsEvent: O,
+              name: Object( m.d )( a ) + "PageTreeWithArchivePermissions"
+            } )
+          }, [ O, a ] );
+          const w = ( e, t ) => {
+              var a;
+              const n = ( ( null != ( a = e ) && null != ( a = a.content ) ? a.nodes : a ) || [] ).findIndex( e => e.id === t );
+              return {
+                index: n,
+                node: -1 !== n ? e.content.nodes[ n ] : null
+              }
+            },
+            E = Object( i.useCallback )( ( e, t = null ) => {
+              var n;
+              return ( ( null != ( n = e ) && null != ( n = n.children ) ? n.nodes : n ) || [] ).reduce( ( n, i ) => {
+                if ( a && i.status !== A.f || !a ) {
+                  var r, o;
+                  const {
+                    id: a,
+                    title: s,
+                    operations: c,
+                    archivableDescendantsCount: l,
+                    visibleDescendantsCount: d
+                  } = i;
+                  n.push( {
+                    id: a || "",
+                    title: s || "",
+                    canArchiveOrUnarchive: ( c || [] ).some( e => "archive" === e.operation && "page" === e.targetType ),
+                    hasLimitedDescendantPermissions: parseInt( l ) < parseInt( d ),
+                    hasChildren: parseInt( d ) > 0,
+                    parentId: ( null != ( o = e ) ? o.id : o ) || "",
+                    spaceKey: ( null != ( r = e ) && null != ( r = r.space ) ? r.key : r ) || "",
+                    parentItem: t
+                  } )
+                }
+                return n
+              }, [] )
+            }, [ a ] ),
+            I = Object( i.useCallback )( ( e, t = null ) => {
+              const a = l.get( e );
+              if ( !a || a.hasNextPage && !a.isLoading ) {
+                a && d( l.set( e, Object( n.a )( Object( n.a )( {}, a ), {}, {
+                  isLoading: !0
+                } ) ) );
+                const i = a ? a.offset : 0;
+                C( {
+                  variables: {
+                    contentId: e,
+                    first: s,
+                    offset: i
+                  },
+                  updateQuery: ( t, {
+                    fetchMoreResult: a
+                  } ) => {
+                    if ( !a ) return t;
+                    const i = a.content.nodes[ 0 ],
+                      {
+                        index: r,
+                        node: o
+                      } = w( t, e ),
+                      s = o ? o.children.nodes : [],
+                      c = s.length + i.children.nodes.length,
+                      l = Object( n.a )( Object( n.a )( {}, i ), {}, {
+                        children: Object( n.a )( Object( n.a )( {}, i.children ), {}, {
+                          count: c,
+                          nodes: [ ...s, ...i.children.nodes ],
+                          pageInfo: Object( n.a )( {}, i.children.pageInfo ),
+                          __typename: "PaginatedContentList"
+                        } )
+                      } );
+                    let d; - 1 === r ? d = [ ...t.content.nodes, l ] : ( t.content.nodes.splice( r, 1, l ), d = [ ...t.content.nodes ] );
+                    return {
+                      content: {
+                        nodes: d,
+                        __typename: "PaginatedContentListWithChild"
+                      }
+                    }
+                  }
+                } ).then( e => {
+                  var i, r, o, s;
+                  const {
+                    data: c
+                  } = e, u = null != ( s = c ) && null != ( s = s.content ) && null != ( s = s.nodes ) ? s[ 0 ] : s, h = null != ( o = u ) ? o.id : o, g = null != ( r = u ) && null != ( r = r.children ) ? r.pageInfo : r, p = a ? a.offset : 0, m = parseInt( ( null != ( i = u ) && null != ( i = i.children ) ? i.count : i ) + p ), f = E( u, t );
+                  d( l.set( h, Object( n.a )( Object( n.a )( {}, a ), {}, {
+                    hasNextPage: g && g.hasNextPage,
+                    offset: m,
+                    lastLoadedChildId: f.length ? f[ f.length - 1 ].id : null,
+                    isLoading: !1
+                  } ) ) ), b( 0 === p ? ae.updateItems( f, v, t ) : ae.appendItems( f, v, t ) )
+                } ).catch( e => {
+                  y( e )
+                } )
+              }
+            }, [ E, C, s, v, l ] );
+          Object( i.useEffect )( () => {
+            const {
+              node: t
+            } = w( k, e );
+            if ( t && !v.length ) {
+              var a, n;
+              const i = null != ( n = t ) && null != ( n = n.children ) && null != ( n = n.pageInfo ) ? n.hasNextPage : n,
+                r = null != ( a = t ) && null != ( a = a.children ) ? a.count : a,
+                o = E( t );
+              l.has( e ) || d( l.set( e, {
+                hasNextPage: i,
+                offset: r,
+                lastLoadedChildId: o.length ? o[ o.length - 1 ].id : null
+              } ) ), o.length ? b( ae.updateItems( o, v ) ) : I( e )
+            }
+          }, [ k, b, v, e, l, E, I ] );
+          const x = t => {
+              t ? I( t.id, t ) : I( e )
+            },
+            M = Object( i.useCallback )( ( e, a ) => {
+              Object( m.c )( {
+                createAnalyticsEvent: O,
+                actionSubject: "button",
+                actionSubjectId: e + "ParentPage",
+                source: t,
+                attributes: {
+                  contentId: a
+                }
+              } )
+            }, [ O, t ] ),
+            N = e => {
+              if ( h.includes( e.id ) || ( M( "expand", e.id ), g( [ ...h, e.id ] ) ), !e.children || !e.children.length ) {
+                const {
+                  node: t
+                } = w( k, e.id );
+                t ? b( ae.updateItems( E( t, e ), v, e ) ) : x( e )
+              }
+            },
+            T = e => {
+              h.includes( e.id ) && ( M( "collapse", e.id ), g( h.filter( t => t !== e.id ) ) )
+            },
+            D = f || P;
+          return r.a.createElement( W.a, null, r.a.createElement( Z, null, r.a.createElement( V.a, null, r.a.createElement( $.a, {
+            width: 375
+          }, r.a.createElement( o.b, Object( n.a )( {}, te.nestedPagesColumnHeader ) ) ), r.a.createElement( $.a, {
+            width: 230,
+            id: "permission-header"
+          }, r.a.createElement( o.b, Object( n.a )( {}, a ? te.archivePermissionColumnHeader : te.restorePermissionColumnHeader ) ) ) ) ), D ? r.a.createElement( J.d, {
+            error: D
+          } ) : null, v.length ? r.a.createElement( Q, {
+            id: "table-tree-body"
+          }, r.a.createElement( F.a, {
+            items: v,
+            render: ( {
+              id: e,
+              title: t,
+              children: n,
+              hasChildren: i,
+              canArchiveOrUnarchive: r,
+              hasLimitedDescendantPermissions: o,
+              parentId: s,
+              parentItem: d,
+              spaceKey: u
+            } ) => ie( {
+              id: e,
+              title: t,
+              childItems: n,
+              hasChildren: i,
+              canArchiveOrUnarchive: r,
+              hasLimitedDescendantPermissions: o,
+              parentId: s,
+              parentItem: d,
+              loadMoreData: x,
+              expandRow: N,
+              collapseRow: T,
+              spaceKey: u,
+              parentPageLoadingMap: l,
+              expandedRows: h,
+              isArchive: a,
+              intl: c
+            } )
+          } ) ) : !D && j && r.a.createElement( ee, null, r.a.createElement( H.a, {
+            size: "medium",
+            testId: "archive-pagetree-loading-spinner"
+          } ) ) )
+        } ) ),
+        ie = ( {
+          id: e,
+          childItems: t,
+          hasChildren: a,
+          expandRow: n,
+          collapseRow: i,
+          title: o,
+          canArchiveOrUnarchive: s,
+          hasLimitedDescendantPermissions: c,
+          parentId: l,
+          parentItem: u,
+          loadMoreData: h,
+          spaceKey: g,
+          parentPageLoadingMap: p,
+          expandedRows: v,
+          isArchive: b,
+          intl: m
+        } ) => {
+          const f = p.get( l );
+          return f && f.hasNextPage && f.lastLoadedChildId === e ? r.a.createElement( U.a, null, r.a.createElement( _.a, null, r.a.createElement( Y.a, {
+            onScrollTo: () => h( u ),
+            testId: "archive-pagetree-paginating-spinner",
+            observerOptions: {
+              root: document.getElementById( "table-tree-body" ),
+              rootMargin: "100px 0px 0px 0px"
+            }
+          } ) ) ) : r.a.createElement( U.a, {
+            itemId: e,
+            items: t,
+            hasChildren: a,
+            onExpand: n,
+            onCollapse: i
+          }, r.a.createElement( _.a, {
+            singleLine: !0
+          }, a ? null : r.a.createElement( J.c, null ), r.a.createElement( "a", {
+            className: "rowTitle",
+            target: "_blank",
+            href: g ? q.VIEW_PAGE.toUrl( {
+              contentId: e,
+              spaceKey: g
+            } ) : ""
+          }, o ) ), r.a.createElement( X, {
+            singleLine: !0,
+            testId: "permission-cell"
+          }, !v.includes( e ) && c ? r.a.createElement( K.a, {
+            content: b ? m.formatMessage( te.limitedArchivePermissionTooltip ) : m.formatMessage( te.limitedRestorePermissionTooltip ),
+            tag: "span",
+            position: "top"
+          }, r.a.createElement( B.a, {
+            label: "",
+            primaryColor: d.Y300,
+            testId: "limited-permissions-icon-" + e
+          } ) ) : null, s ? r.a.createElement( D.a, {
+            label: m.formatMessage( te.canArchiveLabel ),
+            primaryColor: "green",
+            testId: "has-archive-permission-icon-" + e
+          } ) : r.a.createElement( S.a, {
+            label: m.formatMessage( te.noPermissionArchiveLabel ),
+            primaryColor: d.R400,
+            testId: "no-archive-permission-icon-" + e
+          } ) ) )
+        };
+      a.d( t, "a", ( function () {
+        return de
+      } ) );
+      const re = Object( o.f )( {
+          includeNestedPages: {
+            id: "archive-pages.page-nested.archive.include-nested-pages.radio",
+            defaultMessage: "Yes",
+            description: "Label for the radio to allow user to include nested child pages in the archival process"
+          },
+          excludeNestedPages: {
+            id: "archive-pages.page-nested.archive.exclude-nested-pages.radio",
+            defaultMessage: "No",
+            description: "Label for the radio to allow user to exclude nested child pages in the archival process"
+          },
+          showPageTreeText: {
+            id: "archive-pages.archive-nested-pages.dialog.show.page-tree",
+            defaultMessage: "Show",
+            description: "Link text to display page tree for the nested pages archival dialog"
+          },
+          hidePageTreeText: {
+            id: "archive-pages.archive-nested-pages.dialog.hide.page-tree",
+            defaultMessage: "Hide",
+            description: "Link text to hide page tree for the nested pages archival dialog"
+          },
+          archiveNestedPagesOptionDescription: {
+            id: "archive-pages.allow-page-nested.nested-pages-option.archive.dialog.description",
+            defaultMessage: "{count, plural, one {Also archive nested page?} other {Also archive all nested pages?}}",
+            description: "Description for archive nested pages radio options asking user to include or exclude nested page(s) in archive attempt"
+          },
+          unarchiveNestedPagesOptionDescription: {
+            id: "archive-pages.allow-page-nested.nested-pages-option.unarchive.dialog.description",
+            defaultMessage: "{count, plural, one {Also restore nested page?} other {Also restore all nested pages?}}",
+            description: "Description for restore nested pages radio options asking user to include or exclude nested page(s) in archive attempt"
+          },
+          archiveNestedPagesDialogDescription: {
+            id: "archive-pages.allow-page-nested.archive.dialog.description",
+            defaultMessage: '{count, plural, =0 {""} one {"{title}" has 1 nested page.} other {"{title}" has {count} nested pages.}}',
+            description: "The body of the Archive / Restore Nested Page modal dialog. User will see how many nested pages there are and has an option to include nested pages."
+          },
+          archivePageDialogDescription: {
+            id: "archive-pages.page-nested.archive.dialog.description",
+            defaultMessage: 'All pages nested under "{title}" will remain in the page tree.',
+            description: "The body of the Archive Page modal dialog, warning the user that nested child pages will remain in the page tree after archival."
+          },
+          unarchivePageWithChildrenDialogBody: {
+            id: "archive-pages.page-nested.unarchive.dialog.body",
+            defaultMessage: 'All pages nested under "{title}" will remain in the archive.',
+            description: "The body of the modal dialog that opens when user attempts to unarchive a page that has child (nested) pages, explaining that the children will remain in the archive list after archiving the current page."
+          }
+        } ),
+        oe = s.default.div `
+  display: flex;
+  flex-direction: column;
+`,
+        se = s.default.div `
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+`,
+        ce = s.default.h4 `
+  font-weight: bold;
+  margin-top: 20px;
+`,
+        le = s.default.div `
+  border-bottom: 2px solid ${d.N40};
+`,
+        de = Object( o.g )( ( {
+          contentId: e,
+          allowNestedPages: t,
+          includeNestedPages: a,
+          setIncludeNestedPages: s,
+          isArchive: d,
+          analyticsSource: h,
+          intl: f
+        } ) => {
+          var y, O;
+          const {
+            data: k,
+            error: C
+          } = Object( u.d )( M, {
+            variables: {
+              contentId: e,
+              showCount: t
+            },
+            fetchPolicy: "cache-and-network"
+          } ), j = parseInt( Object( b.c )( A.d ) ), P = 0 !== j, w = ( null == k || null === ( O = k.singleContent ) || void 0 === O ? void 0 : O.visibleDescendantsCount ) || 0, E = P && w + 1 > j, [ N, T ] = Object( i.useState )( !1 ), {
+            createAnalyticsEvent: D
+          } = Object( p.a )(), R = Object( i.useMemo )( () => [ {
+            name: "nestedPagesOption",
+            value: "includeNestedPages",
+            label: f.formatMessage( re.includeNestedPages )
+          }, {
+            name: "nestedPagesOption",
+            value: "excludeNestedPages",
+            label: f.formatMessage( re.excludeNestedPages )
+          } ], [ f ] );
+          Object( i.useEffect )( () => {
+            Object( m.a )( {
+              createAnalyticsEvent: D,
+              name: h
+            } )
+          }, [ D, h ] );
+          const S = Object( i.useCallback )( () => {
+              const e = !N;
+              Object( m.c )( {
+                createAnalyticsEvent: D,
+                actionSubject: "link",
+                actionSubjectId: "togglePageTreeLink",
+                source: h,
+                attributes: {
+                  pageTreeState: e ? "show" : "hide"
+                }
+              } ), T( e )
+            }, [ D, h, N ] ),
+            L = Object( i.useCallback )( e => {
+              const t = "includeNestedPages" === e.currentTarget.value;
+              Object( m.c )( {
+                createAnalyticsEvent: D,
+                actionSubject: "radioButton",
+                actionSubjectId: "includeNestedPagesSelection",
+                source: h,
+                attributes: {
+                  includeNestedPages: t
+                }
+              } ), s( t )
+            }, [ D, h, s ] );
+          if ( Object( i.useEffect )( () => {
+              var e;
+              const a = null != ( e = k ) && null != ( e = e.singleContent ) ? e.archivableDescendantsCount : e;
+              t && !g()( a ) && a > 0 && !E && s( !0 )
+            }, [ t, k, s, E ] ), C ) return r.a.createElement( v.a, {
+            error: C
+          } );
+          if ( !k && t ) return null;
+          const B = null != ( y = k ) && null != ( y = y.singleContent ) ? y.archivableDescendantsCount : y;
+          if ( g()( B ) ) return null;
+          let H;
+          return H = t ? re.archiveNestedPagesDialogDescription : d ? re.archivePageDialogDescription : re.unarchivePageWithChildrenDialogBody, r.a.createElement( oe, null, r.a.createElement( se, null, r.a.createElement( x.a, {
+            contentId: e,
+            i18nMessage: H,
+            allowNestedPages: t,
+            useArchivableCount: !1,
+            shouldTruncate: !0
+          } ), t ? r.a.createElement( l.a, {
+            appearance: "link",
+            onClick: S
+          }, r.a.createElement( o.b, Object( n.a )( {}, N ? re.hidePageTreeText : re.showPageTreeText ) ) ) : null ), N ? r.a.createElement( le, {
+            "data-testid": "table-tree-container"
+          }, r.a.createElement( ne, {
+            contentId: e,
+            analyticsSource: h,
+            isArchive: d
+          } ) ) : null, t ? E ? r.a.createElement( I, {
+            isArchive: d,
+            contentId: e,
+            selectionLimitReached: E,
+            selectionLimit: j
+          } ) : r.a.createElement( r.a.Fragment, null, !1 !== a ? r.a.createElement( I, {
+            isArchive: d,
+            contentId: e
+          } ) : null, 0 === B ? null : r.a.createElement( r.a.Fragment, null, r.a.createElement( ce, null, r.a.createElement( o.b, Object( n.a )( Object( n.a )( {}, d ? re.archiveNestedPagesOptionDescription : re.unarchiveNestedPagesOptionDescription ), {}, {
+            values: {
+              count: B
+            }
+          } ) ) ), r.a.createElement( c.default, {
+            options: R,
+            value: g()( a ) ? void 0 : a ? "includeNestedPages" : "excludeNestedPages",
+            onChange: L
+          } ) ) ) : null )
+        } )
+    },
+    PLaw: function ( e, t, a ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var n = r( a( "ERkP" ) ),
+        i = r( a( "4KTy" ) );
+
+      function r( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function o() {
+        return ( o = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var a = arguments[ t ];
+            for ( var n in a ) Object.prototype.hasOwnProperty.call( a, n ) && ( e[ n ] = a[ n ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var s = function ( e ) {
+        return n.default.createElement( i.default, o( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z" fill="currentColor" fill-rule="evenodd"/></svg>'
+        }, e ) )
+      };
+      s.displayName = "ChevronDownIcon";
+      var c = s;
+      t.default = c
+    },
+    R7V3: function ( e, t ) {
+      e.exports = function ( e ) {
+        return null === e
+      }
+    },
+    XFpn: function ( e, t, a ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var n = r( a( "ERkP" ) ),
+        i = r( a( "4KTy" ) );
+
+      function r( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function o() {
+        return ( o = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var a = arguments[ t ];
+            for ( var n in a ) Object.prototype.hasOwnProperty.call( a, n ) && ( e[ n ] = a[ n ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var s = function ( e ) {
+        return n.default.createElement( i.default, o( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill-rule="evenodd"><circle fill="currentColor" cx="12" cy="12" r="10"/><path d="M9.707 11.293a1 1 0 1 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 1 0-1.414-1.414L11 12.586l-1.293-1.293z" fill="inherit"/></g></svg>'
+        }, e ) )
+      };
+      s.displayName = "CheckCircleIcon";
+      var c = s;
+      t.default = c
+    },
+    Zr8h: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return c
+      } ) );
+      var n = a( "ERkP" ),
+        i = a.n( n ),
+        r = a( "+6Tk" ),
+        o = a( "ANgl" ),
+        s = a( "dIe6" );
+      const c = ( {
+        targetEditions: e,
+        featureFlag: t,
+        children: a
+      } ) => Object( r.a )( t ) ? i.a.createElement( o.a, null, ( {
+        edition: t,
+        loading: n,
+        error: r
+      } ) => n ? null : r ? i.a.createElement( s.a, {
+        error: r
+      } ) : a( {
+        isFeatureEnabled: Boolean( t && e.includes( t ) )
+      } ) ) : a( {
+        isFeatureEnabled: !1
+      } )
+    },
+    bs5R: function ( e, t, a ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var n = r( a( "ERkP" ) ),
+        i = r( a( "4KTy" ) );
+
+      function r( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function o() {
+        return ( o = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var a = arguments[ t ];
+            for ( var n in a ) Object.prototype.hasOwnProperty.call( a, n ) && ( e[ n ] = a[ n ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var s = function ( e ) {
+        return n.default.createElement( i.default, o( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M13.31 5.343l7.359 13.17A1 1 0 0 1 19.796 20H4.204a1 1 0 0 1-.873-1.488l7.36-13.169a1.5 1.5 0 0 1 2.618 0zM12 8.5a1.091 1.091 0 0 0-1.081 1.239l.513 3.766a.573.573 0 0 0 1.136 0l.513-3.766A1.091 1.091 0 0 0 12 8.5zm0 8.63a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25z" fill="currentColor" fill-rule="evenodd"/></svg>'
+        }, e ) )
+      };
+      s.displayName = "EditorWarningIcon";
+      var c = s;
+      t.default = c
+    },
+    lf6Y: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "a", ( function () {
+        return y
+      } ) );
+      var n = a( "VrFO" ),
+        i = a.n( n ),
+        r = a( "Y9Ll" ),
+        o = a.n( r ),
+        s = a( "RhWx" ),
+        c = a.n( s ),
+        l = a( "KEM+" ),
+        d = a.n( l ),
+        u = a( "2srY" ),
+        h = a.n( u ),
+        g = a( "DL3M" ),
+        p = a.n( g );
+
+      function v( e, t ) {
+        var a = Object.keys( e );
+        if ( Object.getOwnPropertySymbols ) {
+          var n = Object.getOwnPropertySymbols( e );
+          t && ( n = n.filter( ( function ( t ) {
+            return Object.getOwnPropertyDescriptor( e, t ).enumerable
+          } ) ) ), a.push.apply( a, n )
+        }
+        return a
+      }
+
+      function b( e ) {
+        for ( var t = 1; t < arguments.length; t++ ) {
+          var a = null != arguments[ t ] ? arguments[ t ] : {};
+          t % 2 ? v( Object( a ), !0 ).forEach( ( function ( t ) {
+            d()( e, t, a[ t ] )
+          } ) ) : Object.getOwnPropertyDescriptors ? Object.defineProperties( e, Object.getOwnPropertyDescriptors( a ) ) : v( Object( a ) ).forEach( ( function ( t ) {
+            Object.defineProperty( e, t, Object.getOwnPropertyDescriptor( a, t ) )
+          } ) )
+        }
+        return e
+      }
+
+      function m( e ) {
+        var t = arguments.length > 1 && void 0 !== arguments[ 1 ] ? arguments[ 1 ] : [],
+          a = arguments.length > 2 ? arguments[ 2 ] : void 0,
+          n = a.key,
+          i = a.keysCache,
+          r = a.operation,
+          o = b( {}, i ),
+          s = "UPDATE" === r ? [] : c()( t ),
+          l = s.length;
+        return e.forEach( ( function ( e, t ) {
+          if ( void 0 === e[ n ] ) throw new Error( "[ERROR] Property '".concat( n, "' not found in rootItem[" ).concat( t, "]" ) );
+          o[ e[ n ] ] = t + l
+        } ) ), {
+          keysCache: o,
+          items: s.concat( e )
+        }
+      }
+
+      function f( e, t, a, n ) {
+        var i = n.key,
+          r = n.keysCache,
+          o = n.operation,
+          s = b( {}, r ),
+          l = a[ i ];
+        if ( void 0 === l ) throw new Error( "[Table Tree] Property '".concat( i, "' not found in parent item" ) );
+        var d = s[ l ],
+          u = c()( t ),
+          g = h()( u, d ),
+          v = "UPDATE" === o ? [] : h()( g, "children", [] );
+        return g.children = v.concat( e ), e.forEach( ( function ( e, t ) {
+          s[ e[ i ] ] = "".concat( d, ".children[" ).concat( t + v.length, "]" )
+        } ) ), {
+          keysCache: s,
+          items: p()( u, d, g )
+        }
+      }
+      var y = function () {
+        function e() {
+          var t = arguments.length > 0 && void 0 !== arguments[ 0 ] ? arguments[ 0 ] : {},
+            a = t.key,
+            n = void 0 === a ? "key" : a;
+          i()( this, e ), d()( this, "key", void 0 ), d()( this, "keysCache", void 0 ), this.key = n, this.keysCache = {}
+        }
+        return o()( e, [ {
+          key: "updateItems",
+          value: function ( e ) {
+            var t = arguments.length > 1 && void 0 !== arguments[ 1 ] ? arguments[ 1 ] : [],
+              a = arguments.length > 2 ? arguments[ 2 ] : void 0,
+              n = {
+                key: this.key,
+                keysCache: this.keysCache,
+                operation: "UPDATE"
+              };
+            if ( !a ) {
+              var i = m( e, t, n ),
+                r = i.keysCache,
+                o = i.items;
+              return this.keysCache = r, o
+            }
+            var s = f( e, t, a, n ),
+              c = s.keysCache,
+              l = s.items;
+            return this.keysCache = c, l
+          }
+        }, {
+          key: "appendItems",
+          value: function ( e ) {
+            var t = arguments.length > 1 && void 0 !== arguments[ 1 ] ? arguments[ 1 ] : [],
+              a = arguments.length > 2 ? arguments[ 2 ] : void 0,
+              n = {
+                key: this.key,
+                keysCache: this.keysCache,
+                operation: "APPEND"
+              };
+            if ( !a ) {
+              var i = m( e, t, n ),
+                r = i.keysCache,
+                o = i.items;
+              return this.keysCache = r, o
+            }
+            var s = f( e, t, a, n ),
+              c = s.keysCache,
+              l = s.items;
+            return this.keysCache = c, l
+          }
+        } ] ), e
+      }()
+    },
+    sTzJ: function ( e, t, a ) {
+      "use strict";
+      var n = a( "HbGN" ),
+        i = a( "ERkP" ),
+        r = a( "l1C2" ),
+        o = a( "bbmB" ),
+        s = a( "3IV/" ),
+        c = a( "EFzz" ),
+        l = a( "BMbf" );
+      const d = {
+          light: {
+            background: s.N10,
+            backgroundHover: s.N30,
+            backgroundActive: s.B50,
+            backgroundChecked: s.B400,
+            backgroundCheckedHover: s.B300,
+            dotChecked: s.N10,
+            dotDisabled: s.N70,
+            dotActive: s.B400,
+            border: s.N40,
+            borderHover: s.N40,
+            borderFocus: s.B100,
+            disabled: s.N20,
+            invalid: s.R300
+          },
+          dark: {
+            background: s.DN10,
+            backgroundHover: s.DN30,
+            backgroundActive: s.B200,
+            backgroundChecked: s.B400,
+            backgroundCheckedHover: s.B75,
+            dotChecked: s.DN10,
+            dotDisabled: s.DN90,
+            dotActive: s.DN10,
+            border: s.DN80,
+            borderHover: s.DN200,
+            borderFocus: s.B75,
+            disabled: s.DN10,
+            invalid: s.R300
+          }
+        },
+        u = {
+          name: "zg54dc",
+          styles: "--radio-background-color:var(--local-background);--radio-border-color:var(--local-border);--radio-dot-color:var(--local-dot-checked);--radio-dot-opacity:0;-webkit-appearance:none;-moz-appearance:none;height:24px;width:24px;flex-shrink:0;margin:0;transform:scale(calc(7 / 12));outline:none;display:inline-block;vertical-align:top;position:relative;border:calc(2px * 12 / 7) solid var(--radio-border-color);background-color:var(--radio-background-color);transition:border-color 0.2s ease-in-out,background-color 0.2s ease-in-out;border-radius:50%;display:flex;align-items:center;justify-content:center;&::after{content:'';border-radius:50%;height:calc(4px * 12 / 7);width:calc(4px * 12 / 7);background:var(--radio-dot-color);opacity:var(--radio-dot-opacity);position:absolute;transition:background-color 0.2s ease-in-out,opacity 0.2s ease-in-out;}&:checked{--radio-dot-opacity:1;}&:hover{--radio-background-color:var(--local-background-hover);--radio-border-color:var(local-border-hover);}&:focus{--radio-border-color:var(--local-border-focus);}&:checked{--radio-background-color:var(--local-background-checked);--radio-border-color:var(--local-background-checked);}&:checked:hover{--radio-background-color:var(--local-background-checked-hover);--radio-border-color:var(--local-background-checked-hover);}&:checked:focus{--radio-border-color:var(--local-border-focus);}&:checked:active{--radio-background-color:var(--local-background-active);--radio-dot-color:var(--local-dot-active);--radio-border-color:var(--local-border-focus);}&[data-invalid],&:checked[data-invalid]{--radio-border-color:var(--local-invalid);}&:disabled,&:disabled:hover,&:disabled:focus,&:disabled:active,&:disabled[data-invalid]{--radio-background-color:var(--local-disabled);--radio-border-color:var(--local-disabled);--radio-dot-color:var(--local-dot-disabled);cursor:not-allowed;}"
+        };
+      var h = a( "1uqL" );
+      const g = Object( l.e )(),
+        p = () => {};
+      var v = {
+        name: "15am2em",
+        styles: "padding:2px 4px;"
+      };
+      const b = Object( i.forwardRef )( ( function ( e, t ) {
+          const {
+            ariaLabel: a,
+            isDisabled: c = !1,
+            isRequired: l,
+            isInvalid: b = !1,
+            isChecked: m = !1,
+            label: f,
+            mode: y,
+            name: O,
+            onChange: k = p,
+            value: C,
+            testId: j,
+            analyticsContext: P
+          } = e, w = Object( n.a )( e, [ "ariaLabel", "isDisabled", "isRequired", "isInvalid", "isChecked", "label", "mode", "name", "onChange", "value", "testId", "analyticsContext" ] ), E = Object( o.a )( {
+            fn: k,
+            action: "changed",
+            analyticsData: P,
+            componentName: "radio",
+            packageName: h.a,
+            packageVersion: h.b
+          } ), I = Object( i.useMemo )( () => function ( e ) {
+            const t = d[ e ];
+            return [ Object( r.e )( "--local-background:", t.background, ";--local-background-hover:", t.backgroundHover, ";--local-background-active:", t.backgroundActive, ";--local-background-checked:", t.backgroundChecked, ";--local-background-checked-hover:", t.backgroundCheckedHover, ";--local-dot-checked:", t.dotChecked, ";--local-dot-disabled:", t.dotDisabled, ";--local-dot-active:", t.dotActive, ";--local-border:", t.border, ";--local-border-hover:", t.borderHover, ";--local-border-focus:", t.borderFocus, ";--local-disabled:", t.disabled, ";--local-invalid:", s.R300, ";" ), u ]
+          }( y ), [ y ] );
+          return Object( r.f )( "label", {
+            "data-testid": j && j + "--radio-label",
+            "data-disabled": c ? "true" : void 0,
+            css: Object( r.e )( "align-items:flex-start;font-family:", g, ";color:", "light" === y ? s.N900 : s.DN600, ";display:flex;position:relative;box-sizing:border-box;&[data-disabled]{color:", s.N80, ";cursor:not-allowed;}" )
+          }, Object( r.f )( "input", Object.assign( {}, w, {
+            "aria-label": a,
+            checked: m,
+            disabled: c,
+            name: O,
+            onChange: E,
+            required: l,
+            type: "radio",
+            value: C,
+            "data-testid": j && j + "--radio-input",
+            "data-invalid": b ? "true" : void 0,
+            css: I,
+            ref: t
+          } ) ), f ? Object( r.f )( "span", {
+            css: v
+          }, f ) : null )
+        } ) ),
+        m = Object( i.memo )( Object( i.forwardRef )( ( function ( e, t ) {
+          return Object( r.f )( c.a.Consumer, null, ( {
+            mode: a
+          } ) => Object( r.f )( b, Object.assign( {}, e, {
+            ref: t,
+            mode: a
+          } ) ) )
+        } ) ) );
+      t.a = m
+    },
+    wMvT: function ( e, t, a ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var n = r( a( "ERkP" ) ),
+        i = r( a( "4KTy" ) );
+
+      function r( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function o() {
+        return ( o = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var a = arguments[ t ];
+            for ( var n in a ) Object.prototype.hasOwnProperty.call( a, n ) && ( e[ n ] = a[ n ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var s = function ( e ) {
+        return n.default.createElement( i.default, o( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill-rule="evenodd"><circle fill="currentColor" cx="12" cy="12" r="10"/><path d="M13.477 9.113l-4.36 4.386a1 1 0 1 0 1.418 1.41l4.36-4.386a1 1 0 0 0-1.418-1.41z" fill="inherit"/><path d="M9.084 10.501l4.358 4.377a1 1 0 1 0 1.418-1.411L10.5 9.09a1 1 0 0 0-1.417 1.411z" fill="inherit"/></g></svg>'
+        }, e ) )
+      };
+      s.displayName = "CrossCircleIcon";
+      var c = s;
+      t.default = c
+    },
+    z0fv: function ( e, t, a ) {
+      "use strict";
+      a.d( t, "e", ( function () {
+        return i
+      } ) ), a.d( t, "a", ( function () {
+        return r
+      } ) ), a.d( t, "c", ( function () {
+        return o
+      } ) ), a.d( t, "d", ( function () {
+        return s
+      } ) ), a.d( t, "b", ( function () {
+        return c
+      } ) );
+      var n = a( "RfuI" );
+      const i = Object( n.a )( {
+          id: "M9n+i",
+          name: "PageSelectionTable",
+          loader: async () => ( await Promise.all( [ a.e( "atlaskit~66e23772" ), a.e( 49 ), a.e( "page-selection-table~b59ad437" ) ] ).then( a.bind( null, "vkFk" ) ) ).PageSelectionTable
+        } ),
+        r = Object( n.a )( {
+          id: "D7k2u",
+          name: "ClickableColumnHeader",
+          loader: async () => ( await Promise.all( [ a.e( "atlaskit~66e23772" ), a.e( "page-selection-table-util-components~b59ad437" ) ] ).then( a.bind( null, "SpNo" ) ) ).ClickableColumnHeader
+        } ),
+        o = Object( n.a )( {
+          id: "7+RE5",
+          name: "NoChildrenBullet",
+          loader: async () => ( await Promise.all( [ a.e( "atlaskit~66e23772" ), a.e( "page-selection-table-util-components~b59ad437" ) ] ).then( a.bind( null, "7APs" ) ) ).NoChildrenBullet
+        } ),
+        s = Object( n.a )( {
+          id: "sWCLL",
+          name: "PageLoadErrorMessages",
+          loader: async () => ( await Promise.all( [ a.e( "atlaskit~66e23772" ), a.e( "page-selection-table-util-components~b59ad437" ) ] ).then( a.bind( null, "lIyk" ) ) ).PageLoadErrorMessages
+        } ),
+        c = Object( n.a )( {
+          id: "JGB20",
+          name: "EmptyPageSelectionTable",
+          loader: async () => ( await Promise.all( [ a.e( "atlaskit~66e23772" ), a.e( "page-selection-table-util-components~b59ad437" ) ] ).then( a.bind( null, "ijMl" ) ) ).EmptyPageSelectionTable
+        } )
+    },
+    zmRp: function ( e, t, a ) {
+      "use strict";
+      a.r( t ), a.d( t, "default", ( function () {
+        return l
+      } ) );
+      var n = a( "cxan" ),
+        i = a( "ERkP" ),
+        r = a.n( i ),
+        o = a( "sTzJ" );
+      const s = () => {},
+        c = [];
+
+      function l( e ) {
+        const {
+          onChange: t,
+          options: a = c,
+          value: l,
+          defaultValue: d,
+          isDisabled: u,
+          isRequired: h,
+          onInvalid: g = s,
+          name: p,
+          analyticsContext: v
+        } = e, [ b, m ] = Object( i.useState )( void 0 !== l ? l : d ), f = Object( i.useCallback )( ( e, a ) => {
+          m( e.currentTarget.value ), t && t( e, a )
+        }, [ t ] ), y = void 0 !== l ? l : b;
+        return r.a.createElement( i.Fragment, null, a.map( ( e, t ) => {
+          let a = Object( n.a )( {}, e );
+          void 0 !== u && ( a.isDisabled = u );
+          const i = null != y && a.value === y;
+          return r.a.createElement( o.a, Object.assign( {}, a, {
+            name: p || a.name,
+            key: t,
+            onChange: f,
+            onInvalid: g,
+            isChecked: i,
+            isRequired: h,
+            analyticsContext: v
+          } ) )
+        } ) )
+      }
+    }
+  }
+] );
+//# sourceMappingURL=86.JKX7zq2Htv.js.map

@@ -1,0 +1,26 @@
+extends layout.pug
+mixin option(value, text)
+    option(value=value selected=(value === favoriteBeatle ? 'selected' : '')) #{text}
+
+block content
+  h1= title
+  include includes/errors
+  form(action=`/create-interesting` method='post')
+    include includes/create
+    .form-group
+      label(for='age') Age:
+      input(type="number" id='age' name="age" value=age)
+    .form-group
+      label(for='favorite-beatle') Favorite Beatle
+      select(name='favoriteBeatle')
+        +option('', '--Please choose an option--')
+        +option('John', 'John')
+        +option('Paul', 'Paul')
+        +option('Ringo', 'Ringo')
+        +option('George', 'George')
+        +option('Scooby-Doo', 'Scooby-Doo')
+    .form-check
+      input(type='checkbox' checked=(iceCream === 'on') name="iceCream")
+      label(for='iceCream') Likes Ice Cream
+    div
+      input(type='submit' value='Create Interesting User')

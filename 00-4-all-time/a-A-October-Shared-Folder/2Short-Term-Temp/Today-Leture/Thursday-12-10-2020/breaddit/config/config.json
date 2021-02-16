@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "breaddit_dev",
+    "password": "password",
+    "database": "breaddit_dev",
+    "host": "localhost",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  }
+}

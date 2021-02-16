@@ -1,0 +1,155 @@
+<dl>
+<dt>psql: error: could not connect to server: FATAL: password authentication failed for user “-W”</dt>
+<dd>week-10 : (master) psql -W -U test_superuser postgres Password: psql: error: could not connect to server: FATAL: password authentication failed for user “test_superuser”
+</dd>
+<dd>week-10 : (master)
+</dd>
+<dd>week-10 : (master)
+</dd>
+<dd>week-10 : (master)
+</dd>
+<dd>week-10 : (master) psql -W -U test_superuser postgres Password: psql: error: could not connect to server: FATAL: password authentication failed for user “test_superuser”
+</dd>
+<dd>week-10 : (master) psql -W -U test_superuser postgres Password: psql (12.4 (Ubuntu 12.4-1.pgdg20.04+1), server 13.0 (Debian 13.0-1.pgdg100+1)) WARNING: psql major version 12, server major version 13. Some psql features might not work. Type “help” for help.
+</dd>
+</dl>
+<p>postgres=# postgres=# SELECT CURRENT_USER; current_user<br />
+—————- test_superuser (1 row)</p>
+<p>postgres=# CREATE USER test_normal_user postgres-# WITH postgres-# PASSWORD ‘test’; CREATE ROLE postgres=#  ~ week-10 : (master) psql -U test_normal_user -W postgres Password: psql: error: could not connect to server: FATAL: password authentication failed for user “test_normal_user” ~ week-10 : (master) psql -U test_normal_user -W postgres Password: psql (12.4 (Ubuntu 12.4-1.pgdg20.04+1), server 13.0 (Debian 13.0-1.pgdg100+1)) WARNING: psql major version 12, server major version 13. Some psql features might not work. Type “help” for help.</p>
+<p>postgres=&gt; SELECT CURRENT_USER; current_user<br />
+—————— test_normal_user (1 row)</p>
+<p>postgres=&gt; psql -U hacking_the_planet -W postgres postgres-&gt; pwned! postgres-&gt; ; ERROR: syntax error at or near “psql” LINE 1: psql -U hacking_the_planet -W postgres ^ postgres=&gt; CREATE USER hacking_the_planet with password “pwned!”; ERROR: syntax error at or near "“pwned!”" LINE 1: CREATE USER hacking_the_planet with password “pwned!”; ^ postgres=&gt;</p>
+<pre><code>                                  List of roles</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Role name</th>
+<th>Attributes</th>
+<th>Member of</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bgoonz</td>
+<td>Superuser</td>
+<td>{}</td>
+</tr>
+<tr class="even">
+<td>postgres</td>
+<td>Superuser, Create role, Create DB, Replication, Bypass RLS</td>
+<td>{}</td>
+</tr>
+<tr class="odd">
+<td>test_superuser</td>
+<td>Superuser</td>
+<td>{}</td>
+</tr>
+</tbody>
+</table>
+<pre><code>                             List of databases</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Owner</th>
+<th>Encoding</th>
+<th>Collate</th>
+<th>Ctype</th>
+<th>Access privileges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ada</td>
+<td>ada</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td>=T/ada +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ada=CTc/ada</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>bgoonz</td>
+<td>bgoonz</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>hr_data</td>
+<td>bgoonz</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>odo</td>
+<td>odo</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td>=T/odo +</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>odo=CTc/odo</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>postgres</td>
+<td>postgres</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>template0</td>
+<td>postgres</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td>=c/postgres +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>postgres=CTc/postgres</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>template1</td>
+<td>postgres</td>
+<td>UTF8</td>
+<td>en_US.utf8</td>
+<td>en_US.utf8</td>
+<td>=c/postgres +</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>postgres=CTc/postgres</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>(7 rows)</p>
+<p><sub> </sub> <sub> </sub> ~ (END)</p>
+<p>~ day-work : (master) psql bgoonz psql (12.4 (Ubuntu 12.4-1.pgdg20.04+1), server 13.0 (Debian 13.0-1.pgdg100+1)) WARNING: psql major version 12, server major version 13. Some psql features might not work. Type “help” for help.</p>
+bgoonz=# 

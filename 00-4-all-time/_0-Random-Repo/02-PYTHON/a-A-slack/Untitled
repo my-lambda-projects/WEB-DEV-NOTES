@@ -1,0 +1,12 @@
+class MyClass:
+    def __init__(self, value):
+        self._value = value
+
+    def get_value(self):
+        return self._value
+
+
+instance = MyClass(1)
+reference_to_get_value = instance.get_value
+
+print(reference_to_get_value())  # => 1

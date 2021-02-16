@@ -1,0 +1,92 @@
+<h1 id="constraints-circularities">Constraints &amp; Circularities</h1>
+<p>Adding constraints between tables means that tables must be created in the database in a certain order, when using <code>sequelize.sync</code>. If <code>Task</code> has a reference to <code>User</code>, the <code>User</code> table must be created before the <code>Task</code> table can be created. This can sometimes lead to circular references, where Sequelize cannot find an order in which to sync. Imagine a scenario of documents and versions. A document can have multiple versions, and for convenience, a document has a reference to its current version.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> Sequelize<span class="op">,</span> Model<span class="op">,</span> DataTypes <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;sequelize&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">class</span> Document <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="va">Document</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">author</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;document&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">class</span> Version <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="va">Version</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">timestamp</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">DATE</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;version&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="va">Document</span>.<span class="at">hasMany</span>(Version)<span class="op">;</span> <span class="co">// This adds documentId attribute to version</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="va">Document</span>.<span class="at">belongsTo</span>(Version<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Current&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;currentVersionId&#39;</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="op">}</span>)<span class="op">;</span> <span class="co">// This adds currentVersionId attribute to document</span></a></code></pre></div>
+<p>However, unfortunately the code above will result in the following error:</p>
+<pre class="text"><code>Cyclic dependency found. documents is dependent of itself. Dependency chain: documents -&gt; versions =&gt; documents</code></pre>
+<p>In order to alleviate that, we can pass <code>constraints: false</code> to one of the associations:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">Document</span>.<span class="at">hasMany</span>(Version)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="va">Document</span>.<span class="at">belongsTo</span>(Version<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;Current&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;currentVersionId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Which will allow us to sync the tables correctly:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;documents&quot;</span> (</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="ot">&quot;id&quot;</span> SERIAL,</a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="ot">&quot;author&quot;</span> <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="ot">&quot;createdAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="ot">&quot;updatedAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="ot">&quot;currentVersionId&quot;</span> <span class="dt">INTEGER</span>,</a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="ot">&quot;id&quot;</span>)</a>
+<a class="sourceLine" id="cb4-8" title="8">);</a>
+<a class="sourceLine" id="cb4-9" title="9"></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> <span class="ot">&quot;versions&quot;</span> (</a>
+<a class="sourceLine" id="cb4-11" title="11">  <span class="ot">&quot;id&quot;</span> SERIAL,</a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="ot">&quot;timestamp&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span>,</a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="ot">&quot;createdAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-14" title="14">  <span class="ot">&quot;updatedAt&quot;</span> <span class="dt">TIMESTAMP</span> <span class="kw">WITH</span> <span class="dt">TIME</span> <span class="dt">ZONE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-15" title="15">  <span class="ot">&quot;documentId&quot;</span> <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> <span class="ot">&quot;documents&quot;</span> (<span class="ot">&quot;id&quot;</span>) <span class="kw">ON</span> <span class="kw">DELETE</span></a>
+<a class="sourceLine" id="cb4-16" title="16">  <span class="kw">SET</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="kw">NULL</span> <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span>,</a>
+<a class="sourceLine" id="cb4-18" title="18">    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="ot">&quot;id&quot;</span>)</a>
+<a class="sourceLine" id="cb4-19" title="19">);</a></code></pre></div>
+<h2 id="enforcing-a-foreign-key-reference-without-constraints">Enforcing a foreign key reference without constraints</h2>
+<p>Sometimes you may want to reference another table, without adding any constraints, or associations. In that case you can manually add the reference attributes to your schema definition, and mark the relations between them.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">class</span> Trainer <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="va">Trainer</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">firstName</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">lastName</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;trainer&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">// Series will have a trainerId = Trainer.id foreign reference key</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">// after we call Trainer.hasMany(series)</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="kw">class</span> Series <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="va">Series</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="dt">title</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="dt">subTitle</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="dt">description</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-14" title="14">  <span class="co">// Set FK relationship (hasMany) with `Trainer`</span></a>
+<a class="sourceLine" id="cb5-15" title="15">  <span class="dt">trainerId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-16" title="16">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-18" title="18">      <span class="dt">model</span><span class="op">:</span> Trainer<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-19" title="19">      <span class="dt">key</span><span class="op">:</span> <span class="st">&#39;id&#39;</span></a>
+<a class="sourceLine" id="cb5-20" title="20">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;series&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-23" title="23"></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">// Video will have seriesId = Series.id foreign reference key</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">// after we call Series.hasOne(Video)</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="kw">class</span> Video <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="va">Video</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-28" title="28">  <span class="dt">title</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-29" title="29">  <span class="dt">sequence</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-30" title="30">  <span class="dt">description</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-31" title="31">  <span class="co">// set relationship (hasOne) with `Series`</span></a>
+<a class="sourceLine" id="cb5-32" title="32">  <span class="dt">seriesId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-33" title="33">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-34" title="34">    <span class="dt">references</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-35" title="35">      <span class="dt">model</span><span class="op">:</span> Series<span class="op">,</span> <span class="co">// Can be both a string representing the table name or a Sequelize model</span></a>
+<a class="sourceLine" id="cb5-36" title="36">      <span class="dt">key</span><span class="op">:</span> <span class="st">&#39;id&#39;</span></a>
+<a class="sourceLine" id="cb5-37" title="37">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-38" title="38">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;video&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-40" title="40"></a>
+<a class="sourceLine" id="cb5-41" title="41"><span class="va">Series</span>.<span class="at">hasOne</span>(Video)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-42" title="42"><span class="va">Trainer</span>.<span class="at">hasMany</span>(Series)<span class="op">;</span></a></code></pre></div>

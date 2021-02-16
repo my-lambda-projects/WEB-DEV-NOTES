@@ -1,0 +1,55 @@
+
+/*Type selector*/
+div {
+    background-color: #000000;
+}
+
+/* Class selector */
+.active {
+    color: #ffffff;
+}
+
+/* ID selector */
+#list-1 {
+    border: 1px solid gray;
+}
+
+/* Universal selector */
+* {
+    padding: 10px;
+}
+
+/* Attribute selector */
+a[title] {
+    font-size: 2em;
+}
+
+/* Class selector = class name preceded by a period */
+.boxy {
+    border-radius: 4px;
+    box-shadow: 0 2px gray;
+    /* offset-x | offset-y | color */
+    filter: blur(2px);
+    background-color: #000000;
+    opacity: 0.2;
+    /* 100% = 1 */
+}
+
+
+/*What if we wanted to italicize all H1 and H2 elements in the document? 
+We can conveniently apply the same styles to multiple elements by combining selectors, separated by a comma. 
+Here is how we would italicize all H1s and H2s:*/
+h1,
+h2 {
+    font-style: italic;
+}
+
+
+
+/*
+if we wanted to italicize only H1s with the ID "heading"and H2s with the class name "subheading".
+*/
+h1#heading,
+h2.subheading {
+    font-style: italic;
+}

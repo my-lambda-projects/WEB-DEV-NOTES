@@ -1,0 +1,7 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:performance-session', location = 'includes/js/performance-session.js' */
+define("confluence/performance-session",["ajs","window"],function(e,l){var c=!1,m="",n=!1,f={},p={},q=function(){if(c){for(var a={},r={name:m,data:a},d=b.getEntriesByType("measure"),g=0;g<d.length;g++){var h=d[g],k=h.name;f[k]&&(a[k+".startTime"]=h.startTime,a[k+".duration"]=h.duration)}e.trigger("analyticsEvent",r);c=!1}},b=l.performance;return{register:function(a,b,d){n?e.warn("A session is already active, registering a new session will override the previous session"):(n=!0,m=a,f=b,p=d,l.addEventListener("beforeunload",
+function(a){c&&q()}))},debugTime:function(a){b&&b.mark&&f[a]&&(c||(c=!0),b.mark(a+".start"));e.debugEnabled()&&console.time&&(console.log(a+" started"),console.time(a))},debugTimeEnd:function(a){if(b&&b.mark&&f[a]){var c=a+".start";if(0===b.getEntriesByName(c,"mark").length)e.warn("Calling debugTimeEnd for "+a+" before debugTime");else{var d=a+".end";b.mark(d);b.measure(a,c,d);p[a]&&q()}}e.debugEnabled()&&console.timeEnd&&console.timeEnd(a)}}});
+}catch(e){WRMCB(e)};

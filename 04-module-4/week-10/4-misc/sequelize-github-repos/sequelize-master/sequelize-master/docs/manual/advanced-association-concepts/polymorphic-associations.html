@@ -1,0 +1,349 @@
+<h1 id="polymorphic-associations">Polymorphic Associations</h1>
+<p><em><strong>Note:</strong> the usage of polymorphic associations in Sequelize, as outlined in this guide, should be done with caution. Don’t just copy-paste code from here, otherwise you might easily make mistakes and introduce bugs in your code. Make sure you understand what is going on.</em></p>
+<h2 id="concept">Concept</h2>
+<p>A <strong>polymorphic association</strong> consists on two (or more) associations happening with the same foreign key.</p>
+<p>For example, consider the models <code>Image</code>, <code>Video</code> and <code>Comment</code>. The first two represent something that a user might post. We want to allow comments to be placed in both of them. This way, we immediately think of establishing the following associations:</p>
+<ul>
+<li><p>A One-to-Many association between <code>Image</code> and <code>Comment</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">Image</span>.<span class="at">hasMany</span>(Comment)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">Comment</span>.<span class="at">belongsTo</span>(Image)<span class="op">;</span></a></code></pre></div></li>
+<li><p>A One-to-Many association between <code>Video</code> and <code>Comment</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">Video</span>.<span class="at">hasMany</span>(Comment)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">Comment</span>.<span class="at">belongsTo</span>(Video)<span class="op">;</span></a></code></pre></div></li>
+</ul>
+<p>However, the above would cause Sequelize to create two foreign keys on the <code>Comment</code> table: <code>ImageId</code> and <code>VideoId</code>. This is not ideal because this structure makes it look like a comment can be attached at the same time to one image and one video, which isn’t true. Instead, what we really want here is precisely a polymorphic association, in which a <code>Comment</code> points to a single <strong>Commentable</strong>, an abstract polymorphic entity that represents one of <code>Image</code> or <code>Video</code>.</p>
+<p>Before proceeding to how to configure such an association, let’s see how using it looks like:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> image <span class="op">=</span> <span class="cf">await</span> <span class="va">Image</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">url</span><span class="op">:</span> <span class="st">&quot;https://placekitten.com/408/287&quot;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">const</span> comment <span class="op">=</span> <span class="cf">await</span> <span class="va">image</span>.<span class="at">createComment</span>(<span class="op">{</span> <span class="dt">content</span><span class="op">:</span> <span class="st">&quot;Awesome!&quot;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="va">comment</span>.<span class="at">commentableId</span> <span class="op">===</span> <span class="va">image</span>.<span class="at">id</span>)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">// We can also retrieve which type of commentable a comment is associated to.</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">// The following prints the model name of the associated commentable instance.</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="va">comment</span>.<span class="at">commentableType</span>)<span class="op">;</span> <span class="co">// &quot;Image&quot;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">// We can use a polymorphic method to retrieve the associated commentable, without</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">// having to worry whether it&#39;s an Image or a Video.</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw">const</span> associatedCommentable <span class="op">=</span> <span class="cf">await</span> <span class="va">comment</span>.<span class="at">getCommentable</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">// In this example, `associatedCommentable` is the same thing as `image`:</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="kw">const</span> isDeepEqual <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;deep-equal&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="va">console</span>.<span class="at">log</span>(<span class="at">isDeepEqual</span>(image<span class="op">,</span> commentable))<span class="op">;</span> <span class="co">// true</span></a></code></pre></div>
+<h2 id="configuring-a-one-to-many-polymorphic-association">Configuring a One-to-Many polymorphic association</h2>
+<p>To setup the polymorphic association for the example above (which is an example of One-to-Many polymorphic association), we have the following steps:</p>
+<ul>
+<li>Define a string field called <code>commentableType</code> in the <code>Comment</code> model;</li>
+<li>Define the <code>hasMany</code> and <code>belongsTo</code> association between <code>Image</code>/<code>Video</code> and <code>Comment</code>:
+<ul>
+<li>Disabling constraints (i.e. using <code>{ constraints: false }</code>), since the same foreign key is referencing multiple tables;</li>
+<li>Specifying the appropriate <a href="association-scopes.html">association scopes</a>;</li>
+</ul></li>
+<li>To properly support lazy loading, define a new instance method on the <code>Comment</code> model called <code>getCommentable</code> which calls, under the hood, the correct mixin to fetch the appropriate commentable;</li>
+<li>To properly support eager loading, define an <code>afterFind</code> hook on the <code>Comment</code> model that automatically populates the <code>commentable</code> field in every instance;</li>
+<li>To prevent bugs/mistakes in eager loading, you can also delete the concrete fields <code>image</code> and <code>video</code> from Comment instances in the same <code>afterFind</code> hook, leaving only the abstract <code>commentable</code> field available.</li>
+</ul>
+<p>Here is an example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// Helper function</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> uppercaseFirst <span class="op">=</span> str <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>str[<span class="dv">0</span>].<span class="at">toUpperCase</span>()<span class="sc">}${</span><span class="va">str</span>.<span class="at">substr</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">class</span> Image <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">Image</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="dt">url</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;image&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-9" title="9"></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="kw">class</span> Video <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="va">Video</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="dt">text</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;video&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-15" title="15"></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="kw">class</span> Comment <span class="kw">extends</span> Model <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-17" title="17">  <span class="at">getCommentable</span>(options) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-18" title="18">    <span class="cf">if</span> (<span class="op">!</span><span class="kw">this</span>.<span class="at">commentableType</span>) <span class="cf">return</span> <span class="va">Promise</span>.<span class="at">resolve</span>(<span class="kw">null</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-19" title="19">    <span class="kw">const</span> mixinMethodName <span class="op">=</span> <span class="vs">`get</span><span class="sc">${</span><span class="at">uppercaseFirst</span>(<span class="kw">this</span>.<span class="at">commentableType</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-20" title="20">    <span class="cf">return</span> <span class="kw">this</span>[mixinMethodName](options)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="op">}</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="va">Comment</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-24" title="24">  <span class="dt">title</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-25" title="25">  <span class="dt">commentableId</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-26" title="26">  <span class="dt">commentableType</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb4-27" title="27"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;comment&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-28" title="28"></a>
+<a class="sourceLine" id="cb4-29" title="29"><span class="va">Image</span>.<span class="at">hasMany</span>(Comment<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-30" title="30">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;commentableId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-31" title="31">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-32" title="32">  <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-33" title="33">    <span class="dt">commentableType</span><span class="op">:</span> <span class="st">&#39;image&#39;</span></a>
+<a class="sourceLine" id="cb4-34" title="34">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-35" title="35"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-36" title="36"><span class="va">Comment</span>.<span class="at">belongsTo</span>(Image<span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;commentableId&#39;</span><span class="op">,</span> <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-37" title="37"></a>
+<a class="sourceLine" id="cb4-38" title="38"><span class="va">Video</span>.<span class="at">hasMany</span>(Comment<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-39" title="39">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;commentableId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-40" title="40">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-41" title="41">  <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-42" title="42">    <span class="dt">commentableType</span><span class="op">:</span> <span class="st">&#39;video&#39;</span></a>
+<a class="sourceLine" id="cb4-43" title="43">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-44" title="44"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-45" title="45"><span class="va">Comment</span>.<span class="at">belongsTo</span>(Video<span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;commentableId&#39;</span><span class="op">,</span> <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-46" title="46"></a>
+<a class="sourceLine" id="cb4-47" title="47"><span class="va">Comment</span>.<span class="at">addHook</span>(<span class="st">&quot;afterFind&quot;</span><span class="op">,</span> findResult <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-48" title="48">  <span class="cf">if</span> (<span class="op">!</span><span class="va">Array</span>.<span class="at">isArray</span>(findResult)) findResult <span class="op">=</span> [findResult]<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-49" title="49">  <span class="cf">for</span> (<span class="kw">const</span> instance <span class="kw">of</span> findResult) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-50" title="50">    <span class="cf">if</span> (<span class="va">instance</span>.<span class="at">commentableType</span> <span class="op">===</span> <span class="st">&quot;image&quot;</span> <span class="op">&amp;&amp;</span> <span class="va">instance</span>.<span class="at">image</span> <span class="op">!==</span> <span class="kw">undefined</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-51" title="51">      <span class="va">instance</span>.<span class="at">commentable</span> <span class="op">=</span> <span class="va">instance</span>.<span class="at">image</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-52" title="52">    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> (<span class="va">instance</span>.<span class="at">commentableType</span> <span class="op">===</span> <span class="st">&quot;video&quot;</span> <span class="op">&amp;&amp;</span> <span class="va">instance</span>.<span class="at">video</span> <span class="op">!==</span> <span class="kw">undefined</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-53" title="53">      <span class="va">instance</span>.<span class="at">commentable</span> <span class="op">=</span> <span class="va">instance</span>.<span class="at">video</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-54" title="54">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-55" title="55">    <span class="co">// To prevent mistakes:</span></a>
+<a class="sourceLine" id="cb4-56" title="56">    <span class="kw">delete</span> <span class="va">instance</span>.<span class="at">image</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-57" title="57">    <span class="kw">delete</span> <span class="va">instance</span>.<span class="va">dataValues</span>.<span class="at">image</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-58" title="58">    <span class="kw">delete</span> <span class="va">instance</span>.<span class="at">video</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-59" title="59">    <span class="kw">delete</span> <span class="va">instance</span>.<span class="va">dataValues</span>.<span class="at">video</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-60" title="60">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-61" title="61"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Since the <code>commentableId</code> column references several tables (two in this case), we cannot add a <code>REFERENCES</code> constraint to it. This is why the <code>constraints: false</code> option was used.</p>
+<p>Note that, in the code above:</p>
+<ul>
+<li>The <em>Image -&gt; Comment</em> association defined an association scope: <code>{ commentableType: 'image' }</code></li>
+<li>The <em>Video -&gt; Comment</em> association defined an association scope: <code>{ commentableType: 'video' }</code></li>
+</ul>
+<p>These scopes are automatically applied when using the association functions (as explained in the <a href="association-scopes.html">Association Scopes</a> guide). Some examples are below, with their generated SQL statements:</p>
+<ul>
+<li><p><code>image.getComments()</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">SELECT</span> <span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;title&quot;</span>, <span class="ot">&quot;commentableType&quot;</span>, <span class="ot">&quot;commentableId&quot;</span>, <span class="ot">&quot;createdAt&quot;</span>, <span class="ot">&quot;updatedAt&quot;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">FROM</span> <span class="ot">&quot;comments&quot;</span> <span class="kw">AS</span> <span class="ot">&quot;comment&quot;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">WHERE</span> <span class="ot">&quot;comment&quot;</span>.<span class="ot">&quot;commentableType&quot;</span> <span class="op">=</span> <span class="st">&#39;image&#39;</span> <span class="kw">AND</span> <span class="ot">&quot;comment&quot;</span>.<span class="ot">&quot;commentableId&quot;</span> <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div>
+<p>Here we can see that <code>`comment`.`commentableType` = 'image'</code> was automatically added to the <code>WHERE</code> clause of the generated SQL. This is exactly the behavior we want.</p></li>
+<li><p><code>image.createComment({ title: 'Awesome!' })</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;comments&quot;</span> (</a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;title&quot;</span>, <span class="ot">&quot;commentableType&quot;</span>, <span class="ot">&quot;commentableId&quot;</span>, <span class="ot">&quot;createdAt&quot;</span>, <span class="ot">&quot;updatedAt&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">) <span class="kw">VALUES</span> (</a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="kw">DEFAULT</span>, <span class="st">&#39;Awesome!&#39;</span>, <span class="st">&#39;image&#39;</span>, <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="st">&#39;2018-04-17 05:36:40.454 +00:00&#39;</span>, <span class="st">&#39;2018-04-17 05:36:40.454 +00:00&#39;</span></a>
+<a class="sourceLine" id="cb6-6" title="6">) <span class="kw">RETURNING</span> <span class="op">*</span>;</a></code></pre></div></li>
+<li><p><code>image.addComment(comment)</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;comments&quot;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">SET</span> <span class="ot">&quot;commentableId&quot;</span><span class="op">=</span><span class="dv">1</span>, <span class="ot">&quot;commentableType&quot;</span><span class="op">=</span><span class="st">&#39;image&#39;</span>, <span class="ot">&quot;updatedAt&quot;</span><span class="op">=</span><span class="st">&#39;2018-04-17 05:38:43.948 +00:00&#39;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">WHERE</span> <span class="ot">&quot;id&quot;</span> <span class="kw">IN</span> (<span class="dv">1</span>)</a></code></pre></div></li>
+</ul>
+<h3 id="polymorphic-lazy-loading">Polymorphic lazy loading</h3>
+<p>The <code>getCommentable</code> instance method on <code>Comment</code> provides an abstraction for lazy loading the associated commentable - working whether the comment belongs to an Image or a Video.</p>
+<p>It works by simply converting the <code>commentableType</code> string into a call to the correct mixin (either <code>getImage</code> or <code>getVideo</code>).</p>
+<p>Note that the <code>getCommentable</code> implementation above:</p>
+<ul>
+<li>Returns <code>null</code> when no association is present (which is good);</li>
+<li>Allows you to pass an options object to <code>getCommentable(options)</code>, just like any other standard Sequelize method. This is useful to specify where-conditions or includes, for example.</li>
+</ul>
+<h3 id="polymorphic-eager-loading">Polymorphic eager loading</h3>
+<p>Now, we want to perform a polymorphic eager loading of the associated commentables for one (or more) comments. We want to achieve something similar to the following idea:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> comment <span class="op">=</span> <span class="cf">await</span> <span class="va">Comment</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">include</span><span class="op">:</span> [ <span class="co">/* What to put here? */</span> ]</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="va">comment</span>.<span class="at">commentable</span>)<span class="op">;</span> <span class="co">// This is our goal</span></a></code></pre></div>
+<p>The solution is to tell Sequelize to include both Images and Videos, so that our <code>afterFind</code> hook defined above will do the work, automatically adding the <code>commentable</code> field to the instance object, providing the abstraction we want.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> comments <span class="op">=</span> <span class="cf">await</span> <span class="va">Comment</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">include</span><span class="op">:</span> [Image<span class="op">,</span> Video]</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="cf">for</span> (<span class="kw">const</span> comment <span class="kw">of</span> comments) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="kw">const</span> message <span class="op">=</span> <span class="vs">`Found comment #</span><span class="sc">${</span><span class="va">comment</span>.<span class="at">id</span><span class="sc">}</span><span class="vs"> with </span><span class="sc">${</span><span class="va">comment</span>.<span class="at">commentableType</span><span class="sc">}</span><span class="vs"> commentable:`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(message<span class="op">,</span> <span class="va">comment</span>.<span class="va">commentable</span>.<span class="at">toJSON</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="op">}</span></a></code></pre></div>
+<p>Output example:</p>
+<pre class="text"><code>Found comment #1 with image commentable: { id: 1,
+  title: &#39;Meow&#39;,
+  url: &#39;https://placekitten.com/408/287&#39;,
+  createdAt: 2019-12-26T15:04:53.047Z,
+  updatedAt: 2019-12-26T15:04:53.047Z }</code></pre>
+<h3 id="caution---possibly-invalid-eagerlazy-loading">Caution - possibly invalid eager/lazy loading!</h3>
+<p>Consider a comment <code>Foo</code> whose <code>commentableId</code> is 2 and <code>commentableType</code> is <code>image</code>. Consider also that <code>Image A</code> and <code>Video X</code> both happen to have an id equal to 2. Conceptually, it is clear that <code>Video X</code> is not associated to <code>Foo</code>, because even though its id is 2, the <code>commentableType</code> of <code>Foo</code> is <code>image</code>, not <code>video</code>. However, this distinction is made by Sequelize only at the level of the abstractions performed by <code>getCommentable</code> and the hook we created above.</p>
+<p>This means that if you call <code>Comment.findAll({ include: Video })</code> in the situation above, <code>Video X</code> will be eager loaded into <code>Foo</code>. Thankfully, our <code>afterFind</code> hook will delete it automatically, to help prevent bugs, but regardless it is important that you understand what is going on.</p>
+<p>The best way to prevent this kind of mistake is to <strong>avoid using the concrete accessors and mixins directly at all costs</strong> (such as <code>.image</code>, <code>.getVideo()</code>, <code>.setImage()</code>, etc), always preferring the abstractions we created, such as <code>.getCommentable()</code> and <code>.commentable</code>. If you really need to access eager-loaded <code>.image</code> and <code>.video</code> for some reason, make sure you wrap that in a type check such as <code>comment.commentableType === 'image'</code>.</p>
+<h2 id="configuring-a-many-to-many-polymorphic-association">Configuring a Many-to-Many polymorphic association</h2>
+<p>In the above example, we had the models <code>Image</code> and <code>Video</code> being abstractly called <em>commentables</em>, with one <em>commentable</em> having many comments. However, one given comment would belong to a single <em>commentable</em> - this is why the whole situation is a One-to-Many polymorphic association.</p>
+<p>Now, to consider a Many-to-Many polymorphic association, instead of considering comments, we will consider tags. For convenience, instead of calling Image and Video as <em>commentables</em>, we will now call them <em>taggables</em>. One <em>taggable</em> may have several tags, and at the same time one tag can be placed in several <em>taggables</em>.</p>
+<p>The setup for this goes as follows:</p>
+<ul>
+<li>Define the juncion model explicitly, specifying the two foreign keys as <code>tagId</code> and <code>taggableId</code> (this way it is a junction model for a Many-to-Many relationship between <code>Tag</code> and the abstract concept of <em>taggable</em>);</li>
+<li>Define a string field called <code>taggableType</code> in the junction model;</li>
+<li>Define the <code>belongsToMany</code> associations between the two models and <code>Tag</code>:
+<ul>
+<li>Disabling constraints (i.e. using <code>{ constraints: false }</code>), since the same foreign key is referencing multiple tables;</li>
+<li>Specifying the appropriate <a href="association-scopes.html">association scopes</a>;</li>
+</ul></li>
+<li>Define a new instance method on the <code>Tag</code> model called <code>getTaggables</code> which calls, under the hood, the correct mixin to fetch the appropriate taggables.</li>
+</ul>
+<p>Implementation:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">class</span> Tag <span class="kw">extends</span> Model <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="at">getTaggables</span>(options) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="kw">const</span> images <span class="op">=</span> <span class="cf">await</span> <span class="kw">this</span>.<span class="at">getImages</span>(options)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="kw">const</span> videos <span class="op">=</span> <span class="cf">await</span> <span class="kw">this</span>.<span class="at">getVideos</span>(options)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="co">// Concat images and videos in a single array of taggables</span></a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="cf">return</span> <span class="va">images</span>.<span class="at">concat</span>(videos)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="va">Tag</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb11-10" title="10">  <span class="dt">name</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;tag&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-12" title="12"></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">// Here we define the junction model explicitly</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="kw">class</span> Tag_Taggable <span class="kw">extends</span> Model <span class="op">{}</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="va">Tag_Taggable</span>.<span class="at">init</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb11-16" title="16">  <span class="dt">tagId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-17" title="17">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-18" title="18">    <span class="dt">unique</span><span class="op">:</span> <span class="st">&#39;tt_unique_constraint&#39;</span></a>
+<a class="sourceLine" id="cb11-19" title="19">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-20" title="20">  <span class="dt">taggableId</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-21" title="21">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-22" title="22">    <span class="dt">unique</span><span class="op">:</span> <span class="st">&#39;tt_unique_constraint&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-23" title="23">    <span class="dt">references</span><span class="op">:</span> <span class="kw">null</span></a>
+<a class="sourceLine" id="cb11-24" title="24">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-25" title="25">  <span class="dt">taggableType</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-26" title="26">    <span class="dt">type</span><span class="op">:</span> <span class="va">DataTypes</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-27" title="27">    <span class="dt">unique</span><span class="op">:</span> <span class="st">&#39;tt_unique_constraint&#39;</span></a>
+<a class="sourceLine" id="cb11-28" title="28">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-29" title="29"><span class="op">},</span> <span class="op">{</span> sequelize<span class="op">,</span> <span class="dt">modelName</span><span class="op">:</span> <span class="st">&#39;tag_taggable&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-30" title="30"></a>
+<a class="sourceLine" id="cb11-31" title="31"><span class="va">Image</span>.<span class="at">belongsToMany</span>(Tag<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-32" title="32">  <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-33" title="33">    <span class="dt">model</span><span class="op">:</span> Tag_Taggable<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-34" title="34">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-35" title="35">    <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-36" title="36">      <span class="dt">taggableType</span><span class="op">:</span> <span class="st">&#39;image&#39;</span></a>
+<a class="sourceLine" id="cb11-37" title="37">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-38" title="38">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-39" title="39">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;taggableId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-40" title="40">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-41" title="41"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-42" title="42"><span class="va">Tag</span>.<span class="at">belongsToMany</span>(Image<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-43" title="43">  <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-44" title="44">    <span class="dt">model</span><span class="op">:</span> Tag_Taggable<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-45" title="45">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-46" title="46">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-47" title="47">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;tagId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-48" title="48">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-49" title="49"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-50" title="50"></a>
+<a class="sourceLine" id="cb11-51" title="51"><span class="va">Video</span>.<span class="at">belongsToMany</span>(Tag<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-52" title="52">  <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-53" title="53">    <span class="dt">model</span><span class="op">:</span> Tag_Taggable<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-54" title="54">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-55" title="55">    <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-56" title="56">      <span class="dt">taggableType</span><span class="op">:</span> <span class="st">&#39;video&#39;</span></a>
+<a class="sourceLine" id="cb11-57" title="57">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-58" title="58">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-59" title="59">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;taggableId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-60" title="60">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-61" title="61"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-62" title="62"><span class="va">Tag</span>.<span class="at">belongsToMany</span>(Video<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-63" title="63">  <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-64" title="64">    <span class="dt">model</span><span class="op">:</span> Tag_Taggable<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-65" title="65">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-66" title="66">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-67" title="67">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;tagId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-68" title="68">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb11-69" title="69"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The <code>constraints: false</code> option disables references constraints, as the <code>taggableId</code> column references several tables, we cannot add a <code>REFERENCES</code> constraint to it.</p>
+<p>Note that:</p>
+<ul>
+<li>The <em>Image -&gt; Tag</em> association defined an association scope: <code>{ taggableType: 'image' }</code></li>
+<li>The <em>Video -&gt; Tag</em> association defined an association scope: <code>{ taggableType: 'video' }</code></li>
+</ul>
+<p>These scopes are automatically applied when using the association functions. Some examples are below, with their generated SQL statements:</p>
+<ul>
+<li><p><code>image.getTags()</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  `tag`.`id`,</a>
+<a class="sourceLine" id="cb12-3" title="3">  `tag`.`name`,</a>
+<a class="sourceLine" id="cb12-4" title="4">  `tag`.`createdAt`,</a>
+<a class="sourceLine" id="cb12-5" title="5">  `tag`.`updatedAt`,</a>
+<a class="sourceLine" id="cb12-6" title="6">  `tag_taggable`.`tagId` <span class="kw">AS</span> `tag_taggable.tagId`,</a>
+<a class="sourceLine" id="cb12-7" title="7">  `tag_taggable`.`taggableId` <span class="kw">AS</span> `tag_taggable.taggableId`,</a>
+<a class="sourceLine" id="cb12-8" title="8">  `tag_taggable`.`taggableType` <span class="kw">AS</span> `tag_taggable.taggableType`,</a>
+<a class="sourceLine" id="cb12-9" title="9">  `tag_taggable`.`createdAt` <span class="kw">AS</span> `tag_taggable.createdAt`,</a>
+<a class="sourceLine" id="cb12-10" title="10">  `tag_taggable`.`updatedAt` <span class="kw">AS</span> `tag_taggable.updatedAt`</a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="kw">FROM</span> `tags` <span class="kw">AS</span> `tag`</a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tag_taggables` <span class="kw">AS</span> `tag_taggable` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb12-13" title="13">  `tag`.`id` <span class="op">=</span> `tag_taggable`.`tagId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb12-14" title="14">  `tag_taggable`.`taggableId` <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb12-15" title="15">  `tag_taggable`.`taggableType` <span class="op">=</span> <span class="st">&#39;image&#39;</span>;</a></code></pre></div>
+<p>Here we can see that <code>`tag_taggable`.`taggableType` = 'image'</code> was automatically added to the <code>WHERE</code> clause of the generated SQL. This is exactly the behavior we want.</p></li>
+<li><p><code>tag.getTaggables()</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  `image`.`id`,</a>
+<a class="sourceLine" id="cb13-3" title="3">  `image`.`url`,</a>
+<a class="sourceLine" id="cb13-4" title="4">  `image`.`createdAt`,</a>
+<a class="sourceLine" id="cb13-5" title="5">  `image`.`updatedAt`,</a>
+<a class="sourceLine" id="cb13-6" title="6">  `tag_taggable`.`tagId` <span class="kw">AS</span> `tag_taggable.tagId`,</a>
+<a class="sourceLine" id="cb13-7" title="7">  `tag_taggable`.`taggableId` <span class="kw">AS</span> `tag_taggable.taggableId`,</a>
+<a class="sourceLine" id="cb13-8" title="8">  `tag_taggable`.`taggableType` <span class="kw">AS</span> `tag_taggable.taggableType`,</a>
+<a class="sourceLine" id="cb13-9" title="9">  `tag_taggable`.`createdAt` <span class="kw">AS</span> `tag_taggable.createdAt`,</a>
+<a class="sourceLine" id="cb13-10" title="10">  `tag_taggable`.`updatedAt` <span class="kw">AS</span> `tag_taggable.updatedAt`</a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="kw">FROM</span> `images` <span class="kw">AS</span> `image`</a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tag_taggables` <span class="kw">AS</span> `tag_taggable` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb13-13" title="13">  `image`.`id` <span class="op">=</span> `tag_taggable`.`taggableId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb13-14" title="14">  `tag_taggable`.`tagId` <span class="op">=</span> <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb13-15" title="15"></a>
+<a class="sourceLine" id="cb13-16" title="16"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb13-17" title="17">  `video`.`id`,</a>
+<a class="sourceLine" id="cb13-18" title="18">  `video`.`url`,</a>
+<a class="sourceLine" id="cb13-19" title="19">  `video`.`createdAt`,</a>
+<a class="sourceLine" id="cb13-20" title="20">  `video`.`updatedAt`,</a>
+<a class="sourceLine" id="cb13-21" title="21">  `tag_taggable`.`tagId` <span class="kw">AS</span> `tag_taggable.tagId`,</a>
+<a class="sourceLine" id="cb13-22" title="22">  `tag_taggable`.`taggableId` <span class="kw">AS</span> `tag_taggable.taggableId`,</a>
+<a class="sourceLine" id="cb13-23" title="23">  `tag_taggable`.`taggableType` <span class="kw">AS</span> `tag_taggable.taggableType`,</a>
+<a class="sourceLine" id="cb13-24" title="24">  `tag_taggable`.`createdAt` <span class="kw">AS</span> `tag_taggable.createdAt`,</a>
+<a class="sourceLine" id="cb13-25" title="25">  `tag_taggable`.`updatedAt` <span class="kw">AS</span> `tag_taggable.updatedAt`</a>
+<a class="sourceLine" id="cb13-26" title="26"><span class="kw">FROM</span> `videos` <span class="kw">AS</span> `video`</a>
+<a class="sourceLine" id="cb13-27" title="27"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tag_taggables` <span class="kw">AS</span> `tag_taggable` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb13-28" title="28">  `video`.`id` <span class="op">=</span> `tag_taggable`.`taggableId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb13-29" title="29">  `tag_taggable`.`tagId` <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div></li>
+</ul>
+<p>Note that the above implementation of <code>getTaggables()</code> allows you to pass an options object to <code>getCommentable(options)</code>, just like any other standard Sequelize method. This is useful to specify where-conditions or includes, for example.</p>
+<h3 id="applying-scopes-on-the-target-model">Applying scopes on the target model</h3>
+<p>In the example above, the <code>scope</code> options (such as <code>scope: { taggableType: 'image' }</code>) were applied to the <em>through</em> model, not the <em>target</em> model, since it was used under the <code>through</code> option.</p>
+<p>We can also apply an association scope on the target model. We can even do both at the same time.</p>
+<p>To illustrate this, consider an extension of the above example between tags and taggables, where each tag has a status. This way, to get all pending tags of an image, we could establish another <code>belognsToMany</code> relationship between <code>Image</code> and <code>Tag</code>, this time applying a scope on the through model and another scope on the target model:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">Image</span>.<span class="at">belongsToMany</span>(Tag<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">through</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="dt">model</span><span class="op">:</span> Tag_Taggable<span class="op">,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="dt">unique</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">      <span class="dt">taggableType</span><span class="op">:</span> <span class="st">&#39;image&#39;</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="dt">scope</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-10" title="10">    <span class="dt">status</span><span class="op">:</span> <span class="st">&#39;pending&#39;</span></a>
+<a class="sourceLine" id="cb14-11" title="11">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-12" title="12">  <span class="dt">as</span><span class="op">:</span> <span class="st">&#39;pendingTags&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-13" title="13">  <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;taggableId&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="dt">constraints</span><span class="op">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This way, when calling <code>image.getPendingTags()</code>, the following SQL query will be generated:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb15-2" title="2">  `tag`.`id`,</a>
+<a class="sourceLine" id="cb15-3" title="3">  `tag`.`name`,</a>
+<a class="sourceLine" id="cb15-4" title="4">  `tag`.`status`,</a>
+<a class="sourceLine" id="cb15-5" title="5">  `tag`.`createdAt`,</a>
+<a class="sourceLine" id="cb15-6" title="6">  `tag`.`updatedAt`,</a>
+<a class="sourceLine" id="cb15-7" title="7">  `tag_taggable`.`tagId` <span class="kw">AS</span> `tag_taggable.tagId`,</a>
+<a class="sourceLine" id="cb15-8" title="8">  `tag_taggable`.`taggableId` <span class="kw">AS</span> `tag_taggable.taggableId`,</a>
+<a class="sourceLine" id="cb15-9" title="9">  `tag_taggable`.`taggableType` <span class="kw">AS</span> `tag_taggable.taggableType`,</a>
+<a class="sourceLine" id="cb15-10" title="10">  `tag_taggable`.`createdAt` <span class="kw">AS</span> `tag_taggable.createdAt`,</a>
+<a class="sourceLine" id="cb15-11" title="11">  `tag_taggable`.`updatedAt` <span class="kw">AS</span> `tag_taggable.updatedAt`</a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="kw">FROM</span> `tags` <span class="kw">AS</span> `tag`</a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="kw">INNER</span> <span class="kw">JOIN</span> `tag_taggables` <span class="kw">AS</span> `tag_taggable` <span class="kw">ON</span></a>
+<a class="sourceLine" id="cb15-14" title="14">  `tag`.`id` <span class="op">=</span> `tag_taggable`.`tagId` <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb15-15" title="15">  `tag_taggable`.`taggableId` <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb15-16" title="16">  `tag_taggable`.`taggableType` <span class="op">=</span> <span class="st">&#39;image&#39;</span></a>
+<a class="sourceLine" id="cb15-17" title="17"><span class="kw">WHERE</span> (</a>
+<a class="sourceLine" id="cb15-18" title="18">  `tag`.`status` <span class="op">=</span> <span class="st">&#39;pending&#39;</span></a>
+<a class="sourceLine" id="cb15-19" title="19">);</a></code></pre></div>
+<p>We can see that both scopes were applied automatically:</p>
+<ul>
+<li><code>`tag_taggable`.`taggableType` = 'image'</code> was added automatically to the <code>INNER JOIN</code>;</li>
+<li><code>`tag`.`status` = 'pending'</code> was added automatically to an outer where clause.</li>
+</ul>

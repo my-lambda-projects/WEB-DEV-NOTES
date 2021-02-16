@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.drag-and-drop:upload-action-uploader', location = 'js/upload-action-uploader.js' */
+define("confluence-drag-and-drop/upload-action-uploader",["jquery","confluence/api/constants","confluence/meta","confluence-drag-and-drop/drag-and-drop-utils","plupload"],function(e,k,d,l,g){function a(){}var m=/^\w+:\/\/[^\/?#]+/.exec(location.href);a.prototype.filesAdded=function(h,c,d){return e.Deferred().resolve().promise()};a.prototype.beforeUpload=function(h,c,a){a=m+k.CONTEXT_PATH+"/plugins/drag-and-drop/upload.action";var b={},e=c.name.substr(c.name.lastIndexOf(".")+1),f=parseInt(d.get("page-id"),
+10);f?b.pageId=f:b.draftId=parseInt(d.get("draft-id"),10);if(f=d.get("drag-and-drop-entity-id"))b.dragAndDropEntityId=f;b.filename=c.name;b.size=c.size;b.minorEdit=!0;b.spaceKey=d.get("space-key")||"";b.mimeType=g.mimeTypes[e.toLowerCase()]||l.defaultMimeType;b.atl_token=d.get("atl-token");b.contentType=d.get("content-type");b.isVFMSupported=!0;h.settings.url=g.buildUrl(a,b)};a.prototype.fileUploaded=function(a,c,d){a=JSON.parse(d.response);return e.Deferred().resolve({fileId:c.id,fileServerId:a.data.id,
+htmlForEditor:a.htmlForEditor}).promise()};a.prototype.serverError=function(a){var c;try{c=e.parseJSON(a).actionErrors[0]}catch(n){console.debug("Failed to parse server error response")}return c};return a});
+}catch(e){WRMCB(e)};

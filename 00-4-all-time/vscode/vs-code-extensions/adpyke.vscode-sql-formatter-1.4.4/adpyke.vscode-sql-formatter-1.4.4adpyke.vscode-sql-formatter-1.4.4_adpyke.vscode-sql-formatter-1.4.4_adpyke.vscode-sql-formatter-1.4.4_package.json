@@ -1,0 +1,80 @@
+{
+	"name": "vscode-sql-formatter",
+	"displayName": "SQL Formatter",
+	"description": "Format sql files using the sql-formatter npm package",
+	"version": "1.4.4",
+	"publisher": "adpyke",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kufii/vscode-sql-formatter.git"
+	},
+	"engines": {
+		"vscode": "^1.38.0"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"keywords": [
+		"sql",
+		"formatter",
+		"n1ql",
+		"db2",
+		"pl/sql"
+	],
+	"activationEvents": [
+		"onLanguage:sql"
+	],
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "SQL Formatter",
+			"properties": {
+				"sql-formatter.dialect": {
+					"scope": "resource",
+					"type": "string",
+					"enum": [
+						"sql",
+						"n1q1",
+						"db2",
+						"pl/sql"
+					],
+					"default": "sql",
+					"description": "Which dialect to format with (sql: Standard SQL, n1ql: Couchbase N1QL, db2: IBM DB2, pl/sql: Oracle PL/SQL)"
+				},
+				"sql-formatter.uppercase": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Convert keywords to uppercase"
+				},
+				"sql-formatter.linesBetweenQueries": {
+					"scope": "resource",
+					"type": "number",
+					"minimum": 1,
+					"default": 2,
+					"description": "Change number of linebreaks between queries"
+				}
+			}
+		}
+	},
+	"main": "./src/extension.js",
+	"scripts": {
+		"lint": "eslint .",
+		"format": "prettier --write \"**/*.{js,jsx,md,json,css,prettierrc,eslintrc}\""
+	},
+	"devDependencies": {
+		"eslint": "^6.6.0",
+		"eslint-config-adpyke-es6": "^1.4.13",
+		"eslint-config-prettier": "^6.5.0",
+		"glob": "^7.1.5",
+		"prettier": "^1.18.2"
+	},
+	"dependencies": {
+		"sql-formatter-plus": "^1.3.6"
+	},
+	"__metadata": {
+		"id": "ac70a31d-d9ab-417b-b259-baf7cd9d6cb0",
+		"publisherId": "8d7f2028-26ae-4724-8306-a1c8bb6c6794",
+		"publisherDisplayName": "adpyke"
+	}
+}

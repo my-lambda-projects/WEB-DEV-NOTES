@@ -1,0 +1,120 @@
+/* module-key = 'com.atlassian.plugins.issue-status-plugin:issue-status-resources', location = '/css/issue-status-plugin.css' */
+.jira-issue-status-lozenge{vertical-align:text-bottom;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:12em;word-wrap:normal;word-break:normal}.jira-issue-status-render-error{color:#d04437}.aui-lozenge.jira-issue-status-lozenge-green{background-color:#14892c;border-color:#14892c;color:#fff}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-green{background-color:#fff;border-color:#b2d8b9;color:#14892c}.aui-lozenge.jira-issue-status-lozenge-yellow{background-color:#ffd351;border-color:#ffd351;color:#594300}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-yellow{background-color:#fff;border-color:#ffe28c;color:#594300}.aui-lozenge.jira-issue-status-lozenge-brown{background-color:#815b3a;border-color:#815b3a;color:#fff}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-brown{background-color:#fff;border-color:#ece7e2;color:#815b3a}.aui-lozenge.jira-issue-status-lozenge-warm-red{background-color:#d04437;border-color:#d04437;color:#fff}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-warm-red{background-color:#fff;border-color:#f8d3d1;color:#d04437}.aui-lozenge.jira-issue-status-lozenge-blue-gray{background-color:#4a6785;border-color:#4a6785;color:#fff}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-blue-gray{background-color:#fff;border-color:#e4e8ed;color:#4a6785}.aui-lozenge.jira-issue-status-lozenge-medium-gray{background-color:#ccc;border-color:#ccc;color:#333}.aui-lozenge.aui-lozenge-subtle.jira-issue-status-lozenge-medium-gray{background-color:#fff;border-color:#ccc;color:#333}.aui-lozenge.jira-issue-status-lozenge-compact{width:4px;text-align:left;text-indent:-9999px}.jira-issue-status-tooltip .tipsy-inner{text-align:left}.jira-issue-status-tooltip .jira-issue-status-tooltip-title{text-transform:uppercase}.jira-issue-status-tooltip .jira-issue-status-tooltip-desc{color:#ccc}.jira-issue-status-lozenge-max-width-short{max-width:8em}.jira-issue-status-lozenge-max-width-medium{max-width:12em}.jira-issue-status-lozenge-max-width-long{max-width:20em}
+/* module-key = 'com.atlassian.confluence.plugins.confluence-jira-metadata:confluence-jira-metadata-resources', location = '/css/jira-metadata.css' */
+#jira-metadata-dialog > :not(.spinner-container):not(.spinner):not(h2) {
+    opacity: 0;
+    max-height: 100px;
+}
+
+#jira-metadata-dialog.show > :not(.spinner-container):not(.spinner):not(h2) {
+    opacity: 1;
+    max-height: 1000px;
+    transition: max-height 350ms ease-in-out,
+                opacity 350ms ease-in-out;
+}
+
+#jira-metadata-dialog .title {
+    padding-bottom: 10px;
+}
+
+#jira-metadata-dialog .jira-metadata-list {
+    padding-left: 23px;
+    margin-top: 5px;
+}
+
+#jira-metadata-dialog .jira-metadata-section {
+    padding: 0 0 10px 0;
+    display: table;
+}
+
+#jira-metadata-dialog .jira-metadata-section .jira-metadata-item {
+    list-style-type: none;
+    padding-bottom: 4px;
+}
+
+#jira-metadata-dialog .jira-metadata-section .item-label {
+    display: block;
+}
+
+#jira-metadata-dialog .section-label {
+    width: 80px;
+}
+
+#jira-metadata-dialog .item-label > a,
+#jira-metadata-dialog .item-label .item-status,
+#jira-metadata-dialog .item-label .jira-issue-status-lozenge {
+    vertical-align: middle;
+}
+
+#jira-metadata-dialog .item-status,
+#jira-metadata-dialog .item-subtext {
+    font-size: 12px;
+    color:  #707070;
+}
+
+#jira-metadata-dialog .icon {
+    padding-right: 7px;
+}
+
+/* Data URI for image file: resources/img/sprint.png */
+#jira-metadata-dialog .jira-metadata-section.SPRINTS-section .icon {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAkklEQVR4AWP4TwBSTUGBS8Gqgv9geLcgDUNBQRpU8kzBOzA9E6EArBsiWCAIVlwO5oUiKQAbvgqhp6ADZBaMx8TAwBAKxBUMCNAJxMYwDhOE6r+HkO9/DyLRFBQqIQuiK1gNxB0IocI0IHEWSM8E0pi+QECIdxmAPjfGCAcEnAlUB1ICDUlMuBvFUGxW4FEACXAAIFLY7AkS01QAAAAASUVORK5CYII=');
+}
+
+/* Data URI for image file: resources/img/epic.png */
+#jira-metadata-dialog .jira-metadata-section.EPICS-section .icon {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAYFBMVEX///+1tbWzs7OwsLD////7+/v5+fnz9ffm6u7Z2dnW1tbO1t7U1NTT09PPz8/DzNa2ws6gr7+LnbGJnK+Li4t/k6mBgYFpgZp7e3tfeJNycnJwcHBVcIxTb4tUb4xKZ4VAO0iYAAAAFXRSTlMAIiIi3e7u7u7u7u7u7u7u7u7u7u4cXfPyAAAAcUlEQVR4AWXI1QHDMADE0MA5zMy3/5Y1l/SnF/wXTufhmkIJ01ILoCQ51ssk4Wggm8kVyA8FQn5GXikgNEA2ki1kHnaSffoBaB8O+IRO/iek94wvGNf0C0r7iYYcaM2jUDAtlTCbFNskIZoO3xQHf70A2/kKYaQEhB0AAAAASUVORK5CYII=');
+}
+
+/* Data URI for image file: resources/img/version.gif */
+#jira-metadata-dialog .jira-metadata-section.VERSIONS-section .icon {
+    background-image: url('data:image/gif;base64,R0lGODlhEAAQANUAAHBwcOnp6aampoKCgsPDw////5OTk7S0tMzMzHd3d/X19d7e3p6enouLi8HBwaurq9PT03x8fMnJye7u7o6Ojvj4+KWlpbm5uYWFhe3t7X5+fpWVla+vr9XV1eTk5JmZmf////f394iIiNjY2ICAgHh4ePHx8ZGRkQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAAQABAAAAagwIJQCLGUShbPcJnhlACNC6IBlSwlJQEkJEQUQhIByVpoUA5Lr/AQORUCpMDidHJMEI5P5FARKRgjQxIRGAYRBhldHBobiUMXEQRLECVlGg8KQhMGE0IBDAACBQAFBBp8HAAcJg8lDBFCpEKmBAAOCRyZsrJLvLG/S6NLCgNCBhdcQ7wSAxZDDgPIv8yqmUMKF6ETANwCjsEFGQIDA97BQQA7');
+}
+
+/* Data URI for image file: resources/img/issue.png */
+#jira-metadata-dialog .jira-metadata-section.ISSUES-section .icon {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAZElEQVR4AZ3RURVEERgE4FtBFhUEmn5/ha2gwlYAAABnvPkG+NQmZoCBoAYhMA8IP/C2CQ4J8kDF6Y6oAGb7N8Cfxe89BvmoNAYq5xFst9gcsgsY1PqhRAQECdG1Bf6go8/aRAPGBRdvl8XydgAAAABJRU5ErkJggg==');
+}
+
+#jira-metadata-dialog .spinner-container {
+    height: 100px;
+    position: relative;
+}
+
+#jira-metadata-dialog .spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -5px;
+}
+
+#content-metadata-jira .aui-icon {
+    margin-top: -1px;
+    padding-right: 4px;
+}
+
+#content-metadata-jira::before {
+    width: 16px;
+    height: 16px;
+    margin: 1px 5px 0 0;
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAZFJREFUeNqEU11OAjEQnrbbXYIaV42JDyZyBL2B3AAvYDyAD/Jugg8ewQOAJ9ATyBH2CLz5k5BgCIbt0taZ0iIQqJNMptufb775ZpZBxK5vHx8wdCJXRhzi1v/nPI8CPD/dE0A3didZo5xjODfGwLSsoCwVvH8Oezv12khw3mKMNeq4pswbAegx+hvnHKQUYIwAjT4eTxBQgapmcHZ6kiMIbAMoSBjKIJNwxObO5m6sKXwiZ3ytZnp85UGAQGpZuuKzmXld0YBapbWBUimsuYKPryForbtZmt5YZHKY7xX4cJFxWpYo7O4+Lu9CCR0huMtmjCWKLo4nP6BU5XQ5PsqhBqkrRghBTNuYuIefrcS36UbKJTnsX7TWDnDVSBKBGqQgKh3KJS0K0qAdBoZAslRClslFRBYvQZMEs9PesnESDr2J6wv0JmZqY/1zAIxI+Zv2AwijbmwaJE+Jhskxsb4SeuDPDvDs0rd66xyQDUILCYJztj7aqyVsmH8C6BNTAqEyYrbtZ6Jh6hJ9p37EfgUYAEzCjf/4YLy4AAAAAElFTkSuQmCC);
+}
+
+/* PAGE-METADATA-BANNER OVERRIDES */
+#page-metadata-banner .page-metadata-item .content-metadata-jira .page-banner-item-icon {
+    margin: 1px 5px 0 0;
+}
+
+#page-metadata-banner #content-metadata-jira-wrapper {
+    padding: 0 10px 0 0;
+}
+
+/* AUI OVERRIDES */
+#page-metadata-banner .banner #content-metadata-jira.active {
+    border: 1px solid #ccc;
+    border-radius: 3.01px;
+}
+
+#page-metadata-banner .banner #content-metadata-jira:hover {
+    border-color: #999;
+}

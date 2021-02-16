@@ -1,0 +1,113 @@
+{
+	"name": "html-live-server",
+	"displayName": "html-live-server",
+	"description": "Live server to render html web page based on code changes with refresh",
+	"version": "0.1.0",
+	"author": "Naveen Vignesh.B",
+	"publisher": "naveenvignesh5nv",
+	"engines": {
+		"vscode": "^1.41.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/naveenvignesh5/html-live-server.git"
+	},
+	"license": "ISC",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"html",
+		"server",
+		"live server",
+		"html server",
+		"html live server",
+		"live",
+		"preview",
+		"live reload"
+	],
+	"activationEvents": [
+		"onCommand:server.start",
+		"onCommand:server.stop"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"menus": {
+			"editor/context": [
+				{
+					"command": "server.stop",
+					"group": "navigation@-LiveServer"
+				},
+				{
+					"command": "server.start",
+					"group": "navigation@-LiveServer",
+					"when": "resourceLangId == html"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "server.stop",
+					"group": "navigation@-LiveServer"
+				},
+				{
+					"command": "server.start",
+					"group": "navigation@-LiveServer",
+					"when": "resourceLangId == html"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "server.start",
+				"title": "Start Web Preview Server",
+				"category": "HTML Live Server",
+				"when": "resourceLangId == html"
+			},
+			{
+				"command": "server.stop",
+				"title": "Stop Web Preview Server",
+				"category": "HTML Live Server"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "server.start",
+				"key": "alt+s",
+				"mac": "alt+s",
+				"when": "editorTextFocus && editorLangId == html"
+			},
+			{
+				"command": "server.stop",
+				"key": "alt+d",
+				"mac": "alt+d"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.41.0",
+		"glob": "^7.1.5",
+		"mocha": "^6.2.2",
+		"tslint": "^5.20.0",
+		"typescript": "^3.6.4",
+		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"ip": "^1.1.5",
+		"live-server": "^1.2.1"
+	},
+	"__metadata": {
+		"id": "142e3b20-7690-4bea-b7f8-f6ea8cf4bea1",
+		"publisherId": "397b03c0-1f82-4a69-bc31-805c65a945b6",
+		"publisherDisplayName": "Naveen Vignesh"
+	}
+}

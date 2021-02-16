@@ -1,0 +1,80 @@
+<h1 id="practical-psql-commands-that-you-dont-want-to-miss">17 Practical psql Commands That You Don’t Want To Miss</h1>
+<blockquote>
+<p>In this tutorial, you will get a list of the most commonly used psql commands that help you interact with the PostgreSQL database server more effectively.</p>
+</blockquote>
+<p><strong>Summary</strong>: in this tutorial, we give you a list of common psql commands that help you query data from the PostgreSQL database server faster and more effectively.</p>
+<h2 id="connect-to-postgresql-database">1) Connect to PostgreSQL database</h2>
+<p>The following command <a href="https://www.postgresqltutorial.com/postgresql-jdbc/connecting-to-postgresql-database/">connects to a database</a> under a specific user. After pressing <code>Enter</code> PostgreSQL will ask for the password of the user.</p>
+<p><code>psql -d database -U  user -W</code></p>
+<p>For example, to connect to <code>dvdrental</code> database under <code>postgres</code> user, you use the following command:</p>
+<p><code>C:\Program Files\PostgreSQL\9.5\bin&gt;psql -d dvdrental -U postgres -W Password for user postgres: dvdrental=</code></p>
+<p>If you want to connect to a database that resides on another host, you add the -h option as follows:</p>
+<p><code>psql -h host -d database -U user -W</code></p>
+<p>In case you want to use SSL mode for the connection, just specify it as shown in the following command:</p>
+<p><code>psql -U user -h host "dbname=db sslmode=require"</code></p>
+<h2 id="switch-connection-to-a-new-database">2) Switch connection to a new database</h2>
+<p>Once you are connected to a database, you can switch the connection to a new database under a user specified by <code>user</code>. The previous connection will be closed. If you omit the <code>user</code> parameter, the current <code>user</code> is assumed.</p>
+<p>The following command connects to <code>dvdrental</code> database under <code>postgres</code> user:</p>
+<p><code>postgres= You are now connected to database "dvdrental" as user "postgres". dvdrental=</code></p>
+<h2 id="list-available-databases">3) List available databases</h2>
+<p>To <a href="https://www.postgresqltutorial.com/postgresql-show-databases/">list all databases</a> in the current PostgreSQL database server, you use <code>\l</code> command:</p>
+<h2 id="list-available-tables">4) List available tables</h2>
+<p>To <a href="https://www.postgresqltutorial.com/postgresql-show-tables/">list all tables</a> in the current database, you use <code>\dt</code> command:</p>
+<p>Note that this command shows the only table in the currently connected database.</p>
+<h2 id="describe-a-table">5) Describe a table</h2>
+<p>To <a href="https://www.postgresqltutorial.com/postgresql-describe-table/">describe a table</a> such as a column, type, modifiers of columns, etc., you use the following command:</p>
+<h2 id="list-available-schema">6) List available schema</h2>
+<p>To list all <a href="https://www.postgresqltutorial.com/postgresql-schema/">schemas</a> of the currently connected database, you use the <code>\dn</code> command.</p>
+<h2 id="list-available-functions">7) List available functions</h2>
+<p>To list available functions in the current database, you use the <code>\df</code> command.</p>
+<h2 id="list-available-views">8) List available views</h2>
+<p>To list available <a href="https://www.postgresqltutorial.com/postgresql-views/">views</a> in the current database, you use the <code>\dv</code> command.</p>
+<h2 id="list-users-and-their-roles">9) List users and their roles</h2>
+<p>To list all users and their assign roles, you use <code>\du</code> command:</p>
+<h2 id="execute-the-previous-command">10) Execute the previous command</h2>
+<p>To retrieve the current version of PostgreSQL server, you use the <code>version()</code> function as follows:</p>
+<p>Now, you want to save time typing the previous command again, you can use <code>\g</code> command to execute the previous command:</p>
+<p>psql executes the previous command again, which is the <a href="https://www.postgresqltutorial.com/postgresql-select/">SELECT statement</a>,.</p>
+<h2 id="command-history">11) Command history</h2>
+<p>To display command history, you use the <code>\s</code> command.</p>
+<p>If you want to save the command history to a file, you need to specify the file name followed the <code>\s</code> command as follows:</p>
+<h2 id="execute-psql-commands-from-a-file">12) Execute psql commands from a file</h2>
+<p>In case you want to execute psql commands from a file, you use <code>\i</code> command as follows:</p>
+<h2 id="get-help-on-psql-commands">13) Get help on psql commands</h2>
+<p>To know all available psql commands, you use the <code>\?</code> command.</p>
+<p>To get help on specific PostgreSQL statement, you use the <code>\h</code> command.</p>
+<p>For example, if you want to know detailed information on <a href="https://www.postgresqltutorial.com/postgresql-alter-table/">ALTER TABLE</a> statement, you use the following command:</p>
+<h2 id="turn-on-query-execution-time">14) Turn on query execution time</h2>
+<p>To turn on query execution time, you use the <code>\timing</code> command.</p>
+<p>`dvdrental= Timing is on. dvdrental= count</p>
+<p>1000 (1 row)</p>
+<p>Time: 1.495 ms dvdrental=`</p>
+<p>You use the same command <code>\timing</code> to turn it off.</p>
+<p><code>dvdrental= Timing is off. dvdrental=</code></p>
+<h2 id="edit-command-in-your-own-editor">15) Edit command in your own editor</h2>
+<p>It is very handy if you can type the command in your favorite editor. To do this in psql, you <code>\e</code> command. After issuing the command, psql will open the text editor defined by your EDITOR environment variable and place the most recent command that you entered in psql into the editor.</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2015/07/psql-commands.jpg" alt="psql commands" /><figcaption>psql commands</figcaption>
+</figure>
+<p>After you type the command in the editor, save it, and close the editor, psql will execute the command and return the result.</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2015/07/psql-command-example.jpg" alt="psql command example" /><figcaption>psql command example</figcaption>
+</figure>
+<p>It is more useful when you edit a function in the editor.</p>
+<figure>
+<img src="https://sp.postgresqltutorial.com/wp-content/uploads/2015/07/psql-command-ef-edit-function.jpg" alt="psql commadn ef edit function" /><figcaption>psql commadn ef edit function</figcaption>
+</figure>
+<h2 id="switch-output-options">16) Switch output options</h2>
+<p>psql supports some types of output format and allows you to customize how the output is formatted on the fly.</p>
+<ul>
+<li> <code>\a</code> command switches from aligned to non-aligned column output.</li>
+<li> <code>\H</code> command formats the output to HTML format.</li>
+</ul>
+<h2 id="quit-psql">17) Quit psql</h2>
+<p>To quit psql, you use <code>\q</code> command and press <code>enter</code> to exit psql.</p>
+<p>In this tutorial, you have learned how to use psql commands to perform various commonly used tasks in PostgreSQL.</p>
+<ul>
+<li>Was this tutorial helpful ?</li>
+<li><a href="#">Yes</a><a href="#">No</a></li>
+</ul>
+<p><a href="https://www.postgresqltutorial.com/psql-commands/">Source</a></p>

@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "lenses": {
+      "0": {
+        "order": 0,
+        "parts": {}
+      }
+    },
+    "metadata": {
+      "model": {}
+    }
+  },
+  "name": "My Dashboard (2)",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "My Dashboard (2)"
+  },
+  "apiVersion": "2015-08-01-preview"
+}

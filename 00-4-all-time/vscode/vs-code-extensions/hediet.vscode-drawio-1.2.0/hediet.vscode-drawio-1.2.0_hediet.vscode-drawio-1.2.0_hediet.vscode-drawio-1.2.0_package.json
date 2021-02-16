@@ -1,0 +1,383 @@
+{
+	"name": "vscode-drawio",
+	"private": true,
+	"displayName": "Draw.io Integration",
+	"description": "This unofficial extension integrates Draw.io into VS Code.",
+	"version": "1.2.0",
+	"license": "GPL-3.0",
+	"publisher": "hediet",
+	"keywords": [
+		"drawio",
+		"diagram",
+		"diagrams.net",
+		"visio",
+		"architecture",
+		"uml",
+		"code link"
+	],
+	"author": {
+		"email": "henning.dieterichs@live.de",
+		"name": "Henning Dieterichs"
+	},
+	"readme": "./README.md",
+	"icon": "docs/logo.drawio.png",
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"categories": [
+		"Visualization"
+	],
+	"activationEvents": [
+		"onCustomEditor:hediet.vscode-drawio",
+		"onCustomEditor:hediet.vscode-drawio-text",
+		"onCommand:hediet.vscode-drawio.newDiagram"
+	],
+	"repository": {
+		"url": "https://github.com/hediet/vscode-drawio.git"
+	},
+	"main": "./dist/extension/index",
+	"contributes": {
+		"languages": [
+			{
+				"id": "drawio",
+				"extensions": [
+					".drawio",
+					".dio",
+					".dio.svg",
+					".drawio.svg",
+					".drawio.png",
+					".dio.png"
+				],
+				"aliases": [
+					"Draw.io",
+					"drawio"
+				]
+			}
+		],
+		"customEditors": [
+			{
+				"viewType": "hediet.vscode-drawio",
+				"displayName": "Draw.io (Binary)",
+				"selector": [
+					{
+						"filenamePattern": "*.drawio.png"
+					},
+					{
+						"filenamePattern": "*.dio.png"
+					}
+				],
+				"priority": "default"
+			},
+			{
+				"viewType": "hediet.vscode-drawio-text",
+				"displayName": "Draw.io",
+				"selector": [
+					{
+						"filenamePattern": "*.drawio"
+					},
+					{
+						"filenamePattern": "*.dio"
+					},
+					{
+						"filenamePattern": "*.dio.svg"
+					},
+					{
+						"filenamePattern": "*.drawio.svg"
+					}
+				],
+				"priority": "default"
+			}
+		],
+		"commands": [
+			{
+				"command": "hediet.vscode-drawio.convert",
+				"title": "Draw.io: Convert To..."
+			},
+			{
+				"command": "hediet.vscode-drawio.export",
+				"title": "Draw.io: Export To..."
+			},
+			{
+				"command": "hediet.vscode-drawio.toggleCodeLinkActivation",
+				"title": "Draw.io: Toggle Code Link Activation"
+			},
+			{
+				"command": "hediet.vscode-drawio.changeTheme",
+				"title": "Draw.io: Change Theme"
+			},
+			{
+				"command": "hediet.vscode-drawio.editDiagramAsText",
+				"title": "Draw.io: Edit Diagram As Text (Experimental)",
+				"enablement": "hediet.vscode-drawio.experimentalFeaturesEnabled"
+			},
+			{
+				"command": "hediet.vscode-drawio.linkCodeWithSelectedNode",
+				"title": "Draw.io: Link Code with Selected Node"
+			},
+			{
+				"command": "hediet.vscode-drawio.newDiagram",
+				"title": "Draw.io: New Draw.io Diagram"
+			},
+			{
+				"command": "hediet.vscode-drawio.linkFileWithSelectedNode",
+				"title": "Draw.io: Link File With Selected Node In Active Diagram"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "hediet.vscode-drawio.linkCodeWithSelectedNode",
+				"key": "shift+F3",
+				"when": "!findWidgetVisible"
+			}
+		],
+		"configuration": {
+			"title": "Draw.io Integration",
+			"properties": {
+				"hediet.vscode-drawio.offline": {
+					"type": "boolean",
+					"default": true,
+					"title": "Use Offline Mode",
+					"description": "When enabled, the bundled instance of Draw.io is used."
+				},
+				"hediet.vscode-drawio.codeLinkActivated": {
+					"type": "boolean",
+					"default": false,
+					"title": "Code Link Enabled",
+					"description": "When activated, selecting a node will navigate to an associated code section."
+				},
+				"hediet.vscode-drawio.local-storage": {
+					"anyOf": [
+						{
+							"type": "object"
+						},
+						{
+							"type": "string"
+						}
+					],
+					"default": {},
+					"readOnly": true,
+					"title": "Draw.io Local Storage",
+					"description": "Only change this property if you know what you are doing. Manual changes to this property are not supported!"
+				},
+				"hediet.vscode-drawio.presetColors": {
+					"title": "Preset Colors",
+					"description": "Color codes for the upper palette in the color dialog.",
+					"type": "array",
+					"items": {
+						"type": "string",
+						"description": "Use hex codes without # at the beginning only (FFFFFF for absolute white, for example)."
+					}
+				},
+				"hediet.vscode-drawio.customColorSchemes": {
+					"title": "Custom Color Schemes",
+					"markdownDescription": "Available color schemes in the style section at the top of the format panel. See example [here](https://www.diagrams.net/doc/faq/custom-colours-confluence-cloud#default-colour-schemes---format-panel)",
+					"type": "array",
+					"items": {
+						"type": "array",
+						"description": "Represents a page of color schemes.",
+						"items": {
+							"type": "object",
+							"properties": {
+								"fill": {
+									"type": "string",
+									"description": "Use hex codes with # at the beginning (#FFFFFF for absolute white, for example)."
+								},
+								"stroke": {
+									"type": "string",
+									"description": "Use hex codes with # at the beginning (#FFFFFF for absolute white, for example)."
+								},
+								"gradient": {
+									"type": "string",
+									"description": "Use hex codes with # at the beginning (#FFFFFF for absolute white, for example)."
+								}
+							}
+						}
+					}
+				},
+				"hediet.vscode-drawio.customFonts": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"title": "Custom Fonts",
+					"description": "Configures the Draw.io editor to use custom fonts."
+				},
+				"hediet.vscode-drawio.customLibraries": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"entryId": {
+								"type": "string",
+								"description": "The id of the entry. A specfic entry can be enabled or deactivated in the editor."
+							},
+							"libName": {
+								"type": "string",
+								"description": "The name of the library in the shape overview."
+							}
+						},
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {
+									"url": {
+										"type": "string"
+									}
+								}
+							},
+							{
+								"type": "object",
+								"properties": {
+									"xml": {
+										"type": "string"
+									}
+								}
+							},
+							{
+								"type": "object",
+								"properties": {
+									"json": {}
+								}
+							},
+							{
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"description": "The file path to the library. Must be absolute. You can use ${workspaceFolder}."
+									}
+								}
+							}
+						]
+					},
+					"default": [],
+					"title": "Custom Libraries",
+					"description": "Configures the Draw.io editor to use custom libraries."
+				},
+				"hediet.vscode-drawio.plugins": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"description": "The file path to the library. Must be absolute. You can use ${workspaceFolder}."
+									}
+								}
+							}
+						]
+					},
+					"default": [],
+					"title": "Plugins",
+					"description": "Loads Draw.io plugins."
+				},
+				"hediet.vscode-drawio.knownPlugins": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"pluginId": {
+								"type": "string"
+							},
+							"fingerprint": {
+								"type": "string"
+							},
+							"allowed": {
+								"type": "boolean"
+							}
+						}
+					},
+					"default": [],
+					"title": "Known Plugins"
+				},
+				"hediet.vscode-drawio.online-url": {
+					"type": "string",
+					"default": "https://embed.diagrams.net/",
+					"title": "Online URL",
+					"description": "The app to use when offline mode is disabled."
+				},
+				"hediet.vscode-drawio.theme": {
+					"title": "Draw.io Theme",
+					"type": "string",
+					"default": "automatic",
+					"enum": [
+						"automatic",
+						"min",
+						"atlas",
+						"dark",
+						"Kennedy"
+					],
+					"description": "The theme to use for the Draw.io editor. Use \"automatic\" to automatically choose a Draw.io theme that matches your current VS Code theme."
+				}
+			}
+		},
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "hediet.vscode-drawio.active",
+					"command": "hediet.vscode-drawio.linkFileWithSelectedNode",
+					"group": "Drawio"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"run-script": "node ./scripts/run-script",
+		"lint": "yarn run-script check-version && prettier --check ./src",
+		"build": "yarn pre-build && vsce package --yarn --out ./vscode-drawio.vsix",
+		"pre-build": "webpack --mode production && webpack --mode production --config ./drawio-custom-plugins/webpack.config.ts",
+		"dev": "webpack --mode development --watch",
+		"dev-drawio-plugins": "webpack --mode development --watch --config ./drawio-custom-plugins/webpack.config.ts",
+		"dev-drawio-plugins-web": "webpack-dev-server --hot --config ./drawio-custom-plugins/webpack.config.ts"
+	},
+	"devDependencies": {
+		"@actions/exec": "^1.0.4",
+		"@actions/github": "^2.2.0",
+		"@hediet/semver": "^0.2.1",
+		"@types/jsdom": "^16.2.3",
+		"@types/node": "^13.13.5",
+		"@types/vscode": "1.46.0",
+		"@types/xml-formatter": "^1.1.0",
+		"clean-webpack-plugin": "^3.0.0",
+		"css-loader": "^3.4.2",
+		"prettier": "^2.0.5",
+		"raw-loader": "^4.0.1",
+		"style-loader": "^1.1.3",
+		"ts-loader": "^7.0.4",
+		"ts-node": "^8.10.1",
+		"tslint": "^6.1.2",
+		"typescript": "^3.8.3",
+		"vsce": "1.75.0",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.11",
+		"webpack-dev-server": "^3.11.0"
+	},
+	"dependencies": {
+		"@hediet/json-to-dictionary": "^0.2.1",
+		"@hediet/std": "0.6.0",
+		"@knuddels/mobx-logger": "^1.1.1",
+		"@popperjs/core": "^2.5.3",
+		"@types/copy-webpack-plugin": "^6.0.0",
+		"@types/mithril": "^2.0.4",
+		"copy-webpack-plugin": "^6.1.1",
+		"js-sha256": "^0.9.0",
+		"jsdom": "^16.2.2",
+		"mithril": "^2.0.4",
+		"mobx": "5.15.4",
+		"mobx-utils": "5.5.7",
+		"ovsx": "^0.1.0-next.e000fdb",
+		"tippy.js": "^6.2.6",
+		"vsls": "^1.0.2594",
+		"xml-formatter": "^2.0.1",
+		"xml-parser-xo": "^3.0.0"
+	},
+	"versionName": "1.2.0",
+	"__metadata": {
+		"id": "ea6a6046-2132-421f-a984-664909fcf0b8",
+		"publisherId": "4d8048f9-07cf-483a-b27b-1fdc29cea931",
+		"publisherDisplayName": "Henning Dieterichs"
+	}
+}

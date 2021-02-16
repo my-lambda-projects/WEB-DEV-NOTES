@@ -1,0 +1,10 @@
+# HSTS 1.0 Known Hosts database for GNU Wget.
+# Edit at your own risk.
+# <hostname>	<port>	<incl. subdomains>	<created>	<max-age>
+update.code.visualstudio.com	0	0	1607740069	31536000
+www.postgresql.org	0	0	1608173099	31536000
+packages.microsoft.com	0	1	1608176460	31536000
+fa71dcae-f502-45c0-a64e-4c0c6c6beedd.ws-us03.gitpod.io	0	0	1609485381	31557600
+blobserve.ws-us03.gitpod.io	0	0	1609485381	31557600
+dc84e733-2a6e-497b-96cc-1001db8e9c10.ws-us03.gitpod.io	0	0	1609587028	31557600
+developer.mozilla.org	0	0	1608783412	63072000

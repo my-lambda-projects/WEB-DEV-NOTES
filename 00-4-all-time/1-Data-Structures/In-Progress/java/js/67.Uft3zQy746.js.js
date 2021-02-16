@@ -1,0 +1,6891 @@
+( window.webpackJsonp = window.webpackJsonp || [] ).push( [
+  [ 67, 135, 138 ], {
+    "+AdF": function ( e, t, n ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } );
+      var r = function () {
+          function e( e, t ) {
+            for ( var n = 0; n < t.length; n++ ) {
+              var r = t[ n ];
+              r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && ( r.writable = !0 ), Object.defineProperty( e, r.key, r )
+            }
+          }
+          return function ( t, n, r ) {
+            return n && e( t.prototype, n ), r && e( t, r ), t
+          }
+        }(),
+        a = n( "ERkP" ),
+        o = n( "7nmT" );
+
+      function i( e, t ) {
+        if ( !( e instanceof t ) ) throw new TypeError( "Cannot call a class as a function" )
+      }
+
+      function c( e, t ) {
+        if ( !e ) throw new ReferenceError( "this hasn't been initialised - super() hasn't been called" );
+        return !t || "object" != typeof t && "function" != typeof t ? e : t
+      }
+      var s = function ( e ) {
+        function t() {
+          return i( this, t ), c( this, ( t.__proto__ || Object.getPrototypeOf( t ) ).apply( this, arguments ) )
+        }
+        return function ( e, t ) {
+          if ( "function" != typeof t && null !== t ) throw new TypeError( "Super expression must either be null or a function, not " + typeof t );
+          e.prototype = Object.create( t && t.prototype, {
+            constructor: {
+              value: e,
+              enumerable: !1,
+              writable: !0,
+              configurable: !0
+            }
+          } ), t && ( Object.setPrototypeOf ? Object.setPrototypeOf( e, t ) : e.__proto__ = t )
+        }( t, e ), r( t, [ {
+          key: "componentDidMount",
+          value: function () {
+            this.props.innerRef( ( 0, o.findDOMNode )( this ) )
+          }
+        }, {
+          key: "componentWillUnmount",
+          value: function () {
+            this.props.innerRef( null )
+          }
+        }, {
+          key: "render",
+          value: function () {
+            return this.props.children
+          }
+        } ] ), t
+      }( a.Component );
+      t.default = s
+    },
+    "06eB": function ( e, t, n ) {
+      var r = n( "ey2t" ),
+        a = n( "qnX1" ),
+        o = n( "eYkv" ),
+        i = n( "UV1p" ),
+        c = n( "R6B+" ),
+        s = n( "hoKw" ),
+        l = Date.prototype.getTime;
+
+      function u( e, t, n ) {
+        var f = n || {};
+        return !!( f.strict ? o( e, t ) : e === t ) || ( !e || !t || "object" != typeof e && "object" != typeof t ? f.strict ? o( e, t ) : e == t : function ( e, t, n ) {
+          var o, f;
+          if ( typeof e != typeof t ) return !1;
+          if ( d( e ) || d( t ) ) return !1;
+          if ( e.prototype !== t.prototype ) return !1;
+          if ( a( e ) !== a( t ) ) return !1;
+          var m = i( e ),
+            b = i( t );
+          if ( m !== b ) return !1;
+          if ( m || b ) return e.source === t.source && c( e ) === c( t );
+          if ( s( e ) && s( t ) ) return l.call( e ) === l.call( t );
+          var y = p( e ),
+            h = p( t );
+          if ( y !== h ) return !1;
+          if ( y || h ) {
+            if ( e.length !== t.length ) return !1;
+            for ( o = 0; o < e.length; o++ )
+              if ( e[ o ] !== t[ o ] ) return !1;
+            return !0
+          }
+          if ( typeof e != typeof t ) return !1;
+          try {
+            var g = r( e ),
+              v = r( t )
+          } catch ( O ) {
+            return !1
+          }
+          if ( g.length !== v.length ) return !1;
+          for ( g.sort(), v.sort(), o = g.length - 1; o >= 0; o-- )
+            if ( g[ o ] != v[ o ] ) return !1;
+          for ( o = g.length - 1; o >= 0; o-- )
+            if ( f = g[ o ], !u( e[ f ], t[ f ], n ) ) return !1;
+          return !0
+        }( e, t, f ) )
+      }
+
+      function d( e ) {
+        return null == e
+      }
+
+      function p( e ) {
+        return !( !e || "object" != typeof e || "number" != typeof e.length ) && ( "function" == typeof e.copy && "function" == typeof e.slice && !( e.length > 0 && "number" != typeof e[ 0 ] ) )
+      }
+      e.exports = u
+    },
+    "0bsQ": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return p
+      } ) );
+      var r = n( "zjfJ" ),
+        a = n( "Czhu" ),
+        o = ( n( "aWzz" ), n( "ERkP" ) ),
+        i = n.n( o ),
+        c = n( "KsTJ" ),
+        s = n( "lRcl" );
+      const l = {
+          small: 12,
+          medium: 26,
+          large: 36
+        },
+        u = c.default.div( [], e => Object( a.a )( {
+          width: "100%",
+          height: "100%",
+          position: "relative"
+        }, e.style ) ),
+        d = c.default.div `
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  marginLeft: ${e=>e.marginLeft}px
+  marginTop: ${e=>e.marginTop}px
+  zIndex: 100
+`;
+      class p extends o.PureComponent {
+        render() {
+          const {
+            style: e,
+            size: t
+          } = this.props;
+          return i.a.createElement( u, {
+            style: e,
+            "data-test-id": "wrapper-spinner"
+          }, i.a.createElement( d, {
+            "data-test-id": "spinner",
+            marginLeft: -l[ t ] / 2,
+            marginTop: -l[ t ] / 2
+          }, i.a.createElement( s.a, {
+            size: l[ t ]
+          } ) ) )
+        }
+      }
+      Object( r.a )( p, "displayName", "CenteredSpinner" ), Object( r.a )( p, "defaultProps", {
+        size: "small"
+      } )
+    },
+    "0n68": function ( e, t, n ) {
+      "use strict";
+      var r = n( "5L5q" ),
+        a = n( "OsbC" ),
+        o = a( "%Function.prototype.apply%" ),
+        i = a( "%Function.prototype.call%" ),
+        c = a( "%Reflect.apply%", !0 ) || r.call( i, o );
+      e.exports = function () {
+        return c( r, i, arguments )
+      }, e.exports.apply = function () {
+        return c( r, o, arguments )
+      }
+    },
+    "23Qm": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return o
+      } ) );
+      var r = n( "ERkP" ),
+        a = n.n( r );
+      class o extends a.a.PureComponent {
+        constructor() {
+          super( ...arguments ), this.state = {
+            MediaImage: o.MediaImage
+          }
+        }
+        async componentDidMount() {
+          if ( !this.state.MediaImage ) try {
+            const [ e, t ] = await Promise.all( [ Promise.all( [ n.e( 7 ), n.e( 54 ), n.e( 115 ), n.e( "@atlaskit-media-client~4134d62c" ) ] ).then( n.bind( null, "kGyc" ) ), n.e( "@atlaskit-internal_media-image~4134d62c" ).then( n.bind( null, "PRFI" ) ) ] ), r = e.withMediaClient( t.MediaImageInternal );
+            o.MediaImage = r, this.setState( {
+              MediaImage: r
+            } )
+          } catch ( e ) {}
+        }
+        render() {
+          const {
+            MediaImage: e
+          } = this.state;
+          return e ? a.a.createElement( e, Object.assign( {}, this.props ) ) : null
+        }
+      }
+      o.displayName = "AsyncMediaImage"
+    },
+    "30eJ": function ( e, t, n ) {
+      "use strict";
+      n.r( t ), n.d( t, "FormContext", ( function () {
+        return l
+      } ) ), n.d( t, "IsDisabledContext", ( function () {
+        return u
+      } ) );
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "bXdj" ),
+        i = n( "hO4i" ),
+        c = n( "DL3M" ),
+        s = n.n( c );
+      const l = Object( r.createContext )( ( function () {
+          return () => {}
+        } ) ),
+        u = Object( r.createContext )( !1 );
+      t.default = function ( e ) {
+        const t = Object( r.useRef )( null ),
+          n = Object( r.useRef )( e.onSubmit );
+        n.current = e.onSubmit;
+        const c = Object( r.useState )( () => {
+            const e = Object( o.a )( {
+              onSubmit: ( ...e ) => n.current( ...e ),
+              destroyOnUnregister: !0,
+              initialValues: {},
+              mutators: {
+                setDefaultValue: ( [ e, t ], n ) => {
+                  if ( n.formState.initialValues ) {
+                    const r = n.formState.initialValues,
+                      a = n.formState.values,
+                      o = e && "function" == typeof t ? t( r[ e ] ) : t;
+                    s()( r, e, o ), s()( a, e, o )
+                  }
+                }
+              }
+            } );
+            return Object( i.a )( () => t.current ? Array.from( t.current.querySelectorAll( "input" ) ) : [] )( e ), e
+          } )[ 0 ],
+          [ d, p ] = Object( r.useState )( {
+            dirty: !1,
+            submitting: !1
+          } );
+        Object( r.useEffect )( () => c.subscribe( ( {
+          dirty: e,
+          submitting: t
+        } ) => {
+          p( {
+            dirty: e,
+            submitting: t
+          } )
+        }, {
+          dirty: !0,
+          submitting: !0
+        } ), [ c ] );
+        const f = Object( r.useCallback )( ( e, t, n, r, a ) => {
+            c.pauseValidation();
+            const o = c.registerField( e, n, r, a );
+            return c.mutators.setDefaultValue( e, t ), c.resumeValidation(), o
+          }, [ c ] ),
+          {
+            isDisabled: m = !1,
+            children: b
+          } = e,
+          {
+            dirty: y,
+            submitting: h
+          } = d;
+        return a.a.createElement( l.Provider, {
+          value: f
+        }, a.a.createElement( u.Provider, {
+          value: m
+        }, b( {
+          formProps: {
+            onSubmit: e => {
+              e && e.preventDefault(), c.submit()
+            },
+            ref: t,
+            onKeyDown: e => {
+              if ( "Enter" === e.key && ( e.ctrlKey || e.metaKey ) && t.current ) {
+                const n = t.current.querySelector( 'button:not([type]), button[type="submit"], input[type="submit"]' );
+                n && n.click(), e.preventDefault()
+              }
+            }
+          },
+          dirty: y,
+          reset: e => {
+            c.reset( e )
+          },
+          submitting: h,
+          disabled: m,
+          getValues: () => c.getState().values,
+          setFieldValue: c.change
+        } ) ) )
+      }
+    },
+    "37G6": function ( e, t, n ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var r = o( n( "ERkP" ) ),
+        a = o( n( "4KTy" ) );
+
+      function o( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function i() {
+        return ( i = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var n = arguments[ t ];
+            for ( var r in n ) Object.prototype.hasOwnProperty.call( n, r ) && ( e[ r ] = n[ r ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var c = function ( e ) {
+        return r.default.createElement( a.default, i( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.01 18c.546 0 .99-.444.99-1a1 1 0 0 0-.99-1H3.99A.993.993 0 0 0 3 17a1 1 0 0 0 .99 1h4.02zM3 7c0 .552.445 1 .993 1h16.014A.994.994 0 0 0 21 7c0-.552-.445-1-.993-1H3.993A.994.994 0 0 0 3 7zm10.998 6A.999.999 0 0 0 15 12c0-.552-.456-1-1.002-1H4.002A.999.999 0 0 0 3 12c0 .552.456 1 1.002 1h9.996z" fill="currentColor" fill-rule="evenodd"/></svg>'
+        }, e ) )
+      };
+      c.displayName = "OverviewIcon";
+      var s = c;
+      t.default = s
+    },
+    "3ldI": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return s
+      } ) ), n.d( t, "b", ( function () {
+        return l
+      } ) );
+      var r = n( "Jygk" ),
+        a = n.n( r ),
+        o = n( "M2LZ" ),
+        i = n( "kC4U" ),
+        c = n( "94Z3" );
+
+      function s() {
+        let e = null;
+        return function () {
+          if ( e ) return Promise.resolve( e );
+          const t = e => e.json();
+          return Object( i.a )( "/wiki/plugins/macrobrowser/browse-macros.action?detailed=false&t=12" ).then( t, e => {
+            if ( e instanceof c.a ) return t( e.response );
+            throw e
+          } ).then( ( {
+            macros: t
+          } ) => ( e = t, t ) )
+        }
+      }
+
+      function l() {
+        return new Promise( e => {
+          o.a.require( [ "wrc!fabric-editor-macro-browser", "wr!com.atlassian.confluence.plugins.confluence-inline-tasks:inline-tasks-macro-browser", "wr!com.atlassian.confluence.plugins.gadgets:macro-browser-for-gadgetsplugin", "wr!com.atlassian.confluence.plugins.confluence-create-content-plugin:editor-resources", "wr!com.atlassian.confluence.plugins.confluence-create-content-plugin:create-from-template-macro-browser-resources", "wr!com.atlassian.confluence.plugins.confluence-create-content-plugin:create-from-template-resources", "wrc!com.atlassian.confluence.extra.team-calendars:amd", "wrc!com.atlassian.confluence.extra.team-calendars:user-timezone-setup", "wrc!com.atlassian.confluence.extra.team-calendars:calendar-init-editor", "wrc!com.atlassian.confluence.extra.team-calendars:macro-browser-web-resources" ], () => {
+            const t = a.a.require( "confluence-macro-browser/macro-browser" );
+            n.e( "macro-browser-overrides~d16a5355" ).then( n.bind( null, "9S8K" ) ).then( e => {
+              e.default()
+            } ).then( () => {
+              a.a.AJS.trigger( "reset.rte" ), e( t )
+            } )
+          } )
+        } )
+      }
+    },
+    "48gJ": function ( e, t, n ) {
+      "use strict";
+      e.exports = function () {
+        if ( "function" != typeof Symbol || "function" != typeof Object.getOwnPropertySymbols ) return !1;
+        if ( "symbol" == typeof Symbol.iterator ) return !0;
+        var e = {},
+          t = Symbol( "test" ),
+          n = Object( t );
+        if ( "string" == typeof t ) return !1;
+        if ( "[object Symbol]" !== Object.prototype.toString.call( t ) ) return !1;
+        if ( "[object Symbol]" !== Object.prototype.toString.call( n ) ) return !1;
+        for ( t in e[ t ] = 42, e ) return !1;
+        if ( "function" == typeof Object.keys && 0 !== Object.keys( e ).length ) return !1;
+        if ( "function" == typeof Object.getOwnPropertyNames && 0 !== Object.getOwnPropertyNames( e ).length ) return !1;
+        var r = Object.getOwnPropertySymbols( e );
+        if ( 1 !== r.length || r[ 0 ] !== t ) return !1;
+        if ( !Object.prototype.propertyIsEnumerable.call( e, t ) ) return !1;
+        if ( "function" == typeof Object.getOwnPropertyDescriptor ) {
+          var a = Object.getOwnPropertyDescriptor( e, t );
+          if ( 42 !== a.value || !0 !== a.enumerable ) return !1
+        }
+        return !0
+      }
+    },
+    "4LHq": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return r
+      } ) );
+      const r = "confluence.frontend.global-perms-view-user-profile"
+    },
+    "5L5q": function ( e, t, n ) {
+      "use strict";
+      var r = n( "8iDC" );
+      e.exports = Function.prototype.bind || r
+    },
+    "6v+B": function ( e, t, n ) {
+      "use strict";
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "KsTJ" ),
+        i = n( "3IV/" );
+      const c = o.default.span `
+  padding: 2px 5px;
+  background-color: ${i.B50};
+  border-radius: 3px 0 0 3px;
+`,
+        s = o.default.span `
+  word-break: break-all;
+  color: ${i.N800};
+  font-weight: initial;
+`,
+        l = o.default.span `
+  color: ${i.N70};
+  padding: 2px 5px;
+  background-color: ${i.B50};
+  border-radius: 0 3px 3px 0;
+  word-break: break-all;
+`;
+      class u extends r.PureComponent {
+        render() {
+          const {
+            parameters: e
+          } = this.props;
+          return a.a.createElement( "span", null, a.a.createElement( c, null, a.a.createElement( s, {
+            "data-test-id": "variable-name"
+          }, e.name ) ), a.a.createElement( l, {
+            "data-test-id": "variable-type"
+          }, "| " + e.type ) )
+        }
+      }
+      var d = u,
+        p = n( "Czhu" ),
+        f = n( "giew" ),
+        m = n( "uq3c" ),
+        b = n( "FyK+" ),
+        y = n( "zJ/j" ),
+        h = n( "PLaw" ),
+        g = n.n( h ),
+        v = n( "OQ+j" ),
+        O = n( "xLJ5" ),
+        x = n( "Xxvd" );
+      const E = e => {
+          const {
+            parameters: t,
+            onChange: n,
+            value: o,
+            placeholder: i
+          } = e, c = t.params && t.params.options, s = Object( r.useMemo )( () => c ? ( e => e.map( e => ( {
+            label: e,
+            value: e
+          } ) ) )( c ) : [], [ c ] ), l = Object( r.useMemo )( () => ( e => t => {
+            e( t.value )
+          } )( n ), [ n ] ), u = {
+            option: e => Object( p.a )( Object( p.a )( {}, e ), {}, {
+              wordBreak: "break-word"
+            } )
+          };
+          return a.a.createElement( v.a, {
+            options: s,
+            placeholder: "" + ( o || i ),
+            onChange: l,
+            target: ( {
+              ref: e,
+              isOpen: t
+            } ) => a.a.createElement( x.a, null, a.a.createElement( y.a, {
+              ref: e,
+              iconAfter: a.a.createElement( g.a, {
+                label: "dropdown icon"
+              } ),
+              isSelected: t
+            }, "" + ( o || i ) ) ),
+            popperProps: {
+              placement: "auto",
+              modifiers: [ {
+                name: "preventOverflow",
+                options: {
+                  boundary: "clippingParents"
+                }
+              } ]
+            },
+            maxMenuHeight: 200,
+            maxMenuWidth: 200,
+            searchThreshold: 10,
+            styles: u,
+            value: {
+              label: o,
+              value: o
+            } || ""
+          } )
+        },
+        j = e => {
+          const {
+            parameters: t,
+            onChange: n,
+            value: r,
+            placeholder: o
+          } = e, i = {
+            placeholder: o
+          };
+          return a.a.createElement( m.a, Object( p.a )( {
+            onChange: n,
+            value: r || "",
+            minimumRows: t.params && t.params.rows || 1,
+            resize: "vertical",
+            cols: t.params && t.params.columns || 30
+          }, i ) )
+        },
+        I = e => {
+          const {
+            onChange: t,
+            value: n,
+            inputName: r,
+            placeholder: o
+          } = e;
+          return a.a.createElement( f.a, {
+            name: r,
+            onChange: t,
+            value: n || "",
+            placeholder: o,
+            width: 200,
+            isCompact: !0
+          } )
+        },
+        w = e => {
+          const {
+            parameters: t
+          } = e;
+          switch ( t.type ) {
+            case O.a:
+              return a.a.createElement( E, Object( p.a )( {}, e ) );
+            case O.b:
+              return a.a.createElement( j, Object( p.a )( {}, e ) );
+            default:
+              return a.a.createElement( I, Object( p.a )( {}, e ) )
+          }
+        },
+        C = e => {
+          const {
+            parameters: t
+          } = e, n = "$" + t.name, r = "" + ( t.placeholder || t.name );
+          return t.type === O.b ? a.a.createElement( x.f, null, a.a.createElement( "div", {
+            style: {
+              display: "inline-block",
+              width: "100%"
+            }
+          }, a.a.createElement( b.default, {
+            name: n,
+            defaultValue: ""
+          }, ( {
+            fieldProps: e
+          } ) => a.a.createElement( w, Object( p.a )( Object( p.a )( {}, e ), {}, {
+            parameters: t,
+            inputName: n,
+            placeholder: r
+          } ) ) ) ) ) : a.a.createElement( x.e, null, a.a.createElement( "div", {
+            style: {
+              display: "inline-block",
+              width: "100%",
+              margin: "0px 0px"
+            }
+          }, a.a.createElement( b.default, {
+            name: n,
+            defaultValue: ""
+          }, ( {
+            fieldProps: e
+          } ) => a.a.createElement( w, Object( p.a )( Object( p.a )( {}, e ), {}, {
+            parameters: t,
+            inputName: n,
+            placeholder: r
+          } ) ) ) ) )
+        };
+      var P = n( "dbjD" );
+      n.d( t, "a", ( function () {
+        return k
+      } ) ), n.d( t, "b", ( function () {
+        return A
+      } ) );
+      const k = e => {
+          if ( !e ) return null;
+          const {
+            extensionKey: t,
+            parameters: n
+          } = e;
+          return t === P.c.TEMPLATE ? a.a.createElement( d, {
+            parameters: n
+          } ) : null
+        },
+        A = e => {
+          if ( !e ) return null;
+          const {
+            extensionKey: t,
+            parameters: n
+          } = e;
+          return t === P.c.TEMPLATE ? a.a.createElement( C, {
+            parameters: n
+          } ) : null
+        }
+    },
+    "8ghD": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "b", ( function () {
+        return o
+      } ) ), n.d( t, "a", ( function () {
+        return i
+      } ) );
+      var r = n( "Czhu" );
+
+      function a( e ) {
+        return e.type.name || e.type
+      }
+
+      function o( e, t ) {
+        return {
+          type: a( e ),
+          attrs: Object( r.a )( Object( r.a )( {}, e.attrs ), {}, {
+            parameters: Object( r.a )( Object( r.a )( {}, e.attrs.parameters ), t )
+          } )
+        }
+      }
+
+      function i( e, t ) {
+        const n = [];
+        return function e( t, n ) {
+          for ( const r of Object.keys( t ) ) {
+            const a = t[ r ];
+            n( r, a ), null !== a && "object" == typeof a && e( t[ r ], n )
+          }
+        }( e, ( e, r ) => {
+          r && r.type === t && n.push( r )
+        } ), n
+      }
+    },
+    "8iDC": function ( e, t, n ) {
+      "use strict";
+      var r = "Function.prototype.bind called on incompatible ",
+        a = Array.prototype.slice,
+        o = Object.prototype.toString;
+      e.exports = function ( e ) {
+        var t = this;
+        if ( "function" != typeof t || "[object Function]" !== o.call( t ) ) throw new TypeError( r + t );
+        for ( var n, i = a.call( arguments, 1 ), c = function () {
+            if ( this instanceof n ) {
+              var r = t.apply( this, i.concat( a.call( arguments ) ) );
+              return Object( r ) === r ? r : this
+            }
+            return t.apply( e, i.concat( a.call( arguments ) ) )
+          }, s = Math.max( 0, t.length - i.length ), l = [], u = 0; u < s; u++ ) l.push( "$" + u );
+        if ( n = Function( "binder", "return function (" + l.join( "," ) + "){ return binder.apply(this,arguments); }" )( c ), t.prototype ) {
+          var d = function () {};
+          d.prototype = t.prototype, n.prototype = new d, d.prototype = null
+        }
+        return n
+      }
+    },
+    "9AQa": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return s
+      } ) );
+      n( "aWzz" );
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "L21V" ),
+        i = n( "0bsQ" ),
+        c = n( "y/nW" );
+      class s extends r.PureComponent {
+        render() {
+          const {
+            shouldPanelBeDisplayed: e,
+            targetContentTitle: t
+          } = this.props;
+          return e ? a.a.createElement( "span", {
+            style: c.a
+          }, a.a.createElement( "span", {
+            style: c.c
+          }, t || a.a.createElement( o.b, {
+            id: "editor.excerpt.include.panel.title.loading"
+          } ) ), a.a.createElement( "span", {
+            style: c.b
+          }, a.a.createElement( i.a, {
+            size: "medium",
+            style: {
+              minHeight: 100
+            }
+          } ) ) ) : a.a.createElement( i.a, {
+            size: "medium",
+            style: {
+              minHeight: 100
+            }
+          } )
+        }
+      }
+    },
+    "9jV5": function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "gwLK" ),
+        c = n( "gQ5V" ),
+        s = n( "8TdO" ),
+        l = n( "+6Tk" ),
+        u = n( "MUQl" ),
+        d = n( "Q//X" );
+
+      function p( {
+        attributes: e,
+        children: t = null,
+        contentId: n,
+        extensionKey: r,
+        error: a,
+        mode: o,
+        name: i
+      } ) {
+        const c = Object( l.a )( d.b );
+        return Object( u.a )( () => {
+          c && Object( d.f )( o, n ).fail( {
+            name: i,
+            attributes: e,
+            error: a
+          } )
+        }, [ e, n, r, a, c, o, i ] ), t
+      }
+      var f = n( "2hMr" ),
+        m = n( "6z9Z" ),
+        b = n( "hpu0" ),
+        y = n( "23Qm" ),
+        h = n( "CRB6" ),
+        g = n.n( h ),
+        v = n( "a8dO" ),
+        O = n( "KsTJ" ),
+        x = n( "L21V" );
+      const E = O.default.div `
+  display: inline;
+`,
+        j = o.a.forwardRef( ( e, t ) => o.a.createElement( E, Object( r.a )( Object( r.a )( {}, e ), {}, {
+          innerRef: t
+        } ) ) ),
+        I = Object( x.f )( {
+          openLink: {
+            id: "confluence-fabric-editor.inline-image.openLink",
+            defaultMessage: "Open link in a new tab",
+            description: "Tooltip message when user hover over inline image to alert them that they can open the link in a new tab"
+          }
+        } );
+      class w extends a.PureComponent {
+        render() {
+          const {
+            width: e = "auto",
+            height: t = "auto",
+            id: n,
+            collection: r,
+            clientId: a,
+            token: i,
+            link: c,
+            intl: s,
+            baseUrl: l
+          } = this.props, u = {
+            collectionName: r,
+            width: Number( e ) || void 0,
+            height: Number( t ) || void 0
+          }, d = {
+            authProvider: () => Promise.resolve( {
+              clientId: a,
+              token: i,
+              baseUrl: l
+            } )
+          };
+          return o.a.createElement( y.a, {
+            identifier: {
+              collectionName: r,
+              id: n,
+              mediaItemType: "file"
+            },
+            mediaClientConfig: d,
+            apiConfig: u
+          }, ( {
+            loading: e,
+            error: t,
+            data: n
+          } ) => e ? null : t || !n ? o.a.createElement( v.a, {
+            tag: "span",
+            content: "Image has failed to load"
+          }, o.a.createElement( g.a, {
+            primaryColor: "#97a0af",
+            size: "xlarge",
+            label: "Image has failed to load"
+          } ) ) : o.a.createElement( v.a, {
+            content: s.formatMessage( I.openLink ),
+            tag: j,
+            delay: 0
+          }, o.a.createElement( "a", {
+            href: c
+          }, o.a.createElement( "img", {
+            src: n.src
+          } ) ) ) )
+        }
+      }
+      var C = Object( x.g )( w ),
+        P = n( "H5qd" );
+      const k = n.n( P ).a `query InlineImageQuery($contentId:ID){content(id:$contentId){nodes{id body{atlas_doc_format{mediaToken{token}}}}}mediaConfiguration{clientId fileStoreUrl}}`;
+      n.d( t, "a", ( function () {
+        return A
+      } ) );
+      class A extends a.PureComponent {
+        render() {
+          const {
+            contentId: e,
+            mode: t,
+            extensionKey: n,
+            node: l,
+            link: u
+          } = this.props, y = Object( d.e )( l );
+          return o.a.createElement( i.b, {
+            client: Object( s.b )()
+          }, o.a.createElement( m.a.Provider, {
+            value: Object( b.b )()
+          }, o.a.createElement( c.b, {
+            query: k,
+            variables: {
+              contentId: e
+            }
+          }, ( {
+            data: i,
+            loading: c,
+            error: s
+          } ) => {
+            var m, b, h;
+            if ( c ) return null;
+            if ( s || !i ) return o.a.createElement( p, {
+              name: Object( d.d )( t, l ),
+              contentId: e,
+              extensionKey: n,
+              mode: t,
+              error: s || new Error( n + " failed to render. InlineImage query data is empty" ),
+              attributes: y
+            } );
+            const g = ( null != ( h = i ) && null != ( h = h.content ) && null != ( h = h.nodes ) && null != ( h = h[ 0 ] ) && null != ( h = h.body ) && null != ( h = h.atlas_doc_format ) && null != ( h = h.mediaToken ) ? h.token : h ) || null,
+              v = ( null != ( b = i ) && null != ( b = b.mediaConfiguration ) ? b.clientId : b ) || null,
+              O = ( null != ( m = i ) && null != ( m = m.mediaConfiguration ) ? m.fileStoreUrl : m ) || null;
+            return o.a.createElement( a.Fragment, null, o.a.createElement( C, Object( r.a )( Object( r.a )( {}, this.props ), {}, {
+              link: u,
+              token: g,
+              clientId: v,
+              baseUrl: O
+            } ) ), o.a.createElement( f.a, {
+              name: Object( d.d )( t, l ),
+              contentId: e,
+              extensionKey: n,
+              mode: t,
+              attributes: y
+            } ) )
+          } ) ) )
+        }
+      }
+    },
+    "9lk5": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "d", ( function () {
+        return l
+      } ) ), n.d( t, "b", ( function () {
+        return u
+      } ) ), n.d( t, "a", ( function () {
+        return d
+      } ) ), n.d( t, "c", ( function () {
+        return p
+      } ) );
+      var r = n( "qrFu" ),
+        a = n( "W1KW" ),
+        o = n( "HC8e" ),
+        i = n( "kC4U" ),
+        c = n( "ztP5" );
+      let s;
+      const l = () => s || ( s = new r.a( {
+          connectToDevTools: !1,
+          link: new a.a( {
+            credentials: "include",
+            uri: "/gateway/api/graphql",
+            fetch: i.a
+          } ),
+          cache: new o.a
+        } ), s ),
+        u = ( e, t, n, r ) => ( {
+          accountId: e,
+          cloudId: t,
+          contentId: n,
+          spaceKey: r
+        } );
+
+      function d( {
+        objectId: e,
+        objectType: t,
+        containerId: n,
+        containerType: r
+      } ) {
+        return {
+          objectId: e,
+          objectType: t || void 0,
+          containerId: n || void 0,
+          containerType: r
+        }
+      }
+
+      function p( e ) {
+        return "localhost" === window.location.hostname ? c.c.DEVELOPMENT : "STAGING" === e ? c.c.STAGING : "PRODUCTION" === e ? c.c.PRODUCTION : c.c.DEVELOPMENT
+      }
+    },
+    "B/tD": function ( e, t, n ) {
+      "use strict";
+      var r = n( "zjfJ" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "KsTJ" ),
+        c = n( "L21V" ),
+        s = n( "xsIe" ),
+        l = n( "3IV/" ),
+        u = n( "WEdt" ),
+        d = n( "5ypJ" ),
+        p = n.n( d ),
+        f = n( "PLaw" ),
+        m = n.n( f ),
+        b = n( "gwLK" ),
+        y = n( "gQ5V" ),
+        h = n( "FdGg" ),
+        g = n( "X2PC" ),
+        v = n( "8TdO" ),
+        O = n( "KIs4" ),
+        x = n( "0bsQ" ),
+        E = n( "Q//X" ),
+        j = n( "XOH5" ),
+        I = n( "2hMr" ),
+        w = n( "6z9Z" ),
+        C = n( "hpu0" ),
+        P = n( "dIe6" ),
+        k = n( "JpXc" ),
+        A = n( "H5qd" );
+      const R = n.n( A ).a `query ConvertStorageContentToADFMutation($cxhtml:String!$contentId:String!)@experimental{experimentalConvertStorageContentToADF(cxhtml:$cxhtml contentId:$contentId){value}}`;
+      var S, $;
+      n.d( t, "a", ( function () {
+        return z
+      } ) );
+      const N = i.default.div `
+  ${Object(u.h400)()};
+`,
+        M = i.default.div `
+  color: ${l.B400}
+  font-weight: 500;
+`,
+        T = i.default.div `
+  display: flex;
+`,
+        D = i.default.div ``,
+        L = i.default.div `
+  background-color: ${l.N0};
+  margin-top: 10px;
+`,
+        F = i.default.div `
+  display: flex;
+  flex: 0 1 auto;
+`,
+        U = i.default.div `
+  display: flex;
+  flex: 9 1 auto;
+`,
+        V = i.default.div `
+  display: flex;
+  flex: 0 1 auto;
+`,
+        _ = i.default.div `
+  width: 100%;
+`,
+        z = Object( c.g )( ( $ = S = class extends a.PureComponent {
+          constructor( ...e ) {
+            super( ...e ), Object( r.a )( this, "state", {
+              html: null,
+              expanded: !1
+            } ), Object( r.a )( this, "expandHandler", () => {
+              this.setState( {
+                expanded: !this.state.expanded
+              } )
+            } ), Object( r.a )( this, "onClickLearnMore", () => {
+              window.open( "https://support.atlassian.com/confluence-cloud/docs/convert-pages-to-the-new-editor/#Convertpagestotheneweditor-WhatACTUALLYhappenswhenyourcontentisconverted", "_blank" )
+            } )
+          }
+          render() {
+            const {
+              reason: e,
+              cxhtml: t,
+              contentId: n,
+              mode: r,
+              extensionKey: i,
+              node: l
+            } = this.props, {
+              formatMessage: u
+            } = this.props.intl, d = Object( E.e )( l ), f = o.a.createElement( M, null, o.a.createElement( c.b, {
+              defaultMessage: "This element has conversion issues",
+              id: "confluence-fabric-editor.invalid.extension.component.unsupported.content",
+              description: "The title inside Unsupported Content element notifying user that there is conversion issue with the page element"
+            } ) );
+            return o.a.createElement( b.b, {
+              client: Object( v.b )()
+            }, o.a.createElement( w.a.Provider, {
+              value: Object( C.b )()
+            }, o.a.createElement( h.a, {
+              attribution: g.a.CONTENT_EXPERIENCE
+            }, o.a.createElement( O.a, null, ( {
+              featureFlags: b
+            } ) => b[ "confluence.frontend.support.unsupported.fabric.migration" ] ? o.a.createElement( y.b, {
+              query: R,
+              variables: {
+                cxhtml: t,
+                contentId: n
+              }
+            }, ( {
+              data: t,
+              loading: b,
+              error: y
+            } ) => {
+              var h;
+              if ( y ) return o.a.createElement( a.Fragment, null, o.a.createElement( j.a, {
+                name: Object( E.d )( r, l ),
+                contentId: n,
+                mode: r,
+                error: y,
+                attributes: d
+              } ), o.a.createElement( P.a, {
+                error: y
+              } ) );
+              const g = ( e => {
+                if ( e ) try {
+                  return JSON.parse( e )
+                } catch ( y ) {
+                  console.error( y )
+                }
+                return null
+              } )( null != ( h = t ) && null != ( h = h.experimentalConvertStorageContentToADF ) ? h.value : h );
+              return o.a.createElement( a.Fragment, null, o.a.createElement( _, null, o.a.createElement( s.a, {
+                appearance: "warning"
+              }, o.a.createElement( T, {
+                onClick: this.expandHandler,
+                className: "header-container"
+              }, o.a.createElement( F, null, this.state.expanded ? o.a.createElement( m.a, {
+                label: u( {
+                  id: "confluence-fabric-editor.invalid.extension.component.expand.down.icon",
+                  defaultMessage: "Collapse"
+                } )
+              } ) : o.a.createElement( p.a, {
+                label: u( {
+                  id: "confluence-fabric-editor.invalid.extension.component.expand.up.icon",
+                  defaultMessage: "Expand",
+                  description: "The tooltip message when hover over expand icon in Unsupported Content"
+                } )
+              } ) ), o.a.createElement( U, {
+                onClick: this.expandHandler
+              }, f ), o.a.createElement( V, {
+                onClick: this.onClickLearnMore
+              }, o.a.createElement( "a", {
+                style: {
+                  cursor: "pointer"
+                }
+              }, o.a.createElement( c.b, {
+                defaultMessage: "Learn More",
+                id: "confluence-fabric-editor.invalid.extension.component.unsupported.content.learn.more",
+                description: "The Learn More anchor link that direct user to another page telling them what happen when convert page"
+              } ) ) ) ), this.state.expanded ? o.a.createElement( D, null, e ? o.a.createElement( N, {
+                className: "reason-message"
+              }, o.a.createElement( "span", null, e ) ) : o.a.createElement( N, null, o.a.createElement( N, null, o.a.createElement( c.b, {
+                defaultMessage: "You won't lose any content when the page is converted, but it'll look like this since this combination can't be edited in the new editor.",
+                id: "confluence-fabric-editor.invalid.extension.component.unsupported.combination.cannot.be.edited.in.new.editor",
+                description: "The message inside Unsupported Content element notifying user that user won't lose any content when the page is converted and content combination can't be edited in the new editor"
+              } ) ) ), !g || b ? o.a.createElement( x.a, {
+                size: "medium"
+              } ) : o.a.createElement( L, null, o.a.createElement( k.b, {
+                allowDynamicTextSizing: !0,
+                appearance: "full-width",
+                adf: g,
+                objectId: n || "",
+                ignoreHeadingAnchorLinksFeatureFlag: !0
+              } ) ) ) : null ) ), o.a.createElement( I.a, {
+                attributes: d,
+                contentId: n,
+                extensionKey: i,
+                mode: r,
+                name: Object( E.d )( r, l )
+              } ) )
+            } ) : null ) ) ) )
+          }
+        }, Object( r.a )( S, "defaultProps", {
+          cxhtml: ""
+        } ), $ ) )
+    },
+    BGTi: function ( e, t, n ) {
+      "use strict";
+      n( "HbGN" ), n( "cxan" ), n( "fGyu" ), n( "pkwY" );
+      var r = n( "9fIP" ),
+        a = n( "MMYH" ),
+        o = n( "K/z8" ),
+        i = n( "sRHE" ),
+        c = n( "8K1b" ),
+        s = n( "pWxA" ),
+        l = n( "zjfJ" ),
+        u = n( "ERkP" ),
+        d = n.n( u ),
+        p = n( "lSUb" ),
+        f = n( "l1C2" ),
+        m = ( n( "7nmT" ), n( "aWzz" ), n( "4wDe" ), n( "fjh6" ) ),
+        b = ( n( "5IAQ" ), n( "KD1n" ), n( "jynR" ), n( "8CuW" ) ),
+        y = n( "zEpV" ),
+        h = ( u.Component, Object( b.a )( m.a ) );
+      t.a = h
+    },
+    CmXO: function ( e, t, n ) {
+      "use strict";
+      var r = n( "zT+L" ).supportsDescriptors,
+        a = n( "IlOi" ),
+        o = Object.getOwnPropertyDescriptor,
+        i = Object.defineProperty,
+        c = TypeError,
+        s = Object.getPrototypeOf,
+        l = /a/;
+      e.exports = function () {
+        if ( !r || !s ) throw new c( "RegExp.prototype.flags requires a true ES5 environment that supports property descriptors" );
+        var e = a(),
+          t = s( l ),
+          n = o( t, "flags" );
+        return n && n.get === e || i( t, "flags", {
+          configurable: !0,
+          enumerable: !1,
+          get: e
+        } ), e
+      }
+    },
+    Cwwk: function ( e, t, n ) {
+      "use strict";
+      var r = n( "+6Tk" ),
+        a = n( "4LHq" ),
+        o = n( "Czhu" ),
+        i = n( "1U1M" ),
+        c = n( "b/OQ" );
+      const s = e => e && e.globalOperations && e.globalOperations.length > 0 ? e.globalOperations : [];
+      n.d( t, "a", ( function () {
+        return l
+      } ) );
+      const l = () => {
+        if ( !Object( r.a )( a.a ) ) return !0;
+        const {
+          data: e,
+          error: t
+        } = ( () => {
+          const {
+            loading: e,
+            data: t,
+            error: n
+          } = Object( i.d )( c.a, {
+            errorPolicy: "all",
+            fetchPolicy: "cache-first"
+          } );
+          if ( n ) return {
+            data: [],
+            error: n
+          };
+          const r = {
+            data: [],
+            error: null
+          };
+          return e ? r : Object( o.a )( Object( o.a )( {}, r ), {}, {
+            data: s( t )
+          } )
+        } )();
+        return !!t || !!( e && e.length > 0 && e.some( e => e && "read" === e.operation && "userProfile" === e.targetType ) )
+      }
+    },
+    DL3M: function ( e, t, n ) {
+      var r = n( "y4bl" );
+      e.exports = function ( e, t, n ) {
+        return null == e ? e : r( e, t, n )
+      }
+    },
+    DSvr: function ( e, t ) {
+      e.exports = function ( e, t ) {
+        t = t || {};
+        var n, r, a, o = e.ownerDocument || e,
+          i = [],
+          c = [],
+          s = function ( e ) {
+            var t = [];
+            return function ( n ) {
+              if ( n === e.documentElement ) return !1;
+              var r = e.defaultView.getComputedStyle( n );
+              return !! function n( r, a ) {
+                if ( r === e.documentElement ) return !1;
+                for ( var o = 0, i = t.length; o < i; o++ )
+                  if ( t[ o ][ 0 ] === r ) return t[ o ][ 1 ];
+                var c = !1;
+                return "none" === ( a = a || e.defaultView.getComputedStyle( r ) ).display ? c = !0 : r.parentNode && ( c = n( r.parentNode ) ), t.push( [ r, c ] ), c
+              }( n, r ) || "hidden" === r.visibility
+            }
+          }( o ),
+          l = [ "input", "select", "a[href]", "textarea", "button", "[tabindex]" ],
+          u = e.querySelectorAll( l.join( "," ) );
+        if ( t.includeContainer ) {
+          var d = Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+          l.some( ( function ( t ) {
+            return d.call( e, t )
+          } ) ) && ( u = Array.prototype.slice.apply( u ) ).unshift( e )
+        }
+        for ( var p = 0, f = u.length; p < f; p++ ) n = u[ p ], r = parseInt( n.getAttribute( "tabindex" ), 10 ), ( a = isNaN( r ) ? n.tabIndex : r ) < 0 || "INPUT" === n.tagName && "hidden" === n.type || n.disabled || s( n, o ) || ( 0 === a ? i.push( n ) : c.push( {
+          index: p,
+          tabIndex: a,
+          node: n
+        } ) );
+        var m = c.sort( ( function ( e, t ) {
+          return e.tabIndex === t.tabIndex ? e.index - t.index : e.tabIndex - t.tabIndex
+        } ) ).map( ( function ( e ) {
+          return e.node
+        } ) );
+        return Array.prototype.push.apply( m, i ), m
+      }
+    },
+    EWug: function ( e, t, n ) {
+      "use strict";
+      var r = n( "yiKp" );
+
+      function a( e, t, n, r ) {
+        this.message = e, this.expected = t, this.found = n, this.location = r, this.name = "SyntaxError", "function" == typeof Error.captureStackTrace && Error.captureStackTrace( this, a )
+      }! function ( e, t ) {
+        function n() {
+          this.constructor = e
+        }
+        n.prototype = t.prototype, e.prototype = new n
+      }( a, Error ), a.buildMessage = function ( e, t ) {
+        const n = {
+          literal: e => `"${a(e.text)}"`,
+          class( e ) {
+            let t, n = "";
+            for ( t = 0; t < e.parts.length; t++ ) n += e.parts[ t ] instanceof Array ? `${o(e.parts[t][0])}-${o(e.parts[t][1])}` : o( e.parts[ t ] );
+            return `[${e.inverted?"^":""}${n}]`
+          },
+          any: e => "any character",
+          end: e => "end of input",
+          other: e => e.description
+        };
+
+        function r( e ) {
+          return e.charCodeAt( 0 ).toString( 16 ).toUpperCase()
+        }
+
+        function a( e ) {
+          return e.replace( /\\/g, "\\\\" ).replace( /"/g, '\\"' ).replace( /\0/g, "\\0" ).replace( /\t/g, "\\t" ).replace( /\n/g, "\\n" ).replace( /\r/g, "\\r" ).replace( /[\x00-\x0F]/g, ( function ( e ) {
+            return "\\x0" + r( e )
+          } ) ).replace( /[\x10-\x1F\x7F-\x9F]/g, ( function ( e ) {
+            return "\\x" + r( e )
+          } ) )
+        }
+
+        function o( e ) {
+          return e.replace( /\\/g, "\\\\" ).replace( /\]/g, "\\]" ).replace( /\^/g, "\\^" ).replace( /-/g, "\\-" ).replace( /\0/g, "\\0" ).replace( /\t/g, "\\t" ).replace( /\n/g, "\\n" ).replace( /\r/g, "\\r" ).replace( /[\x00-\x0F]/g, ( function ( e ) {
+            return "\\x0" + r( e )
+          } ) ).replace( /[\x10-\x1F\x7F-\x9F]/g, ( function ( e ) {
+            return "\\x" + r( e )
+          } ) )
+        }
+        return `Expected ${function(e){let t,r,a=new Array(e.length);for(t=0;t<e.length;t++)a[t]=(o=e[t],n[o.type](o));var o;if(a.sort(),a.length>0){for(t=1,r=1;t<a.length;t++)a[t-1]!==a[t]&&(a[r]=a[t],r++);a.length=r}switch(a.length){case 1:return a[0];case 2:return`
+        $ {
+          a[ 0 ]
+        }
+        or $ {
+          a[ 1 ]
+        }
+        `;default:return`
+        $ {
+          a.slice( 0, -1 ).join( ", " )
+        }, or $ {
+          a[ a.length - 1 ]
+        }
+        `}}(e)} but ${function(e){return e?`"${a(e)}"`:"end of input"}(t)} found.`
+      }, e.exports = {
+        SyntaxError: a,
+        parse: function ( e, t ) {
+          t = void 0 !== t ? t : {};
+          let n, o = {},
+            i = {
+              aqlStatement: 0
+            },
+            c = 0,
+            s = [ function ( e, t ) {
+              return {
+                clause: e,
+                orderby: t
+              }
+            }, function ( e ) {
+              return e
+            }, "order by", y( "ORDER BY", !0 ), function ( e, t ) {
+              return [ e, ...t ]
+            }, ",", y( ",", !1 ), function ( e ) {
+              return e
+            }, function ( e, t ) {
+              return {
+                field: e,
+                direction: t
+              }
+            }, "asc", y( "ASC", !0 ), "desc", y( "DESC", !0 ), function ( e, t ) {
+              return {
+                nodeType: "clause",
+                clauses: [ e, ...t ],
+                type: "or"
+              }
+            }, "or", y( "OR", !0 ), function ( e, t ) {
+              return {
+                nodeType: "clause",
+                clauses: [ e, ...t ],
+                type: "and"
+              }
+            }, "and", y( "AND", !0 ), function ( e, t ) {
+              return {
+                nodeType: "clause",
+                clause: t,
+                invert: !!e
+              }
+            }, function ( e ) {
+              return r( {
+                nodeType: "expr"
+              }, e )
+            }, "not ", y( "NOT ", !0 ), "!", y( "!", !1 ), function ( e, t, n ) {
+              return {
+                field: e,
+                op: t,
+                value: n
+              }
+            }, function ( e, t, n ) {
+              return {
+                field: e,
+                op: t,
+                value: n
+              }
+            }, "<", y( "<", !1 ), ">", y( ">", !1 ), "~", y( "~", !1 ), "!~", y( "!~", !1 ), "in", y( "IN", !0 ), function ( e ) {
+              return e ? "NOT IN" : "IN"
+            }, "=", y( "=", !1 ), "!=", y( "!=", !1 ), function ( e, t ) {
+              return [ e, ...t ]
+            }, function ( e ) {
+              return e
+            }, ">=", y( ">=", !1 ), "<=", y( "<=", !1 ), function ( e ) {
+              return Number.parseFloat( e )
+            }, "(", y( "(", !1 ), ")", y( ")", !1 ), function ( e, t ) {
+              return `${e}(${(t||[]).join(",")})`
+            }, function ( e, t ) {
+              return [ e, ...t ]
+            }, function ( e ) {
+              return e
+            }, "'", y( "'", !1 ), "\\", y( "\\", !1 ), '"', y( '"', !1 ), ".", y( ".", !1 ), /^[^']/, h( [ "'" ], !0, !1 ), function ( e ) {
+              return e.join( "" )
+            }, /^[^"]/, h( [ '"' ], !0, !1 ), /^[0-9]/, h( [
+              [ "0", "9" ]
+            ], !1, !1 ), /^[\\\-]/, h( [ "\\", "-" ], !1, !1 ), function ( e, t ) {
+              return [ e, ...t ]
+            }, /^[a-zA-Z_]/, h( [
+              [ "a", "z" ],
+              [ "A", "Z" ], "_"
+            ], !1, !1 ), /^[a-zA-Z_0-9]/, h( [
+              [ "a", "z" ],
+              [ "A", "Z" ], "_", [ "0", "9" ]
+            ], !1, !1 ), function ( e, t ) {
+              return e + t
+            }, /^[eE]/, h( [ "e", "E" ], !1, !1 ), /^[\-+]/, h( [ "-", "+" ], !1, !1 ), /^[\t ]/, h( [ "\t", " " ], !1, !1 ) ],
+            l = [ E( '%;&/7#;!." &"/)$8": ""! )("\'#&\'#' ), E( '%;U/1#;"/($8":!"! )("\'#&\'#' ), E( '%3"""5(7#/K#;U/B$;$/9$$;#0#*;#&/)$8$:$$"! )($\'#(#\'#("\'#&\'#' ), E( "%2%\"\"6%7&/:#;V/1$;$/($8#:'#! )(#'#(\"'#&'#" ), E( "%;M/;#;U/2$;%/)$8#:(#\"\" )(#'#(\"'#&'#" ), E( '3)""5#7*.) &3+""5$7,' ), E( "%;(/9#$;'0#*;'&/)$8\":-\"\"! )(\"'#&'#" ), E( "%;U/I#3.\"\"5\"7//:$;U/1$;(/($8$:'$! )($'#(#'#(\"'#&'#" ), E( '%;+/9#$;)0#*;)&/)$8":0""! )("\'#&\'#' ), E( "%;U/I#31\"\"5#72/:$;U/1$;*/($8$:'$! )($'#(#'#(\"'#&'#" ), E( '%;,." &"/2#;+/)$8":3""! )("\'#&\'#' ), E( "%;J/L#;V/C$;&/:$;V/1$;K/($8%:'%!\")(%'#($'#(#'#(\"'#&'#./ &%;-/' 8!:4!! )" ), E( '35""5$76.) &27""6778' ), E( ";..5 &;/./ &;1.) &;0.# &;2" ), E( "%;M/N#;U/E$;6/<$;U/3$;5/*$8%:9%#$\" )(%'#($'#(#'#(\"'#&'#" ), E( "%;M/N#;U/E$;7/<$;U/3$;9/*$8%:9%#$\" )(%'#($'#(#'#(\"'#&'#.X &%;M/N#;U/E$;8/<$;U/3$;=/*$8%:9%#$\" )(%'#($'#(#'#(\"'#&'#" ), E( "%;M/N#;U/E$;>/<$;U/3$;3/*$8%::%#$\" )(%'#($'#(#'#(\"'#&'#" ), E( "%;M/N#;U/E$;>/<$;U/3$;4/*$8%::%#$\" )(%'#($'#(#'#(\"'#&'#" ), E( "%;M/\\#2;\"\"6;7</M$;M/D$2=\"\"6=7>/5$;A/,$;@/#$+&)(&'#(%'#($'#(#'#(\"'#&'#" ), E( ';?.* &%;C/"!&,)' ), E( '%;C/"!&,).# &;B' ), E( ";M.# &;C" ), E( '2?""6?7@.) &2A""6A7B' ), E( '%;,." &"/7#3C""5"7D/($8":E"!!)("\'#&\'#' ), E( '2F""6F7G.) &2H""6H7I' ), E( ";C.# &;:" ), E( "%;J/]#;V/T$;</K$$;;0#*;;&/;$;V/2$;K/)$8&:J&\"#\")(&'#(%'#($'#(#'#(\"'#&'#" ), E( "%2%\"\"6%7&/A#$;U0#*;U&/1$;</($8#:K#! )(#'#(\"'#&'#" ), E( ";C.# &;=" ), E( ";C./ &;M.) &;P.# &;?" ), E( '2L""6L7M.Y &2N""6N7O.M &2=""6=7>.A &2;""6;7<.5 &2F""6F7G.) &2H""6H7I' ), E( "%;T/' 8!:P!! )" ), E( "%;7/:#;U.\" &\"/,$;9/#$+#)(#'#(\"'#&'#.¹ &%;8/:#;U.\" &\"/,$;=/#$+#)(#'#(\"'#&'#. &%;6/:#;U.\" &\"/,$;5/#$+#)(#'#(\"'#&'#.k &%;>/:#;U.\" &\"/,$;4/#$+#)(#'#(\"'#&'#.D &%;>/:#;U.\" &\"/,$;3/#$+#)(#'#(\"'#&'#" ), E( "%;I/,#;M/#$+\")(\"'#&'#" ), E( ";P.# &;M" ), E( "%;M/p#;V/g$2Q\"\"6Q7R/X$;V/O$;D.\" &\"/A$;V/8$2S\"\"6S7T/)$8':U'\"&\")(''#(&'#(%'#($'#(#'#(\"'#&'#" ), E( '%;=/9#$;E0#*;E&/)$8":V""! )("\'#&\'#' ), E( "%2%\"\"6%7&/:#;V/1$;=/($8#:W#! )(#'#(\"'#&'#" ), E( '2X""6X7Y' ), E( '2Z""6Z7[' ), E( '2\\""6\\7]' ), E( '2^""6^7_' ), E( '2Q""6Q7R' ), E( '2S""6S7T' ), E( "%;G/,#;F/#$+\")(\"'#&'#.O &%;G/,#;G/#$+\")(\"'#&'#.6 &%;G/,#;H/#$+\")(\"'#&'#" ), E( '%;F/g#$%;L/"!&,).) &4`""5!7a06*%;L/"!&,).) &4`""5!7a&/1$;F/($8#:b#!!)(#\'#("\'#&\'#. &%;H/g#$%;L/"!&,).) &4c""5!7d06*%;L/"!&,).) &4c""5!7d&/1$;H/($8#:b#!!)(#\'#("\'#&\'#./ &%;Q/\' 8!:b!! )' ), E( '4e""5!7f' ), E( '%4g""5!7h/"!&,)' ), E( "%%;N/t#;N/k$;N/b$;N/Y$;O/P$;N/G$;N/>$;O/5$;N/,$;N/#$+*)(*'#()'#(('#(''#(&'#(%'#($'#(#'#(\"'#&'#/\"!&,)" ), E( '%;R/_#$%;I/,#;R/#$+")("\'#&\'#06*%;I/,#;R/#$+")("\'#&\'#&/)$8":i""! )("\'#&\'#' ), E( '%4j""5!7k/L#%$4l""5!7m0)*4l""5!7m&/"!&,)/)$8":n""! )("\'#&\'#' ), E( '$4e""5!7f/,#0)*4e""5!7f&&&#' ), E( '%;S/#%2^""6^7_/?#$4e""5!7f0)*4e""5!7f&/#$+")("\'#&\'#." &"/^$%4o""5!7p/@#4q""5!7r." &"/,$;S/#$+#)(#\'#("\'#&\'#." &"/#$+#)(#\'#("\'#&\'#.} &%2^""6^7_/g#;S/^$%4o""5!7p/@#4q""5!7r." &"/,$;S/#$+#)(#\'#("\'#&\'#." &"/#$+#)(#\'#("\'#&\'#.# &;S' ), E( '$4s""5!7t/,#0)*4s""5!7t&&&#' ), E( '$4s""5!7t0)*4s""5!7t&' ) ],
+            u = 0,
+            d = 0,
+            p = [ {
+              line: 1,
+              column: 1
+            } ],
+            f = 0,
+            m = [],
+            b = 0;
+          if ( "startRule" in t ) {
+            if ( !( t.startRule in i ) ) throw new Error( `Can't start parsing from rule "${t.startRule}".` );
+            c = i[ t.startRule ]
+          }
+
+          function y( e, t ) {
+            return {
+              type: "literal",
+              text: e,
+              ignoreCase: t
+            }
+          }
+
+          function h( e, t, n ) {
+            return {
+              type: "class",
+              parts: e,
+              inverted: t,
+              ignoreCase: n
+            }
+          }
+
+          function g( t ) {
+            let n, r = p[ t ];
+            if ( r ) return r;
+            for ( n = t - 1; !p[ n ]; ) n--;
+            for ( r = p[ n ], r = {
+                line: r.line,
+                column: r.column
+              }; n < t; ) 10 === e.charCodeAt( n ) ? ( r.line++, r.column = 1 ) : r.column++, n++;
+            return p[ t ] = r, r
+          }
+
+          function v( e, t ) {
+            const n = g( e ),
+              r = g( t );
+            return {
+              start: {
+                offset: e,
+                line: n.line,
+                column: n.column
+              },
+              end: {
+                offset: t,
+                line: r.line,
+                column: r.column
+              }
+            }
+          }
+
+          function O( e ) {
+            u < f || ( u > f && ( f = u, m = [] ), m.push( e ) )
+          }
+
+          function x( e, t, n ) {
+            return new a( a.buildMessage( e, t ), e, t, n )
+          }
+
+          function E( e ) {
+            let t, n = new Array( e.length );
+            for ( t = 0; t < e.length; t++ ) n[ t ] = e.charCodeAt( t ) - 32;
+            return n
+          }
+          if ( n = function t( n ) {
+              let r, a, i = l[ n ],
+                c = 0,
+                p = [],
+                f = i.length,
+                m = [],
+                y = [];
+              for ( ;; ) {
+                for ( ; c < f; ) switch ( i[ c ] ) {
+                  case 0:
+                    y.push( s[ i[ c + 1 ] ] ), c += 2;
+                    break;
+                  case 1:
+                    y.push( void 0 ), c++;
+                    break;
+                  case 2:
+                    y.push( null ), c++;
+                    break;
+                  case 3:
+                    y.push( o ), c++;
+                    break;
+                  case 4:
+                    y.push( [] ), c++;
+                    break;
+                  case 5:
+                    y.push( u ), c++;
+                    break;
+                  case 6:
+                    y.pop(), c++;
+                    break;
+                  case 7:
+                    u = y.pop(), c++;
+                    break;
+                  case 8:
+                    y.length -= i[ c + 1 ], c += 2;
+                    break;
+                  case 9:
+                    y.splice( -2, 1 ), c++;
+                    break;
+                  case 10:
+                    y[ y.length - 2 ].push( y.pop() ), c++;
+                    break;
+                  case 11:
+                    y.push( y.splice( y.length - i[ c + 1 ], i[ c + 1 ] ) ), c += 2;
+                    break;
+                  case 12:
+                    y.push( e.substring( y.pop(), u ) ), c++;
+                    break;
+                  case 13:
+                    m.push( f ), p.push( c + 3 + i[ c + 1 ] + i[ c + 2 ] ), y[ y.length - 1 ] ? ( f = c + 3 + i[ c + 1 ], c += 3 ) : ( f = c + 3 + i[ c + 1 ] + i[ c + 2 ], c += 3 + i[ c + 1 ] );
+                    break;
+                  case 14:
+                    m.push( f ), p.push( c + 3 + i[ c + 1 ] + i[ c + 2 ] ), y[ y.length - 1 ] === o ? ( f = c + 3 + i[ c + 1 ], c += 3 ) : ( f = c + 3 + i[ c + 1 ] + i[ c + 2 ], c += 3 + i[ c + 1 ] );
+                    break;
+                  case 15:
+                    m.push( f ), p.push( c + 3 + i[ c + 1 ] + i[ c + 2 ] ), y[ y.length - 1 ] !== o ? ( f = c + 3 + i[ c + 1 ], c += 3 ) : ( f = c + 3 + i[ c + 1 ] + i[ c + 2 ], c += 3 + i[ c + 1 ] );
+                    break;
+                  case 16:
+                    y[ y.length - 1 ] !== o ? ( m.push( f ), p.push( c ), f = c + 2 + i[ c + 1 ], c += 2 ) : c += 2 + i[ c + 1 ];
+                    break;
+                  case 17:
+                    m.push( f ), p.push( c + 3 + i[ c + 1 ] + i[ c + 2 ] ), e.length > u ? ( f = c + 3 + i[ c + 1 ], c += 3 ) : ( f = c + 3 + i[ c + 1 ] + i[ c + 2 ], c += 3 + i[ c + 1 ] );
+                    break;
+                  case 18:
+                    m.push( f ), p.push( c + 4 + i[ c + 2 ] + i[ c + 3 ] ), e.substr( u, s[ i[ c + 1 ] ].length ) === s[ i[ c + 1 ] ] ? ( f = c + 4 + i[ c + 2 ], c += 4 ) : ( f = c + 4 + i[ c + 2 ] + i[ c + 3 ], c += 4 + i[ c + 2 ] );
+                    break;
+                  case 19:
+                    m.push( f ), p.push( c + 4 + i[ c + 2 ] + i[ c + 3 ] ), e.substr( u, s[ i[ c + 1 ] ].length ).toLowerCase() === s[ i[ c + 1 ] ] ? ( f = c + 4 + i[ c + 2 ], c += 4 ) : ( f = c + 4 + i[ c + 2 ] + i[ c + 3 ], c += 4 + i[ c + 2 ] );
+                    break;
+                  case 20:
+                    m.push( f ), p.push( c + 4 + i[ c + 2 ] + i[ c + 3 ] ), s[ i[ c + 1 ] ].test( e.charAt( u ) ) ? ( f = c + 4 + i[ c + 2 ], c += 4 ) : ( f = c + 4 + i[ c + 2 ] + i[ c + 3 ], c += 4 + i[ c + 2 ] );
+                    break;
+                  case 21:
+                    y.push( e.substr( u, i[ c + 1 ] ) ), u += i[ c + 1 ], c += 2;
+                    break;
+                  case 22:
+                    y.push( s[ i[ c + 1 ] ] ), u += s[ i[ c + 1 ] ].length, c += 2;
+                    break;
+                  case 23:
+                    y.push( o ), 0 === b && O( s[ i[ c + 1 ] ] ), c += 2;
+                    break;
+                  case 24:
+                    d = y[ y.length - 1 - i[ c + 1 ] ], c += 2;
+                    break;
+                  case 25:
+                    d = u, c++;
+                    break;
+                  case 26:
+                    for ( r = i.slice( c + 4, c + 4 + i[ c + 3 ] ), a = 0; a < i[ c + 3 ]; a++ ) r[ a ] = y[ y.length - 1 - r[ a ] ];
+                    y.splice( y.length - i[ c + 2 ], i[ c + 2 ], s[ i[ c + 1 ] ].apply( null, r ) ), c += 4 + i[ c + 3 ];
+                    break;
+                  case 27:
+                    y.push( t( i[ c + 1 ] ) ), c += 2;
+                    break;
+                  case 28:
+                    b++, c++;
+                    break;
+                  case 29:
+                    b--, c++;
+                    break;
+                  default:
+                    throw new Error( `Invalid opcode: ${i[c]}.` )
+                }
+                if ( !( m.length > 0 ) ) break;
+                f = m.pop(), c = p.pop()
+              }
+              return y[ 0 ]
+            }( c ), n !== o && u === e.length ) return n;
+          throw n !== o && u < e.length && O( {
+            type: "end"
+          } ), x( m, f < e.length ? e.charAt( f ) : null, f < e.length ? v( f, f + 1 ) : v( f, f ) )
+        }
+      }
+    },
+    F3Ih: function ( e, t, n ) {
+      "use strict";
+      var r;
+      if ( !Object.keys ) {
+        var a = Object.prototype.hasOwnProperty,
+          o = Object.prototype.toString,
+          i = n( "cTt9" ),
+          c = Object.prototype.propertyIsEnumerable,
+          s = !c.call( {
+            toString: null
+          }, "toString" ),
+          l = c.call( ( function () {} ), "prototype" ),
+          u = [ "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor" ],
+          d = function ( e ) {
+            var t = e.constructor;
+            return t && t.prototype === e
+          },
+          p = {
+            $applicationCache: !0,
+            $console: !0,
+            $external: !0,
+            $frame: !0,
+            $frameElement: !0,
+            $frames: !0,
+            $innerHeight: !0,
+            $innerWidth: !0,
+            $onmozfullscreenchange: !0,
+            $onmozfullscreenerror: !0,
+            $outerHeight: !0,
+            $outerWidth: !0,
+            $pageXOffset: !0,
+            $pageYOffset: !0,
+            $parent: !0,
+            $scrollLeft: !0,
+            $scrollTop: !0,
+            $scrollX: !0,
+            $scrollY: !0,
+            $self: !0,
+            $webkitIndexedDB: !0,
+            $webkitStorageInfo: !0,
+            $window: !0
+          },
+          f = function () {
+            if ( "undefined" == typeof window ) return !1;
+            for ( var e in window ) try {
+              if ( !p[ "$" + e ] && a.call( window, e ) && null !== window[ e ] && "object" == typeof window[ e ] ) try {
+                d( window[ e ] )
+              } catch ( t ) {
+                return !0
+              }
+            } catch ( t ) {
+              return !0
+            }
+            return !1
+          }();
+        r = function ( e ) {
+          var t = null !== e && "object" == typeof e,
+            n = "[object Function]" === o.call( e ),
+            r = i( e ),
+            c = t && "[object String]" === o.call( e ),
+            p = [];
+          if ( !t && !n && !r ) throw new TypeError( "Object.keys called on a non-object" );
+          var m = l && n;
+          if ( c && e.length > 0 && !a.call( e, 0 ) )
+            for ( var b = 0; b < e.length; ++b ) p.push( String( b ) );
+          if ( r && e.length > 0 )
+            for ( var y = 0; y < e.length; ++y ) p.push( String( y ) );
+          else
+            for ( var h in e ) m && "prototype" === h || !a.call( e, h ) || p.push( String( h ) );
+          if ( s )
+            for ( var g = function ( e ) {
+                if ( "undefined" == typeof window || !f ) return d( e );
+                try {
+                  return d( e )
+                } catch ( t ) {
+                  return !1
+                }
+              }( e ), v = 0; v < u.length; ++v ) g && "constructor" === u[ v ] || !a.call( e, u[ v ] ) || p.push( u[ v ] );
+          return p
+        }
+      }
+      e.exports = r
+    },
+    FCVA: function ( e, t, n ) {
+      "use strict";
+      var r = n( "zjfJ" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "Q//X" ),
+        c = n( "XOH5" );
+      class s extends a.PureComponent {
+        constructor( ...e ) {
+          super( ...e ), Object( r.a )( this, "stopMacroExperience", e => {
+            const {
+              mode: t,
+              node: n,
+              contentId: r
+            } = this.props, a = Object( i.e )( n );
+            return o.a.createElement( c.a, {
+              name: Object( i.d )( t, n ),
+              contentId: r,
+              mode: t,
+              error: e,
+              attributes: a
+            } )
+          } )
+        }
+        render() {
+          const {
+            width: e,
+            height: t,
+            src: n
+          } = this.props;
+          return o.a.createElement( "img", {
+            style: {
+              cursor: "move"
+            },
+            width: e,
+            height: t,
+            src: n,
+            onError: this.stopMacroExperience,
+            onLoad: this.stopMacroExperience
+          } )
+        }
+      }
+      Object( r.a )( s, "defaultProps", {
+        width: "auto",
+        height: "auto"
+      } ), t.a = s
+    },
+    "FyK+": function ( e, t, n ) {
+      "use strict";
+      n.r( t ), n.d( t, "FieldId", ( function () {
+        return l
+      } ) );
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "cYO7" ),
+        c = n( "30eJ" ),
+        s = n( "dai/" );
+      const l = o.a.createContext( void 0 );
+
+      function u( e ) {
+        const t = Object( a.useRef )( e );
+        return Object( a.useEffect )( () => {
+          t.current = e
+        } ), t
+      }
+
+      function d( e ) {
+        const t = Object( a.useContext )( c.FormContext ),
+          n = Object( a.useContext )( c.IsDisabledContext ) || e.isDisabled,
+          d = "function" == typeof e.defaultValue ? e.defaultValue() : e.defaultValue;
+        const [ p, f ] = Object( a.useState )( {
+          fieldProps: {
+            onChange: () => {},
+            onBlur: () => {},
+            onFocus: () => {},
+            value: d
+          },
+          error: void 0,
+          valid: !1,
+          meta: {
+            dirty: !1,
+            dirtySinceLastSubmit: !1,
+            touched: !1,
+            valid: !1,
+            validating: !1,
+            submitting: !1,
+            submitFailed: !1,
+            error: void 0,
+            submitError: void 0
+          }
+        } ), m = u( e ), b = u( p ), y = ( h = m.current.defaultValue, g = e.defaultValue, h === g || "function" == typeof h && "function" == typeof g || ( Array.isArray( h ) && Array.isArray( g ) || "object" == typeof h && "object" == typeof g ) && JSON.stringify( h ) === JSON.stringify( g ) );
+        var h, g;
+        Object( a.useEffect )( () => {
+          function e( e = {} ) {
+            return {
+              dirty: e.dirty || !1,
+              dirtySinceLastSubmit: e.dirtySinceLastSubmit || !1,
+              touched: e.touched || !1,
+              valid: e.valid || !1,
+              submitting: e.submitting || !1,
+              submitFailed: e.submitFailed || !1,
+              error: e.error,
+              submitError: e.submitError,
+              validating: !!e.validating
+            }
+          }
+          return t( m.current.name, m.current.defaultValue, t => {
+            const n = t.submitting ? b.current.meta.dirtySinceLastSubmit : t.dirtySinceLastSubmit,
+              r = t.submitting ? b.current.meta.submitFailed : t.submitFailed,
+              a = ( n && m.current.validate ? void 0 : t.submitError ) || ( t.touched || t.dirty ) && t.error,
+              o = r ? void 0 === a : t.valid;
+
+            function i( e, t ) {
+              if ( m.current.transform ) return m.current.transform( e, t );
+              if ( n = e, !Boolean( n && n.target ) ) return e; {
+                const {
+                  currentTarget: t
+                } = e;
+                if ( "checkbox" === t.type ) return t.checked ? t.value || !0 : !!t.value && void 0;
+                if ( t ) return t.value
+              }
+              var n
+            }
+            f( {
+              fieldProps: {
+                onChange: e => {
+                  t.change( i( e, t.value ) )
+                },
+                onBlur: t.blur,
+                onFocus: t.focus,
+                value: t.value
+              },
+              error: a || void 0,
+              valid: o || !1,
+              meta: e( t )
+            } )
+          }, {
+            dirty: !0,
+            dirtySinceLastSubmit: !0,
+            touched: !0,
+            valid: !0,
+            submitting: !0,
+            submitFailed: !0,
+            value: !0,
+            error: !0,
+            submitError: !0,
+            validating: !0
+          }, {
+            getValidator: () => function ( t, n, r ) {
+              const a = m.current.validate;
+              if ( a && r ) return a( t, n, e( r ) )
+            }
+          } )
+        }, [ m, b, t, e.name, y ] );
+        const v = Object( a.useMemo )( () => e.id ? e.id : `${e.name}-${Object(i.b)({id:e.name})}`, [ e.id, e.name ] ),
+          O = Object( r.a )( Object( r.a )( {}, p.fieldProps ), {}, {
+            name: e.name,
+            isDisabled: n,
+            isInvalid: Boolean( p.error ),
+            isRequired: Boolean( e.isRequired ),
+            "aria-invalid": p.error ? "true" : "false",
+            "aria-labelledby": `${v}-label ${v}-helper ${v}-valid ${v}-error`,
+            id: v
+          } );
+        return o.a.createElement( s.c, null, e.label && o.a.createElement( s.a, {
+          id: v + "-label",
+          htmlFor: v
+        }, e.label, e.isRequired && o.a.createElement( s.b, {
+          "aria-hidden": "true"
+        }, "*" ) ), o.a.createElement( l.Provider, {
+          value: v
+        }, e.children( {
+          fieldProps: O,
+          error: p.error,
+          valid: p.valid,
+          meta: p.meta
+        } ) ) )
+      }
+      d.defaultProps = {
+        defaultValue: void 0,
+        isDisabled: !1
+      }, t.default = d
+    },
+    HJ22: function ( e, t, n ) {
+      "use strict";
+      var r = n( "8pvK" ),
+        a = n( "3IV/" );
+      const o = {
+          light: a.N20,
+          dark: a.DN20
+        },
+        i = {
+          light: a.R400,
+          dark: a.R400
+        },
+        c = {
+          light: a.B100,
+          dark: a.B75
+        },
+        s = {
+          light: a.N40,
+          dark: a.DN40
+        },
+        l = {
+          light: a.N10,
+          dark: a.DN10
+        },
+        u = {
+          light: a.N30,
+          dark: a.DN30
+        },
+        d = {
+          light: a.N0,
+          dark: a.DN10
+        },
+        p = {
+          light: a.N100,
+          dark: a.DN200
+        },
+        f = {
+          light: a.N900,
+          dark: a.DN600
+        },
+        m = {
+          light: a.N70,
+          dark: a.DN90
+        },
+        b = {
+          light: "transparent",
+          dark: "transparent"
+        };
+      n.d( t, "b", ( function () {
+        return j
+      } ) ), n.d( t, "a", ( function () {
+        return I
+      } ) );
+      const y = {
+          light: {
+            backgroundColor: o.light,
+            backgroundColorFocus: o.light,
+            backgroundColorHover: o.light,
+            borderColor: s.light,
+            borderColorFocus: c.light,
+            textColor: m.light
+          },
+          dark: {
+            backgroundColor: o.dark,
+            backgroundColorFocus: o.dark,
+            backgroundColorHover: o.dark,
+            borderColor: s.dark,
+            borderColorFocus: c.dark,
+            textColor: m.dark
+          }
+        },
+        h = {
+          light: {
+            borderColor: i.light,
+            borderColorFocus: c.light,
+            backgroundColor: l.light,
+            backgroundColorFocus: d.light,
+            backgroundColorHover: u.light
+          },
+          dark: {
+            borderColor: i.dark,
+            borderColorFocus: c.dark,
+            backgroundColor: l.dark,
+            backgroundColorFocus: d.dark,
+            backgroundColorHover: u.dark
+          }
+        },
+        g = {
+          standard: l,
+          subtle: b,
+          none: b
+        },
+        v = {
+          standard: d,
+          subtle: d,
+          none: b
+        },
+        O = {
+          standard: u,
+          subtle: u,
+          none: b
+        },
+        x = {
+          standard: s,
+          subtle: b,
+          none: b
+        },
+        E = {
+          standard: c,
+          subtle: c,
+          none: b
+        },
+        j = {
+          borderColor: x,
+          borderColorFocus: E,
+          backgroundColor: g,
+          backgroundColorFocus: v,
+          backgroundColorHover: O,
+          disabledRules: y,
+          invalidRules: h,
+          textColor: f,
+          placeholderTextColor: p
+        },
+        I = Object( r.a )( ( {
+          appearance: e,
+          mode: t
+        } ) => ( {
+          borderColor: x[ e ][ t ],
+          borderColorFocus: E[ e ][ t ],
+          backgroundColorHover: O[ e ][ t ],
+          backgroundColorFocus: v[ e ][ t ],
+          backgroundColor: g[ e ][ t ],
+          disabledRules: y[ t ],
+          invalidRules: h[ t ],
+          textColor: f[ t ],
+          placeholderTextColor: p[ t ]
+        } ) )
+    },
+    IlOi: function ( e, t, n ) {
+      "use strict";
+      var r = n( "YZE+" ),
+        a = n( "zT+L" ).supportsDescriptors,
+        o = Object.getOwnPropertyDescriptor,
+        i = TypeError;
+      e.exports = function () {
+        if ( !a ) throw new i( "RegExp.prototype.flags requires a true ES5 environment that supports property descriptors" );
+        if ( "gim" === /a/gim.flags ) {
+          var e = o( RegExp.prototype, "flags" );
+          if ( e && "function" == typeof e.get && "boolean" == typeof /a/.dotAll ) return e.get
+        }
+        return r
+      }
+    },
+    K9i4: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "L21V" ),
+        c = n( "i4Pk" ),
+        s = n( "xpeE" ),
+        l = n( "bs5R" ),
+        u = n.n( l );
+      const d = n( "KsTJ" ).default.div `
+  display: block;
+  background-color: #f4f5f7;
+  border-radius: 5;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+`;
+      var p = ( {
+        children: e
+      } ) => o.a.createElement( d, null, o.a.createElement( u.a, {
+        size: "medium"
+      } ), o.a.createElement( "span", {
+        style: {
+          paddingLeft: 6,
+          verticalAlign: "text-bottom"
+        }
+      }, e ) );
+      n.d( t, "a", ( function () {
+        return y
+      } ) );
+      const f = o.a.createContext( [] ),
+        m = e => {
+          const {
+            _referencedContentId: t
+          } = e.parameters.macroParams;
+          return t ? t.value : void 0
+        },
+        b = Object( i.f )( {
+          missingPage: {
+            id: "page-include-extension-handler.missingPage",
+            defaultMessage: "The included page is no longer available. It might have been deleted."
+          },
+          infiniteLoop: {
+            id: "page-include-extension-handler.infiniteLoop",
+            defaultMessage: "The page being included has already been included. You cannot infinitely nest pages."
+          }
+        } );
+      class y extends a.Component {
+        render() {
+          const e = m( this.props.node );
+          if ( !e ) return o.a.createElement( p, null, o.a.createElement( i.b, Object( r.a )( {}, b.missingPage ) ) );
+          const {
+            spaceKey: t,
+            showTemplateVariablesInPreview: n,
+            showTemplateInputInPreview: a
+          } = this.props;
+          return o.a.createElement( f.Consumer, null, l => {
+            if ( l.some( t => "include" === t.extensionKey && m( t ) === e ) ) return o.a.createElement( p, null, o.a.createElement( i.b, Object( r.a )( {}, b.infiniteLoop ) ) );
+            const u = [ ...l, this.props.node ],
+              d = Object( s.a )( {
+                contentId: e,
+                showTemplateVariablesInPreview: n,
+                showTemplateInputInPreview: a,
+                spaceKey: t,
+                parentMacros: u
+              } );
+            return o.a.createElement( f.Provider, {
+              value: u
+            }, o.a.createElement( c.a, {
+              spaceKey: this.props.spaceKey,
+              contentId: e,
+              extensionHandlers: d,
+              appearance: "full-width",
+              allowDynamicTextSizing: !1
+            } ) )
+          } )
+        }
+      }
+    },
+    KuFb: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return o
+      } ) );
+      var r = n( "7+Q0" );
+      const a = {
+          [ r.b.DEFAULT ]: "full-page",
+          [ r.b.FULL_WIDTH ]: "full-width"
+        },
+        o = e => {
+          const t = a[ e ];
+          return t || i()
+        },
+        i = () => a[ r.b.DEFAULT ]
+    },
+    Licu: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return i
+      } ) );
+      var r = n( "H5qd" ),
+        a = n.n( r ),
+        o = n( "j+hl" );
+      const i = a.a `query ContentRendererQuery($contentId:ID$status:[String]){content(id:$contentId status:$status){nodes{id body{atlas_doc_format{value}}space{id key}type ...contentAppearancePublishedFragment}}}${o.b}`
+    },
+    M2LZ: function ( e, t, n ) {
+      "use strict";
+      var r = n( "S2j0" );
+      var a = {
+          require: ( e, t ) => new Promise( n => {
+            Object( r.a )( e, e => {
+              n( e ), t && t( e )
+            }, () => {
+              0
+            } )
+          } )
+        },
+        o = n( "zjfJ" ),
+        i = n( "Czhu" ),
+        c = n( "ERkP" ),
+        s = n.n( c );
+      var l = function ( e, t ) {
+        const n = Object( i.a )( {
+          isBlocking: !0
+        }, t );
+        return t => {
+          class a extends c.Component {
+            constructor( ...e ) {
+              super( ...e ), Object( o.a )( this, "state", {
+                dependenciesLoaded: !1
+              } ), Object( o.a )( this, "markAsLoaded", () => {
+                this.mounted && this.setState( {
+                  dependenciesLoaded: !0
+                } )
+              } )
+            }
+            componentDidMount() {
+              this.mounted = !0, e && e.length > 0 ? Object( r.a )( e, this.markAsLoaded, () => {
+                0
+              } ) : this.markAsLoaded()
+            }
+            componentWillUnmount() {
+              this.mounted = !1
+            }
+            render() {
+              const {
+                dependenciesLoaded: e
+              } = this.state;
+              return e || !n.isBlocking ? s.a.createElement( t, Object( i.a )( Object( i.a )( {}, this.props ), {}, {
+                wrmDependenciesLoaded: e
+              } ) ) : null
+            }
+          }
+          return a.displayName = `WRMComponent(${t.displayName||t.name})`, a
+        }
+      };
+      n.d( t, "a", ( function () {
+        return a
+      } ) ), n.d( t, "b", ( function () {
+        return l
+      } ) )
+    },
+    MA4i: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return c
+      } ) );
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "RfuI" ),
+        i = n( "RluF" );
+      const c = Object( o.a )( {
+        id: "MsMdX",
+        name: "DetailsSummary",
+        loader: async () => {
+          const {
+            DetailsSummary: e
+          } = await Promise.all( [ n.e( "atlaskit~66e23772" ), n.e( "vendors~4134d62c" ), n.e( "extension-handler-detailssummary~b59ad437" ) ] ).then( n.bind( null, "2Cio" ) );
+          return e
+        },
+        loading: () => a.a.createElement( i.a, null )
+      } )
+    },
+    "OQ+j": function ( e, t, n ) {
+      "use strict";
+      var r = n( "HbGN" ),
+        a = n( "Czhu" ),
+        o = n( "ERkP" ),
+        i = n.n( o ),
+        c = n( "7nmT" ),
+        s = n( "BGTi" ),
+        l = n( "XaRy" ),
+        u = n.n( l ),
+        d = n( "ewQW" ),
+        p = n( "NI0Q" ),
+        f = n( "RLdS" ),
+        m = n( "bNPp" ),
+        b = n.n( m ),
+        y = n( "nChe" ),
+        h = n.n( y ),
+        g = n( "3IV/" ),
+        v = n( "l1C2" ),
+        O = n( "6+Wb" ),
+        x = n( "BMbf" ),
+        E = n( "S/wU" ),
+        j = n.n( E );
+      const I = e => {
+          let {
+            maxWidth: t,
+            minWidth: n
+          } = e, a = Object( r.a )( e, [ "maxWidth", "minWidth" ] );
+          return Object( v.f )( "div", Object.assign( {
+            css: {
+              backgroundColor: "white",
+              borderRadius: 4,
+              boxShadow: `0 0 0 1px ${g.N40A}, 0 4px 11px ${g.N40A}`,
+              maxWidth: t,
+              minWidth: n,
+              zIndex: x.i.modal()
+            }
+          }, a ) )
+        },
+        w = e => Object( v.f )( "div", {
+          css: {
+            border: 0,
+            clip: "rect(1px, 1px, 1px, 1px)",
+            height: 1,
+            overflow: "hidden",
+            padding: 0,
+            position: "absolute",
+            whiteSpace: "nowrap",
+            width: 1
+          }
+        }, Object( v.f )( O.z.Control, Object.assign( {}, e ) ) ),
+        C = {
+          Control: e => {
+            let {
+              innerRef: t,
+              innerProps: n
+            } = e, a = Object( r.a )( e, [ "innerRef", "innerProps" ] );
+            return Object( v.f )( "div", {
+              ref: t,
+              css: {
+                padding: "8px 8px 4px"
+              }
+            }, Object( v.f )( O.z.Control, Object.assign( {}, a, {
+              innerProps: n
+            } ) ) )
+          },
+          DropdownIndicator: () => Object( v.f )( "div", {
+            css: {
+              marginRight: 2,
+              textAlign: "center",
+              width: 32
+            }
+          }, Object( v.f )( j.a, {
+            label: "open"
+          } ) ),
+          Menu: e => {
+            let {
+              children: t,
+              innerProps: n
+            } = e;
+            Object( r.a )( e, [ "children", "innerProps" ] );
+            return Object( v.f )( "div", Object.assign( {}, n ), t )
+          }
+        };
+      n.d( t, "a", ( function () {
+        return A
+      } ) );
+      const P = {
+          groupHeading: e => Object( a.a )( Object( a.a )( {}, e ), {}, {
+            color: g.N80
+          } )
+        },
+        k = {
+          modifiers: [ {
+            name: "offset",
+            options: {
+              offset: [ 0, 8 ]
+            }
+          }, {
+            name: "preventOverflow",
+            enabled: !0,
+            options: {
+              padding: 5,
+              boundary: "clippingParents",
+              altAxis: !0,
+              altBoundary: !0
+            }
+          } ],
+          placement: "bottom-start"
+        };
+      class A extends o.PureComponent {
+        constructor() {
+          super( ...arguments ), this.focusTrap = null, this.menuRef = null, this.selectRef = null, this.targetRef = null, this.state = {
+            isOpen: !1,
+            mergedComponents: C,
+            mergedPopperProps: k
+          }, this.handleKeyDown = e => {
+            switch ( e.key ) {
+              case "Escape":
+              case "Esc":
+                this.close()
+            }
+            this.props.handleKeyDown && this.props.handleKeyDown( e )
+          }, this.handleClick = ( {
+            target: e
+          } ) => {
+            const {
+              isOpen: t
+            } = this.state;
+            e instanceof Element && ( t && this.menuRef && !this.menuRef.contains( e ) && this.close(), !t && this.targetRef && this.targetRef.contains( e ) && this.open() )
+          }, this.handleSelectChange = ( e, t ) => {
+            const {
+              closeMenuOnSelect: n,
+              onChange: r
+            } = this.props;
+            n && "clear" !== t.action && this.close(), r && r( e, t )
+          }, this.open = () => {
+            const {
+              onOpen: e
+            } = this.props;
+            e && e(), this.setState( {
+              isOpen: !0
+            }, this.initialiseFocusTrap ), this.selectRef && this.selectRef.select.openMenu( "first" ), "undefined" != typeof window && window.addEventListener( "keydown", this.handleKeyDown, !0 )
+          }, this.initialiseFocusTrap = () => {
+            if ( !this.menuRef ) return;
+            const e = {
+              clickOutsideDeactivates: !0,
+              escapeDeactivates: !0,
+              fallbackFocus: this.menuRef,
+              returnFocusOnDeactivate: !0
+            };
+            this.focusTrap = u()( this.menuRef, e ), setTimeout( () => this.focusTrap.activate(), 1 )
+          }, this.close = () => {
+            const {
+              onClose: e
+            } = this.props;
+            e && e(), this.setState( {
+              isOpen: !1
+            } ), this.focusTrap && this.focusTrap.deactivate(), "undefined" != typeof window && window.removeEventListener( "keydown", this.handleKeyDown, !0 )
+          }, this.resolveTargetRef = e => t => {
+            !this.targetRef && e && t && ( this.targetRef = t, "function" == typeof e ? e( t ) : e.current = t )
+          }, this.resolveMenuRef = e => t => {
+            this.menuRef = t, "function" == typeof e ? e( t ) : e.current = t
+          }, this.getSelectRef = e => {
+            this.selectRef = e
+          }, this.getItemCount = () => {
+            const {
+              options: e
+            } = this.props;
+            let t = 0;
+            return e.forEach( e => {
+              e.options ? e.options.forEach( () => t++ ) : t++
+            } ), t
+          }, this.getMaxHeight = () => {
+            const {
+              maxMenuHeight: e
+            } = this.props;
+            if ( !this.selectRef ) return e;
+            const t = this.showSearchControl(),
+              {
+                controlRef: n
+              } = this.selectRef.select;
+            return e - ( t ? n.offsetHeight : 0 )
+          }, this.showSearchControl = () => {
+            const {
+              searchThreshold: e
+            } = this.props;
+            return this.getItemCount() > e
+          }, this.renderSelect = () => {
+            const e = this.props,
+              {
+                footer: t,
+                maxMenuWidth: n,
+                minMenuWidth: o,
+                target: l
+              } = e,
+              u = Object( r.a )( e, [ "footer", "maxMenuWidth", "minMenuWidth", "target" ] ),
+              {
+                isOpen: p,
+                mergedComponents: f,
+                mergedPopperProps: m
+              } = this.state,
+              y = this.showSearchControl(),
+              h = Boolean( "undefined" != typeof window && window.document && window.document.createElement ) ? document.body : null,
+              g = Object( a.a )( Object( a.a )( {}, f ), {}, {
+                Control: y ? f.Control : w
+              } );
+            if ( !h || !p ) return null;
+            const v = i.a.createElement( d.a, Object.assign( {}, m ), ( {
+              placement: e,
+              ref: r,
+              style: c
+            } ) => i.a.createElement( b.a, {
+              innerRef: this.resolveMenuRef( r )
+            }, i.a.createElement( I, {
+              style: c,
+              "data-placement": e,
+              minWidth: o,
+              maxWidth: n
+            }, i.a.createElement( s.a, Object.assign( {
+              backspaceRemovesValue: !1,
+              controlShouldRenderValue: !1,
+              isClearable: !1,
+              tabSelectsValue: !1,
+              menuIsOpen: !0,
+              ref: this.getSelectRef
+            }, u, {
+              isSearchable: y,
+              styles: Object( a.a )( Object( a.a )( {}, P ), u.styles ),
+              maxMenuHeight: this.getMaxHeight(),
+              components: g,
+              onChange: this.handleSelectChange
+            } ) ), t ) ) );
+            return "fixed" === m.strategy ? v : Object( c.createPortal )( v, h )
+          }
+        }
+        static getDerivedStateFromProps( e, t ) {
+          const n = {},
+            r = Object( a.a )( Object( a.a )( {}, k ), e.popperProps );
+          h()( r, t.mergedPopperProps ) || ( n.mergedPopperProps = r );
+          const o = Object( a.a )( Object( a.a )( {}, C ), e.components );
+          return h()( o, t.mergedComponents ) || ( n.mergedComponents = o ), i = n, 0 !== Object.keys( i ).length ? n : null;
+          var i
+        }
+        componentDidMount() {
+          "undefined" != typeof window && window.addEventListener( "click", this.handleClick, !0 )
+        }
+        componentWillUnmount() {
+          "undefined" != typeof window && ( window.removeEventListener( "click", this.handleClick, !0 ), window.removeEventListener( "keydown", this.handleKeyDown, !0 ) )
+        }
+        render() {
+          const {
+            target: e
+          } = this.props, {
+            isOpen: t
+          } = this.state;
+          return i.a.createElement( p.a, null, i.a.createElement( f.a, null, ( {
+            ref: n
+          } ) => e && e( {
+            ref: this.resolveTargetRef( n ),
+            isOpen: t
+          } ) ), this.renderSelect() )
+        }
+      }
+      A.defaultProps = {
+        closeMenuOnSelect: !0,
+        components: {},
+        maxMenuHeight: 300,
+        maxMenuWidth: 440,
+        minMenuWidth: 220,
+        popperProps: {},
+        searchThreshold: 5,
+        styles: {},
+        options: []
+      }
+    },
+    OsbC: function ( e, t, n ) {
+      "use strict";
+      var r = TypeError,
+        a = Object.getOwnPropertyDescriptor;
+      if ( a ) try {
+        a( {}, "" )
+      } catch ( h ) {
+        a = null
+      }
+      var o = function () {
+          throw new r
+        },
+        i = a ? function () {
+          try {
+            return o
+          } catch ( e ) {
+            try {
+              return a( arguments, "callee" ).get
+            } catch ( t ) {
+              return o
+            }
+          }
+        }() : o,
+        c = n( "V+Bs" )(),
+        s = Object.getPrototypeOf || function ( e ) {
+          return e.__proto__
+        },
+        l = void 0,
+        u = "undefined" == typeof Uint8Array ? void 0 : s( Uint8Array ),
+        d = {
+          "%Array%": Array,
+          "%ArrayBuffer%": "undefined" == typeof ArrayBuffer ? void 0 : ArrayBuffer,
+          "%ArrayBufferPrototype%": "undefined" == typeof ArrayBuffer ? void 0 : ArrayBuffer.prototype,
+          "%ArrayIteratorPrototype%": c ? s( [][ Symbol.iterator ]() ) : void 0,
+          "%ArrayPrototype%": Array.prototype,
+          "%ArrayProto_entries%": Array.prototype.entries,
+          "%ArrayProto_forEach%": Array.prototype.forEach,
+          "%ArrayProto_keys%": Array.prototype.keys,
+          "%ArrayProto_values%": Array.prototype.values,
+          "%AsyncFromSyncIteratorPrototype%": void 0,
+          "%AsyncFunction%": void 0,
+          "%AsyncFunctionPrototype%": void 0,
+          "%AsyncGenerator%": void 0,
+          "%AsyncGeneratorFunction%": void 0,
+          "%AsyncGeneratorPrototype%": void 0,
+          "%AsyncIteratorPrototype%": l && c && Symbol.asyncIterator ? l[ Symbol.asyncIterator ]() : void 0,
+          "%Atomics%": "undefined" == typeof Atomics ? void 0 : Atomics,
+          "%Boolean%": Boolean,
+          "%BooleanPrototype%": Boolean.prototype,
+          "%DataView%": "undefined" == typeof DataView ? void 0 : DataView,
+          "%DataViewPrototype%": "undefined" == typeof DataView ? void 0 : DataView.prototype,
+          "%Date%": Date,
+          "%DatePrototype%": Date.prototype,
+          "%decodeURI%": decodeURI,
+          "%decodeURIComponent%": decodeURIComponent,
+          "%encodeURI%": encodeURI,
+          "%encodeURIComponent%": encodeURIComponent,
+          "%Error%": Error,
+          "%ErrorPrototype%": Error.prototype,
+          "%eval%": eval,
+          "%EvalError%": EvalError,
+          "%EvalErrorPrototype%": EvalError.prototype,
+          "%Float32Array%": "undefined" == typeof Float32Array ? void 0 : Float32Array,
+          "%Float32ArrayPrototype%": "undefined" == typeof Float32Array ? void 0 : Float32Array.prototype,
+          "%Float64Array%": "undefined" == typeof Float64Array ? void 0 : Float64Array,
+          "%Float64ArrayPrototype%": "undefined" == typeof Float64Array ? void 0 : Float64Array.prototype,
+          "%Function%": Function,
+          "%FunctionPrototype%": Function.prototype,
+          "%Generator%": void 0,
+          "%GeneratorFunction%": void 0,
+          "%GeneratorPrototype%": void 0,
+          "%Int8Array%": "undefined" == typeof Int8Array ? void 0 : Int8Array,
+          "%Int8ArrayPrototype%": "undefined" == typeof Int8Array ? void 0 : Int8Array.prototype,
+          "%Int16Array%": "undefined" == typeof Int16Array ? void 0 : Int16Array,
+          "%Int16ArrayPrototype%": "undefined" == typeof Int16Array ? void 0 : Int8Array.prototype,
+          "%Int32Array%": "undefined" == typeof Int32Array ? void 0 : Int32Array,
+          "%Int32ArrayPrototype%": "undefined" == typeof Int32Array ? void 0 : Int32Array.prototype,
+          "%isFinite%": isFinite,
+          "%isNaN%": isNaN,
+          "%IteratorPrototype%": c ? s( s( [][ Symbol.iterator ]() ) ) : void 0,
+          "%JSON%": "object" == typeof JSON ? JSON : void 0,
+          "%JSONParse%": "object" == typeof JSON ? JSON.parse : void 0,
+          "%Map%": "undefined" == typeof Map ? void 0 : Map,
+          "%MapIteratorPrototype%": "undefined" != typeof Map && c ? s( ( new Map )[ Symbol.iterator ]() ) : void 0,
+          "%MapPrototype%": "undefined" == typeof Map ? void 0 : Map.prototype,
+          "%Math%": Math,
+          "%Number%": Number,
+          "%NumberPrototype%": Number.prototype,
+          "%Object%": Object,
+          "%ObjectPrototype%": Object.prototype,
+          "%ObjProto_toString%": Object.prototype.toString,
+          "%ObjProto_valueOf%": Object.prototype.valueOf,
+          "%parseFloat%": parseFloat,
+          "%parseInt%": parseInt,
+          "%Promise%": "undefined" == typeof Promise ? void 0 : Promise,
+          "%PromisePrototype%": "undefined" == typeof Promise ? void 0 : Promise.prototype,
+          "%PromiseProto_then%": "undefined" == typeof Promise ? void 0 : Promise.prototype.then,
+          "%Promise_all%": "undefined" == typeof Promise ? void 0 : Promise.all,
+          "%Promise_reject%": "undefined" == typeof Promise ? void 0 : Promise.reject,
+          "%Promise_resolve%": "undefined" == typeof Promise ? void 0 : Promise.resolve,
+          "%Proxy%": "undefined" == typeof Proxy ? void 0 : Proxy,
+          "%RangeError%": RangeError,
+          "%RangeErrorPrototype%": RangeError.prototype,
+          "%ReferenceError%": ReferenceError,
+          "%ReferenceErrorPrototype%": ReferenceError.prototype,
+          "%Reflect%": "undefined" == typeof Reflect ? void 0 : Reflect,
+          "%RegExp%": RegExp,
+          "%RegExpPrototype%": RegExp.prototype,
+          "%Set%": "undefined" == typeof Set ? void 0 : Set,
+          "%SetIteratorPrototype%": "undefined" != typeof Set && c ? s( ( new Set )[ Symbol.iterator ]() ) : void 0,
+          "%SetPrototype%": "undefined" == typeof Set ? void 0 : Set.prototype,
+          "%SharedArrayBuffer%": "undefined" == typeof SharedArrayBuffer ? void 0 : SharedArrayBuffer,
+          "%SharedArrayBufferPrototype%": "undefined" == typeof SharedArrayBuffer ? void 0 : SharedArrayBuffer.prototype,
+          "%String%": String,
+          "%StringIteratorPrototype%": c ? s( "" [ Symbol.iterator ]() ) : void 0,
+          "%StringPrototype%": String.prototype,
+          "%Symbol%": c ? Symbol : void 0,
+          "%SymbolPrototype%": c ? Symbol.prototype : void 0,
+          "%SyntaxError%": SyntaxError,
+          "%SyntaxErrorPrototype%": SyntaxError.prototype,
+          "%ThrowTypeError%": i,
+          "%TypedArray%": u,
+          "%TypedArrayPrototype%": u ? u.prototype : void 0,
+          "%TypeError%": r,
+          "%TypeErrorPrototype%": r.prototype,
+          "%Uint8Array%": "undefined" == typeof Uint8Array ? void 0 : Uint8Array,
+          "%Uint8ArrayPrototype%": "undefined" == typeof Uint8Array ? void 0 : Uint8Array.prototype,
+          "%Uint8ClampedArray%": "undefined" == typeof Uint8ClampedArray ? void 0 : Uint8ClampedArray,
+          "%Uint8ClampedArrayPrototype%": "undefined" == typeof Uint8ClampedArray ? void 0 : Uint8ClampedArray.prototype,
+          "%Uint16Array%": "undefined" == typeof Uint16Array ? void 0 : Uint16Array,
+          "%Uint16ArrayPrototype%": "undefined" == typeof Uint16Array ? void 0 : Uint16Array.prototype,
+          "%Uint32Array%": "undefined" == typeof Uint32Array ? void 0 : Uint32Array,
+          "%Uint32ArrayPrototype%": "undefined" == typeof Uint32Array ? void 0 : Uint32Array.prototype,
+          "%URIError%": URIError,
+          "%URIErrorPrototype%": URIError.prototype,
+          "%WeakMap%": "undefined" == typeof WeakMap ? void 0 : WeakMap,
+          "%WeakMapPrototype%": "undefined" == typeof WeakMap ? void 0 : WeakMap.prototype,
+          "%WeakSet%": "undefined" == typeof WeakSet ? void 0 : WeakSet,
+          "%WeakSetPrototype%": "undefined" == typeof WeakSet ? void 0 : WeakSet.prototype
+        },
+        p = n( "5L5q" ).call( Function.call, String.prototype.replace ),
+        f = /[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/g,
+        m = /\\(\\)?/g,
+        b = function ( e ) {
+          var t = [];
+          return p( e, f, ( function ( e, n, r, a ) {
+            t[ t.length ] = r ? p( a, m, "$1" ) : n || e
+          } ) ), t
+        },
+        y = function ( e, t ) {
+          if ( !( e in d ) ) throw new SyntaxError( "intrinsic " + e + " does not exist!" );
+          if ( void 0 === d[ e ] && !t ) throw new r( "intrinsic " + e + " exists, but is not available. Please file an issue!" );
+          return d[ e ]
+        };
+      e.exports = function ( e, t ) {
+        if ( "string" != typeof e || 0 === e.length ) throw new TypeError( "intrinsic name must be a non-empty string" );
+        if ( arguments.length > 1 && "boolean" != typeof t ) throw new TypeError( '"allowMissing" argument must be a boolean' );
+        for ( var n = b( e ), o = y( "%" + ( n.length > 0 ? n[ 0 ] : "" ) + "%", t ), i = 1; i < n.length; i += 1 )
+          if ( null != o )
+            if ( a && i + 1 >= n.length ) {
+              var c = a( o, n[ i ] );
+              if ( !t && !( n[ i ] in o ) ) throw new r( "base intrinsic for " + e + " exists, but the property is not available." );
+              o = c ? c.get || c.value : o[ n[ i ] ]
+            } else o = o[ n[ i ] ];
+        return o
+      }
+    },
+    "R6B+": function ( e, t, n ) {
+      "use strict";
+      var r = n( "zT+L" ),
+        a = n( "0n68" ),
+        o = n( "YZE+" ),
+        i = n( "IlOi" ),
+        c = n( "CmXO" ),
+        s = a( o );
+      r( s, {
+        getPolyfill: i,
+        implementation: o,
+        shim: c
+      } ), e.exports = s
+    },
+    RLdS: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return s
+      } ) );
+      var r = n( "ERkP" ),
+        a = n( "lEaq" ),
+        o = n.n( a ),
+        i = n( "NI0Q" ),
+        c = n( "3eOh" );
+
+      function s( e ) {
+        var t = e.children,
+          n = e.innerRef,
+          a = r.useContext( i.c ),
+          s = r.useCallback( ( function ( e ) {
+            Object( c.c )( n, e ), Object( c.b )( a, e )
+          } ), [ n, a ] );
+        return r.useEffect( ( function () {
+          return function () {
+            return Object( c.c )( n, null )
+          }
+        } ) ), r.useEffect( ( function () {
+          o()( Boolean( a ), "`Reference` should not be used outside of a `Manager` component." )
+        } ), [ a ] ), Object( c.d )( t )( {
+          ref: s
+        } )
+      }
+    },
+    RluF: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return c
+      } ) );
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "L21V" ),
+        i = n( "3IV/" );
+      const c = () => a.a.createElement( "div", {
+        style: {
+          padding: "7px 10px",
+          borderBottom: "1px solid " + i.N40,
+          backgroundColor: i.N20,
+          color: i.N100
+        }
+      }, a.a.createElement( o.b, {
+        id: "fabric-extension-handlers.detailssummary.fetching.data",
+        defaultMessage: "Generating page properties report...",
+        description: "Page Properties Report macro message to display during loading"
+      } ) )
+    },
+    Ru70: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return a
+      } ) );
+      var r = n( "u5XY" );
+      class a {
+        constructor( e, t ) {
+          this.manifestsPromise = Promise.resolve( e ), this.autoConvertHandlers = t
+        }
+        getExtensions() {
+          return this.manifestsPromise
+        }
+        async getExtension( e, t ) {
+          const n = ( await this.manifestsPromise ).find( n => n.type === e && n.key === t );
+          if ( !n ) throw new Error( `Extension with type "${e}" and key "${t}" not found!` );
+          return n
+        }
+        async search( e ) {
+          return ( await this.manifestsPromise ).filter( t => t.title.toLowerCase().includes( e.toLowerCase() ) )
+        }
+        async getAutoConverter() {
+          if ( this.autoConvertHandlers ) return this.autoConvertHandlers;
+          return Object( r.a )( await this.manifestsPromise )
+        }
+      }
+    },
+    S1px: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "rDc3" ),
+        c = n( "RfuI" ),
+        s = n( "9AQa" ),
+        l = Object( c.a )( {
+          id: "JnrlN",
+          name: "packages/confluence-extension-handlers/src/extension-handler-excerpt-include/ExcerptIncludeLoader.js",
+          loader: () => n.e( "extension-handler-excerpt-include~dc51bad7" ).then( n.bind( null, "6aCe" ) ),
+          loading: s.a
+        } );
+      n.d( t, "a", ( function () {
+        return u
+      } ) );
+      class u extends a.Component {
+        render() {
+          var e, t;
+          const {
+            contentId: n,
+            node: a,
+            mode: c,
+            showTemplateVariablesInPreview: s,
+            showTemplateInputInPreview: u
+          } = this.props, d = {
+            mode: c,
+            contentId: n,
+            macroNode: a,
+            shouldPanelBeDisplayed: "true" !== ( null != ( t = a ) && null != ( t = t.parameters ) && null != ( t = t.macroParams ) && null != ( t = t.nopanel ) ? t.value : t ),
+            targetContentTitle: null != ( e = a ) && null != ( e = e.parameters ) && null != ( e = e.macroParams ) && null != ( e = e[ "" ] ) ? e.value : e,
+            macroId: Object( i.a )( this.props )
+          };
+          return s && ( d.showTemplateVariablesInPreview = s ), u && ( d.showTemplateInputInPreview = u ), o.a.createElement( l, Object( r.a )( {}, d ) )
+        }
+      }
+    },
+    TdpR: function ( e, t, n ) {
+      "use strict";
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "RfuI" );
+      const i = () => null;
+      n.d( t, "a", ( function () {
+        return c
+      } ) );
+      const c = Object( o.a )( {
+        id: "FdNSJ",
+        name: "RedactedPlaceholderLoadable",
+        loader: async () => {
+          const {
+            RedactedPlaceholder: e
+          } = await n.e( "external-share-redacted-placeholder~b59ad437" ).then( n.bind( null, "hahF" ) );
+          return e
+        },
+        loading: () => a.a.createElement( i, null )
+      } )
+    },
+    Tl5U: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "ROYt" ),
+        o = n( "KIs4" ),
+        i = n( "dbjD" ),
+        c = n( "2nhj" ),
+        s = n( "3ldI" ),
+        l = n( "Jygk" ),
+        u = n.n( l );
+      async function d( e ) {
+        const t = {
+            macroDefinition: {
+              name: "jira"
+            },
+            contentId: e
+          },
+          n = await P( t );
+        return e => function ( e, t ) {
+          const n = {
+              source: e
+            },
+            r = u.a.require( "confluence/jim/editor-plugins/jira-paste-link" ).pasteHandler( n, null, () => {} );
+          if ( !r || !r.params ) return null;
+          const a = JSON.parse( JSON.stringify( t ) );
+          return a.attrs.parameters || ( a.attrs.parameters = {} ), a.attrs.parameters.macroParams = Object( c.f )( r.params ), a
+        }( e, n )
+      }
+      const p = e => {
+        for ( ; - 1 !== e.indexOf( "{}{}" ); ) e = e.replace( "{}{}", "{}" );
+        return e = "^" + ( e = ( ( e, t, n ) => n.replace( new RegExp( e, "g" ), t ) )( "{}", "[^/]*?", e = e.replace( /[\-\[\]\/\(\)\*\+\?\.\\\^\$\|]/g, "\\$&" ) ) ) + "$"
+      };
+      async function f( e, t ) {
+        const n = [],
+          r = await e(),
+          a = new Set;
+        r.forEach( e => {
+          ( e => e.autoconvertData && e.autoconvertData.urlParameter && e.autoconvertData.patterns )( e ) && e.autoconvertData.patterns.forEach( t => {
+            if ( ( e => [ "http://", "https://", "http://{}", "https://{}", "http://{}.{}", "https://{}.{}", "http://{}.{}.{}", "https://{}.{}.{}" ].every( t => t !== e ) )( t ) ) {
+              const r = {
+                macroName: e.macroName,
+                urlParameter: e.autoconvertData.urlParameter,
+                matcher: p( t )
+              };
+              a.add( r.macroName ), n.push( r )
+            }
+          } )
+        } );
+        const o = await ( async ( e, t ) => ( await Promise.all( Array.from( e ).map( e => P( {
+          macroDefinition: {
+            name: e
+          },
+          contentId: t
+        } ) ) ) ).reduce( ( e, t ) => ( e[ t.attrs.extensionKey ] = t, e ), {} ) )( a, t );
+        return e => ( ( e, t, n ) => {
+          const r = t.find( t => !!e.match( t.matcher ) );
+          if ( r ) {
+            const {
+              macroName: t,
+              urlParameter: a
+            } = r, o = {};
+            o[ a ] = e;
+            const i = n[ t ],
+              s = JSON.parse( JSON.stringify( i ) );
+            return s.attrs.text = `${a} = ${e}`, s.attrs.extensionKey = t, s.attrs.parameters || ( s.attrs.parameters = {} ), s.attrs.parameters.macroParams = Object( c.f )( o ), s
+          }
+          return null
+        } )( e, n, o )
+      }
+      const m = () => null;
+      var b = n( "Z1IT" );
+      n.d( t, "a", ( function () {
+        return h
+      } ) ), n.d( t, "e", ( function () {
+        return v
+      } ) ), n.d( t, "d", ( function () {
+        return O
+      } ) ), n.d( t, "c", ( function () {
+        return x
+      } ) ), n.d( t, "i", ( function () {
+        return E
+      } ) ), n.d( t, "g", ( function () {
+        return I
+      } ) ), n.d( t, "h", ( function () {
+        return w
+      } ) ), n.d( t, "f", ( function () {
+        return C
+      } ) ), n.d( t, "b", ( function () {
+        return P
+      } ) );
+      const y = Object( s.a )(),
+        h = [ "toc", "expand", "jira", "trello-board", "status", "jiraroadmap" ],
+        g = {
+          type: "extension",
+          content: i.b
+        },
+        v = async () => {
+          const [ e, {
+            featureFlags: t
+          } ] = await Promise.all( [ y(), Object( o.b )() ] );
+          return e.filter( e => {
+            if ( e.hidden ) return !1;
+            let n = {};
+            return t[ "confluence.frontend.fabric.editor.bring-anchor-back" ] || ( n.anchor = !0 ), t[ "confluence.frontend.fabric.editor.native.expands.insert" ] && ( n.expand = !0 ), 0 === Object.keys( n ).length ? !Object( b.b )( e ) : !Object( b.b )( e, n )
+          } )
+        };
+
+      function O() {
+        return v().then( e => e.filter( e => h.includes( e.macroName ) ) )
+      }
+
+      function x( e ) {
+        return ( async ( e, t ) => {
+          const {
+            contentId: n
+          } = t;
+          if ( !n ) return m;
+          const [ r, a ] = await Promise.all( [ d( n ), f( e, n ) ] );
+          return e => r( e ) || a( e )
+        } )( v, e )
+      }
+
+      function E( e, t ) {
+        const n = e.macroName;
+        return e.anyParameterRequired || "children" === n || "tasks-report-macro" === n ? C( e, t ) : P( {
+          macroDefinition: {
+            name: n,
+            body: "",
+            params: {}
+          },
+          contentId: t.contentId
+        } )
+      }
+      async function j( e, t, n, r, a ) {
+        const i = await Object( b.a )( e );
+        let c;
+        return {
+          autoClose: !1,
+          onComplete: async s => {
+            c = !0, e.UI.showBrowserSpinner( !0 );
+            const l = n && n.hasOwnProperty( "content" ) ? n : null,
+              u = function ( e, t, n ) {
+                const {
+                  name: r,
+                  body: a,
+                  params: o,
+                  defaultParameterValue: i,
+                  schemaVersion: c
+                } = e;
+                return {
+                  macroDefinition: {
+                    name: r || "",
+                    body: a || "",
+                    params: o,
+                    defaultParameterValue: i || "",
+                    schemaVersion: c
+                  },
+                  contentId: t.contentId,
+                  selectedMacro: n
+                }
+              }( s, t, l );
+            try {
+              const t = await async function ( e ) {
+                if ( "jiraroadmap" === e.macroDefinition.name ) {
+                  let n = !1,
+                    r = !1;
+                  try {
+                    const {
+                      featureFlags: e
+                    } = await Object( o.b )();
+                    n = Boolean( e[ "confluence.frontend.fabric.editor.smartcards.embed" ] ), r = String( e[ "confluence.frontend.fabric.editor.smartcards.macro-override" ] ).split( "," ).indexOf( "jiraroadmap" ) > -1
+                  } catch ( t ) {}
+                  if ( n && r ) return function ( e ) {
+                    return {
+                      type: "embedCard",
+                      attrs: {
+                        url: e.macroDefinition.params && e.macroDefinition.params.url,
+                        layout: "wide"
+                      }
+                    }
+                  }( e )
+                }
+              }( u ) || await P( u );
+              r( t ), e.close(), i()
+            } catch ( d ) {
+              a( d )
+            }
+          },
+          onCancel: () => {
+            i(), c || a( {
+              reason: "cancel"
+            } )
+          }
+        }
+      }
+
+      function I( e, t ) {
+        return new Promise( async ( n, a ) => {
+          const o = await Object( s.b )();
+          t && ( o.metadataList = o.metadataList.filter( t ) );
+          const i = await j( o, e, null, n, a );
+          try {
+            o.open( Object( r.a )( Object( r.a )( {}, i ), {}, {
+              selectedMacro: null
+            } ) )
+          } catch ( c ) {
+            a( c )
+          }
+        } )
+      }
+
+      function w( e, t, n ) {
+        return new Promise( async ( a, o ) => {
+          const i = await Object( c.b )( e || g ),
+            l = await Object( s.b )();
+          n && ( l.metadataList = l.metadataList.filter( n ) );
+          const u = await j( l, t, e, a, o );
+          try {
+            l.open( Object( r.a )( Object( r.a )( {}, u ), {}, {
+              selectedMacro: i
+            } ) )
+          } catch ( d ) {
+            o( d )
+          }
+        } )
+      }
+
+      function C( e, t, n ) {
+        return new Promise( async ( a, o ) => {
+          const i = await Object( s.b )();
+          n && ( i.metadataList = i.metadataList.filter( n ) );
+          const c = await j( i, t, e, a, o );
+          try {
+            i.open( Object( r.a )( Object( r.a )( {}, c ), {}, {
+              presetMacroMetadata: e
+            } ) )
+          } catch ( l ) {
+            o( l )
+          }
+        } )
+      }
+      const P = async e => {
+        const {
+          macroDefinition: t,
+          contentId: n,
+          selectedMacro: o
+        } = e, s = await a.a.content.getMacroPlaceholderADF( t, n ), l = Object( r.a )( {}, s );
+        return l.type === i.a && ( o ? l.content = o.content : l.content && 0 !== l.content.length || ( l.content = i.b ) ), Object( c.c )( l )
+      }
+    },
+    UV1p: function ( e, t, n ) {
+      "use strict";
+      var r, a, o, i = n( "V+Bs" )() && "symbol" == typeof Symbol.toStringTag;
+      if ( i ) {
+        r = Function.call.bind( RegExp.prototype.exec ), a = {};
+        var c = function () {
+          throw a
+        };
+        o = {
+          toString: c,
+          valueOf: c
+        }, "symbol" == typeof Symbol.toPrimitive && ( o[ Symbol.toPrimitive ] = c )
+      }
+      var s = Object.prototype.toString;
+      e.exports = i ? function ( e ) {
+        if ( !e || "object" != typeof e ) return !1;
+        try {
+          r( e, o )
+        } catch ( t ) {
+          return t === a
+        }
+      } : function ( e ) {
+        return !( !e || "object" != typeof e && "function" != typeof e ) && "[object RegExp]" === s.call( e )
+      }
+    },
+    "V+Bs": function ( e, t, n ) {
+      "use strict";
+      ( function ( t ) {
+        var r = t.Symbol,
+          a = n( "48gJ" );
+        e.exports = function () {
+          return "function" == typeof r && ( "function" == typeof Symbol && ( "symbol" == typeof r( "foo" ) && ( "symbol" == typeof Symbol( "bar" ) && a() ) ) )
+        }
+      } ).call( this, n( "fRV1" ) )
+    },
+    XaRy: function ( e, t, n ) {
+      var r = n( "DSvr" ),
+        a = null;
+
+      function o( e ) {
+        e && e.focus && e !== document.activeElement && ( e.focus(), "input" === e.tagName.toLowerCase() && e.select() )
+      }
+      e.exports = function ( e, t ) {
+        var n = [],
+          i = null,
+          c = null,
+          s = null,
+          l = !1,
+          u = !1,
+          d = null,
+          p = "string" == typeof e ? document.querySelector( e ) : e,
+          f = t || {};
+        f.returnFocusOnDeactivate = !t || void 0 === t.returnFocusOnDeactivate || t.returnFocusOnDeactivate, f.escapeDeactivates = !t || void 0 === t.escapeDeactivates || t.escapeDeactivates;
+        var m = {
+          activate: function ( e ) {
+            if ( l ) return;
+            var t = {
+              onActivate: e && void 0 !== e.onActivate ? e.onActivate : f.onActivate
+            };
+            l = !0, u = !1, s = document.activeElement, t.onActivate && t.onActivate();
+            return y(), m
+          },
+          deactivate: b,
+          pause: function () {
+            if ( u || !l ) return;
+            u = !0, h()
+          },
+          unpause: function () {
+            if ( !u || !l ) return;
+            u = !1, y()
+          }
+        };
+        return m;
+
+        function b( e ) {
+          if ( l ) {
+            var t = {
+              returnFocus: e && void 0 !== e.returnFocus ? e.returnFocus : f.returnFocusOnDeactivate,
+              onDeactivate: e && void 0 !== e.onDeactivate ? e.onDeactivate : f.onDeactivate
+            };
+            return h(), t.onDeactivate && t.onDeactivate(), t.returnFocus && setTimeout( ( function () {
+              o( s )
+            } ), 0 ), l = !1, u = !1, this
+          }
+        }
+
+        function y() {
+          if ( l ) return a && a.pause(), a = m, j(), setTimeout( ( function () {
+            o( function () {
+              var e;
+              e = null !== g( "initialFocus" ) ? g( "initialFocus" ) : p.contains( document.activeElement ) ? document.activeElement : n[ 0 ] || g( "fallbackFocus" );
+              if ( !e ) throw new Error( "You can't have a focus-trap without at least one focusable element" );
+              return e
+            }() )
+          } ), 0 ), document.addEventListener( "focus", x, !0 ), document.addEventListener( "click", O, !0 ), document.addEventListener( "mousedown", v, !0 ), document.addEventListener( "touchstart", v, !0 ), document.addEventListener( "keydown", E, !0 ), m
+        }
+
+        function h() {
+          if ( l && a === m ) return document.removeEventListener( "focus", x, !0 ), document.removeEventListener( "click", O, !0 ), document.removeEventListener( "mousedown", v, !0 ), document.removeEventListener( "touchstart", v, !0 ), document.removeEventListener( "keydown", E, !0 ), a = null, m
+        }
+
+        function g( e ) {
+          var t = f[ e ],
+            n = t;
+          if ( !t ) return null;
+          if ( "string" == typeof t && !( n = document.querySelector( t ) ) ) throw new Error( "`" + e + "` refers to no known node" );
+          if ( "function" == typeof t && !( n = t() ) ) throw new Error( "`" + e + "` did not return a node" );
+          return n
+        }
+
+        function v( e ) {
+          f.clickOutsideDeactivates && !p.contains( e.target ) && b( {
+            returnFocus: !1
+          } )
+        }
+
+        function O( e ) {
+          f.clickOutsideDeactivates || p.contains( e.target ) || ( e.preventDefault(), e.stopImmediatePropagation() )
+        }
+
+        function x( e ) {
+          p.contains( e.target ) || ( e.preventDefault(), e.stopImmediatePropagation(), "function" == typeof e.target.blur && e.target.blur(), d && function ( e ) {
+            if ( e.shiftKey ) return o( c );
+            o( i )
+          }( d ) )
+        }
+
+        function E( e ) {
+          "Tab" !== e.key && 9 !== e.keyCode || function ( e ) {
+            if ( j(), e.target.hasAttribute( "tabindex" ) && Number( e.target.getAttribute( "tabindex" ) ) < 0 ) return d = e;
+            e.preventDefault();
+            var t = n.indexOf( e.target );
+            if ( e.shiftKey ) return e.target === i || -1 === n.indexOf( e.target ) ? o( c ) : o( n[ t - 1 ] );
+            if ( e.target === c ) return o( i );
+            o( n[ t + 1 ] )
+          }( e ), !1 !== f.escapeDeactivates && function ( e ) {
+            return "Escape" === e.key || "Esc" === e.key || 27 === e.keyCode
+          }( e ) && b()
+        }
+
+        function j() {
+          n = r( p ), i = n[ 0 ], c = n[ n.length - 1 ]
+        }
+      }
+    },
+    Xxvd: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "g", ( function () {
+        return a
+      } ) ), n.d( t, "h", ( function () {
+        return o
+      } ) ), n.d( t, "i", ( function () {
+        return i
+      } ) ), n.d( t, "c", ( function () {
+        return c
+      } ) ), n.d( t, "b", ( function () {
+        return s
+      } ) ), n.d( t, "d", ( function () {
+        return l
+      } ) ), n.d( t, "e", ( function () {
+        return u
+      } ) ), n.d( t, "f", ( function () {
+        return d
+      } ) ), n.d( t, "a", ( function () {
+        return p
+      } ) );
+      var r = n( "KsTJ" );
+      const a = r.default.div `
+  overflow: scroll;
+  height: calc(100vh - 100px);
+`,
+        o = r.default.div `
+  max-width: 680px;
+  display: flex;
+  box-sizing: content-box;
+  margin: 0 auto;
+  justify-content: flex-end;
+  transition: box-shadow 200ms ease 0s;
+  height: 80px;
+`,
+        i = r.default.header `
+  padding: 0 32px;
+  max-width: 680px;
+  display: block;
+  box-sizing: content-box;
+  margin: 0 auto;
+`,
+        c = r.default.div `
+  height: calc(100vh - 24px);
+  overflow: hidden;
+`,
+        s = r.default.div `
+  overflow: scroll;
+  height: calc(100vh - 100px);
+`,
+        l = r.default.div `
+  transition: box-shadow 200ms ease 0s;
+  box-shadow: ${e=>e.isBottomStyled?"inset rgb(235, 236, 240) 0px 2px 0px 0px":"inset rgb(255, 255, 255) 0px 2px 0px 0px"};
+`,
+        u = r.default.span `
+  display: inline-block;
+  max-width: 100%;
+  white-space: initial;
+`,
+        d = r.default.span `
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  vertical-align: top;
+`,
+        p = r.default.span `
+  & span {
+    position: unset;
+  }
+`
+    },
+    "YZE+": function ( e, t, n ) {
+      "use strict";
+      var r = Object,
+        a = TypeError;
+      e.exports = function () {
+        if ( null != this && this !== r( this ) ) throw new a( "RegExp.prototype.flags getter called on non-object" );
+        var e = "";
+        return this.global && ( e += "g" ), this.ignoreCase && ( e += "i" ), this.multiline && ( e += "m" ), this.dotAll && ( e += "s" ), this.unicode && ( e += "u" ), this.sticky && ( e += "y" ), e
+      }
+    },
+    Z1IT: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "b", ( function () {
+        return o
+      } ) ), n.d( t, "a", ( function () {
+        return i
+      } ) );
+      var r = n( "KIs4" );
+      const a = {
+        align: !0,
+        bgcolor: !0,
+        center: !0,
+        cheese: !0,
+        clickable: !0,
+        code: !0,
+        colgroup: !0,
+        column: !0,
+        "content-by-user": !0,
+        copyright: !0,
+        "create-space-button": !0,
+        div: !0,
+        "fancy-bullets": !0,
+        favpages: !0,
+        "gadget-b7a6531b1c147f2e175f1209bed5c0ad": !0,
+        "global-reports": !0,
+        highlight: !0,
+        htmlcomment: !0,
+        im: !0,
+        img: !0,
+        info: !0,
+        junitreport: !0,
+        li: !0,
+        loremipsum: !0,
+        lozenge: !0,
+        multimedia: !0,
+        navmap: !0,
+        network: !0,
+        noformat: !0,
+        note: !0,
+        ol: !0,
+        p: !0,
+        panel: !0,
+        pre: !0,
+        "privacy-policy": !0,
+        "privacy-mark": !0,
+        "recently-used-labels": !0,
+        "reg-tm": !0,
+        rollover: !0,
+        roundrect: !0,
+        search: !0,
+        section: !0,
+        sm: !0,
+        "space-attachments": !0,
+        "space-details": !0,
+        span: !0,
+        status: !0,
+        strike: !0,
+        style: !0,
+        table: !0,
+        tbody: !0,
+        td: !0,
+        th: !0,
+        thead: !0,
+        tr: !0,
+        tip: !0,
+        tm: !0,
+        ul: !0,
+        warning: !0
+      };
+
+      function o( e, t = {} ) {
+        const n = e.alternateId || ( e.id ? e.id.replace( "macro-", "" ) : e.macroName );
+        return t.hasOwnProperty( n ) ? t[ n ] : Boolean( a[ n ] )
+      }
+      async function i( e ) {
+        const t = [ ...e.metadataList ],
+          {
+            featureFlags: n
+          } = await Object( r.b )(),
+          a = e.metadataList.filter( e => {
+            let t = {};
+            return n[ "confluence.frontend.fabric.editor.bring-anchor-back" ] || ( t.anchor = !0 ), n[ "confluence.frontend.fabric.editor.native.expands.insert" ] && ( t.expand = !0 ), 0 === Object.keys( t ).length ? !o( e ) : !o( e, t )
+          } );
+        return e.metadataList = a,
+          function () {
+            e.metadataList = t
+          }
+      }
+    },
+    bNPp: function ( e, t, n ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } );
+      var r = n( "+AdF" );
+      Object.defineProperty( t, "default", {
+        enumerable: !0,
+        get: function () {
+          return ( e = r, e && e.__esModule ? e : {
+            default: e
+          } ).default;
+          var e
+        }
+      } )
+    },
+    "bR0+": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return o
+      } ) ), n.d( t, "b", ( function () {
+        return i
+      } ) ), n.d( t, "c", ( function () {
+        return c
+      } ) ), n.d( t, "d", ( function () {
+        return u
+      } ) );
+      var r = n( "KIs4" ),
+        a = n( "frZf" );
+      const o = ( e, t, n = "" ) => e ? `${n}/people/${e}?ref=confluence${t?"&src="+encodeURIComponent(t):""}` : "",
+        i = async ( e, t ) => {
+          if ( !e ) return "";
+          let n = "";
+          try {
+            const {
+              featureFlags: e
+            } = await Object( r.b )();
+            n = e[ "confluence.frontend.people.directory" ] ? a.a : ""
+          } catch ( o ) {}
+          return `${n}/people/${e}?ref=confluence${t?"&src="+encodeURIComponent(t):""}`
+        }, c = ( e, t, n = "" ) => e ? `${n}/people/team/${e}?ref=confluence${t?"&src="+encodeURIComponent(t):""}` : "", s = e => e.getAttribute( "data-account-id" ), l = e => {
+          const t = {
+              class: "className"
+            },
+            n = {};
+          return ( e => Array.from( e.attributes ).map( e => e.name ) )( e ).forEach( r => {
+            n[ t[ r ] || r ] = e.getAttribute( r )
+          } ), n.dangerouslySetInnerHTML = {
+            __html: e.innerHTML
+          }, n
+        };
+
+      function u( e ) {
+        return e.filter( s ).map( e => {
+          const t = l( e );
+          t[ "data-user-hover-bound" ] = "true", t.href = o( t[ "data-account-id" ], null );
+          const n = window.document.createElement( "span" );
+          return e.parentNode ? ( e.parentNode.replaceChild( n, e ), {
+            props: t,
+            placeholder: n
+          } ) : {}
+        } )
+      }
+    },
+    cTt9: function ( e, t, n ) {
+      "use strict";
+      var r = Object.prototype.toString;
+      e.exports = function ( e ) {
+        var t = r.call( e ),
+          n = "[object Arguments]" === t;
+        return n || ( n = "[object Array]" !== t && null !== e && "object" == typeof e && "number" == typeof e.length && e.length >= 0 && "[object Function]" === r.call( e.callee ) ), n
+      }
+    },
+    "dai/": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return l
+      } ) ), n.d( t, "b", ( function () {
+        return u
+      } ) );
+      var r = n( "KsTJ" ),
+        a = n( "3IV/" ),
+        o = n( "BMbf" ),
+        i = n( "ZgvQ" ),
+        c = n( "WEdt" );
+      const s = r.default.div `
+  margin-top: ${o.h}px;
+`,
+        l = r.default.label `
+  ${Object(c.h200)()} display: inline-block;
+  font-family: ${Object(o.e)()};
+  margin-bottom: ${Object(i.multiply)(o.h,.5)}px;
+  margin-top: 0;
+`,
+        u = r.default.span `
+  color: ${a.R400};
+  font-family: ${Object(o.e)()};
+  padding-left: ${Object(i.multiply)(o.h,.25)}px;
+`;
+      t.c = s
+    },
+    dbjD: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "f", ( function () {
+        return r
+      } ) ), n.d( t, "e", ( function () {
+        return a
+      } ) ), n.d( t, "a", ( function () {
+        return o
+      } ) ), n.d( t, "b", ( function () {
+        return i
+      } ) ), n.d( t, "d", ( function () {
+        return c
+      } ) ), n.d( t, "c", ( function () {
+        return s
+      } ) );
+      const r = "extension",
+        a = "inlineExtension",
+        o = "bodiedExtension",
+        i = [ {
+          content: [],
+          type: "paragraph"
+        } ],
+        c = {
+          TEMPLATE: "com.atlassian.confluence.template",
+          MACRO_CORE: "com.atlassian.confluence.macro.core",
+          MIGRATION: "com.atlassian.confluence.migration"
+        },
+        s = {
+          TEMPLATE: "variable",
+          INLINE_EXTERNAL_IMAGE: "inline-external-image",
+          INLINE_MEDIA_IMAGE: "inline-media-image",
+          PRIVACY_MARK: "privacy-mark",
+          ANCHOR: "anchor",
+          PANEL: "panel",
+          SECTION: "section",
+          CHEESE: "cheese",
+          COLUMN: "column",
+          CONTENT_BY_USER: "content-by-user",
+          CREATE_SPACE_BUTTON: "create-space-button",
+          FAVORITE_PAGES: "favpages",
+          GLOBAL_REPORTS: "global-reports",
+          IM_PRESENCE: "im",
+          LOREMIPSUM: "loremipsum",
+          NAVIGATION_MAP: "navmap",
+          RECENTLY_USED_LABELS: "recently-used-labels",
+          SEARCH: "search",
+          SPACE_DETAILS: "space-details",
+          INVALID: "__confluenceADFMigrationUnsupportedContentInternalExtension__"
+        }
+    },
+    eYkv: function ( e, t, n ) {
+      "use strict";
+      var r = function ( e ) {
+        return e != e
+      };
+      e.exports = function ( e, t ) {
+        return 0 === e && 0 === t ? 1 / e == 1 / t : e === t || !( !r( e ) || !r( t ) )
+      }
+    },
+    ey2t: function ( e, t, n ) {
+      "use strict";
+      var r = Array.prototype.slice,
+        a = n( "cTt9" ),
+        o = Object.keys,
+        i = o ? function ( e ) {
+          return o( e )
+        } : n( "F3Ih" ),
+        c = Object.keys;
+      i.shim = function () {
+        Object.keys ? function () {
+          var e = Object.keys( arguments );
+          return e && e.length === arguments.length
+        }( 1, 2 ) || ( Object.keys = function ( e ) {
+          return a( e ) ? c( r.call( e ) ) : c( e )
+        } ) : Object.keys = i;
+        return Object.keys || i
+      }, e.exports = i
+    },
+    fgIE: function ( e, t, n ) {
+      "use strict";
+      var r = n( "RfuI" ),
+        a = Object( r.a )( {
+          id: "LIc0E",
+          name: "packages/confluence-fabric-editor/src/components/ResizeImageDialog/ResizeImageDialogLoader.tsx",
+          loader: () => Promise.all( [ n.e( "atlaskit~66e23772" ), n.e( "vendors~4134d62c" ), n.e( "fabric.resize.image.dialog~dc51bad7" ) ] ).then( n.bind( null, "gB0f" ) )
+        } ),
+        o = Object( r.a )( {
+          id: "U6gzr",
+          name: "packages/confluence-fabric-editor/src/components/UnmodifiableMacroDialogLoader.tsx",
+          loader: () => Promise.all( [ n.e( "atlaskit~66e23772" ), n.e( "vendors~4134d62c" ), n.e( "fabric.unmodifiable.macro.dialog~dc51bad7" ) ] ).then( n.bind( null, "k0d4" ) )
+        } ),
+        i = n( "dbjD" ),
+        c = n( "8ghD" );
+      n.d( t, "b", ( function () {
+        return l
+      } ) ), n.d( t, "a", ( function () {
+        return u
+      } ) ), n.d( t, "d", ( function () {
+        return d
+      } ) ), n.d( t, "c", ( function () {
+        return p
+      } ) );
+      const s = [ i.c.INLINE_MEDIA_IMAGE, i.c.INLINE_EXTERNAL_IMAGE, i.c.PANEL, i.c.SECTION, i.c.INVALID, i.c.CHEESE, i.c.COLUMN, i.c.CONTENT_BY_USER, i.c.CREATE_SPACE_BUTTON, i.c.CREATE_SPACE_BUTTON, i.c.FAVORITE_PAGES, i.c.GLOBAL_REPORTS, i.c.IM_PRESENCE, i.c.LOREMIPSUM, i.c.NAVIGATION_MAP, i.c.RECENTLY_USED_LABELS, i.c.SEARCH, i.c.SPACE_DETAILS, i.c.PRIVACY_MARK ];
+
+      function l( e ) {
+        return e && e.attrs && -1 !== s.indexOf( e.attrs.extensionKey )
+      }
+
+      function u( e ) {
+        return e && e.attrs && e.attrs.extensionType === i.d.MIGRATION && ( e.attrs.extensionKey === i.c.INLINE_EXTERNAL_IMAGE || e.attrs.extensionKey === i.c.INLINE_MEDIA_IMAGE )
+      }
+
+      function d( e, t ) {
+        return new Promise( ( n, r ) => {
+          e && e.attrs && t.setActiveModal ? t.setActiveModal( o, {
+            onClose: () => {
+              r( "cancel" ), t.closeActiveModal && t.closeActiveModal()
+            }
+          } ) : r( new Error( "Cannot open unmodifiable macro dialog" ) )
+        } )
+      }
+
+      function p( e, t ) {
+        return new Promise( ( n, r ) => {
+          if ( !e || !e.attrs || !t.setActiveModal ) return void r( new Error( "Cannot open resize image dialog" ) );
+          let o, i = e.attrs.parameters;
+          o = "src" in i ? i.src : `${i.baseUrl}/file/${i.id}/image?collection=${i.collection}&client=${i.clientId}&token=${i.token}`, t.setActiveModal( a, {
+            imageSrc: o,
+            imageWidth: i.width,
+            imageHeight: i.height,
+            onSave: t => {
+              const r = Object( c.b )( e, t );
+              n( r )
+            },
+            onClose: t.closeActiveModal
+          } )
+        } )
+      }
+    },
+    hoKw: function ( e, t, n ) {
+      "use strict";
+      var r = Date.prototype.getDay,
+        a = Object.prototype.toString,
+        o = "function" == typeof Symbol && "symbol" == typeof Symbol.toStringTag;
+      e.exports = function ( e ) {
+        return "object" == typeof e && null !== e && ( o ? function ( e ) {
+          try {
+            return r.call( e ), !0
+          } catch ( t ) {
+            return !1
+          }
+        }( e ) : "[object Date]" === a.call( e ) )
+      }
+    },
+    i4Pk: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return g
+      } ) );
+      var r = n( "Czhu" ),
+        a = n( "HbGN" ),
+        o = n( "ERkP" ),
+        i = n.n( o ),
+        c = n( "1U1M" ),
+        s = n( "82Bo" ),
+        l = n( "Licu" ),
+        u = n( "3VMZ" ),
+        d = n( "hpu0" ),
+        p = n( "KuFb" ),
+        f = n( "adTp" ),
+        m = n( "xkEZ" ),
+        b = n( "X2PC" ),
+        y = n( "KIs4" );
+      const h = Object( o.memo )( e => {
+          var t;
+          let {
+            appearance: n,
+            contentId: m,
+            contentType: b,
+            getEventHandlers: h
+          } = e, g = Object( a.a )( e, [ "appearance", "contentId", "contentType", "getEventHandlers" ] );
+          const [ v, O ] = Object( o.useState )( null ), {
+            data: x,
+            error: E
+          } = Object( c.d )( l.a, {
+            variables: {
+              contentId: m,
+              status: "inlineComment" !== b ? [ "current" ] : [ "current", "draft" ]
+            },
+            fetchPolicy: "cache-and-network",
+            context: {
+              single: !0
+            }
+          } ), j = Object( o.useCallback )( ( e, t ) => {
+            let n = u.a.VIEW_INLINE_COMMENT_TOP_LEVEL;
+            "inlineReply" === e && ( n = u.a.VIEW_INLINE_COMMENT_REPLY ), Object( d.b )().fail( {
+              name: n,
+              error: t
+            } )
+          }, [] );
+          if ( !m ) return null;
+          if ( E ) throw j( b, E ), E;
+          let I = null,
+            w = n;
+          const C = null != ( t = x ) && null != ( t = t.content ) && null != ( t = t.nodes ) ? t[ 0 ] : t;
+          try {
+            var P;
+            !w && C && ( w = Object( p.a )( Object( f.e )( C ).appearance ) );
+            const e = null != ( P = x ) && null != ( P = P.content ) && null != ( P = P.nodes ) && null != ( P = P[ 0 ] ) && null != ( P = P.body ) && null != ( P = P.atlas_doc_format ) ? P.value : P;
+            I = e ? JSON.parse( e ) : null
+          } catch ( k ) {
+            throw j( b, k ), k
+          }
+          return i.a.createElement( "div", {
+            ref: O,
+            "data-test-appearance": w
+          }, i.a.createElement( y.a, null, ( {
+            featureFlags: e
+          } ) => i.a.createElement( s.a, Object( r.a )( {
+            appearance: w,
+            contentId: m,
+            document: I,
+            eventHandlers: h && h(),
+            featureFlags: e,
+            portalRef: v
+          }, g ) ) ) )
+        } ),
+        g = Object( m.a )( {
+          attribution: b.a.BACKBONE
+        } )( h )
+    },
+    iDie: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return m
+      } ) );
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "9jV5" ),
+        c = n( "FCVA" ),
+        s = n( "B/tD" ),
+        l = n( "dbjD" ),
+        u = n( "Q//X" ),
+        d = n( "otm+" ),
+        p = n( "A79P" ),
+        f = n( "znRE" );
+      const m = ( {
+        contentId: e
+      } ) => Object( f.a )( t => {
+        if ( !t ) return null;
+        const {
+          extensionKey: n,
+          parameters: f
+        } = t, m = Object( u.e )( t );
+        let b;
+        const y = {
+          contentId: e,
+          mode: u.a,
+          extensionKey: n,
+          node: t
+        };
+        switch ( n ) {
+          case l.c.INVALID:
+            const e = f;
+            b = o.a.createElement( s.a, Object( r.a )( Object( r.a )( {}, e ), y ) );
+            break;
+          case l.c.INLINE_EXTERNAL_IMAGE:
+            const t = f;
+            b = o.a.createElement( c.a, Object( r.a )( Object( r.a )( {}, t ), y ) );
+            break;
+          case l.c.INLINE_MEDIA_IMAGE:
+            const n = f,
+              {
+                link: a
+              } = f;
+            b = o.a.createElement( i.a, Object( r.a )( Object( r.a )( Object( r.a )( {}, n ), y ), {}, {
+              link: a
+            } ) )
+        }
+        return o.a.createElement( a.Fragment, null, o.a.createElement( d.a, {
+          name: Object( u.d )( u.a, t ),
+          contentId: e,
+          mode: u.a,
+          extensionKey: n,
+          attributes: m,
+          timeout: p.a.MACRO_LOAD
+        } ), b )
+      } )
+    },
+    liuE: function ( e, t, n ) {
+      "use strict";
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "Czhu" ),
+        i = n( "3IV/" ),
+        c = n( "8pvK" );
+      const s = {
+          default: {
+            light: i.N40,
+            dark: i.N40
+          },
+          inprogress: {
+            light: i.B50,
+            dark: i.B50
+          },
+          moved: {
+            light: i.Y75,
+            dark: i.Y75
+          },
+          new: {
+            light: i.P50,
+            dark: i.P50
+          },
+          removed: {
+            light: i.R50,
+            dark: i.R50
+          },
+          success: {
+            light: i.G50,
+            dark: i.G50
+          }
+        },
+        l = {
+          default: {
+            light: i.N500,
+            dark: i.N500
+          },
+          inprogress: {
+            light: i.B500,
+            dark: i.B500
+          },
+          moved: {
+            light: i.N800,
+            dark: i.N800
+          },
+          new: {
+            light: i.P500,
+            dark: i.P500
+          },
+          removed: {
+            light: i.R500,
+            dark: i.R500
+          },
+          success: {
+            light: i.G500,
+            dark: i.G500
+          }
+        },
+        u = {
+          default: {
+            light: i.N500,
+            dark: i.N500
+          },
+          inprogress: {
+            light: i.B400,
+            dark: i.B400
+          },
+          moved: {
+            light: i.Y500,
+            dark: i.Y500
+          },
+          new: {
+            light: i.P400,
+            dark: i.P400
+          },
+          removed: {
+            light: i.R400,
+            dark: i.R400
+          },
+          success: {
+            light: i.G400,
+            dark: i.G400
+          }
+        },
+        d = {
+          default: {
+            light: i.N0,
+            dark: i.N0
+          },
+          inprogress: {
+            light: i.N0,
+            dark: i.N0
+          },
+          moved: {
+            light: i.N800,
+            dark: i.N800
+          },
+          new: {
+            light: i.N0,
+            dark: i.N0
+          },
+          removed: {
+            light: i.N0,
+            dark: i.N0
+          },
+          success: {
+            light: i.N0,
+            dark: i.N0
+          }
+        },
+        p = Object( c.a )( ( {
+          appearance: e,
+          isBold: t,
+          maxWidth: n
+        } ) => Object( o.a )( Object( o.a )( {}, "object" == typeof e ? Object( o.a )( {
+          backgroundColor: ( t ? u : s ).default.light,
+          textColor: ( t ? d : l ).default.light
+        }, e ) : {
+          backgroundColor: ( t ? u[ e ] : s[ e ] ).light,
+          textColor: ( t ? d[ e ] : l[ e ] ).light
+        } ), {}, {
+          maxWidth: n
+        } ) );
+      var f = n( "l1C2" ),
+        m = n( "BMbf" );
+      const b = Object( m.c )() + "px";
+      var y = ( {
+        backgroundColor: e,
+        textColor: t,
+        children: n,
+        testId: r
+      } ) => Object( f.f )( "span", {
+        css: {
+          backgroundColor: e,
+          borderRadius: b,
+          boxSizing: "border-box",
+          color: t,
+          display: "inline-block",
+          fontSize: "11px",
+          fontWeight: 700,
+          lineHeight: 1,
+          maxWidth: "100%",
+          padding: "2px 0 3px 0",
+          textTransform: "uppercase",
+          verticalAlign: "baseline"
+        },
+        "data-testid": r
+      }, n );
+      const h = Object( m.h )() / 2 + "px";
+      var g = ( {
+        maxWidth: e,
+        children: t
+      } ) => Object( f.f )( "span", {
+        css: {
+          display: "inline-block",
+          verticalAlign: "top",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          boxSizing: "border-box",
+          padding: "0 " + h,
+          maxWidth: "number" == typeof e ? e + "px" : e,
+          width: "100%"
+        }
+      }, t );
+      n.d( t, "a", ( function () {
+        return v
+      } ) );
+      class v extends r.PureComponent {
+        render() {
+          const {
+            theme: e,
+            children: t,
+            testId: n
+          } = this.props;
+          return a.a.createElement( p.Provider, {
+            value: e
+          }, a.a.createElement( p.Consumer, Object.assign( {}, this.props ), e => a.a.createElement( y, Object.assign( {
+            testId: n
+          }, e ), a.a.createElement( g, Object.assign( {}, e ), t ) ) ) )
+        }
+      }
+      v.defaultProps = {
+        isBold: !1,
+        appearance: "default",
+        maxWidth: 200
+      }
+    },
+    m0CL: function ( e ) {
+      e.exports = JSON.parse( '{"a":"@atlaskit/textarea","b":"4.0.0"}' )
+    },
+    nChe: function ( e, t, n ) {
+      "use strict";
+      e.exports = function ( e, t ) {
+        if ( e === t ) return !0;
+        if ( !e || !t ) return !1;
+        var n = Object.keys( e ),
+          r = Object.keys( t ),
+          a = n.length;
+        if ( r.length !== a ) return !1;
+        for ( var o = 0; o < a; o++ ) {
+          var i = n[ o ];
+          if ( e[ i ] !== t[ i ] || !Object.prototype.hasOwnProperty.call( t, i ) ) return !1
+        }
+        return !0
+      }
+    },
+    "otm+": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return i
+      } ) );
+      var r = n( "+6Tk" ),
+        a = n( "MUQl" ),
+        o = n( "Q//X" );
+
+      function i( {
+        attributes: e,
+        children: t = null,
+        contentId: n,
+        extensionKey: i,
+        mode: c,
+        name: s,
+        timeout: l
+      } ) {
+        const u = Object( r.a )( o.b );
+        return Object( a.a )( () => {
+          var t;
+          u && Object( o.f )( c, n ).start( {
+            attributes: e,
+            name: s,
+            timeout: l,
+            id: ( null != ( t = e ) ? t.macroId : t ) || n
+          } )
+        }, [ e, n, i, u, c, s, l ] ), t
+      }
+    },
+    pA55: function ( e, t, n ) {
+      "use strict";
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "/mAS" ),
+        i = n( "37G6" ),
+        c = n.n( i ),
+        s = n( "wbjG" ),
+        l = n.n( s ),
+        u = n( "2wFc" ),
+        d = n( "B7n+" ),
+        p = n.n( d );
+      const f = {
+          small: 24,
+          medium: 32,
+          large: 48
+        },
+        m = () => a.a.createElement( "svg", {
+          viewBox: "0 0 80 80",
+          focusable: "false",
+          role: "presentation"
+        }, a.a.createElement( "image", {
+          overflow: "visible",
+          width: "80",
+          height: "80",
+          href: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAAAM1BMVEX///+ZmZn4+PiysrK4uLifn5/r6+ulpaXFxcWsrKzl5eXMzMzf39/Y2Ni/v7/S0tLy8vLZxmmsAAABUklEQVR4Xu3WzW7cMAyF0XtJ/cue5P2ftoCkMQZoprIdLlJEZ+HlB4IL0bhvWZZl96TfYWZjU2AlslEYCaR3zpMBNmobTskP2FDSAa59TcRnUO2C6pzaBR0HBxvBs/EBRqSSZBXYIUnghwWV/6A/IZjNJzxEDlGfksFzaPggBg6fMMLB+sXOsKJs9L8NruAKiktyNijJCWZ2Msu54GcmN8xUkjnMg+O61nP78mEWHD3quSCjTIKtdyro2eRJUCIbjxl2aRJEYncy6OY7dJeCfHyxhogXD3aYS70oeBIOOEifr+IM6QPl8P6MhthHlmt3uB4jDwldvXqnHbtcjolfllji0T9LIgctQOXhAyjKIcu1n+AhK19oJnnnB3nn1AaYFndctBv3gN3zLb/hhhD5Rg64RRK/lAR3FeVfNOA7yoOv/KPgu2RLykbTJrAigt9kWZY/Gz4IYbhxkp0AAAAASUVORK5CYII="
+        } ) );
+      t.a = function ( {
+        macro: e,
+        size: t = "small"
+      } ) {
+        const {
+          icon: n,
+          macroName: r,
+          title: i
+        } = e;
+        switch ( r ) {
+          case "toc":
+            return a.a.createElement( c.a, {
+              label: i,
+              size: t
+            } );
+          case "jira":
+            return a.a.createElement( o.a, {
+              label: i,
+              size: t
+            } );
+          case "anchor":
+            return a.a.createElement( p.a, {
+              label: i,
+              size: t,
+              glyph: m
+            } )
+        }
+        if ( !n ) return a.a.createElement( l.a, {
+          label: i,
+          size: t
+        } );
+        const s = Object( u.f )( n.location, !0 ),
+          d = ( e => f[ e ] )( t );
+        return a.a.createElement( "img", {
+          src: s,
+          width: d,
+          height: d,
+          alt: i
+        } )
+      }
+    },
+    qnX1: function ( e, t, n ) {
+      "use strict";
+      var r = "function" == typeof Symbol && "symbol" == typeof Symbol.toStringTag,
+        a = Object.prototype.toString,
+        o = function ( e ) {
+          return !( r && e && "object" == typeof e && Symbol.toStringTag in e ) && "[object Arguments]" === a.call( e )
+        },
+        i = function ( e ) {
+          return !!o( e ) || null !== e && "object" == typeof e && "number" == typeof e.length && e.length >= 0 && "[object Array]" !== a.call( e ) && "[object Function]" === a.call( e.callee )
+        },
+        c = function () {
+          return o( arguments )
+        }();
+      o.isLegacyArguments = i, e.exports = c ? o : i
+    },
+    rDc3: function ( e, t, n ) {
+      "use strict";
+
+      function r( e ) {
+        var t;
+        return null != ( t = e ) && null != ( t = t.node ) && null != ( t = t.parameters ) && null != ( t = t.macroMetadata ) && null != ( t = t.macroId ) ? t.value : t
+      }
+      n.d( t, "a", ( function () {
+        return r
+      } ) )
+    },
+    "t5Z+": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return m
+      } ) );
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "9jV5" ),
+        c = n( "FCVA" ),
+        s = n( "dbjD" ),
+        l = n( "B/tD" ),
+        u = n( "otm+" ),
+        d = n( "A79P" ),
+        p = n( "Q//X" ),
+        f = n( "znRE" );
+      const m = ( {
+        contentId: e
+      } ) => Object( f.a )( t => {
+        if ( !t ) return null;
+        const {
+          extensionKey: n,
+          parameters: f
+        } = t, m = Object( p.e )( t ), b = {
+          contentId: e,
+          mode: p.c,
+          extensionKey: n,
+          attributes: m,
+          node: t
+        };
+        let y;
+        switch ( n ) {
+          case s.c.INVALID:
+            const e = f;
+            y = o.a.createElement( l.a, Object( r.a )( Object( r.a )( {}, e ), b ) );
+            break;
+          case s.c.INLINE_EXTERNAL_IMAGE:
+            const t = f;
+            y = o.a.createElement( c.a, Object( r.a )( Object( r.a )( {}, t ), b ) );
+            break;
+          case s.c.INLINE_MEDIA_IMAGE:
+            const n = f,
+              {
+                link: a
+              } = f;
+            y = o.a.createElement( i.a, Object( r.a )( Object( r.a )( Object( r.a )( {}, n ), b ), {}, {
+              link: a
+            } ) )
+        }
+        return o.a.createElement( a.Fragment, null, o.a.createElement( u.a, {
+          name: Object( p.d )( p.c, t ),
+          mode: p.c,
+          extensionKey: n,
+          attributes: m,
+          timeout: d.a.MACRO_LOAD,
+          contentId: e
+        } ), y )
+      } )
+    },
+    tKrt: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Ru70" ),
+        a = n( "kC4U" ),
+        o = n( "Czhu" ),
+        i = n( "ERkP" ),
+        c = n.n( i ),
+        s = n( "L21V" ),
+        l = n( "KsTJ" ),
+        u = n( "BMbf" ),
+        d = n( "3IV/" ),
+        p = n( "pA55" );
+      const f = l.default.div `
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+`,
+        m = l.default.span `
+  font-size: 11.67px;
+  color: ${d.N200};
+  margin-top: 4px;
+`,
+        b = l.default.div `
+  background: #fff;
+  border-radius: ${Object(u.c)()}px;
+  display: flex;
+  align-items: center;
+  padding: ${e=>e.isEditor?24:0}px;
+`,
+        y = l.default.div `
+  background: ${d.N20};
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 0.24em 2px 0.24em;
+  border-radius: 3px;
+  font-size: 16px;
+
+  p {
+    ${m} {
+      margin-left: 8px;
+    }
+  }
+`,
+        h = l.default.div `
+  width: ${e=>e.width}px;
+  height: ${e=>e.height}px;
+  overflow: hidden;
+  border: 1px solid rgba(223, 225, 229, 0.5); /* N60 at 50% */
+  border-radius: ${Object(u.c)()}px;
+  box-sizing: border-box;
+  background: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-right: ${e=>e.width>32?16:4}px;
+
+  div {
+    width: ${e=>e.width}px;
+    height: ${e=>e.height}px;
+  }
+`,
+        g = e => c.a.createElement( p.a, {
+          macro: e
+        } ),
+        v = ( {
+          macro: e,
+          description: t
+        } ) => c.a.createElement( y, null, c.a.createElement( h, {
+          width: 16,
+          height: 16
+        }, c.a.createElement( p.a, {
+          macro: e,
+          size: "small"
+        } ) ), c.a.createElement( f, null, c.a.createElement( "p", null, e.title, t && c.a.createElement( m, null, t ) ) ) ),
+        O = ( {
+          macro: e,
+          description: t,
+          isEditor: n
+        } ) => c.a.createElement( b, {
+          isEditor: n
+        }, c.a.createElement( h, {
+          width: 40,
+          height: 40
+        }, c.a.createElement( p.a, {
+          macro: e,
+          size: "medium"
+        } ) ), c.a.createElement( f, null, c.a.createElement( "h4", null, e.title ), t && c.a.createElement( m, null, t ) ) ),
+        x = c.a.createElement( s.b, {
+          id: "confluence-fabric-editor.extension.placeholder.missing-config",
+          description: "Message shown when a macro is inserted but can't be rendered due to missing configuration",
+          defaultMessage: "Edit to setup"
+        } );
+      var E = n( "Tl5U" );
+      const j = /^[0-9]+$/,
+        I = e => j.test( e ),
+        w = {
+          attachments: e => e.map( e => "labels" !== e.name ? e : Object( o.a )( Object( o.a )( {}, e ), {}, {
+            isMultiple: !0,
+            type: "custom",
+            options: {
+              resolver: {
+                type: "label"
+              }
+            }
+          } ) ),
+          pdf: e => e.filter( e => -1 === [ "date", "space" ].indexOf( e.name ) ),
+          "tasks-report-macro": e => e.map( e => "spaceAndPage" !== e.name ? e : Object( o.a )( Object( o.a )( {}, e ), {}, {
+            isMultiple: !0,
+            type: "custom",
+            options: {
+              resolver: {
+                type: "spaceAndPage"
+              }
+            }
+          } ) )
+        },
+        C = ( e, t ) => {
+          if ( "tasks-report-macro" === e ) {
+            let e = "";
+            t.spaces && ( e += t.spaces ), t.pages && ( e && ( e += "," ), e += t.pages ), e && ( t.spaceAndPage = e ), delete t.spaces, delete t.pages
+          }
+          return t
+        },
+        P = e => e.alternateId || e.macroName,
+        k = e => {
+          const {
+            bodyType: t,
+            outputType: n
+          } = e.formDetails.body;
+          return "NONE" !== t ? "bodiedExtension" : "INLINE" === n ? "inlineExtension" : "extension"
+        },
+        A = e => ( {
+          48: () => Promise.resolve( () => g( e ) )
+        } ),
+        R = ( e, t ) => e.formDetails.parameters.some( e => e.required && null === e.defaultValue && !e.hidden && !( ( e, t ) => {
+          if ( t && t.parameters && t.parameters.macroParams ) {
+            const n = C( t.extensionKey, Object( o.a )( {}, t.parameters.macroParams ) );
+            if ( e in n ) {
+              let t = n[ e ];
+              return "object" == typeof t && null !== t && t.hasOwnProperty( "value" ) && ( t = t.value ), ( 0 === t || !1 === t || !!t ) && ( !Array.isArray( t ) || t.length > 0 )
+            }
+          }
+          return !1
+        } )( e.name, t ) ),
+        S = ( e, t ) => Object( E.b )( {
+          macroDefinition: Object( o.a )( {
+            name,
+            body: "",
+            params: {}
+          }, e ),
+          contentId: t
+        } ),
+        $ = e => {
+          switch ( e.macroName ) {
+            case "jira":
+            case "jirachart":
+            case "jiraroadmap":
+            case "portfolioforjiraplan":
+            case "roadmap":
+            case "gliffy":
+            case "excerpt-include":
+            case "variable":
+            case "gadget":
+              return !0;
+            default:
+              return !1
+          }
+        };
+      let N;
+      ! function ( e ) {
+        e.int = "number", e.percentage = "string", e.url = "string", e.cql = "dynamic-fieldset", e.relativedate = "string", e.group = "string", e.color = "string"
+      }( N || ( N = {} ) );
+      const M = {
+          label: {
+            type: "custom",
+            label: "Label",
+            isMultiple: !0,
+            isRequired: !0,
+            options: {
+              resolver: {
+                type: "label"
+              }
+            }
+          },
+          text: {
+            type: "string",
+            op: "~",
+            label: "Including text"
+          },
+          contributor: {
+            type: "custom",
+            label: "Contributor",
+            isMultiple: !0,
+            options: {
+              resolver: {
+                type: "username"
+              }
+            }
+          },
+          creator: {
+            type: "custom",
+            label: "Creator",
+            isMultiple: !0,
+            options: {
+              resolver: {
+                type: "username"
+              }
+            }
+          },
+          mention: {
+            type: "custom",
+            label: "Mentioning",
+            isMultiple: !0,
+            options: {
+              resolver: {
+                type: "username"
+              }
+            }
+          },
+          parent: {
+            type: "custom",
+            label: "With parent",
+            options: {
+              resolver: {
+                type: "confluence-content"
+              }
+            }
+          },
+          ancestor: {
+            type: "custom",
+            label: "With ancestor",
+            isMultiple: !0,
+            options: {
+              resolver: {
+                type: "confluence-content"
+              }
+            }
+          },
+          space: {
+            type: "custom",
+            label: "In space",
+            isMultiple: !0,
+            options: {
+              resolver: {
+                type: "spacekey"
+              }
+            }
+          },
+          created: {
+            type: "string",
+            op: ">=",
+            label: "Created after",
+            description: "Enter dates as YYYY-MM-DD, or use CQL functions like `now(-1d)` for yesterday."
+          },
+          lastmodified: {
+            type: "string",
+            op: "<=",
+            label: "Last modified",
+            description: "Enter dates as YYYY-MM-DD, or use CQL functions like `now(-1d)` for yesterday."
+          },
+          title: {
+            type: "string",
+            op: "~",
+            label: "With title"
+          },
+          type: {
+            type: "enum",
+            label: "Of type",
+            isMultiple: !1,
+            style: "select",
+            items: [ {
+              value: "page",
+              label: "Page"
+            }, {
+              value: "blog",
+              label: "Blog"
+            }, {
+              value: "comment",
+              label: "Comment"
+            }, {
+              value: "attachment",
+              label: "Attachment"
+            } ]
+          }
+        },
+        T = ( e, t, n, r, a ) => {
+          const {
+            pluginKey: o,
+            macroName: i
+          } = r;
+          return e === [ o, i, "param", n.name, a ].join( "." ) ? t : e
+        },
+        D = ( e, t ) => {
+          const n = L( e.type.name ),
+            r = ( ( e, t ) => {
+              const {
+                displayName: n,
+                name: r,
+                description: a
+              } = e;
+              return {
+                label: T( n, r, e, t, "label" ),
+                name: e.name || "defaultParameterValue",
+                defaultValue: e.defaultValue,
+                description: T( a, "", e, t, "desc" ),
+                isMultiple: !!e.multiple,
+                isRequired: !!e.required,
+                isHidden: !!e.hidden
+              }
+            } )( e, t );
+          if ( "custom" === n ) {
+            return Object( o.a )( Object( o.a )( {}, r ), {}, {
+              type: "custom",
+              options: {
+                resolver: {
+                  type: e.type.name
+                }
+              }
+            } )
+          }
+          if ( "cql" === e.type.name ) {
+            let n = T( e.displayName, e.name, e, t, "label" );
+            "cql" === n && ( n = "CQL" );
+            return {
+              label: n,
+              name: e.name || "defaultParameterValue",
+              fields: Object.keys( M ).map( e => Object( o.a )( {
+                name: e
+              }, M[ e ] ) ),
+              type: "fieldset",
+              options: {
+                isDynamic: !0,
+                transformer: {
+                  type: e.type.name
+                }
+              }
+            }
+          }
+          if ( "enum" === n ) {
+            return Object( o.a )( Object( o.a )( {}, r ), {}, {
+              type: "enum",
+              style: "select",
+              items: ( e.enumValues || [] ).map( e => ( {
+                label: e,
+                value: e
+              } ) )
+            } )
+          }
+          return Object( o.a )( Object( o.a )( {}, r ), {}, {
+            type: L( e.type.name )
+          } )
+        },
+        L = e => ( e => e in N )( e ) ? N[ e ] : ( e => /^(enum|string|number|boolean|date)$/.test( e ) )( e ) ? e : "custom";
+      var F = n( "qtq1" );
+      const U = ( e, t ) => () => {
+          const n = ( e => e.formDetails.parameters.filter( e => e.defaultValue ).reduce( ( e, t ) => ( null !== t.defaultValue && ( e[ t.name ] = t.defaultValue ), e ), {} ) )( e );
+          return S( {
+            name: e.macroName,
+            params: n
+          }, t.contentId )
+        },
+        V = ( e, t, n, r, a ) => {
+          const o = e.formDetails.parameters.some( e => e.required && null === e.defaultValue );
+          return !n || $( e ) ? ( ( e, t, n ) => async () => {
+            if ( !t ) throw new Error( "Macro Browser Config is missing" );
+            if ( !n ) throw new Error( "editorActions is missing" );
+            const r = await Object( E.f )( e, t );
+            n.replaceSelection( r )
+          } )( e, r, a ) : o || e.anyParameterRequired || e.alwaysShowConfig || ( e => {
+            switch ( e.macroName ) {
+              case "children":
+              case "tasks-report-macro":
+                return !0;
+              default:
+                return !1
+            }
+          } )( e ) ? ( ( e, t, n ) => async () => {
+            if ( !n ) throw new Error( "editorActions is missing" );
+            const r = U( e, t ),
+              a = await r();
+            n.replaceSelection( a ), Object( F.c )( n )
+          } )( e, t, a ) : U( e, t )
+        };
+      var _ = n( "8TdO" ),
+        z = n( "H5qd" ),
+        B = n.n( z );
+      const K = B.a `query AttachmentSearch($cql:String!){search(cql:$cql first:25){edges{node{content{id title}}}}}`;
+      var q = async ( e, t ) => {
+        const n = [];
+        return n.push( ( async e => {
+          const t = Object( _.b )();
+          return ( await t.query( {
+            query: K,
+            variables: {
+              cql: `type = attachment AND title ~ "${e}*"`
+            }
+          } ) ).data.search.edges.map( e => ( {
+            label: e.node.content.title,
+            value: e.node.content.title
+          } ) )
+        } )( e ) ), t && n.push( Promise.resolve( ( Array.isArray( t ) ? t : [ t ] ).map( e => ( {
+          label: e,
+          value: e
+        } ) ) ) ), ( await Promise.all( n ) ).flat()
+      };
+      const H = B.a `query SpaceSearch($cql:String!){search(cql:$cql first:25){edges{node{entityType title space{key icon{path}}}}}}`,
+        W = async e => {
+          const t = Object( _.b )();
+          return ( await t.query( {
+            query: H,
+            variables: {
+              cql: e
+            }
+          } ) ).data.search.edges.map( e => ( {
+            label: e.node.title,
+            value: e.node.space.key,
+            icon: "/wiki" + e.node.space.icon.path
+          } ) )
+        }, G = e => W( `type = space AND (space.title ~ "${e}*" OR space.key = "${e}")` );
+      var J = async ( e, t ) => {
+        const n = [];
+        return e ? n.push( G( e ) ) : n.push( Promise.resolve( [ {
+          label: "Current space",
+          value: "currentSpace()"
+        } ] ), W( "type = space AND space in recentlyViewedSpaces(4)" ) ), t && ( Array.isArray( t ) ? n.push( ...t.map( e => G( e ) ) ) : n.push( G( t ) ) ), ( await Promise.all( n ) ).flat()
+      };
+      const Y = B.a `query UserSearch($cql:String!){search(cql:$cql first:25){edges{node{user{displayName accountId profilePicture{path}}}}}}`,
+        X = async ( e, t ) => {
+          const n = Object( _.b )();
+          return ( await n.query( {
+            query: Y,
+            variables: {
+              cql: t || `type = user AND (user.fullname ~ "${e}*" OR user = "${e}")`
+            }
+          } ) ).data.search.edges.map( e => ( {
+            label: e.node.user.displayName,
+            value: e.node.user.accountId,
+            icon: e.node.user.profilePicture.path
+          } ) )
+        };
+      var Q = async ( e, t ) => {
+        const n = [];
+        return e && n.push( X( e ) ), t && ( Array.isArray( t ) ? n.push( X( void 0, "user IN " + t.join( "," ) ) ) : n.push( X( t ) ) ), ( await Promise.all( n ) ).flat()
+      };
+      const Z = B.a `query LabelSearch($searchTerm:String!){labelSearch(searchText:$searchTerm limit:25){otherLabels{label}suggestedLabels{label}}}`,
+        ee = e => e.map( e => ( {
+          label: e.label,
+          value: e.label
+        } ) );
+      var te = async ( e, t ) => {
+        const n = [];
+        return e && n.push( ( async e => {
+          const t = Object( _.b )(),
+            {
+              data: {
+                labelSearch: n
+              }
+            } = await t.query( {
+              query: Z,
+              variables: {
+                searchTerm: e
+              }
+            } );
+          return [ ...ee( n.suggestedLabels ), ...ee( n.otherLabels ) ]
+        } )( e ) ), t && ( Array.isArray( t ) ? n.push( Promise.resolve( t.map( e => ( {
+          label: e,
+          value: e
+        } ) ) ) ) : n.push( Promise.resolve( [ {
+          label: t,
+          value: t
+        } ] ) ) ), ( await Promise.all( n ) ).flat()
+      };
+      const ne = B.a `query ContentSearch($cql:String!){search(cql:$cql first:25){edges{node{content{title id container{name icon{path}}}}}}}`,
+        re = async e => {
+          const t = Object( _.b )();
+          return ( await t.query( {
+            query: ne,
+            variables: {
+              cql: e
+            }
+          } ) ).data.search.edges.map( e => ( {
+            label: e.node.content.title,
+            value: e.node.content.id,
+            icon: "/wiki" + e.node.content.container.icon.path,
+            description: e.node.content.container.name
+          } ) )
+        };
+      var ae = async ( e, t, n ) => {
+        const r = [],
+          a = n && n.type || "page, blogpost";
+        return e ? r.push( re( `type IN (${a}) AND title ~ "${e}*"` ) ) : r.push( re( `type IN (${a}) AND id in recentlyViewedContent(5)` ) ), t && ( Array.isArray( t ) ? r.push( re( `type IN (${a}) AND id IN (${t.join(",")})` ) ) : r.push( re( `type IN (${a}) AND id = ${t}` ) ) ), ( await Promise.all( r ) ).flat()
+      }, oe = async ( e, t ) => {
+        let n, r;
+        "string" == typeof t && ( t = t.split( "," ) ), t && t.length > 0 && ( n = t.filter( e => !I( e ) ), n = n.length ? n : void 0, r = t.filter( I ), r = r.length ? r : void 0 );
+        return [ await J( e, n ), await ae( e, r, {
+          type: "page"
+        } ) ].flat()
+      }, ie = n( "EWug" );
+      const ce = e => e.replace( /\\/g, "\\\\" ).replace( /"/g, '\\"' ),
+        se = e => {
+          const t = [];
+          return t.push( ...Object.entries( e ).filter( e => e[ 1 ] ).map( e => {
+            let [ t, n ] = e;
+            const r = M[ t ];
+            let a, o = "=";
+            return r && r.op && ( o = r.op ), Array.isArray( n ) ? ( a = `(${n.map(e=>`"${ce(e)}"`).join(", ")})`, o = "IN" ) : a = "number" == typeof n ? n.toString() : `"${ce(n.toString())}"`, `${t} ${o} ${a}`
+          } ) ), t.join( " AND " )
+        };
+      const le = e => {
+        if ( null == e ) return {};
+        const t = Object( ie.parse )( e ),
+          n = Array.from( function* e( t ) {
+            if ( t.clause && ( yield* e( t.clause ) ), t.clauses ) {
+              if ( "OR" === t.type.toUpperCase() && 1 !== t.clauses.length ) throw new SyntaxError( "cannot handle multiple OR clauses" );
+              for ( const n of t.clauses ) yield* e( n )
+            }
+            "expr" === t.nodeType && ( yield t )
+          }( t ) ),
+          r = {};
+        return n.forEach( e => {
+          r[ e.field ] = e.value
+        } ), r
+      };
+      var ue = n( "2nhj" ),
+        de = n( "dbjD" ),
+        pe = n( "xLJ5" ),
+        fe = n( "wbjG" ),
+        me = n.n( fe ),
+        be = n( "iDie" ),
+        ye = n( "t5Z+" ),
+        he = n( "fgIE" );
+      var ge = n( "Z1IT" ),
+        ve = n( "iB1A" );
+      n.d( t, "a", ( function () {
+        return we
+      } ) ), n.d( t, "b", ( function () {
+        return Ce
+      } ) );
+      const Oe = () => Object( a.a )( "/wiki/plugins/macrobrowser/browse-macros.action?detailed=true&origin=extension-provider", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        } ).then( e => e.json() ),
+        xe = [ {
+          macroName: "variable",
+          hidden: !0,
+          formDetails: {
+            body: {
+              outputType: "INLINE"
+            },
+            parameters: [ {} ]
+          }
+        } ],
+        Ee = ( e, t, n, r, a, o, i ) => {
+          const c = e.map( e => Ie( de.d.MACRO_CORE, e, t, n, r, a, o, i ) ),
+            s = xe.map( e => Ie( de.d.TEMPLATE, e, t, n, r, a, o ) );
+          return c.concat( s )
+        },
+        je = ( e, t, n, r, a, o ) => {
+          const i = P( e );
+          return e.hidden || Object( ge.b )( e ) ? [] : [ {
+            key: i,
+            title: e.title,
+            description: e.description,
+            keywords: e.aliases,
+            categories: e.categories,
+            icon: () => Promise.resolve( () => g( e ) ),
+            featured: o && E.a.includes( i ),
+            action: V( e, t, n, r, a )
+          } ]
+        },
+        Ie = ( e, t, n, r, a, o, i, l ) => {
+          const u = t.macroName,
+            d = !!i,
+            p = k( t ),
+            f = {
+              type: p,
+              render: () => {
+                const n = r[ e ];
+                return Promise.resolve( e => {
+                  const r = R( t, e.node );
+                  return !a && d || !r ? a && d && !( e => {
+                    switch ( e.macroName ) {
+                      case "contributors":
+                      case "pagetreesearch":
+                      case "toc":
+                      case "pagetree":
+                        return !1;
+                      default:
+                        return !0
+                    }
+                  } )( t ) ? ( ( e, t ) => "inlineExtension" === t ? c.a.createElement( v, {
+                    macro: e
+                  } ) : c.a.createElement( O, {
+                    isEditor: !0,
+                    macro: e,
+                    description: c.a.createElement( s.b, {
+                      id: "confluence-fabric-editor.extension.placeholder.can-not-render-in-editor",
+                      description: "Message shown when a macro is inserted but can't be rendered because it doesn't work in edit mode",
+                      defaultMessage: "The results of this element aren’t visible when editing. Preview the page or publish it to see how it will look."
+                    } )
+                  } ) )( t, k( t ) ) : "function" == typeof n ? n( e.node, null ) : n.render( e.node, null ) : ( ( e, t ) => "inlineExtension" === k( e ) ? c.a.createElement( v, {
+                    macro: e,
+                    description: c.a.createElement( "span", null, "(", x, ")" )
+                  } ) : c.a.createElement( O, {
+                    isEditor: t,
+                    macro: e,
+                    description: x
+                  } ) )( t, d )
+                } )
+              }
+            };
+          if ( ( e => e.formDetails && ( e.formDetails.parameters || [] ).filter( e => !e.hidden ) || [] )( t ).length > 0 ) {
+            const r = async ( r, a ) => {
+              let o;
+              if ( e === de.d.TEMPLATE ) {
+                const e = {
+                  type: p,
+                  attrs: {
+                    parameters: r
+                  }
+                };
+                o = await Object( pe.g )( e, a )
+              } else {
+                const e = await S( {
+                    name: t.macroName,
+                    params: Object( ue.e )( r.macroParams )
+                  }, n.contentId ),
+                  s = Object( ue.d )( r.macroParams || {} );
+                if ( s ) {
+                  var i, c;
+                  let t = null === ( i = e.attrs ) || void 0 === i || null === ( c = i.parameters ) || void 0 === c ? void 0 : c.macroParams;
+                  t && ( t[ "" ] = s )
+                }
+                o = await Object( E.h )( e, a )
+              }
+              return o.attrs.parameters || {}
+            };
+            f.update = ( e, i ) => {
+              const c = e => C( t.macroName, Object( ue.e )( e.macroParams ) ),
+                s = async e => {
+                  const r = ( ( e, t ) => {
+                    if ( "attachments" === e.macroName ) t.labels && Array.isArray( t.labels ) && ( t.labels = t.labels.join( "," ) );
+                    else if ( "tasks-report-macro" === e.macroName && t.spaceAndPage && Array.isArray( t.spaceAndPage ) ) {
+                      const e = t.spaceAndPage.filter( e => !I( e ) );
+                      e.length > 0 && ( t.spaces = e.join( "," ) );
+                      const n = t.spaceAndPage.filter( I );
+                      n.length > 0 && ( t.pages = n.join( "," ) ), delete t.spaceAndPage
+                    }
+                    return t
+                  } )( t, e );
+                  Object.keys( r ).forEach( e => {
+                    const n = t.formDetails.parameters.find( t => t.name === e );
+                    n && ( "int" === n.type.name && "string" == typeof r[ e ] && ( r[ e ].length ? r[ e ] = Number( r[ e ] ) : delete r[ e ] ), void 0 === r[ e ] && delete r[ e ] )
+                  } );
+                  const a = await S( {
+                    name: t.macroName,
+                    params: r
+                  }, n.contentId );
+                  return a.attrs.parameters && ( a.attrs.parameters.macroMetadata || ( a.attrs.parameters.macroMetadata = {} ), a.attrs.parameters.macroMetadata.macroId || ( a.attrs.parameters.macroMetadata.macroId = {
+                    value: Object( ve.c )( a.attrs.parameters )
+                  } ) ), a.attrs.parameters || {}
+                };
+              return !a || $( t ) ? r( e, o ) : new Promise( () => {
+                i.editInContextPanel( c, s )
+              } )
+            }, f.getFieldsDefinition = () => {
+              const e = t.formDetails.parameters.map( e => D( e, {
+                pluginKey: t.pluginKey,
+                macroName: P( t )
+              } ) );
+              return Promise.resolve( ( ( e, t ) => w[ e.macroName ] ? w[ e.macroName ]( t ) : t )( t, e ) )
+            }
+          }
+          return {
+            type: e,
+            key: u,
+            title: t.title,
+            description: t.description,
+            icons: A( t ),
+            modules: {
+              quickInsert: i ? je( t, n, a, o, i, l ) : [],
+              nodes: {
+                default: f
+              },
+              fields: {
+                custom: {
+                  attachment: {
+                    resolver: q
+                  },
+                  spacekey: {
+                    resolver: J
+                  },
+                  username: {
+                    resolver: Q
+                  },
+                  label: {
+                    resolver: te
+                  },
+                  "confluence-content": {
+                    resolver: ae
+                  },
+                  spaceAndPage: {
+                    resolver: oe
+                  }
+                },
+                fieldset: {
+                  cql: {
+                    serializer: se,
+                    deserializer: le
+                  }
+                }
+              }
+            }
+          }
+        },
+        we = async ( e, t, n, a, o, i ) => {
+          const [ s, l ] = await Promise.all( [ Oe(), Object( E.c )( a ) ] ), u = Ee( s.macros, e, t, o, a, n, i ).concat( function ( e, t, n ) {
+            const r = "inlineExtension",
+              a = n ? be.a : ye.a;
+            return [ de.c.INVALID, de.c.INLINE_MEDIA_IMAGE, de.c.INLINE_EXTERNAL_IMAGE ].map( o => ( {
+              title: "Migration Extension",
+              key: o,
+              type: de.d.MIGRATION,
+              icons: {
+                48: () => Promise.resolve( () => c.a.createElement( me.a, {
+                  label: "Migration Extension",
+                  size: "medium"
+                } ) )
+              },
+              modules: {
+                nodes: {
+                  default: {
+                    type: r,
+                    render: () => Promise.resolve( t => a( {
+                      contentId: e
+                    } )( {
+                      extensionKey: o,
+                      extensionType: de.d.MIGRATION,
+                      parameters: t
+                    }, {} ) ),
+                    update: n ? e => Object( he.d )( {
+                      type: r,
+                      attrs: {
+                        parameters: e
+                      }
+                    }, t ) : void 0
+                  }
+                }
+              }
+            } ) )
+          }( e.contentId, a, !!n ) );
+          return new r.a( u, [ e => {
+            const t = l( e );
+            if ( t ) return t
+          } ] )
+        }, Ce = async ( e, t ) => {
+          const n = await Oe(),
+            a = Ee( n.macros, e, t );
+          return new r.a( a )
+        }
+    },
+    uq3c: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "HbGN" ),
+        o = n( "ERkP" ),
+        i = n( "l1C2" ),
+        c = n( "bbmB" ),
+        s = n( "EFzz" ),
+        l = n( "BMbf" );
+      const u = Object( l.h )(),
+        d = 2.5 * u,
+        p = 2 * u,
+        f = u,
+        m = Object( l.f )(),
+        b = Object( l.e )(),
+        y = Object( l.d )(),
+        h = ( e, t ) => d * e + 12 + 2 * t,
+        g = ( e, t ) => p * e + 4 + 2 * t,
+        v = {
+          flex: "1 1 100%",
+          position: "relative",
+          borderRadius: 3,
+          boxSizing: "border-box",
+          overflow: "auto",
+          transition: "background-color 0.2s ease-in-out",
+          wordWrap: "break-word",
+          fontSize: m,
+          borderWidth: 2,
+          maxWidth: "100%",
+          display: "block",
+          margin: 0,
+          minWidth: 0,
+          outline: "none",
+          width: "100%",
+          "&:disabled": Object( r.a )( {
+            cursor: "not-allowed"
+          }, {
+            WebkitTextFillColor: "unset",
+            WebkitOpacity: "1"
+          } ),
+          "&::-ms-clear": {
+            display: "none"
+          },
+          "&:invalid": {
+            boxShadow: "none"
+          }
+        },
+        O = ( {
+          minimumRows: e,
+          resize: t,
+          appearance: n,
+          isMonospaced: a,
+          maxHeight: o
+        } ) => Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( {}, v ), ( ( e = 1 ) => {
+          const t = f - 2;
+          return {
+            "&[data-compact]": {
+              padding: `2px ${t}px`,
+              lineHeight: p / m,
+              minHeight: g( e, 2 )
+            },
+            "&:not([data-compact])": {
+              padding: `6px ${t}px`,
+              lineHeight: d / m,
+              minHeight: h( e, 2 )
+            }
+          }
+        } )( e ) ), ( e => "horizontal" === e || "vertical" === e ? {
+          resize: e
+        } : "auto" === e ? {
+          resize: "both"
+        } : {
+          resize: "none"
+        } )( t ) ), ( e => ( {
+          borderStyle: "none" === e ? "none" : "solid"
+        } ) )( n ) ), ( e => ( {
+          fontFamily: e ? y : b
+        } ) )( a ) ), {}, {
+          maxHeight: o
+        } ),
+        x = e => Object( r.a )( Object( r.a )( Object( r.a )( Object( r.a )( {}, ( e => ( {
+          "&:focus": {
+            backgroundColor: e.backgroundColorFocus,
+            borderColor: e.borderColorFocus
+          },
+          "&:not(:focus)": {
+            backgroundColor: e.backgroundColor,
+            borderColor: e.borderColor
+          },
+          "&:disabled:focus": {
+            backgroundColor: e.disabledRules.backgroundColorFocus,
+            borderColor: e.disabledRules.borderColorFocus
+          },
+          "&:disabled:not(:focus)": {
+            backgroundColor: e.disabledRules.backgroundColor,
+            borderColor: e.disabledRules.borderColor
+          },
+          "&[data-invalid]:focus": {
+            backgroundColor: e.invalidRules.backgroundColorFocus,
+            borderColor: e.invalidRules.borderColorFocus
+          },
+          "&[data-invalid]:not(:focus)": {
+            backgroundColor: e.invalidRules.backgroundColor,
+            borderColor: e.invalidRules.borderColor
+          }
+        } ) )( e ) ), ( e => ( {
+          "&:hover:not(:read-only):not(:focus)": {
+            backgroundColor: e.backgroundColorHover,
+            "&:disabled": {
+              backgroundColor: e.disabledRules.backgroundColorHover
+            },
+            "&[data-invalid]": {
+              backgroundColor: e.invalidRules.backgroundColorHover
+            }
+          }
+        } ) )( e ) ), {
+          "&::placeholder": {
+            color: e.placeholderTextColor
+          }
+        } ), {}, {
+          color: e.textColor,
+          "&:disabled": {
+            color: e.disabledRules.textColor
+          }
+        } );
+      var E = n( "HJ22" ),
+        j = n( "m0CL" );
+      const I = {
+          componentName: "textArea",
+          packageName: j.a,
+          packageVersion: j.b
+        },
+        w = e => {
+          const t = e.scrollHeight + 4;
+          e.style.height = t + "px"
+        },
+        C = Object( o.forwardRef )( ( e, t ) => {
+          const n = Object( o.useRef )( null ),
+            {
+              resize: s = "smart",
+              appearance: l = "standard",
+              isCompact: u = !1,
+              isRequired: d = !1,
+              isReadOnly: p = !1,
+              isDisabled: f = !1,
+              isInvalid: m = !1,
+              isMonospaced: b = !1,
+              minimumRows: y = 1,
+              theme: h,
+              testId: g,
+              maxHeight: v = "50vh",
+              onBlur: E,
+              onFocus: j,
+              onChange: C,
+              tokens: P
+            } = e,
+            k = Object( a.a )( e, [ "resize", "appearance", "isCompact", "isRequired", "isReadOnly", "isDisabled", "isInvalid", "isMonospaced", "minimumRows", "theme", "testId", "maxHeight", "onBlur", "onFocus", "onChange", "tokens" ] );
+          Object( o.useEffect )( () => {
+            const e = n.current;
+            "smart" === s && e && w( e )
+          }, [ s ] );
+          const A = Object( c.a )( Object( r.a )( {
+              fn: e => {
+                E && E( e )
+              },
+              action: "blurred"
+            }, I ) ),
+            R = Object( c.a )( Object( r.a )( {
+              fn: e => {
+                j && j( e )
+              },
+              action: "focused"
+            }, I ) ),
+            S = Object( o.useCallback )( e => {
+              const t = n.current;
+              "smart" === s && t && ( t.style.height = "auto", w( t ) ), C && C( e )
+            }, [ C, s ] ),
+            $ = {
+              "data-invalid": m || void 0,
+              "data-compact": u || void 0,
+              "data-testid": g || void 0
+            },
+            N = [ Object( o.useMemo )( () => O( {
+              minimumRows: y,
+              resize: s,
+              appearance: l,
+              isMonospaced: b,
+              maxHeight: v
+            } ), [ y, s, l, b, v ] ), x( P ) ];
+          return Object( i.f )( "textarea", Object.assign( {}, $, {
+            disabled: f,
+            readOnly: p,
+            required: d,
+            ref: e => {
+              n.current = e, t && "object" == typeof t && ( t.current = e ), t && "function" == typeof t && t( e )
+            },
+            onChange: S,
+            onBlur: A,
+            onFocus: R,
+            css: N
+          }, k ) )
+        } ),
+        P = Object( o.memo )( Object( o.forwardRef )( ( function ( e, t ) {
+          return Object( i.f )( s.a.Consumer, null, ( {
+            mode: n
+          } ) => Object( i.f )( E.a.Provider, {
+            value: e.theme
+          }, Object( i.f )( E.a.Consumer, {
+            appearance: e.appearance || "standard",
+            mode: n
+          }, n => Object( i.f )( C, Object.assign( {
+            ref: t
+          }, e, {
+            tokens: n
+          } ) ) ) ) )
+        } ) ) );
+      P.displayName = "TextArea";
+      t.a = P
+    },
+    wbjG: function ( e, t, n ) {
+      "use strict";
+      Object.defineProperty( t, "__esModule", {
+        value: !0
+      } ), t.default = void 0;
+      var r = o( n( "ERkP" ) ),
+        a = o( n( "4KTy" ) );
+
+      function o( e ) {
+        return e && e.__esModule ? e : {
+          default: e
+        }
+      }
+
+      function i() {
+        return ( i = Object.assign || function ( e ) {
+          for ( var t = 1; t < arguments.length; t++ ) {
+            var n = arguments[ t ];
+            for ( var r in n ) Object.prototype.hasOwnProperty.call( n, r ) && ( e[ r ] = n[ r ] )
+          }
+          return e
+        } ).apply( this, arguments )
+      }
+      var c = function ( e ) {
+        return r.default.createElement( a.default, i( {
+          dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.691 14.932c-.184.546-.336.797-.719 1.011-.851.478-1.54.299-2.033-.532-.498-.837-.31-1.52.547-2 .388-.218.673-.217 1.251-.1.078.017.139.029.19.038l-1.434-2.414a.333.333 0 0 1 .123-.461L8.64 9.339a.333.333 0 0 1 .49.222c.023.113.065.22.127.325.439.737 1.006.885 1.769.457.757-.425.906-.962.47-1.694a1.075 1.075 0 0 0-.226-.271.333.333 0 0 1 .054-.544l2.023-1.135a.333.333 0 0 1 .45.12l1.447 2.437c.019-.05.04-.11.066-.187.184-.546.336-.797.719-1.012.851-.477 1.54-.298 2.033.533.498.837.31 1.52-.547 2-.26.146-.521.193-.816.169a3.345 3.345 0 0 1-.435-.07 7.373 7.373 0 0 0-.19-.037l1.434 2.413c.095.16.04.369-.124.46l-2.11 1.184a.333.333 0 0 1-.496-.28 1.03 1.03 0 0 0-.15-.51c-.438-.738-1.005-.886-1.768-.458-.758.425-.906.963-.471 1.694.1.168.225.29.384.386a.333.333 0 0 1-.009.576l-2.11 1.184a.333.333 0 0 1-.449-.12l-1.447-2.436c-.019.05-.04.11-.066.187z" fill="currentColor" fill-rule="evenodd"/></svg>'
+        }, e ) )
+      };
+      c.displayName = "EditorAddonIcon";
+      var s = c;
+      t.default = s
+    },
+    xLJ5: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "nnRT" ),
+        o = n.n( a ),
+        i = n( "ERkP" ),
+        c = n.n( i ),
+        s = n( "RfuI" ),
+        l = n( "0bsQ" ),
+        u = Object( s.a )( {
+          id: "x6PIK",
+          name: "packages/confluence-fabric-editor/src/components/TemplateVariableDialog/TemplateVariablesDialogLoader.tsx",
+          loader: () => Promise.all( [ n.e( "atlaskit~66e23772" ), n.e( "vendors~4134d62c" ), n.e( "fabric.template.variables.dialog~dc51bad7" ) ] ).then( n.bind( null, "9qrP" ) ),
+          loading: () => c.a.createElement( l.a, {
+            size: "medium"
+          } )
+        } ),
+        d = n( "dbjD" ),
+        p = n( "8ghD" );
+      n.d( t, "c", ( function () {
+        return f
+      } ) ), n.d( t, "b", ( function () {
+        return m
+      } ) ), n.d( t, "a", ( function () {
+        return b
+      } ) ), n.d( t, "d", ( function () {
+        return y
+      } ) ), n.d( t, "f", ( function () {
+        return h
+      } ) ), n.d( t, "g", ( function () {
+        return g
+      } ) ), n.d( t, "e", ( function () {
+        return v
+      } ) );
+      const f = "text",
+        m = "textarea",
+        b = "select";
+
+      function y( e = "variable_name" ) {
+        return {
+          type: d.e,
+          attrs: {
+            extensionType: d.d.TEMPLATE,
+            extensionKey: d.c.TEMPLATE,
+            parameters: {
+              type: f,
+              name: e
+            }
+          }
+        }
+      }
+
+      function h( e ) {
+        return e.attrs && e.attrs.extensionType === d.d.TEMPLATE
+      }
+
+      function g( e, t ) {
+        return new Promise( ( n, a ) => {
+          if ( !e.attrs || !t.setActiveModal ) return void a( new Error( "Cannot open editing template variable dialog" ) );
+          const o = e.attrs.parameters;
+          t.setActiveModal( u, {
+            defaultVariableType: o.type,
+            defaultVariableName: o.name,
+            defaultRows: o.params && o.params.rows,
+            defaultColumns: o.params && o.params.columns,
+            defaultListOptions: o.params && o.params.options,
+            onSave: t => {
+              const a = Object( p.b )( e, t );
+              let o = d.f;
+              a.type === d.a ? o = d.a : a.type === d.e && ( o = d.e ), n( Object( r.a )( Object( r.a )( {}, a ), {}, {
+                type: o,
+                attrs: a.attrs || {}
+              } ) )
+            },
+            onClose: () => {
+              t.closeActiveModal && t.closeActiveModal()
+            }
+          } )
+        } )
+      }
+
+      function v( e ) {
+        return Object( p.a )( e, d.e ).filter( h ).reduce( ( e, t ) => {
+          const {
+            name: n,
+            type: r,
+            params: a = {}
+          } = t.attrs.parameters;
+          if ( !e.groupedByName[ n ] ) return e.groupedByName[ n ] = t, e;
+          const i = e.groupedByName[ n ].attrs.parameters;
+          return ( i.type !== r || !o()( i.params || {}, a ) ) && ( e.invalidNodes.push( t ), e.invalidUniqueNames.includes( n ) || e.invalidUniqueNames.push( n ) ), e
+        }, {
+          groupedByName: {},
+          invalidNodes: [],
+          invalidUniqueNames: []
+        } )
+      }
+    },
+    xpeE: function ( e, t, n ) {
+      "use strict";
+      var r = n( "Czhu" ),
+        a = n( "ERkP" ),
+        o = n.n( a ),
+        i = n( "KIs4" ),
+        c = n( "rDc3" ),
+        s = n( "RfuI" );
+      var l = () => null;
+      var u = Object( s.a )( {
+        id: "0WkLC",
+        name: "DetailsLoadable",
+        loader: () => n.e( "extension-handler-details~2c7771c4" ).then( n.bind( null, "tcwv" ) ),
+        loading: l
+      } );
+      class d extends a.Component {
+        render() {
+          const {
+            contentId: e,
+            showTemplateVariablesInPreview: t,
+            showTemplateInputInPreview: n,
+            mode: a,
+            node: i
+          } = this.props, {
+            content: s
+          } = i, l = {
+            mode: a,
+            node: i
+          };
+          return s && ( l.adf = s ), e && ( l.contentId = e ), l.macroId = Object( c.a )( this.props ), this.props.node.parameters && this.props.node.parameters.macroParams && this.props.node.parameters.macroParams.hidden && this.props.node.parameters.macroParams.hidden.value ? l.hidden = !!this.props.node.parameters.macroParams.hidden.value : l.hidden = !1, t && ( l.showTemplateVariablesInPreview = t ), n && ( l.showTemplateInputInPreview = n ), o.a.createElement( u, Object( r.a )( {}, l ) )
+        }
+      }
+      var p = d,
+        f = n( "Q//X" ),
+        m = n( "2hMr" ),
+        b = n( "0bsQ" );
+      var y = Object( s.a )( {
+        id: "uiHNj",
+        name: "ExcerptLoadable",
+        loader: () => n.e( "extension-handler-excerpt~b9cac009" ).then( n.bind( null, "7J+w" ) ),
+        loading: () => o.a.createElement( b.a, {
+          size: "medium",
+          style: {
+            minHeight: 100
+          }
+        } )
+      } );
+      class h extends a.Component {
+        render() {
+          var e;
+          const {
+            contentId: t,
+            node: n,
+            showTemplateVariablesInPreview: a,
+            showTemplateInputInPreview: i,
+            mode: s
+          } = this.props, {
+            content: l,
+            extensionKey: u
+          } = n, d = "true" === ( null != ( e = n ) && null != ( e = e.parameters ) && null != ( e = e.macroParams ) && null != ( e = e.hidden ) ? e.value : e ), p = Object( f.e )( n );
+          if ( d ) return o.a.createElement( m.a, {
+            name: Object( f.d )( s, n ),
+            contentId: t,
+            extensionKey: u,
+            mode: s,
+            attributes: p
+          } );
+          const b = {
+            contentId: t,
+            adf: l,
+            mode: s,
+            node: n,
+            macroId: Object( c.a )( this.props )
+          };
+          return a && ( b.showTemplateVariablesInPreview = a ), i && ( b.showTemplateInputInPreview = i ), o.a.createElement( y, Object( r.a )( {}, b ) )
+        }
+      }
+      var g = h,
+        v = n( "K9i4" ),
+        O = n( "S1px" );
+      var x = () => o.a.createElement( "div", {
+        style: {
+          padding: "8px 0 0 16px"
+        }
+      }, o.a.createElement( "span", {
+        style: {
+          display: "inline-block",
+          borderRadius: 3,
+          backgroundColor: "#F4F5F7",
+          width: 16,
+          height: 16,
+          margin: "2px 16px 2px 0"
+        }
+      } ), o.a.createElement( "span", {
+        style: {
+          display: "inline-block",
+          borderRadius: 3,
+          backgroundColor: "#F4F5F7",
+          width: 120,
+          height: 20
+        }
+      } ) );
+      var E = Object( s.a )( {
+        id: "egWQp",
+        name: "ExpandLoadable",
+        loader: () => n.e( "extension-handler-expand~9e850db9" ).then( n.bind( null, "w2pD" ) ),
+        loading: x
+      } );
+      class j extends a.Component {
+        render() {
+          const {
+            contentId: e,
+            showTemplateVariablesInPreview: t,
+            showTemplateInputInPreview: n,
+            node: a,
+            mode: i
+          } = this.props, {
+            content: c,
+            extensionKey: s
+          } = a, {
+            title: l
+          } = this.props.node.parameters.macroParams, u = {
+            extensionKey: s,
+            mode: i
+          };
+          return c && ( u.adf = c ), l && ( u.title = l.value ), e && ( u.contentId = e ), t && ( u.showTemplateVariablesInPreview = t ), n && ( u.showTemplateInputInPreview = n ), o.a.createElement( E, Object( r.a )( {}, u ) )
+        }
+      }
+      var I = j,
+        w = n( "MA4i" ),
+        C = n( "TdpR" ),
+        P = n( "A79P" ),
+        k = n( "otm+" ),
+        A = n( "znRE" ),
+        R = n( "Nk3d" ),
+        S = n( "dbjD" ),
+        $ = n( "lbXe" );
+      const N = Object( $.a )()( class extends a.Component {
+        componentDidMount() {
+          const {
+            createAnalyticsEvent: e,
+            extensionKey: t
+          } = this.props;
+          e && e( {
+            type: "sendTrackEvent",
+            data: {
+              action: "viewed",
+              actionSubject: "macro",
+              actionSubjectId: t,
+              source: "viewPageScreen"
+            }
+          } ).fire()
+        }
+        render() {
+          const {
+            children: e
+          } = this.props;
+          return o.a.createElement( a.Fragment, null, e )
+        }
+      } );
+      var M = n( "6v+B" ),
+        T = n( "t5Z+" );
+      n.d( t, "a", ( function () {
+        return L
+      } ) );
+      const D = {
+          insertCss: e => e._insertCss()
+        },
+        L = ( {
+          contentId: e,
+          showTemplateVariablesInPreview: t,
+          showTemplateInputInPreview: n,
+          spaceKey: a,
+          isJposMacroEnabled: o,
+          shouldIncludeMacroHandlers: i = !0
+        } ) => {
+          const c = F,
+            s = i ? {
+              [ S.d.MACRO_CORE ]: c( {
+                contentId: e,
+                showTemplateVariablesInPreview: t,
+                showTemplateInputInPreview: n,
+                spaceKey: a,
+                isJposMacroEnabled: o
+              } ),
+              [ S.d.MIGRATION ]: Object( T.a )( {
+                contentId: e
+              } )
+            } : {},
+            l = n ? M.b : M.a,
+            u = t ? {
+              [ S.d.TEMPLATE ]: l
+            } : {};
+          return Object( r.a )( Object( r.a )( {}, s ), u )
+        },
+        F = ( {
+          contentId: e,
+          showTemplateVariablesInPreview: t,
+          showTemplateInputInPreview: n,
+          spaceKey: c,
+          isJposMacroEnabled: s
+        } ) => Object( A.a )( l => {
+          const {
+            extensionKey: u
+          } = l, d = Object( f.e )( l ), b = {
+            node: l,
+            contentId: e,
+            showTemplateVariablesInPreview: t || !1,
+            showTemplateInputInPreview: n || !1,
+            spaceKey: c,
+            mode: f.c,
+            context: D,
+            extensionKey: u,
+            attributes: d
+          };
+          return o.a.createElement( a.Fragment, null, o.a.createElement( k.a, {
+            contentId: e,
+            name: Object( f.d )( f.c, l ),
+            mode: f.c,
+            extensionKey: u,
+            attributes: d,
+            timeout: P.a.MACRO_LOAD
+          } ), o.a.createElement( N, {
+            extensionKey: u
+          }, ( () => {
+            switch ( u ) {
+              case "redactedMacroPlaceholder":
+                return o.a.createElement( C.a, Object( r.a )( {}, b ) );
+              case "details":
+                return o.a.createElement( p, Object( r.a )( {}, b ) );
+              case "detailssummary":
+                return o.a.createElement( i.a, null, ( {
+                  featureFlags: e
+                } ) => e[ "confluence.frontend.fabric.editor.next.detailssummary" ] ? o.a.createElement( w.a, Object( r.a )( {}, b ) ) : o.a.createElement( R.a, Object( r.a )( {}, b ) ) );
+              case "excerpt":
+                return o.a.createElement( g, Object( r.a )( {}, b ) );
+              case "include":
+                return o.a.createElement( i.a, null, ( {
+                  featureFlags: e
+                } ) => e[ "confluence.frontend.fabric.editor.include-page" ] ? o.a.createElement( v.a, Object( r.a )( {}, b ) ) : o.a.createElement( R.a, Object( r.a )( {}, b ) ) );
+              case "excerpt-include":
+                return o.a.createElement( O.a, Object( r.a )( {}, b ) );
+              case "expand":
+                return o.a.createElement( I, Object( r.a )( {}, b ) );
+              case "portfolioforjiraplan":
+                if ( !s ) {
+                  const {
+                    parameters: {
+                      macroParams: {
+                        url: {
+                          value: t
+                        }
+                      }
+                    }
+                  } = l;
+                  return o.a.createElement( a.Fragment, null, o.a.createElement( "div", null, o.a.createElement( "a", {
+                    href: t,
+                    target: "_blank"
+                  }, t ) ), o.a.createElement( m.a, {
+                    name: Object( f.d )( f.c, l ),
+                    contentId: e,
+                    extensionKey: u,
+                    mode: f.c,
+                    attributes: d
+                  } ) )
+                }
+                default:
+                  return o.a.createElement( R.a, Object( r.a )( {}, b ) )
+            }
+          } )() ) )
+        } )
+    },
+    "y/nW": function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return r
+      } ) ), n.d( t, "c", ( function () {
+        return a
+      } ) ), n.d( t, "b", ( function () {
+        return o
+      } ) );
+      const r = {
+          display: "block",
+          borderWidth: "1px",
+          borderRadius: "3px",
+          borderStyle: "solid",
+          borderColor: "rgb(193, 199, 208)",
+          borderImage: "initial"
+        },
+        a = {
+          display: "block",
+          backgroundColor: "rgb(244, 245, 247)",
+          minWidth: "128px",
+          padding: "10px"
+        },
+        o = {
+          display: "block",
+          minWidth: "128px",
+          borderWidth: "1px 0px 0px 0px",
+          borderStyle: "solid",
+          borderColor: "rgb(193, 199, 208)",
+          padding: "10px"
+        }
+    },
+    y4bl: function ( e, t, n ) {
+      var r = n( "c72w" ),
+        a = n( "xoyU" ),
+        o = n( "pnw1" ),
+        i = n( "tQYX" ),
+        c = n( "Ypsa" );
+      e.exports = function ( e, t, n, s ) {
+        if ( !i( e ) ) return e;
+        for ( var l = -1, u = ( t = a( t, e ) ).length, d = u - 1, p = e; null != p && ++l < u; ) {
+          var f = c( t[ l ] ),
+            m = n;
+          if ( "__proto__" === f || "constructor" === f || "prototype" === f ) return e;
+          if ( l != d ) {
+            var b = p[ f ];
+            void 0 === ( m = s ? s( b, f, p ) : void 0 ) && ( m = i( b ) ? b : o( t[ l + 1 ] ) ? [] : {} )
+          }
+          r( p, f, m ), p = p[ f ]
+        }
+        return e
+      }
+    },
+    yiKp: function ( e, t, n ) {
+      var r = n( "KEM+" );
+
+      function a( e, t ) {
+        var n = Object.keys( e );
+        if ( Object.getOwnPropertySymbols ) {
+          var r = Object.getOwnPropertySymbols( e );
+          t && ( r = r.filter( ( function ( t ) {
+            return Object.getOwnPropertyDescriptor( e, t ).enumerable
+          } ) ) ), n.push.apply( n, r )
+        }
+        return n
+      }
+      e.exports = function ( e ) {
+        for ( var t = 1; t < arguments.length; t++ ) {
+          var n = null != arguments[ t ] ? arguments[ t ] : {};
+          t % 2 ? a( Object( n ), !0 ).forEach( ( function ( t ) {
+            r( e, t, n[ t ] )
+          } ) ) : Object.getOwnPropertyDescriptors ? Object.defineProperties( e, Object.getOwnPropertyDescriptors( n ) ) : a( Object( n ) ).forEach( ( function ( t ) {
+            Object.defineProperty( e, t, Object.getOwnPropertyDescriptor( n, t ) )
+          } ) )
+        }
+        return e
+      }
+    },
+    "zT+L": function ( e, t, n ) {
+      "use strict";
+      var r = n( "ey2t" ),
+        a = "function" == typeof Symbol && "symbol" == typeof Symbol( "foo" ),
+        o = Object.prototype.toString,
+        i = Array.prototype.concat,
+        c = Object.defineProperty,
+        s = c && function () {
+          var e = {};
+          try {
+            for ( var t in c( e, "x", {
+                enumerable: !1,
+                value: e
+              } ), e ) return !1;
+            return e.x === e
+          } catch ( n ) {
+            return !1
+          }
+        }(),
+        l = function ( e, t, n, r ) {
+          var a;
+          ( !( t in e ) || "function" == typeof ( a = r ) && "[object Function]" === o.call( a ) && r() ) && ( s ? c( e, t, {
+            configurable: !0,
+            enumerable: !1,
+            value: n,
+            writable: !0
+          } ) : e[ t ] = n )
+        },
+        u = function ( e, t ) {
+          var n = arguments.length > 2 ? arguments[ 2 ] : {},
+            o = r( t );
+          a && ( o = i.call( o, Object.getOwnPropertySymbols( t ) ) );
+          for ( var c = 0; c < o.length; c += 1 ) l( e, o[ c ], t[ o[ c ] ], n[ o[ c ] ] )
+        };
+      u.supportsDescriptors = !!s, e.exports = u
+    },
+    znRE: function ( e, t, n ) {
+      "use strict";
+      n.d( t, "a", ( function () {
+        return l
+      } ) );
+      var r = n( "ERkP" ),
+        a = n.n( r ),
+        o = n( "KIs4" ),
+        i = n( "Vgb+" ),
+        c = n( "gwLK" ),
+        s = n( "8TdO" );
+      const l = e => ( t, ...n ) => a.a.createElement( c.b, {
+        client: Object( s.b )()
+      }, a.a.createElement( o.a, null, r => a.a.createElement( i.a.Provider, {
+        value: r
+      }, e( t, n ) ) ) )
+    },
+    ztP5: function ( e, t, n ) {
+      "use strict";
+      const r = ( e, t ) => {
+        const n = e.getItems().catch( e => {
+            console.log( e )
+          } ),
+          r = t.getItems().catch( e => {
+            console.log( e )
+          } ),
+          a = Promise.all( [ n, r ] ).then( ( [ e, t ] ) => {
+            if ( e || t ) {
+              let n = [];
+              return e && ( n = [ ...e ] ), t && ( n = [ ...n, ...t ] ), n
+            }
+            throw new Error( "Failed to get quick insert items." )
+          } );
+        return {
+          getItems: () => a
+        }
+      };
+      var a = n( "Czhu" ),
+        o = n( "ERkP" ),
+        i = n.n( o ),
+        c = n( "lbXe" ),
+        s = n( "U/mW" ),
+        l = n( "3EVl" ),
+        u = n( "hu6Q" ),
+        d = n( "bM1y" );
+      const p = e => ( {
+          children: t,
+          params: n = []
+        } ) => t( e( ...n ) ),
+        f = {
+          DEVELOPMENT: "Development",
+          STAGING: "Staging",
+          PRODUCTION: "Production"
+        },
+        m = ( e, t ) => `${t&&t.name?`By ${t.name} · `:""}${e}`,
+        b = ( e, t = "PRODUCTION" ) => {
+          if ( "PRODUCTION" !== t ) {
+            const n = f[ t ];
+            if ( n ) return `${e} (${n})`
+          }
+          return e
+        },
+        y = e => {
+          const {
+            apolloClient: t,
+            contextIds: n,
+            createAnalyticsEvent: r,
+            localIdGenerator: o
+          } = e, {
+            extensions: i
+          } = Object( l.J )( {
+            client: t,
+            contextIds: n,
+            type: "xen:macro",
+            expandAppOwner: !0
+          } ), c = i ? i.map( ( ( e, t = d.d ) => n => {
+            const r = b( n.properties.title, n.environmentType );
+            return {
+              title: r,
+              description: m( n.properties.description, n.appOwner ),
+              priority: 1 / 0,
+              action: o => {
+                const i = t(),
+                  c = n.id;
+                return e( {
+                  eventType: u.e,
+                  data: {
+                    action: "inserted",
+                    actionSubject: "forgeUIExtension",
+                    actionSubjectId: "editorMacro",
+                    attributes: Object( a.a )( {
+                      localId: i
+                    }, Object( d.e )( c ) )
+                  }
+                } ).fire( l.f ), o( {
+                  type: "extension",
+                  attrs: {
+                    extensionKey: "xen:macro",
+                    extensionType: "com.atlassian.ecosystem",
+                    parameters: {
+                      localId: i,
+                      extensionId: c,
+                      extensionTitle: r
+                    },
+                    text: r + " - Forge Extension"
+                  }
+                } )
+              }
+            }
+          } )( r, o ) ) : [];
+          return [ {
+            getItems: () => Promise.resolve( c )
+          } ]
+        };
+      p( y );
+      var h = n( "l1C2" ),
+        g = n( "HbGN" ),
+        v = n( "3AlC" ),
+        O = n( "WodI" ),
+        x = n( "BOb/" ),
+        E = n( "lSUb" );
+      class j extends Error {
+        constructor( e ) {
+          super( e ), Object.setPrototypeOf( this, j.prototype )
+        }
+      }
+      const I = e => e.reduce( ( e, {
+          props: t
+        } ) => {
+          if ( t )
+            for ( const n of [ "defaultChecked", "defaultSelected" ] )
+              if ( n in t ) return [ ...e, t.value ];
+          return e
+        }, [] ),
+        w = e => e.map( ( {
+          props: e,
+          type: t
+        } ) => {
+          if ( !e ) throw new Error( "Props are undefined on " + t );
+          return {
+            label: e.label,
+            value: e.value
+          }
+        } ),
+        C = {
+          TextField: e => ( {
+            type: "string",
+            name: e.name,
+            label: e.label,
+            description: e.description,
+            defaultValue: e.defaultValue,
+            isRequired: e.isRequired,
+            isHidden: e.isHidden,
+            placeholder: e.placeholder
+          } ),
+          DatePicker: e => ( {
+            type: "date",
+            name: e.name,
+            label: e.label,
+            description: e.description,
+            defaultValue: e.defaultValue,
+            isRequired: e.isRequired,
+            placeholder: e.placeholder
+          } ),
+          Select: ( e, t ) => ( {
+            type: "enum",
+            name: e.name,
+            label: e.label,
+            description: e.description,
+            isRequired: e.isRequired,
+            style: "select",
+            isMultiple: e.isMulti,
+            placeholder: e.placeholder,
+            items: w( t ),
+            defaultValue: I( t )
+          } ),
+          CheckboxGroup: ( e, t ) => ( {
+            type: "enum",
+            name: e.name,
+            label: e.label,
+            description: e.description,
+            isRequired: e.isRequired,
+            style: "checkbox",
+            isMultiple: !0,
+            items: w( t ),
+            defaultValue: I( t )
+          } ),
+          RadioGroup: ( e, t ) => ( {
+            type: "enum",
+            name: e.name,
+            label: e.label,
+            description: e.description,
+            isRequired: e.isRequired,
+            style: "radio",
+            isMultiple: !1,
+            items: w( t ),
+            defaultValue: I( t )[ 0 ]
+          } ),
+          UserPicker: e => ( {
+            type: "user",
+            name: e.name,
+            label: e.label,
+            isMultiple: e.isMulti,
+            isRequired: e.isRequired,
+            options: {
+              provider: {
+                type: "configUserPicker"
+              }
+            },
+            placeholder: e.placeholder,
+            description: e.description,
+            defaultValue: e.defaultValue
+          } ),
+          TextArea: e => ( {
+            type: "string",
+            name: e.name,
+            style: "multiline",
+            label: e.label,
+            placeholder: e.placeholder,
+            description: e.description,
+            isRequired: e.isRequired,
+            defaultValue: e.defaultValue
+          } )
+        },
+        P = e => {
+          const t = e.map( ( {
+              children: e,
+              props: t,
+              type: n
+            } ) => C[ n ] ? C[ n ]( t || {}, e ) : n ),
+            n = t.filter( e => "string" == typeof e );
+          if ( n.length > 0 ) throw new j( ( e => {
+            const t = [ ...new Set( e ) ];
+            return `${1===t.length?"":t.slice(0,-1).join(", ")+" and"} ${t.slice(-1)} components are not supported in macro config`
+          } )( n ) );
+          return t
+        };
+
+      function k( e ) {
+        for ( const {
+            type: t,
+            props: n,
+            children: r
+          } of e.children ) {
+          if ( "ErrorPanel" === t && n ) {
+            const {
+              error: {
+                errorMessage: e,
+                errorDetails: t
+              }
+            } = n;
+            throw new Error( "" + ( e || t || "" ) )
+          }
+          if ( "ThreeLOPrompt" === t ) throw new Error( "For this app to display, you need to press the Allow Access button in the\nmacro to allow the app to access Atlassian products on your behalf." );
+          if ( "MacroConfig" === t ) return P( r )
+        }
+        throw new Error( "<MacroConfig> must be used at the root" )
+      }
+      var A = n( "Ru70" ),
+        R = n( "lXfh" );
+      const {
+        getForgeUIExtensionsAsync: S
+      } = d.n, $ = {
+        16: () => n.e( 101 ).then( n.bind( null, "y0A6" ) ),
+        24: () => n.e( 101 ).then( n.bind( null, "y0A6" ) ),
+        48: () => n.e( 101 ).then( n.bind( null, "y0A6" ) )
+      }, N = e => T( e ), M = async e => ( {
+        guestParams: e
+      } ), T = ( {
+        config: e,
+        guestParams: t
+      } ) => t || e;
+      async function D( {
+        accountId: e,
+        apolloClient: t,
+        cloudId: n,
+        contextIds: r,
+        extensionRefs: o,
+        forgeUIAnalyticsContext: i,
+        metalClientPromise: c,
+        page: s,
+        product: p,
+        analyticsWebClient: f,
+        createRenderFunction: y,
+        startTimeMs: h,
+        destroyMetalClient: g,
+        shouldRenderHostedResources: v,
+        getFieldsDefinitionFunction: O
+      } ) {
+        const {
+          extensions: E,
+          errors: j
+        } = await S( {
+          client: t,
+          contextIds: r,
+          moduleType: "xen:macro",
+          expandAppOwner: !0
+        } ), I = E || [], w = v ? I : I.filter( e => !e.properties.resource ), C = async ( {
+          extensionId: e,
+          localId: t
+        }, n ) => {
+          if ( w.find( ( {
+              id: t,
+              properties: n
+            } ) => t === e && !!n.config && !!n.config.function ) ) return await n.editInContextPanel( N, M );
+          const r = `${e}-${t}`,
+            a = o.get( r );
+          return a ? await a.openConfig() : void 0
+        }, P = {
+          user: {
+            configUserPicker: {
+              provider: async () => ( {
+                siteId: n,
+                principalId: e || "Context",
+                fieldId: "forgeConfigUserPicker",
+                productKey: p
+              } )
+            }
+          }
+        }, k = w.filter( ( {
+          id: e
+        } ) => void 0 !== Object( R.parse )( e ).resourceId ).map( e => {
+          const {
+            id: t,
+            properties: n,
+            environmentType: r,
+            appOwner: o
+          } = e, c = b( n.title || "Forge UI Macro", r ), s = m( n.description || "", o ), p = Object( R.parse )( t ).resourceId;
+          return {
+            title: c,
+            description: s,
+            type: "com.atlassian.ecosystem",
+            key: p,
+            icons: $,
+            modules: {
+              quickInsert: [ {
+                key: "forge-macro",
+                action: async () => {
+                  const e = Object( d.d )(),
+                    n = t;
+                  return f && Object( l.I )( f )( Object( a.a )( Object( a.a )( {
+                    eventType: u.e,
+                    action: "inserted",
+                    actionSubject: "forgeUIExtension",
+                    actionSubjectId: "editorMacro",
+                    source: "editPageScreen"
+                  }, i ), {}, {
+                    attributes: Object( a.a )( {
+                      localId: e
+                    }, Object( d.e )( n ) )
+                  } ) ), {
+                    type: "extension",
+                    attrs: {
+                      extensionKey: p,
+                      extensionType: "com.atlassian.ecosystem",
+                      parameters: {
+                        localId: e,
+                        extensionId: n,
+                        extensionTitle: c
+                      },
+                      text: c
+                    }
+                  }
+                }
+              } ],
+              nodes: {
+                default: {
+                  type: "extension",
+                  render: () => y( e ),
+                  update: C,
+                  getFieldsDefinition: O
+                }
+              },
+              fields: P
+            }
+          }
+        } ), T = {
+          title: "Forge UI Macro",
+          description: "Supports existing Forge UI Macro nodes",
+          type: "com.atlassian.ecosystem",
+          key: "xen:macro",
+          icons: $,
+          modules: {
+            nodes: {
+              default: {
+                type: "extension",
+                render: y,
+                update: C,
+                getFieldsDefinition: O
+              }
+            },
+            fields: P
+          }
+        }, D = performance.now();
+        return Promise.resolve( c ).then( e => {
+          if ( E && e.metric.submit( {
+              component: "getForgeExtensionProvider",
+              page: s,
+              name: x.a.performance.COMPONENT_READY,
+              value: D - h
+            } ), !E && j ) {
+            const t = j.find( e => Object( l.A )( e ) || Object( l.z )( e ) );
+            e.error.submit( {
+              component: "getForgeExtensionProvider",
+              page: s,
+              name: t ? Object( l.A )( t ) ? x.a.error.COMPONENT_API : x.a.error.COMPONENT_GRAPHQL : x.a.error.UNCAUGHT
+            } )
+          }
+          g()
+        } ), new A.a( [ T, ...k ] )
+      }
+      var L = n( "06eB" ),
+        F = n.n( L );
+      const U = Object( E.default )( e => ( {
+          providerFactory: e
+        } ) ),
+        V = ( {
+          config: e,
+          guestParams: t
+        } ) => t || e;
+      var _ = Object( E.default )( ( async function ( e, t, n, r, o, c, s = {}, d, p, f = {}, m = !1 ) {
+          const b = performance.now(),
+            y = new Map,
+            [ h, g ] = Object( l.v )( r, o ),
+            v = ( e, t ) => {
+              const n = `${t.parameters.extensionId}-${t.parameters.localId}`;
+              e ? y.set( n, e ) : y.delete( n )
+            };
+          return await D( {
+            accountId: s.accountId,
+            cloudId: s.cloudId || "",
+            apolloClient: e,
+            contextIds: t,
+            extensionRefs: y,
+            forgeUIAnalyticsContext: f,
+            metalClientPromise: h,
+            page: c,
+            product: o,
+            analyticsWebClient: p,
+            createRenderFunction: async l => function ( {
+              apolloClient: e,
+              contextIds: t,
+              environment: n,
+              extension: r,
+              forgeContext: o,
+              isEditing: c,
+              page: s,
+              product: l,
+              productDataContext: u,
+              setExtensionRef: d
+            } ) {
+              return Object( E.default )( ( {
+                node: p
+              } ) => i.a.createElement( G, {
+                apolloClient: e,
+                contextIds: t,
+                environment: n,
+                extension: Object( a.a )( Object( a.a )( {}, p ), {}, {
+                  parameters: Object( a.a )( Object( a.a )( {}, p.parameters ), {}, {
+                    extensionTitle: null == r ? void 0 : r.properties.title,
+                    extension: r
+                  } )
+                } ),
+                forgeContext: o,
+                isEditing: c,
+                product: l,
+                productDataContext: u,
+                page: s,
+                setExtensionRef: d
+              } ), F.a )
+            }( {
+              apolloClient: e,
+              contextIds: t,
+              isEditing: !!d,
+              productDataContext: U( n ),
+              setExtensionRef: v,
+              environment: r,
+              extension: l,
+              product: o,
+              page: c,
+              forgeContext: s
+            } ),
+            startTimeMs: b,
+            destroyMetalClient: g,
+            shouldRenderHostedResources: m,
+            getFieldsDefinitionFunction: async n => {
+              const {
+                extensionId: r,
+                localId: o
+              } = n, i = V( n );
+              try {
+                const n = Object( l.u )( {
+                    contextIds: t,
+                    extensionId: r,
+                    localId: o,
+                    functionId: "config"
+                  }, {
+                    effects: [ {
+                      type: "initialize"
+                    } ],
+                    state: {},
+                    config: i,
+                    context: Object( a.a )( {
+                      isConfig: !0
+                    }, s )
+                  } ),
+                  c = await e.mutate( {
+                    mutation: l.y,
+                    variables: {
+                      input: n
+                    }
+                  } ),
+                  u = Object( l.x )( c, e => {
+                    throw new l.a( e )
+                  } )[ 0 ];
+                return k( "result" === u.type ? u.forgeDoc : u.aux )
+              } catch ( d ) {
+                const {
+                  name: e,
+                  message: t
+                } = d;
+                throw d instanceof j || ( Promise.resolve( h ).then( e => {
+                  e.error.submit( {
+                    component: "getForgeExtensionProvider",
+                    page: c,
+                    name: x.a.error.COMPONENT_API
+                  } )
+                } ), p && Object( l.I )( p )( {
+                  eventType: u.e,
+                  action: "errored",
+                  actionSubject: "forgeUIExtension",
+                  actionSubjectId: "editorMacro",
+                  source: "editPageScreen",
+                  attributes: {
+                    errorName: e,
+                    errorMessage: t
+                  }
+                } ) ), new Error( t || "" )
+              }
+            }
+          } )
+        } ) ),
+        z = n( "BMbf" );
+      const {
+        ForgeUIExtensionProvider: B
+      } = d.m, {
+        ForgeUIExtension: K
+      } = d.n, q = Object( z.h )();
+      var H = {
+        name: "15q9084",
+        styles: "background:transparent;cursor:not-allowed;left:0;position:absolute;height:100%;top:0;width:100%;z-index:1;"
+      };
+      const W = ( {
+        environment: e,
+        product: t,
+        page: n,
+        forgeContext: r,
+        apolloClient: i,
+        contextIds: c,
+        productDataContext: s,
+        extension: u,
+        setExtensionRef: d,
+        isEditing: p
+      } ) => {
+        var f;
+        const {
+          localId: m,
+          extensionId: b,
+          extension: y,
+          extensionTitle: x
+        } = u.parameters, E = V( u.parameters ), j = Boolean( null == y || null === ( f = y.properties ) || void 0 === f ? void 0 : f.resource ), [ {
+          isConfigOpen: I,
+          onConfigSubmit: w,
+          onConfigClose: C,
+          config: P
+        }, k ] = Object( o.useState )( {
+          isConfigOpen: !1,
+          onConfigSubmit: () => {},
+          onConfigClose: () => {},
+          config: E
+        } );
+        Object( o.useEffect )( () => {
+          const e = u.parameters,
+            {
+              extension: t
+            } = e,
+            n = Object( g.a )( e, [ "extension" ] );
+          return d( {
+            openConfig: () => new Promise( ( e, t ) => {
+              k( {
+                isConfigOpen: !0,
+                onConfigSubmit: e,
+                onConfigClose: t,
+                config: P
+              } )
+            } ).then( e => ( k( t => Object( a.a )( Object( a.a )( {}, t ), {}, {
+              isConfigOpen: !1,
+              config: e
+            } ) ), Object( a.a )( Object( a.a )( {}, n ), {}, {
+              config: e
+            } ) ) ).catch( () => {
+              k( e => Object( a.a )( Object( a.a )( {}, e ), {}, {
+                isConfigOpen: !1,
+                config: P
+              } ) )
+            } )
+          }, u ), () => d( void 0, u )
+        }, [ P, u, d ] ), Object( o.useEffect )( () => {
+          k( e => Object( a.a )( Object( a.a )( {}, e ), {}, {
+            config: E
+          } ) )
+        }, [ E ] );
+        const A = Object( o.useMemo )( () => Object( a.a )( Object( a.a )( {}, r ), {}, {
+            isConfig: I
+          } ), [ r, I ] ),
+          R = Object( o.useMemo )( () => {
+            const {
+              accountId: e,
+              cloudId: t
+            } = r, n = Object( g.a )( r, [ "accountId", "cloudId" ] );
+            return Object( a.a )( {}, n )
+          }, [ r ] ),
+          S = Object( a.a )( Object( a.a )( {}, l.c ), {}, {
+            ConfigForm: Object( v.b )( ( {
+              dispatch: e,
+              render: t,
+              renderChildren: n,
+              Components: r,
+              children: a
+            } ) => Object( h.f )( l.b, {
+              onConfigSubmit: w,
+              onConfigClose: C
+            }, n( {
+              render: t,
+              Components: r,
+              children: a,
+              dispatch: e
+            } ) ), [ w, C ] )
+          } ),
+          $ = {
+            id: b,
+            properties: {
+              title: x
+            }
+          },
+          N = {
+            small: "112px",
+            medium: "262px",
+            default: "262px",
+            large: "524px",
+            xlarge: "1048px"
+          };
+        return Object( h.f )( "div", {
+          "data-testid": "ForgeExtensionContainer",
+          css: Object( h.e )( "background:", p ? "white" : "transparent", ";padding:", p ? q + "px" : 0, ";position:relative;" )
+        }, y && j ? Object( h.f )( l.d.Provider, {
+          value: e
+        }, Object( h.f )( O.a, {
+          apolloClient: i,
+          contextIds: c,
+          extension: y,
+          coreData: {
+            cloudId: A.cloudId,
+            localId: null != m ? m : u.extensionKey
+          },
+          extensionData: Object( a.a )( Object( a.a )( {}, R ), {}, {
+            config: P
+          } ),
+          height: ( M = y.properties.viewportSize, N[ null != M ? M : "default" ] )
+        } ) ) : Object( h.f )( B, {
+          value: {
+            environment: e,
+            product: t,
+            page: n,
+            forgeContext: A,
+            client: i,
+            contextIds: c,
+            allowedUIComponents: S,
+            productData: s,
+            id: m || u.extensionKey
+          }
+        }, Object( h.f )( K, {
+          extension: $,
+          localId: m,
+          config: P
+        } ) ), p && Object( h.f )( "div", {
+          "data-testid": "GlassPane",
+          css: H
+        } ) );
+        var M
+      };
+      var G = e => {
+        const {
+          extension: t
+        } = e, n = t.parameters && t.parameters.localId;
+        return Object( h.f )( o.Suspense, {
+          fallback: null
+        }, Object( h.f )( s.a, {
+          data: {
+            forgeUIAttributes: Object( a.a )( {
+              localId: n
+            }, Object( d.e )( t.parameters && t.parameters.extensionId ) )
+          }
+        }, Object( h.f )( l.m, {
+          value: {
+            environment: e.environment,
+            product: e.product,
+            page: e.page,
+            id: n || ""
+          }
+        }, Object( h.f )( l.g, null, Object( h.f )( W, e ) ) ) ) )
+      };
+      const J = ( {
+          apolloClient: e,
+          contextIds: t,
+          isEditing: n,
+          forgeContext: r,
+          productDataContext: a,
+          product: i,
+          page: c,
+          environment: s
+        } ) => {
+          const l = Object( o.useRef )( new Map );
+          return [ {
+            "com.atlassian.ecosystem": {
+              render: o => Object( h.f )( G, {
+                environment: s,
+                product: i,
+                page: c,
+                forgeContext: r,
+                apolloClient: e,
+                contextIds: t,
+                productDataContext: a,
+                extension: o,
+                isEditing: n,
+                setExtensionRef: e => {
+                  const t = `${o.parameters.extensionId}-${o.parameters.localId}`,
+                    n = l.current.get( t ) || [];
+                  if ( e ) l.current.set( t, [ ...n, e ] );
+                  else {
+                    const [ , ...e ] = n;
+                    e.length ? l.current.set( t, e ) : l.current.delete( t )
+                  }
+                }
+              } ),
+              update: e => {
+                const t = `${e.extensionId}-${e.localId}`,
+                  n = l.current.get( t ) || [],
+                  r = n[ n.length - 1 ];
+                return r ? r.openConfig() : Promise.resolve()
+              }
+            }
+          } ]
+        },
+        Y = ( p( J ), Object( c.a )()( e => {
+          const {
+            apolloClient: t,
+            contextIds: n,
+            children: r,
+            localIdGenerator: a,
+            forgeContext: i,
+            createAnalyticsEvent: c,
+            mentionProvider: s,
+            environment: l,
+            page: u,
+            product: d
+          } = e, p = Object( o.useMemo )( () => ( {
+            mentionProvider: s
+          } ), [ s ] ), [ f ] = y( {
+            contextIds: n,
+            apolloClient: t,
+            localIdGenerator: a,
+            createAnalyticsEvent: c
+          } ), [ m ] = J( {
+            apolloClient: t,
+            contextIds: n,
+            isEditing: !0,
+            forgeContext: i,
+            productDataContext: p,
+            environment: l,
+            product: d,
+            page: u
+          } );
+          return r( {
+            extensionHandlers: m,
+            quickInsertProvider: f
+          } )
+        } ) );
+
+      function X( e ) {
+        const {
+          analyticsWebClient: t,
+          forgeUIAnalyticsContext: n = {},
+          page: r
+        } = e;
+        return i.a.createElement( l.m, {
+          value: {
+            environment: e.environment,
+            product: e.product,
+            page: e.page
+          }
+        }, i.a.createElement( l.h, {
+          client: t
+        }, i.a.createElement( s.a, {
+          data: {
+            forgeUIAnalyticsContext: Object( a.a )( {
+              source: r
+            }, n )
+          }
+        }, i.a.createElement( Y, e ) ) ) )
+      }
+      n( "fvFX" );
+      const Q = Object( z.h )();
+      var Z = {
+        name: "15q9084",
+        styles: "background:transparent;cursor:not-allowed;left:0;position:absolute;height:100%;top:0;width:100%;z-index:1;"
+      };
+      const ee = ( {
+        apolloClient: e,
+        contextIds: t,
+        cloudId: n,
+        environment: r,
+        extensionData: i,
+        accountId: c,
+        productDataContext: s,
+        extension: u,
+        setExtensionRef: p,
+        isEditing: f
+      } ) => {
+        var m;
+        const {
+          localId: b,
+          extension: y,
+          extensionId: v,
+          extensionTitle: x
+        } = u.parameters, E = V( u.parameters ), j = Boolean( null == y || null === ( m = y.properties ) || void 0 === m ? void 0 : m.resource ), [ {
+          isConfigOpen: I,
+          config: w,
+          onConfigSubmit: C,
+          onConfigClose: P
+        }, k ] = Object( o.useState )( {
+          isConfigOpen: !1,
+          onConfigSubmit: () => {},
+          onConfigClose: () => {},
+          config: E
+        } );
+        Object( o.useEffect )( () => {
+          const e = u.parameters,
+            {
+              extension: t
+            } = e,
+            n = Object( g.a )( e, [ "extension" ] );
+          return p( {
+            openConfig: () => new Promise( ( e, t ) => {
+              k( {
+                isConfigOpen: !0,
+                onConfigSubmit: e,
+                onConfigClose: t,
+                config: w
+              } )
+            } ).then( e => ( k( t => Object( a.a )( Object( a.a )( {}, t ), {}, {
+              isConfigOpen: !1,
+              config: e
+            } ) ), Object( a.a )( Object( a.a )( {}, n ), {}, {
+              config: e
+            } ) ) ).catch( () => {
+              k( e => Object( a.a )( Object( a.a )( {}, e ), {}, {
+                isConfigOpen: !1,
+                config: w
+              } ) )
+            } )
+          }, u ), () => p( void 0, u )
+        }, [ w, u, p ] ), Object( o.useEffect )( () => {
+          k( e => Object( a.a )( Object( a.a )( {}, e ), {}, {
+            config: E
+          } ) )
+        }, [ E ] );
+        const A = {
+            localId: b,
+            cloudId: n
+          },
+          [ R, {
+            forgeDoc: S,
+            error: $,
+            loading: N
+          } ] = Object( l.M )( {
+            apolloClient: e,
+            contextIds: t,
+            extensionId: v,
+            coreData: A
+          } ),
+          M = function ( e ) {
+            const t = Object( o.useRef )( e );
+            return F()( t.current, e ) || ( t.current = e ), t.current
+          }( i );
+        Object( o.useEffect )( () => {
+          j || R( {
+            type: "render",
+            extensionData: Object( a.a )( Object( a.a )( {}, M ), {}, {
+              isConfig: I,
+              config: w
+            } )
+          } )
+        }, [ R, w, I, M, j ] );
+        const T = {
+          small: "112px",
+          medium: "262px",
+          default: "262px",
+          large: "524px",
+          xlarge: "1048px"
+        };
+        return Object( h.f )( "div", {
+          "data-testid": "ForgeExtensionContainer",
+          css: Object( h.e )( "background:", f ? "white" : "transparent", ";padding:", f ? Q + "px" : 0, ";position:relative;" )
+        }, j ? Object( h.f )( l.d.Provider, {
+          value: r
+        }, Object( h.f )( O.a, {
+          apolloClient: e,
+          contextIds: t,
+          extension: y,
+          coreData: A,
+          extensionData: Object( a.a )( Object( a.a )( {}, i ), {}, {
+            config: w
+          } ),
+          height: ( D = y.properties.viewportSize, T[ null != D ? D : "default" ] )
+        } ) ) : Object( h.f )( l.p, {
+          forgeDoc: S,
+          loading: N,
+          error: $,
+          dispatch: e => R( Object( a.a )( Object( a.a )( {}, e ), {}, {
+            extensionData: Object( a.a )( Object( a.a )( {}, i ), {}, {
+              isConfig: I,
+              config: w
+            } )
+          } ) ),
+          components: t => Object( a.a )( Object( a.a )( {}, t ), {}, {
+            Avatar: Object( l.B )( {
+              client: e
+            } ),
+            AvatarStack: Object( l.C )( {
+              client: e
+            } ),
+            ThreeLOPrompt: Object( d.k )( {
+              appName: x
+            } ),
+            ConfigForm: ( {
+              forgeDoc: e,
+              render: t
+            } ) => Object( h.f )( l.b, {
+              onConfigSubmit: C,
+              onConfigClose: P
+            }, e.children.map( t ) ),
+            UserPicker: Object( l.H )( {
+              client: e,
+              mentionProvider: s.mentionProvider,
+              accountId: c,
+              cloudId: n,
+              productKey: "confluence"
+            } )
+          } )
+        } ), f && Object( h.f )( "div", {
+          "data-testid": "GlassPane",
+          css: Z
+        } ) );
+        var D
+      };
+      var te = e => {
+        const {
+          extension: t
+        } = e, n = t.parameters && t.parameters.localId;
+        return Object( h.f )( o.Suspense, {
+          fallback: null
+        }, Object( h.f )( s.a, {
+          data: {
+            forgeUIAttributes: Object( a.a )( {
+              localId: n
+            }, Object( d.e )( t.parameters && t.parameters.extensionId ) )
+          }
+        }, Object( h.f )( l.m, {
+          value: {
+            environment: e.environment,
+            product: e.product,
+            page: e.page
+          }
+        }, Object( h.f )( l.g, null, Object( h.f )( ee, e ) ) ) ) )
+      };
+      const ne = ( {
+        accountId: e,
+        apolloClient: t,
+        cloudId: n,
+        contextIds: r,
+        extensionData: a,
+        isEditing: i,
+        productDataContext: c,
+        product: s,
+        page: l,
+        environment: u
+      } ) => {
+        const d = Object( o.useRef )( new Map );
+        return [ {
+          "com.atlassian.ecosystem": {
+            render: o => Object( h.f )( te, {
+              environment: u,
+              product: s,
+              page: l,
+              cloudId: n,
+              accountId: e || "",
+              extensionData: a,
+              apolloClient: t,
+              contextIds: r,
+              productDataContext: c,
+              extension: o,
+              isEditing: i,
+              setExtensionRef: e => {
+                const t = `${o.parameters.extensionId}-${o.parameters.localId}`,
+                  n = d.current.get( t ) || [];
+                if ( e ) d.current.set( t, [ ...n, e ] );
+                else {
+                  const [ , ...e ] = n;
+                  e.length ? d.current.set( t, e ) : d.current.delete( t )
+                }
+              }
+            } ),
+            update: async e => {
+              const t = `${e.extensionId}-${e.localId}`,
+                n = d.current.get( t ) || [],
+                r = n[ n.length - 1 ];
+              if ( r ) return r.openConfig()
+            }
+          }
+        } ]
+      };
+      Object( c.a )()( e => {
+        const {
+          accountId: t,
+          cloudId: n,
+          apolloClient: r,
+          contextIds: a,
+          children: i,
+          localIdGenerator: c,
+          extensionData: s,
+          createAnalyticsEvent: l,
+          mentionProvider: u,
+          environment: d,
+          page: p,
+          product: f
+        } = e, m = Object( o.useMemo )( () => ( {
+          mentionProvider: u
+        } ), [ u ] ), [ b ] = y( {
+          contextIds: a,
+          apolloClient: r,
+          localIdGenerator: c,
+          createAnalyticsEvent: l
+        } ), [ h ] = ne( {
+          accountId: t,
+          cloudId: n,
+          apolloClient: r,
+          contextIds: a,
+          extensionData: s,
+          isEditing: !0,
+          productDataContext: m,
+          environment: d,
+          product: f,
+          page: p
+        } );
+        return i( {
+          extensionHandlers: h,
+          quickInsertProvider: b
+        } )
+      } );
+
+      function re( e ) {
+        const {
+          analyticsWebClient: t,
+          apolloClient: n,
+          contextIds: r,
+          children: c,
+          dataProviders: u,
+          forgeContext: d,
+          forgeUIAnalyticsContext: p = {},
+          environment: f,
+          product: m,
+          page: b
+        } = e, y = Object( o.useMemo )( () => ( {
+          providerFactory: u
+        } ), [ u ] ), [ h ] = J( {
+          apolloClient: n,
+          contextIds: r,
+          isEditing: !1,
+          forgeContext: d,
+          product: m,
+          page: b,
+          environment: f,
+          productDataContext: y
+        } );
+        return i.a.createElement( l.h, {
+          client: t
+        }, i.a.createElement( s.a, {
+          data: {
+            forgeUIAnalyticsContext: Object( a.a )( {
+              source: b
+            }, p )
+          }
+        }, c( {
+          extensionHandlers: h
+        } ) ) )
+      }
+      const ae = Object( E.default )( e => ( {
+        providerFactory: e
+      } ) );
+      Object( E.default )( ( async function ( {
+        accountId: e,
+        cloudId: t,
+        apolloClient: n,
+        contextIds: r,
+        dataProviders: o,
+        environment: c,
+        product: s,
+        page: d,
+        isEditing: p,
+        analyticsWebClient: f,
+        forgeUIAnalyticsContext: m = {},
+        extensionData: b,
+        shouldRenderHostedResources: y = !1
+      } ) {
+        const h = performance.now(),
+          g = new Map,
+          [ v, O ] = Object( l.v )( c, s ),
+          I = ( e, t ) => {
+            const n = `${t.parameters.extensionId}-${t.parameters.localId}`;
+            e ? g.set( n, e ) : g.delete( n )
+          };
+        return await D( {
+          accountId: e,
+          apolloClient: n,
+          cloudId: t,
+          contextIds: r,
+          extensionRefs: g,
+          forgeUIAnalyticsContext: m,
+          metalClientPromise: v,
+          page: d,
+          product: s,
+          analyticsWebClient: f,
+          createRenderFunction: async l => ( ( {
+            accountId: e,
+            apolloClient: t,
+            cloudId: n,
+            contextIds: r,
+            environment: o,
+            extension: c,
+            extensionData: s,
+            isEditing: l,
+            page: u,
+            product: d,
+            productDataContext: p,
+            setExtensionRef: f
+          } ) => Object( E.default )( ( {
+            node: m
+          } ) => i.a.createElement( te, {
+            accountId: e || "",
+            apolloClient: t,
+            cloudId: n,
+            contextIds: r,
+            environment: o,
+            extension: Object( a.a )( Object( a.a )( {}, m ), {}, {
+              parameters: Object( a.a )( Object( a.a )( {}, m.parameters ), {}, {
+                extensionTitle: null == c ? void 0 : c.properties.title,
+                extension: c
+              } )
+            } ),
+            extensionData: s,
+            isEditing: l,
+            product: d,
+            productDataContext: p,
+            page: u,
+            setExtensionRef: f
+          } ), F.a ) )( {
+            accountId: e,
+            cloudId: t,
+            extension: l,
+            extensionData: b,
+            apolloClient: n,
+            contextIds: r,
+            isEditing: Boolean( p ),
+            productDataContext: ae( o ),
+            setExtensionRef: I,
+            environment: c,
+            product: s,
+            page: d
+          } ),
+          startTimeMs: h,
+          destroyMetalClient: O,
+          shouldRenderHostedResources: y,
+          getFieldsDefinitionFunction: async o => {
+            const {
+              extensionId: i,
+              localId: c
+            } = o, s = ( ( {
+              config: e,
+              guestParams: t
+            } ) => t || e )( o );
+            try {
+              const o = Object( l.u )( {
+                  contextIds: r,
+                  extensionId: i,
+                  localId: c,
+                  functionId: "config"
+                }, {
+                  effects: [ {
+                    type: "initialize"
+                  } ],
+                  state: {},
+                  config: s,
+                  context: Object( a.a )( {
+                    cloudId: t,
+                    accountId: e,
+                    isConfig: !0
+                  }, b )
+                } ),
+                u = await n.mutate( {
+                  mutation: l.y,
+                  variables: {
+                    input: o
+                  }
+                } ),
+                d = Object( l.x )( u, e => {
+                  throw new l.a( e )
+                } )[ 0 ];
+              return k( "result" === d.type ? d.forgeDoc : d.aux )
+            } catch ( p ) {
+              const {
+                name: e,
+                message: t
+              } = p;
+              throw p instanceof j || ( Promise.resolve( v ).then( e => {
+                e.error.submit( {
+                  component: "getForgeExtensionProvider",
+                  page: d,
+                  name: x.a.error.COMPONENT_API
+                } )
+              } ), f && Object( l.I )( f )( {
+                eventType: u.e,
+                action: "errored",
+                actionSubject: "forgeUIExtension",
+                actionSubjectId: "editorMacro",
+                source: "editPageScreen",
+                attributes: {
+                  errorName: e,
+                  errorMessage: t
+                }
+              } ) ), new Error( t || "" )
+            }
+          }
+        } )
+      } ) );
+      var oe = n( "jyMV" );
+      n.d( t, "e", ( function () {
+        return r
+      } ) ), n.d( t, "a", ( function () {
+        return X
+      } ) ), n.d( t, "b", ( function () {
+        return re
+      } ) ), n.d( t, "d", ( function () {
+        return _
+      } ) ), n.d( t, "c", ( function () {
+        return oe.c
+      } ) )
+    }
+  }
+] );
+//# sourceMappingURL=67.Uft3zQy746.js.map

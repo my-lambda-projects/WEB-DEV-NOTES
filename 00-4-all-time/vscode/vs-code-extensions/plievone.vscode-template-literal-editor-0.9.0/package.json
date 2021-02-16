@@ -1,0 +1,169 @@
+{
+	"name": "vscode-template-literal-editor",
+	"displayName": "Template Literal Editor",
+	"version": "0.9.0",
+	"description": "Use Ctrl+Enter to open ES6 template literals and other configured multi-line strings or heredocs in any language in a synced editor, with language support (HTML, CSS, SQL, shell, markdown etc).",
+	"keywords": [
+		"highlight",
+		"syntax",
+		"literal",
+		"heredoc",
+		"TypeScript",
+		"JavaScript",
+		"HTML",
+		"CSS",
+		"SQL",
+		"CoffeeScript",
+		"C++",
+		"cpp",
+		"C#",
+		"csharp",
+		"D",
+		"Dart",
+		"Eiffel",
+		"Elixir",
+		"Elm",
+		"Erlang",
+		"F#",
+		"fsharp",
+		"Go",
+		"Groovy",
+		"JSON",
+		"Julia",
+		"Kotlin",
+		"Lua",
+		"Markdown",
+		"Nim",
+		"Objective-C++",
+		"objective-cpp",
+		"OCaml",
+		"Perl",
+		"PHP",
+		"PowerShell",
+		"Python",
+		"R",
+		"Racket",
+		"Razor",
+		"Ruby",
+		"Rust",
+		"Scala",
+		"Shell Script (Bash)",
+		"shellscript",
+		"Visual Basic",
+		"VB",
+		"XML"
+	],
+	"icon": "icon.png",
+	"publisher": "plievone",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/plievone/vscode-template-literal-editor.git"
+	},
+	"engines": {
+		"vscode": "^1.11.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:editor.openSubdocument"
+	],
+	"main": "./lib/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "editor.openSubdocument",
+				"title": "Template Literal Editor: Open Literal String as a Subdocument"
+			},
+			{
+				"command": "editor.closeSubdocuments",
+				"title": "Template Literal Editor: Close All Subdocuments"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "editor.openSubdocument",
+				"key": "ctrl+enter",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "editor.closeSubdocuments",
+				"key": "ctrl+shift+backspace",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Template Literal Editor configuration",
+			"properties": {
+				"templateLiteralEditor.regexes": {
+					"type": "object",
+					"default": {
+						"coffeescript": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"cpp": "(R\"\\()([\\s\\S]*?)(\\)\")",
+						"csharp": "(@\")([^\"]*(?:\"\"[^\"]*)*)(\")",
+						"d": "(`)([\\s\\S]*?)(`)",
+						"dart": "(''')([\\s\\S]*?)(''')",
+						"eiffel": "(\"\\[)([\\s\\S]*?)(\\]\")",
+						"elixir": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"elm": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"erlang": "(\")([^\"\\\\]*(?:\\\\[\\s\\S][^\"\\\\]*)*)(\")",
+						"fsharp": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"go": "(`)([\\s\\S]*?)(`)",
+						"groovy": "(''')([\\s\\S]*?)(''')",
+						"html": "(`)([\\s\\S]*?)(`)",
+						"javascriptreact": "(`)([\\s\\S]*?)(`)",
+						"julia": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"kotlin": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"lua": "(\\[\\[)([\\s\\S]*?)(\\]\\])",
+						"markdown": "(```.*)([\\s\\S]*?)(```)",
+						"nim": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"objective-cpp": "(R\"\\()([\\s\\S]*?)(\\)\")",
+						"ocaml": "(\")([^\"\\\\]*(?:\\\\[\\s\\S][^\"\\\\]*)*)(\")",
+						"perl": "(<<['\"]?EOF['\"]?)([\\s\\S]*?)(EOF)",
+						"perl6": "(:(to|heredoc)(:c)?[[/\"]EOF[[/\"];)([\\s\\S]*?)(EOF)",
+						"php": "(<<<['\"]?EOD['\"]?)([\\s\\S]*?)(EOD)",
+						"powershell": "(@\")([\\s\\S]*?)(\"@)",
+						"python": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"r": "(')([^'\\\\]*(?:\\\\[\\s\\S][^'\\\\]*)*)(')",
+						"racket": "(#<<EOF)([\\s\\S]*?)(EOF)",
+						"razor": "(@\")([\\s\\S]*?)(\")",
+						"ruby": "(<<EOF-?)([\\s\\S]*?)(EOF)",
+						"rust": "(r#\")([\\s\\S]*?)(\"#)",
+						"scala": "(\"\"\")([\\s\\S]*?)(\"\"\")",
+						"shellscript": "(<< ?['\"]?EOF['\"]?)([\\s\\S]*?)(EOF)",
+						"typescriptreact": "(`)([\\s\\S]*?)(`)",
+						"vb": "(\")([^\"]*(?:\"\"[^\"]*)*)(\")",
+						"vue": "(`)([\\s\\S]*?)(`)"
+					},
+					"description": "Language-specific regular expressions for capturing template literals or other multi-line strings for editing. Each regexp must be in an escaped string form and must provide exactly three capture groups without gaps: begin, content, end. JavaScript and TypeScript default to language parsing instead of regexp matching, so only define javascript and typescript when you have a specific need.",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"dev": "tsc -w -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"dependencies": {
+		"lodash.throttle": "4.1.1",
+		"typescript": "^2.8.1"
+	},
+	"devDependencies": {
+		"@types/lodash.throttle": "^4.1.3",
+		"@types/node": "^8.10.3",
+		"vscode": "^1.1.14"
+	},
+	"__metadata": {
+		"id": "460a5a36-9212-4926-82dd-4df22f9319b6",
+		"publisherId": "a2986fc5-c0e4-411b-96d4-1994d641bf47",
+		"publisherDisplayName": "plievone"
+	}
+}

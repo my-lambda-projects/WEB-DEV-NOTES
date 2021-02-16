@@ -1,0 +1,7 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-image-attributes:image-attributes', location = 'js/image-attributes-panel.js' */
+define("confluence-image-attributes/image-attributes-panel",["jquery","ajs","confluence/templates","confluence/legacy-editor-global-AVOID-IF-POSSIBLE"],function(f,h,i,j){return function(){function k(){var a=c.val();d.attr({"data-element-title":a,title:l(d.attr("data-location"),a),alt:e.val()})}function l(a,b){return a&&0<a.length&&b&&0<b.length?a+" ("+b+")":a&&0<a.length?a:b&&0<b.length?"("+b+")":""}h.bind("dialog-created.image-properties",function(a,b){d=f(b.img);var g=f(i.Editor.ImageAttributes.content({imgTitle:d.attr("data-element-title"),
+imgAlt:d.attr("alt")}));c=g.find("#image-title-attribute");e=g.find("#image-alt-attribute");c.val()===e.val()&&(c.bind("input.chained",function(){e.val(c.val())}),e.on("change",function(){c.unbind("input.chained")}));j.ImageProps.registerPanel(m,g,n,k)});var m="image-attributes",n="image-attributes-panel",d,c,e}});require("confluence/module-exporter").safeRequire("confluence-image-attributes/image-attributes-panel",function(f){require("ajs").toInit(f)});
+}catch(e){WRMCB(e)};

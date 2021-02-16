@@ -1,0 +1,57 @@
+<h1 id="model-querying---finders">Model Querying - Finders</h1>
+<p>Finder methods are the ones that generate <code>SELECT</code> queries.</p>
+<p>By default, the results of all finder methods are instances of the model class (as opposed to being just plain JavaScript objects). This means that after the database returns the results, Sequelize automatically wraps everything in proper instance objects. In a few cases, when there are too many results, this wrapping can be inefficient. To disable this wrapping and receive a plain response instead, pass <code>{ raw: true }</code> as an option to the finder method.</p>
+<h2 id="findall"><code>findAll</code></h2>
+<p>The <code>findAll</code> method is already known from the previous tutorial. It generates a standard <code>SELECT</code> query which will retrieve all entries from the table (unless restricted by something like a <code>where</code> clause, for example).</p>
+<h2 id="findbypk"><code>findByPk</code></h2>
+<p>The <code>findByPk</code> method obtains only a single entry from the table, using the provided primary key.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> project <span class="op">=</span> <span class="cf">await</span> <span class="va">Project</span>.<span class="at">findByPk</span>(<span class="dv">123</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="cf">if</span> (project <span class="op">===</span> <span class="kw">null</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Not found!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(project <span class="kw">instanceof</span> Project)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co">// Its primary key is 123</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="op">}</span></a></code></pre></div>
+<h2 id="findone"><code>findOne</code></h2>
+<p>The <code>findOne</code> method obtains the first entry it finds (that fulfills the optional query options, if provided).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> project <span class="op">=</span> <span class="cf">await</span> <span class="va">Project</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;My Title&#39;</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="cf">if</span> (project <span class="op">===</span> <span class="kw">null</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Not found!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(project <span class="kw">instanceof</span> Project)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">project</span>.<span class="at">title</span>)<span class="op">;</span> <span class="co">// &#39;My Title&#39;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span></a></code></pre></div>
+<h2 id="findorcreate"><code>findOrCreate</code></h2>
+<p>The method <code>findOrCreate</code> will create an entry in the table unless it can find one fulfilling the query options. In both cases, it will return an instance (either the found instance or the created instance) and a boolean indicating whether that instance was created or already existed.</p>
+<p>The <code>where</code> option is considered for finding the entry, and the <code>defaults</code> option is used to define what must be created in case nothing was found. If the <code>defaults</code> do not contain values for every column, Sequelize will take the values given to <code>where</code> (if present).</p>
+<p>Let’s assume we have an empty database with a <code>User</code> model which has a <code>username</code> and a <code>job</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> [user<span class="op">,</span> created] <span class="op">=</span> <span class="cf">await</span> <span class="va">User</span>.<span class="at">findOrCreate</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">username</span><span class="op">:</span> <span class="st">&#39;sdepold&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">defaults</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">job</span><span class="op">:</span> <span class="st">&#39;Technical Lead JavaScript&#39;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="va">console</span>.<span class="at">log</span>(<span class="va">user</span>.<span class="at">username</span>)<span class="op">;</span> <span class="co">// &#39;sdepold&#39;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="va">user</span>.<span class="at">job</span>)<span class="op">;</span> <span class="co">// This may or may not be &#39;Technical Lead JavaScript&#39;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="va">console</span>.<span class="at">log</span>(created)<span class="op">;</span> <span class="co">// The boolean indicating whether this instance was just created</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="cf">if</span> (created) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">user</span>.<span class="at">job</span>)<span class="op">;</span> <span class="co">// This will certainly be &#39;Technical Lead JavaScript&#39;</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="op">}</span></a></code></pre></div>
+<h2 id="findandcountall"><code>findAndCountAll</code></h2>
+<p>The <code>findAndCountAll</code> method is a convenience method that combines <code>findAll</code> and <code>count</code>. This is useful when dealing with queries related to pagination where you want to retrieve data with a <code>limit</code> and <code>offset</code> but also need to know the total number of records that match the query.</p>
+<p>The <code>findAndCountAll</code> method returns an object with two properties:</p>
+<ul>
+<li><code>count</code> - an integer - the total number records matching the query</li>
+<li><code>rows</code> - an array of objects - the obtained records</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span> count<span class="op">,</span> rows <span class="op">}</span> <span class="op">=</span> <span class="cf">await</span> <span class="va">Project</span>.<span class="at">findAndCountAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">title</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      [<span class="va">Op</span>.<span class="at">like</span>]<span class="op">:</span> <span class="st">&#39;foo%&#39;</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="dt">offset</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="dt">limit</span><span class="op">:</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="va">console</span>.<span class="at">log</span>(count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="va">console</span>.<span class="at">log</span>(rows)<span class="op">;</span></a></code></pre></div>

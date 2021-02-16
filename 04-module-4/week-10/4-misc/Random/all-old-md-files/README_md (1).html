@@ -1,0 +1,66 @@
+<h1 id="how-to-set-up-an-express-sequelize-project">How to Set Up an Express-Sequelize Project</h1>
+<h2 id="set-up">Set up</h2>
+<p><code>npm install</code> the following - express - pug@2 - sequelize@5 - pg</p>
+<p><code>npm install -D</code> the following: - sequelize-cli@5 - morgan - nodemon</p>
+<p>create npm scripts for <code>start</code> (node) and <code>dev</code> (nodemon)</p>
+<h2 id="sequelize">Sequelize</h2>
+<h4 id="initialize-sequelize-in-your-app">1. Initialize Sequelize in your app</h4>
+<pre><code>npx sequelize-cli init</code></pre>
+<h4 id="create-the-models-and-migrations">2. Create the models and migrations</h4>
+<pre><code>npx sequelize-cli model:generate  \
+  --name ModelName
+  --attributes column1:type,column2:type</code></pre>
+<h4 id="make-database-level-validations-and-constraints">3. Make database level validations and constraints</h4>
+<ul>
+<li>NOT NECESSARY FOR ASSESSMENT</li>
+</ul>
+<h4 id="migrate-the-migrations">4. Migrate the migrations</h4>
+<pre><code>npx sequelize-cli db:migrate</code></pre>
+<h4 id="make-model-level-validations-and-constraints">5. Make model level validations and constraints</h4>
+<ul>
+<li>NOT NECESSARY FOR ASSESSMENT</li>
+</ul>
+<h4 id="make-model-associations">6. Make model associations</h4>
+<h2 id="express">Express</h2>
+<h4 id="create-an-entry-file-for-your-server-usually-app.js-or-server.js-and">1. Create an entry file for your server (usually <code>app.js</code> or <code>server.js</code>) and</h4>
+<p>initialize an Express application</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// app.js</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> express <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;express&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">const</span> app <span class="op">=</span> <span class="at">express</span>()<span class="op">;</span> <span class="co">// initialize Express app</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// Make the server listen for requests on port 3000</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">const</span> port <span class="op">=</span> <span class="dv">3000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="va">app</span>.<span class="at">listen</span>(port<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Server is listening on port&#39;</span><span class="op">,</span> port))<span class="op">;</span></a></code></pre></div>
+<h4 id="set-the-default-view-engine-to-be-pug">2. Set the default view engine to be <code>pug</code></h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// app.js</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">// ... after initializing Express app</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="va">app</span>.<span class="at">set</span>(<span class="st">&#39;view engine&#39;</span><span class="op">,</span> <span class="st">&#39;pug&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">// ...</span></a></code></pre></div>
+<h4 id="apply-your-middlewares">3. Apply your middlewares</h4>
+<pre><code>- `morgan` - for logging server requests
+- `cookie-parser` - for adding cookies into `req.cookies` as an object
+- `express.urlencoded` - for adding form data into `req.body` as an object
+- `csurf` - for preventing CSRF attacks (make sure to do this AFTER using
+  `express.urlencoded` and `cookie-parser`)</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// app.js</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co">// ... after setting default view engine</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">const</span> logger <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;morgan&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="va">app</span>.<span class="at">use</span>(<span class="at">logger</span>(<span class="st">&#39;dev&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">const</span> cookieParser <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;cookie-parser&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="va">app</span>.<span class="at">use</span>(<span class="at">cookieParser</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="va">app</span>.<span class="at">use</span>(<span class="va">express</span>.<span class="at">urlencoded</span>(<span class="op">{</span> <span class="dt">extended</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="kw">const</span> csrfProtection <span class="op">=</span> <span class="at">csrf</span>(<span class="op">{</span> <span class="dt">cookie</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The do one of the following (for the assessment use CSRF on every route):</p>
+<ul>
+<li><p>If you want CSRF protection on every route:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">app</span>.<span class="at">use</span>(csrfProtection)<span class="op">;</span> <span class="co">// only if you want CSRF protection on every route</span></a></code></pre></div></li>
+<li><p>But if you want to apply csrfProtection for a single route INSTEAD of the all the routes:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">app</span>.<span class="at">get</span>(<span class="st">&quot;/urlpath&quot;</span><span class="op">,</span> csrfProtection<span class="op">,</span> (req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div></li>
+</ul>
+<h4 id="create-your-routes">4. Create your routes</h4>
+<h4 id="create-your-pug-templates">5. Create your pug templates</h4>
+<h4 id="include-data-from-sequelize-when-rendering-templates">6. Include data from Sequelize when rendering templates</h4>
+<h4 id="include-csrf-token-on-every-form">7. Include CSRF token on every form</h4>

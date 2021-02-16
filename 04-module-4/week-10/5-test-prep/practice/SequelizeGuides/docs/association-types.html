@@ -1,0 +1,33 @@
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/associations.html">Official Docs</a></p>
+<p>Associations in Sequelize establish three things:</p>
+<ol type="1">
+<li>For one-one or one-many associations, it establishes a foreign key relationship between two tables (though a table could be related to itself). For many-many associations, it establishes a join-table that contains pairs of foreign keys.</li>
+<li>It creates several special instance methods (like “getAssociation”, “setAssociation”, and potentially others depending on the type of association) that an instance can use to search for the instances that they are related to</li>
+<li>It creates the ability to use “include” in queries to include data about related rows (known as “eager loading”)</li>
+</ol>
+<h2 id="types-of-associations">Types of Associations</h2>
+<p>It is possible to specify the following associations in Sequelize:</p>
+<ul>
+<li><code>belongsTo</code></li>
+<li><code>hasOne</code></li>
+<li><code>hasMany</code></li>
+<li><code>belongsToMany</code></li>
+</ul>
+<p>These relations can be combined to establish <em>one-one</em>, <em>one-many</em> and <em>many-many</em> relationships, like so:</p>
+<ul>
+<li><code>one-one</code>
+<ul>
+<li><code>A.belongsTo(B)</code></li>
+<li><code>B.hasOne(A)</code></li>
+</ul></li>
+<li><code>one-many</code>
+<ul>
+<li><code>A.belongsTo(B)</code></li>
+<li><code>B.hasMany(A)</code></li>
+</ul></li>
+<li><code>many-many</code>
+<ul>
+<li><code>A.belongsToMany(B, {through: 'AB'})</code></li>
+<li><code>B.belongsToMany(A, {through: 'AB'})</code></li>
+</ul></li>
+</ul>

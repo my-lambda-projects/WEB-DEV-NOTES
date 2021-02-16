@@ -1,0 +1,11 @@
+mixin formField(name, label, type, value, placeholder)
+  div()
+    label(for=name) #{label}
+    input(id=name class="form-control" name=name value=value type=type placeholder=placeholder)
+
+input(type='hidden' name="_csrf" value=csrfToken)
++formField('firstName', 'First Name:', 'text', firstName)
++formField('lastName', 'Last Name:', 'text', lastName)
++formField('email', 'Email:', 'email', email, 'Enter Email')
++formField('password', 'Password:', 'password')
++formField('confirmedPassword', 'Confirm Password:', 'password')

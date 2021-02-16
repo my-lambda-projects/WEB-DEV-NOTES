@@ -1,0 +1,29 @@
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/models-definition.html">Official Docs</a></p>
+<p>To define mappings between a model and a table, use the <code>define</code> method.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">cute</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">age</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">INTEGER</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">bio</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">TEXT</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span>)</a></code></pre></div>
+<p>You can also set some options on each column:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> Pug <span class="op">=</span> <span class="va">db</span>.<span class="at">define</span>(<span class="st">&#39;pugs&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">name</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">STRING</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">allowNull</span><span class="op">:</span> <span class="kw">false</span> <span class="co">// name MUST have a value</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">cute</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="dt">type</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">BOOLEAN</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="dt">defaultValue</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// instantiating will automatically set &quot;cute&quot; to true if not set</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="dt">bio</span><span class="op">:</span> <span class="va">Sequelize</span>.<span class="at">TEXT</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="dt">type</span><span class="op">:</span> <span class="dt">Sequelize</span><span class="op">:</span> INTEGER<span class="op">,</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="dt">validate</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="dt">max</span><span class="op">:</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="co">// note: many validations need to be defined in the &quot;validate&quot; object</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="co">// allowNull is so common that it&#39;s the exception</span></a>
+<a class="sourceLine" id="cb2-18" title="18">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-19" title="19">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="op">}</span>)</a></code></pre></div>

@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "36f592b5-fb52-4d13-ab4b-7abcadc3fd83",
+    "name": "Input Focus and Blur Events",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/topics/event-handling/readings/reading-2-inputs-focus-blur-js.md",
+    "type": "Reading",
+    "timeEstimate": 360,
+    "urls": [
+      "input-focus-and-blur-events"
+    ],
+    "topic": "Homework for Wednesday",
+    "subtopic": "Homework",
+    "body": "# Event Handling: Input Focus and Blur\n\nForm inputs are one of the most common HTML elements users interact with on a\nwebsite. By now, you should be familiar with how to listen for a _click event_\nand run a script. In this reading, we’ll learn about a couple of other events on\nan input field and how to use them:\n\n- Element: focus event\n- Element: blur event\n\n## Listening for focus and blur events\n\nAccording to MDN, the [focus event][1] fires when an element, such as an input\nfield, receives focus (i.e. when a user has clicked on that element).\n\nThe opposite of the focus event is the [blur event][2]. The blur event fires when\nan element has lost focus (i.e. when the user clicks out of that element).\n\nLet’s see these two events in action. We’ll set up an HTML page that includes\n`<input type=\"text\" id=\"fancypants\">`. Then, we’ll write JavaScript that changes\nthe background color of the `fancypants` textbox to `#E8F5E9` when the focus is\non the textbox and turns it back to its normal color when focus is elsewhere.\n\n**HTML**\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <script src=\"script.js\">\n  </head>\n  <body>\n   <input type=\"text\" id=\"fancypants\">\n  </body>\n</html>\n```\n\n**Javascript**\n\n```js\n// script.js\n\nwindow.addEventListener(\"DOMContentLoaded\", event => {\n  const input = document.getElementById(\"fancypants\");\n\n  input.addEventListener(\"focus\", event => {\n    event.target.style.backgroundColor = \"#E8F5E9\";\n  });\n  input.addEventListener(\"blur\", event => {\n    event.target.style.backgroundColor = \"initial\";\n  });\n});\n```\n\nIn the code above, we changed the background color of the input on `focus` and\nchanged it back to its initial value on `blur`. This small bit of functionality\nsignals to users that they’ve clicked on or off of an input field, which is\nespecially helpful and more user-friendly when there is a long form on the page.\nNow you can use `focus` and `blur` on your form inputs!\n\n## What we learned:\n\n- How to listen for the focus event on inputs\n- How to listen for the blur event on inputs\n\n[1]: https://developer.mozilla.org/en-US/docs/Web/API/Element/focus_event\n[2]: https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event\n"
+  },
+  "success": true
+}

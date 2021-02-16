@@ -1,0 +1,81 @@
+<blockquote>
+<p>IMPORTANT: These instructions are for Windows users running WSL 2. Please upgrade if at all possible because the experience is much easier and smoother not only for PostgreSQL, but for other tools you’ll learn in the future (such as docker).</p>
+<p>If you have not done so already, please try to upgrade using the <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">official instructions from Microsoft</a>.</p>
+</blockquote>
+<p>You will install two pieces of software so that you can start using PostgreSQL. You will install <strong>PostgreSQL</strong> itself along with all of its tools. Then you will also install <strong>Postbird</strong>, a cross-platform graphical user interface that makes working with SQL and PostgreSQL easier than using the command line tool <code>psql</code>.</p>
+<p>When you read “Window installation” and “Ubuntu”Installation", that means the OS that’s running. So, you have a Windows installation, <strong>Windows 10</strong>, that runs automatically when you boot your computer. Then, when you start the Ubuntu installation (which runs through WSL 2), it’s as if there’s a separate computer running inside your computer (in other words, a <strong>virtual machine</strong>). Please pay careful attention to which installation to use for each step in these instructions.</p>
+<h2 id="verify-wsl-version">Verify WSL Version</h2>
+<p>Before you begin, open <strong>Powershell</strong> and run this command</p>
+<pre><code>wsl --list --verbose</code></pre>
+<p>You should see something like this</p>
+<pre><code>  NAME      STATE           VERSION
+* Ubuntu    Running         2</code></pre>
+<p>Confirm your <strong>Ubuntu installation</strong> is running in WSL 2 by looking at the number at the end of the line with your ubuntu version on it. If you see a “1” at the end, first try this command to switch to WSL 2.</p>
+<pre><code>wsl --set-version Ubuntu 2</code></pre>
+<p>Replace “Ubuntu” with the actual name of your distribution (as shown by the list command above).</p>
+<p>If the commands in this section do NOT work (because you were unable to install WSL 2 since your Windows version cannot be updated), please switch to the instructions for Windows with WSL 1.</p>
+<h2 id="installing-postgresql-12">Installing PostgreSQL 12</h2>
+<p>In order to install PostgreSQL on Ubuntu, you will use the built-in package manager, <code>apt</code>. Open the terminal use usually use for <strong>Ubuntu</strong>, and enter the following commands.</p>
+<pre><code>sudo apt update
+sudo apt install postgresql-12</code></pre>
+<p>The first command ensures you have the latest links for downloads; the second command performs the PostgreSQL install. You’ll see a bunch of output. When prompted, confirm the installation.</p>
+<p>You can confirm the installation by checking the version number of the command line utility which comes with <strong>PostgreSQL</strong>.</p>
+<pre><code>psql --version</code></pre>
+<p>You should see something like the following.</p>
+<pre><code>psql (PostgreSQL) 12.4 (Ubuntu 12.4-0ubuntu0.20.04.1)</code></pre>
+<h2 id="configure-postgresql">Configure PostgreSQL</h2>
+<p>(Continue working in the Ubuntu terminal.)</p>
+<h3 id="part-a---allow-connections-from-local-machine">Part A - Allow connections from local machine</h3>
+<p>An important step to setting up PostgreSQL is to allow connections to databases from anywhere on your local machine, including Windows. Another name for your local machine is <code>localhost</code>.</p>
+<p>Begin by editing the <code>postgresql</code> configuration file to listen on localhost. (The instructions that follow use the <code>vim</code> editor. If you prefer another, that’s fine because you will be able to achieve the same result.)</p>
+<pre><code>sudo vim /etc/postgresql/12/main/postgresql.conf</code></pre>
+<p>Search for “localhost” by typing <code>/localhost</code> followed by ENTER. You should get to a line that looks like this.</p>
+<pre><code>#listen_addresses = &#39;localhost&#39;           # what IP address(es) to listen on;</code></pre>
+<p>If you aren’t there yet, type <code>/</code> followed by ENTER to search again.</p>
+<p>If the line does not start with “#”, that’s great. You do not need to make any changes. You can now exit by typing <code>:q!</code>.</p>
+<p>If you see a “#” at the start of the line, use your arrow keys to move the cursor under it, then type <code>x</code>. This will delete the “#”. Now you can save and close this file by typing <code>:wq</code>, and hitting <code>Enter</code>.</p>
+<h3 id="part-b---start-the-service">Part B - Start the service</h3>
+<p><strong>PostgreSQL</strong> is a database engine which runs as a service. You can think of a service like a background application so it can run whether you see it or not. If the <code>postgresql</code> service is NOT running, you will NOT be able to access your databases.</p>
+<p>Here are three helpful commands.</p>
+<ul>
+<li><code>sudo service postgresql status</code> to check whether databases are available for connections from code or tools</li>
+<li><code>sudo service postgresql stop</code> to make databases unavailable</li>
+<li><code>sudo service postgresql start</code> to make databases available</li>
+</ul>
+<p>A status of <code>down</code> indicates the service is NOT running; <code>online</code> means it’s running.</p>
+<p>It is a good idea to check the status of the postgresql service now. If it’s running (<code>online</code>), and you changed the configuration file in the previous section, then stop the service. Now, start the <code>postgresql</code> service.</p>
+<blockquote>
+<p>Warning: The service will stop automatically when your machine shuts down or reboots. So if you have trouble connecting in the future, check the status of ths <code>postgresql</code> service and start it again.</p>
+</blockquote>
+<h3 id="part-c---user-for-login">Part C - User for login</h3>
+<p>Start the PostgreSQL command line tool (<code>psql</code>) as postgres user.</p>
+<pre><code>sudo -u postgres psql</code></pre>
+<p>Notice the prompt changed to <code>postgres=#</code>.</p>
+<p>Set a password for the <code>postgres</code> user. Notice the semicolon at the end.</p>
+<pre><code>ALTER ROLE &lt;username&gt; SUPERUSER;</code></pre>
+<blockquote>
+<p>Tip: If you forgot the semicolon, then <code>psql</code> thinks you are continuing your command on a second line. That’s useful for longer commands, but not necessary at this time. The prompt will change subtly from using an ‘=’ to a ‘-’ (like this <code>postgres-#</code>). The quick fix is to type the semicolon (;) followed by ENTER. This will run the command and restore the original prompt.</p>
+</blockquote>
+<p>Next, add a password for the <code>postgres</code> user. The single quotes are required around the password, but will not be included in the password when you use it later. Replace “<strong>****</strong>” with a password you can remember.</p>
+<pre><code>ALTER USER &lt;username&gt; WITH ENCRYPTED PASSWORD &#39;*******&#39;;</code></pre>
+<p>Now, you can exit <code>psql</code> using either Ctrl+d or typing <code>\q</code> followed by ENTER.</p>
+<h2 id="installing-postbird">Installing Postbird</h2>
+<p>Head over to the <a href="https://github.com/Paxa/postbird/releases">Postbird releases page on GitHub</a>. Click the installer for Windows which you can recognize because it’s the only file in the list that ends with “.exe” (for example, “Postbird-Setup-0.8.4.exe”).</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/download-postbird.png" alt="Download Postbird" /><figcaption>Download Postbird</figcaption>
+</figure>
+<p>After that installer downloads, run it. You will get a warning from Windows that this is from an unidentified developer.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/postbird-installation-warning.png" alt="Postbird installation warning" /><figcaption>Postbird installation warning</figcaption>
+</figure>
+<p>You should get used to seeing this because many open-source applications aren’t signed with the Microsoft Store for monetary and philosophical reasons.</p>
+<p>If you trust Paxa like App Academy and tens of thousands of other developers do, then click the link that reads “More info” and the “Run anyway” button.</p>
+<figure>
+<img src="https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/postbird-installation-run-anyway.png" alt="Postbird run anyway" /><figcaption>Postbird run anyway</figcaption>
+</figure>
+<p>When it’s done installing, it will launch itself. Test it out by typing “postgres” into the “Username” field, and the password from your installation in the “Password” field. Click the Connect button. It should properly connect to the running PostgreSQL server.</p>
+<p>You can close <strong>Postbird</strong> for now. It also installed an icon on your desktop. You can launch it from there or from your Start Menu at any time.</p>
+<h2 id="what-you-did">What you did</h2>
+<p>You installed and configured PostgreSQL 12, a relational database management system, and tools to use it! Well done!</p>
+<p>Did you find this lesson helpful?</p>
+<p>[Source](https://open.appacademy.io/learn/js-py—oct-2020-online/week-10-oct-2020-online/installing-postgresql-on-windows-wsl-</p>

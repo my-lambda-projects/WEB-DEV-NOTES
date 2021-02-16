@@ -1,0 +1,45 @@
+
+/*      tag                                          <class                                     <id */
+/* things you want to use often,   things you wanna select intermitently,  something you want to manipulate alone                    */
+
+
+body {
+    background-color: #efefef;
+    
+}
+
+
+fieldset{
+    background-color: white;
+}
+
+/************END of #1*****************************************************/
+
+/* divs are blocks elements and follow rules of width and height.... span is inline and does not care*/
+
+
+.blue-box{
+    width: 40px;
+    height: 40px;
+    background-color:blue;
+    box-sizing: border-box;
+    position: absolute;
+    
+}
+
+.orange-box{
+    width: 40px;
+    height: 40px;
+    background-color:orange;
+    box-sizing: border-box;
+    position: absolute;
+    top: -40px;
+}
+/*
+Static:  default behavior is considered in page flow...not positioned
+Relative is also in the page flow but is positioned... can be positioned relative to where it would be positioned in static
+Absolute
+Sticky In flow 
+Fixed: is out of page flow 
+*/
+/**********now we need to flip the verticle order of the boxes***********/

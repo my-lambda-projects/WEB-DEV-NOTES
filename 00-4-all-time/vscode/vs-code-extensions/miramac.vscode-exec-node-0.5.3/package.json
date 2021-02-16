@@ -1,0 +1,154 @@
+{
+	"name": "vscode-exec-node",
+	"displayName": "Node.js Exec",
+	"description": "Execute the current file or your selected code with node.js.",
+	"version": "0.5.3",
+	"publisher": "miramac",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Miramac/vscode-exec-node.git"
+	},
+	"license": "ISC",
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"icon": "images/node-exec-logo.png",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"javascript",
+		"node.js",
+		"node"
+	],
+	"activationEvents": [
+		"onCommand:extension.miramac.node.exec"
+	],
+	"main": "./extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.miramac.node.exec",
+				"title": "Execute Node.js"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.miramac.node.exec",
+				"key": "F8"
+			},
+			{
+				"command": "extension.miramac.node.cancel",
+				"key": "F9"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Node Exec configurations",
+			"properties": {
+				"miramac.node.cwd": {
+					"type": "string",
+					"default": "${execPath}",
+					"description": "Set the working directory of the Node.js process"
+				},
+				"miramac.node.program": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"description": "File to execute (comming soon)"
+				},
+				"miramac.node.clearOutput": {
+					"type": "boolean",
+					"default": true,
+					"description": "Clear output before execution"
+				},
+				"miramac.node.showInfo": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show start and end info"
+				},
+				"miramac.node.showStdout": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show console output"
+				},
+				"miramac.node.showStderr": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show errors"
+				},
+				"miramac.node.terminalMode": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use the integrated terminal"
+				},
+				"miramac.node.nodeBin": {
+					"type": "string",
+					"default": "node",
+					"description": "Node binary"
+				},
+				"miramac.node.includeCode": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"description": "Some code that is executed with each run"
+				},
+				"miramac.node.executeFileOrSelection": {
+					"type": "string",
+					"default": "both",
+					"description": "Execute always the file ('file') only selected code ('selection') or both ('both')"
+				},
+				"miramac.node.outputWindowName": {
+					"type": "string",
+					"default": "Node.js",
+					"description": "Output-Channel Name"
+				},
+				"miramac.node.env": {
+					"type": [
+						"object",
+						"null"
+					],
+					"default": null,
+					"description": "Add execution environment variables"
+				},
+				"miramac.node.args": {
+					"type": [
+						"array",
+						"null"
+					],
+					"default": null,
+					"description": "Add execution arguments"
+				},
+				"miramac.node.options": {
+					"type": [
+						"array",
+						"null"
+					],
+					"default": null,
+					"description": "Add execution options"
+				},
+				"miramac.node.legacyMode": {
+					"type": "boolean",
+					"default": true,
+					"description": "If true, the extention will not use new features and options."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vsce-publish": "vsce publish",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"vscode": "^0.11.13"
+	},
+	"__metadata": {
+		"id": "186f769a-7380-4c03-8eb1-2aaa52a203ec",
+		"publisherId": "87de71ab-ef15-45f9-bdd5-33e8103be87c",
+		"publisherDisplayName": "Miramac"
+	}
+}

@@ -1,0 +1,38 @@
+/* module-key = 'com.atlassian.confluence.extra.team-calendars:calendar-edit', location = 'com/atlassian/confluence/extra/calendar3/components/calendar-edit-dialog/calendar-edit-dialog.less' */
+div.tc-event-type-item .ellipsis_text {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 282px;
+  vertical-align: middle;
+}
+#edit-event-dialog .icon_type,
+div.tc-event-type-item .icon_type {
+  float: left;
+  margin: 0 5px 0 0;
+  height: 21px !important;
+  background-position: center;
+}
+#edit-event-dialog .field-reminder .field-value-normal {
+  display: inline-block;
+  padding-top: 5px;
+}
+#edit-event-dialog .field-reminder .reminder-info {
+  display: table;
+  width: 100%;
+}
+#edit-event-dialog .field-reminder .reminder-info .reminder-info-text {
+  display: table-cell;
+  padding-left: 6px;
+  vertical-align: middle;
+  width: 100%;
+}
+#edit-event-dialog .field-reminder .reminder-info .reminder-info-icon {
+  display: table-cell;
+  vertical-align: middle;
+}
+#edit-event-dialog .field-reminder .add-reminder-setting,
+#edit-event-dialog .field-reminder .period-reminder-text {
+  font-weight: normal;
+}

@@ -1,0 +1,115 @@
+{
+	"name": "vscode-node-readme",
+	"displayName": "node-readme",
+	"description": "A vscode extension to view javascript module documentation in editor.",
+	"version": "3.0.2",
+	"publisher": "bengreenier",
+	"icon": "images/icon.png",
+	"engines": {
+		"vscode": "^1.18.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:nodeReadme.showReadme"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"configuration": [
+			{
+				"title": "Documentation overrides",
+				"properties": {
+					"nodeReadme.overrides": {
+						"type": [
+							"object",
+							"null"
+						],
+						"default": null,
+						"description": "Specifies custom documentation overrides on a per module basis"
+					}
+				}
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorLangId == javascript",
+					"command": "nodeReadme.showReadme",
+					"group": "navigation@9999"
+				},
+				{
+					"when": "editorLangId == typescript",
+					"command": "nodeReadme.showReadme",
+					"group": "navigation@9999"
+				},
+				{
+					"when": "editorLangId == javascriptreact",
+					"command": "nodeReadme.showReadme",
+					"group": "navigation@9999"
+				},
+				{
+					"when": "editorLangId == typescriptreact",
+					"command": "nodeReadme.showReadme",
+					"group": "navigation@9999"
+				}
+			]
+		},
+		"commands": [
+			{
+				"title": "View Node Module Readme",
+				"command": "nodeReadme.showReadme"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "nodeReadme.showReadme",
+				"key": "ctrl+shift+r",
+				"mac": "cmd+shift+r",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/copy/bin/cli.js \"src/test/testdata/**\" \"out/test/testdata\" && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^7.0.43",
+		"copy": "^0.3.1",
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.6",
+		"vscode-test-content": "^1.2.0"
+	},
+	"dependencies": {
+		"backoff": "^2.5.0",
+		"node-core-module-names": "^1.1.0",
+		"request": "^2.83.0",
+		"request-promise": "^4.2.2",
+		"semver": "^5.5.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bengreenier/vscode-node-readme.git"
+	},
+	"keywords": [
+		"node",
+		"readme",
+		"multi-root ready"
+	],
+	"author": "Ben Greenier",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bengreenier/vscode-node-readme/issues"
+	},
+	"homepage": "https://github.com/bengreenier/vscode-node-readme#readme",
+	"__metadata": {
+		"id": "40d13ed9-34ed-423f-acc1-95d0fe3aa2fa",
+		"publisherId": "fdcf1667-2f5f-435c-bac2-2e5346b47ea8",
+		"publisherDisplayName": "bengreenier"
+	}
+}

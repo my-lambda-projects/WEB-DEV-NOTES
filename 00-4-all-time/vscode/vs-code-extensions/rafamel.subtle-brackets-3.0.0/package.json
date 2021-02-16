@@ -1,0 +1,122 @@
+{
+	"name": "subtle-brackets",
+	"displayName": "Subtle Match Brackets",
+	"description": "Underlined matching brackets and more",
+	"version": "3.0.0",
+	"publisher": "rafamel",
+	"author": {
+		"name": "rafamel"
+	},
+	"icon": "icon_256.png",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"bracket",
+		"brackets",
+		"match",
+		"matching"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rafamel/subtle-brackets"
+	},
+	"bugs": {
+		"url": "https://github.com/rafamel/subtle-brackets/issues"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"engines": {
+		"vscode": "^1.12.0"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Subtle Brackets",
+			"properties": {
+				"subtleBrackets.disableNative": {
+					"type": "boolean",
+					"default": true,
+					"description": "Permanently disable the native matchBrackets"
+				},
+				"subtleBrackets.parse": {
+					"type": "boolean",
+					"default": true,
+					"description": "If true, the document will be parsed so brackets within strings don't trigger the decoration"
+				},
+				"subtleBrackets.style": {
+					"type": "object",
+					"default": {
+						"borderWidth": "1px",
+						"borderStyle": "none none solid none"
+					},
+					"description": "Default style for matching brackets"
+				},
+				"subtleBrackets.pairs": {
+					"type": "array",
+					"default": [
+						{
+							"open": "(",
+							"close": ")"
+						},
+						{
+							"open": "[",
+							"close": "]"
+						},
+						{
+							"open": "{",
+							"close": "}"
+						}
+					],
+					"description": "Pairs of matching brackets"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"precommit": "cross-env MSG=\"Committing in:\" nps validate",
+		"vscode:prepublish": "nps build",
+		"build": "nps build",
+		"watch": "nps watch",
+		"fix": "nps fix",
+		"lint": "nps lint",
+		"lint:md": "nps lint.md",
+		"test": "nps test",
+		"validate": "nps validate",
+		"update": "nps update",
+		"clean": "nps clean",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.9.3",
+		"@types/uuid": "^3.4.4",
+		"cross-env": "^5.2.0",
+		"husky": "^0.14.3",
+		"markdownlint-cli": "^0.13.0",
+		"mocha": "^5.2.0",
+		"nps": "^5.9.3",
+		"prettier": "^1.14.2",
+		"shx": "^0.3.2",
+		"tslint": "^5.11.0",
+		"tslint-config-prettier": "^1.15.0",
+		"tslint-language-service": "^0.9.6",
+		"typescript": "^2.9.2",
+		"vscode": "^1.1.21"
+	},
+	"dependencies": {
+		"lodash.clonedeep": "^4.5.0",
+		"loglevel": "^1.6.1",
+		"loglevel-plugin-prefix": "^0.8.4",
+		"prismjs": "^1.15.0",
+		"uuid": "^3.3.2"
+	},
+	"__metadata": {
+		"id": "d477f472-4e0f-4b5c-bb35-b7c157fa4eb8",
+		"publisherId": "7658adf6-ca84-42d4-8958-da3f6861451a",
+		"publisherDisplayName": "Rafa Mel"
+	}
+}

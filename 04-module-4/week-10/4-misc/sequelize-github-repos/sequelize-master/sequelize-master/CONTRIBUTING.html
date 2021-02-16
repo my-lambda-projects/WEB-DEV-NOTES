@@ -1,0 +1,109 @@
+<p><em>Please note!</em> The github issue tracker should only be used for feature requests and bugs with a clear description of the issue and the expected behaviour (see below). All questions belong on <a href="https://sequelize.slack.com">Slack</a> &amp; <a href="https://stackoverflow.com/questions/tagged/sequelize.js">StackOverflow</a>.</p>
+<h1 id="issues">Issues</h1>
+<p>Issues are always very welcome - after all, they are a big part of making sequelize better. However, there are a couple of things you can do to make the lives of the developers <em>much, much</em> easier:</p>
+<h3 id="tell-us">Tell us:</h3>
+<ul>
+<li>What you are doing?
+<ul>
+<li>Post a <em>minimal</em> code sample that reproduces the issue, including models and associations</li>
+<li>What do you expect to happen?</li>
+<li>What is actually happening?</li>
+</ul></li>
+<li>Which dialect you are using (postgres, mysql etc)?</li>
+<li>Which sequelize version you are using?</li>
+</ul>
+<p>When you post code, please use <a href="https://help.github.com/articles/github-flavored-markdown">Github flavored markdown</a>, in order to get proper syntax highlighting!</p>
+<p>If you can even provide a pull request with a failing unit test, we will love you long time! Plus your issue will likely be fixed much faster.</p>
+<h1 id="pull-requests">Pull requests</h1>
+<p>We’re glad to get pull request if any functionality is missing or something is buggy. However, there are a couple of things you can do to make life easier for the maintainers:</p>
+<ul>
+<li>Explain the issue that your PR is solving - or link to an existing issue</li>
+<li>Make sure that all existing tests pass</li>
+<li>Make sure you followed <a href="https://github.com/sequelize/sequelize/blob/master/CONTRIBUTING.md#coding-guidelines">coding guidelines</a></li>
+<li>Add some tests for your new functionality or a test exhibiting the bug you are solving. Ideally all new tests should not pass <em>without</em> your changes.
+<ul>
+<li>Use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">async/await</a> in all new tests. Specifically this means:
+<ul>
+<li>don’t use <code>EventEmitter</code>, <code>QueryChainer</code> or the <code>success</code>, <code>done</code> and <code>error</code> events</li>
+<li>don’t use a done callback in your test, just return the promise chain.</li>
+</ul></li>
+<li>Small bugfixes and direct backports to the 4.x branch are accepted without tests.</li>
+</ul></li>
+<li>If you are adding to / changing the public API, remember to add API docs, in the form of <a href="http://usejsdoc.org/about-getting-started.html">JSDoc style</a> comments. See <a href="#4a-check-the-documentation">section 4a</a> for the specifics.</li>
+</ul>
+<p>Interested? Coolio! Here is how to get started:</p>
+<h3 id="prepare-your-environment">1. Prepare your environment</h3>
+<p>Here comes a little surprise: You need <a href="http://nodejs.org">Node.JS</a>.</p>
+<h3 id="install-the-dependencies">2. Install the dependencies</h3>
+<p>Just “cd” into sequelize directory and run <code>npm ci</code>, see an example below:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">$ <span class="bu">cd</span> path/to/sequelize</a>
+<a class="sourceLine" id="cb1-2" title="2">$ <span class="ex">npm</span> ci</a>
+<a class="sourceLine" id="cb1-3" title="3">$ <span class="ex">npm</span> run tsc</a></code></pre></div>
+<h3 id="database">3. Database</h3>
+<p>Database instances for testing can be started using Docker or you can use local instances of MySQL and PostgreSQL.</p>
+<h4 id="a-local-instances">3.a Local instances</h4>
+<p>For MySQL and PostgreSQL you’ll need to create a DB called <code>sequelize_test</code>. For MySQL this would look like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="bu">echo</span> <span class="st">&quot;CREATE DATABASE sequelize_test;&quot;</span> <span class="kw">|</span> <span class="ex">mysql</span> -uroot</a></code></pre></div>
+<p><strong>HINT:</strong> by default, your local MySQL install must be with username <code>root</code> without password. If you want to customize that, you can set the environment variables <code>SEQ_DB</code>, <code>SEQ_USER</code>, <code>SEQ_PW</code>, <code>SEQ_HOST</code> and <code>SEQ_PORT</code>.</p>
+<p>For Postgres, creating the database and (optionally) adding the test user this would look like:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="ex">psql</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co"># create database sequelize_test;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># create user postgres with superuser; -- optional; usually built-in</span></a></code></pre></div>
+<p>You may need to specify credentials using the environment variables <code>SEQ_PG_USER</code> and <code>SEQ_PG_PW</code> when running tests or set a password of ‘postgres’ for the postgres user on your local database to allow sequelize to connect via TCP to localhost. Refer to <code>test/config/config.js</code> for the default credentials and environment variables.</p>
+<p>For Postgres you may also need to install the <code>postgresql-postgis</code> package (an optional component of some Postgres distributions, e.g. Ubuntu). The package will be named something like: <code>postgresql-&lt;pg_version_number&gt;-postgis-&lt;postgis_version_number&gt;</code>, e.g. <code>postgresql-9.5-postgis-2.2</code>. You should be able to find the exact package name on a Debian/Ubuntu system by running the command: <code>apt-cache search -- -postgis</code>.</p>
+<p>Create the following extensions in the test database:</p>
+<pre><code>CREATE EXTENSION postgis;
+CREATE EXTENSION hstore;
+CREATE EXTENSION btree_gist;
+CREATE EXTENSION citext;</code></pre>
+<h4 id="b-docker">3.b Docker</h4>
+<p>Make sure <code>docker</code> and <code>docker-compose</code> are installed.</p>
+<p>If running on macOS, install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>.</p>
+<p>Now launch the docker mysql and postgres servers with this command (you can add <code>-d</code> to run them in daemon mode):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">docker-compose</span> up postgres-95 mysql-57 mssql</a></code></pre></div>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> If you get the following output:</p>
+<pre><code>...
+Creating mysql-57 ... error
+
+ERROR: for mysql-57  Cannot create container for service mysql-57: b&#39;create .: volume name is too short, names should be at least two alphanumeric characters&#39;
+
+ERROR: for mysql-57  Cannot create container for service mysql-57: b&#39;create .: volume name is too short, names should be at least two alphanumeric characters&#39;
+ERROR: Encountered errors while bringing up the project.</code></pre>
+<p>You need to set the variables <code>MARIADB_ENTRYPOINT</code> and <code>MYSQLDB_ENTRYPOINT</code> accordingly:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1">$ <span class="bu">export</span> <span class="va">MARIADB_ENTRYPOINT=</span><span class="st">&quot;</span><span class="va">$PATH_TO_PROJECT</span><span class="st">/test/config/mariadb&quot;</span></a>
+<a class="sourceLine" id="cb7-2" title="2">$ <span class="bu">export</span> <span class="va">MYSQLDB_ENTRYPOINT=</span><span class="st">&quot;</span><span class="va">$PATH_TO_PROJECT</span><span class="st">/test/config/mysql&quot;</span></a></code></pre></div>
+</blockquote>
+<p><strong>MSSQL:</strong> Please run <code>npm run setup-mssql</code> to create the test database.</p>
+<p><strong>POSTGRES:</strong> Sequelize uses <a href="https://github.com/sushantdhiman/sequelize-postgres">special</a> Docker image for PostgreSQL, which install all the extensions required by tests.</p>
+<h3 id="running-tests">4. Running tests</h3>
+<p>All tests are located in the <code>test</code> folder (which contains the lovely <a href="https://mochajs.org/">Mocha</a> tests).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="ex">npm</span> run test-all <span class="kw">||</span> <span class="ex">test-mysql</span> <span class="kw">||</span> <span class="ex">test-sqlite</span> <span class="kw">||</span> <span class="ex">test-mssql</span> <span class="kw">||</span> <span class="ex">test-postgres</span> <span class="kw">||</span> <span class="ex">test-postgres-native</span></a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3">$ <span class="co"># alternatively you can pass database credentials with $variables when testing</span></a>
+<a class="sourceLine" id="cb8-4" title="4">$ <span class="va">DIALECT=</span>dialect <span class="va">SEQ_DB=</span>database <span class="va">SEQ_USER=</span>user <span class="va">SEQ_PW=</span>password <span class="ex">npm</span> test</a></code></pre></div>
+<p>For docker users you can use these commands instead</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1">$ <span class="va">DIALECT=</span>mysql <span class="ex">npm</span> run test-docker <span class="co"># Or DIALECT=postgres for Postgres SQL</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co"># Only integration tests</span></a>
+<a class="sourceLine" id="cb9-4" title="4">$ <span class="va">DIALECT=</span>mysql <span class="ex">npm</span> run test-docker-integration</a></code></pre></div>
+<h3 id="commit">5. Commit</h3>
+<p>Sequelize follows the <a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.em2hiij8p46d">AngularJS Commit Message Conventions</a>. Example:</p>
+<pre><code>feat(pencil): add &#39;graphiteWidth&#39; option</code></pre>
+<p>Commit messages are used to automatically generate a changelog. They will be validated automatically using <a href="https://github.com/marionebl/commitlint">commitlint</a></p>
+<p>Then push and send your pull request. Happy hacking and thank you for contributing.</p>
+<h1 id="coding-guidelines">Coding guidelines</h1>
+<p>Have a look at our <a href="https://github.com/sequelize/sequelize/blob/master/.eslintrc.json">.eslintrc.json</a> file for the specifics. As part of the test process, all files will be linted, and your PR will <strong>not</strong> be accepted if it does not pass linting.</p>
+<h1 id="contributing-to-the-documentation">Contributing to the documentation</h1>
+<p>For contribution guidelines for the documentation, see <a href="https://github.com/sequelize/sequelize/blob/master/CONTRIBUTING.DOCS.md">CONTRIBUTING.DOCS.md</a>.</p>
+<h1 id="publishing-a-release-for-maintainers">Publishing a release (For Maintainers)</h1>
+<ol type="1">
+<li>Ensure that latest build on master is green</li>
+<li>Ensure your local code is up to date (<code>git pull origin master</code>)</li>
+<li><code>npm version patch|minor|major</code> (see <a href="http://semver.org">Semantic Versioning</a>)</li>
+<li>Update changelog to match version number, commit changelog</li>
+<li><code>git push --tags origin master</code></li>
+<li><code>npm publish .</code></li>
+<li>Copy changelog for version to release notes for version on github</li>
+</ol>

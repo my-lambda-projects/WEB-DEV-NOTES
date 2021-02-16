@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>05_accessing-data-from-nodejs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet"
+    href="file:////home/mira/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.5.13/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+
+
+
+
+
+
+
+
+
+  <style>
+    /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+    code[class*="language-"],
+    pre[class*="language-"] {
+      color: #333;
+      background: none;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      word-wrap: normal;
+      line-height: 1.4;
+
+      -moz-tab-size: 8;
+      -o-tab-size: 8;
+      tab-size: 8;
+
+      -webkit-hyphens: none;
+      -moz-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+    }
+
+    /* Code blocks */
+    pre[class*="language-"] {
+      padding: .8em;
+      overflow: auto;
+      /* border: 1px solid #ddd; */
+      border-radius: 3px;
+      /* background: #fff; */
+      background: #f5f5f5;
+    }
+
+    /* Inline code */
+    :not(pre)>code[class*="language-"] {
+      padding: .1em;
+      border-radius: .3em;
+      white-space: normal;
+      background: #f5f5f5;
+    }
+
+    .token.comment,
+    .token.blockquote {
+      color: #969896;
+    }
+
+    .token.cdata {
+      color: #183691;
+    }
+
+    .token.doctype,
+    .token.punctuation,
+    .token.variable,
+    .token.macro.property {
+      color: #333;
+    }
+
+    .token.operator,
+    .token.important,
+    .token.keyword,
+    .token.rule,
+    .token.builtin {
+      color: #a71d5d;
+    }
+
+    .token.string,
+    .token.url,
+    .token.regex,
+    .token.attr-value {
+      color: #183691;
+    }
+
+    .token.property,
+    .token.number,
+    .token.boolean,
+    .token.entity,
+    .token.atrule,
+    .token.constant,
+    .token.symbol,
+    .token.command,
+    .token.code {
+      color: #0086b3;
+    }
+
+    .token.tag,
+    .token.selector,
+    .token.prolog {
+      color: #63a35c;
+    }
+
+    .token.function,
+    .token.namespace,
+    .token.pseudo-element,
+    .token.class,
+    .token.class-name,
+    .token.pseudo-class,
+    .token.id,
+    .token.url-reference .token.variable,
+    .token.attr-name {
+      color: #795da3;
+    }
+
+    .token.entity {
+      cursor: help;
+    }
+
+    .token.title,
+    .token.title .token.punctuation {
+      font-weight: bold;
+      color: #1d3e81;
+    }
+
+    .token.list {
+      color: #ed6a43;
+    }
+
+    .token.inserted {
+      background-color: #eaffea;
+      color: #55a532;
+    }
+
+    .token.deleted {
+      background-color: #ffecec;
+      color: #bd2c00;
+    }
+
+    .token.bold {
+      font-weight: bold;
+    }
+
+    .token.italic {
+      font-style: italic;
+    }
+
+
+    /* JSON */
+    .language-json .token.property {
+      color: #183691;
+    }
+
+    .language-markup .token.tag .token.punctuation {
+      color: #333;
+    }
+
+    /* CSS */
+    code.language-css,
+    .language-css .token.function {
+      color: #0086b3;
+    }
+
+    /* YAML */
+    .language-yaml .token.atrule {
+      color: #63a35c;
+    }
+
+    code.language-yaml {
+      color: #183691;
+    }
+
+    /* Ruby */
+    .language-ruby .token.function {
+      color: #333;
+    }
+
+    /* Markdown */
+    .language-markdown .token.url {
+      color: #795da3;
+    }
+
+    /* Makefile */
+    .language-makefile .token.symbol {
+      color: #795da3;
+    }
+
+    .language-makefile .token.variable {
+      color: #183691;
+    }
+
+    .language-makefile .token.builtin {
+      color: #0086b3;
+    }
+
+    /* Bash */
+    .language-bash .token.keyword {
+      color: #0086b3;
+    }
+
+    /* highlight */
+    pre[data-line] {
+      position: relative;
+      padding: 1em 0 1em 3em;
+    }
+
+    pre[data-line] .line-highlight-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+      display: block;
+      width: 100%;
+    }
+
+    pre[data-line] .line-highlight {
+      position: absolute;
+      left: 0;
+      right: 0;
+      padding: inherit 0;
+      margin-top: 1em;
+      background: hsla(24, 20%, 50%, .08);
+      background: linear-gradient(to right, hsla(24, 20%, 50%, .1) 70%, hsla(24, 20%, 50%, 0));
+      pointer-events: none;
+      line-height: inherit;
+      white-space: pre;
+    }
+
+    pre[data-line] .line-highlight:before,
+    pre[data-line] .line-highlight[data-end]:after {
+      content: attr(data-start);
+      position: absolute;
+      top: .4em;
+      left: .6em;
+      min-width: 1em;
+      padding: 0 .5em;
+      background-color: hsla(24, 20%, 50%, .4);
+      color: hsl(24, 20%, 95%);
+      font: bold 65%/1.5 sans-serif;
+      text-align: center;
+      vertical-align: .3em;
+      border-radius: 999px;
+      text-shadow: none;
+      box-shadow: 0 1px white;
+    }
+
+    pre[data-line] .line-highlight[data-end]:after {
+      content: attr(data-end);
+      top: auto;
+      bottom: .4em;
+    }
+
+    html body {
+      font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+      overflow: initial;
+      box-sizing: border-box;
+      word-wrap: break-word
+    }
+
+    html body>:first-child {
+      margin-top: 0
+    }
+
+    html body h1,
+    html body h2,
+    html body h3,
+    html body h4,
+    html body h5,
+    html body h6 {
+      line-height: 1.2;
+      margin-top: 1em;
+      margin-bottom: 16px;
+      color: #000
+    }
+
+    html body h1 {
+      font-size: 2.25em;
+      font-weight: 300;
+      padding-bottom: .3em
+    }
+
+    html body h2 {
+      font-size: 1.75em;
+      font-weight: 400;
+      padding-bottom: .3em
+    }
+
+    html body h3 {
+      font-size: 1.5em;
+      font-weight: 500
+    }
+
+    html body h4 {
+      font-size: 1.25em;
+      font-weight: 600
+    }
+
+    html body h5 {
+      font-size: 1.1em;
+      font-weight: 600
+    }
+
+    html body h6 {
+      font-size: 1em;
+      font-weight: 600
+    }
+
+    html body h1,
+    html body h2,
+    html body h3,
+    html body h4,
+    html body h5 {
+      font-weight: 600
+    }
+
+    html body h5 {
+      font-size: 1em
+    }
+
+    html body h6 {
+      color: #5c5c5c
+    }
+
+    html body strong {
+      color: #000
+    }
+
+    html body del {
+      color: #5c5c5c
+    }
+
+    html body a:not([href]) {
+      color: inherit;
+      text-decoration: none
+    }
+
+    html body a {
+      color: #08c;
+      text-decoration: none
+    }
+
+    html body a:hover {
+      color: #00a3f5;
+      text-decoration: none
+    }
+
+    html body img {
+      max-width: 100%
+    }
+
+    html body>p {
+      margin-top: 0;
+      margin-bottom: 16px;
+      word-wrap: break-word
+    }
+
+    html body>ul,
+    html body>ol {
+      margin-bottom: 16px
+    }
+
+    html body ul,
+    html body ol {
+      padding-left: 2em
+    }
+
+    html body ul.no-list,
+    html body ol.no-list {
+      padding: 0;
+      list-style-type: none
+    }
+
+    html body ul ul,
+    html body ul ol,
+    html body ol ol,
+    html body ol ul {
+      margin-top: 0;
+      margin-bottom: 0
+    }
+
+    html body li {
+      margin-bottom: 0
+    }
+
+    html body li.task-list-item {
+      list-style: none
+    }
+
+    html body li>p {
+      margin-top: 0;
+      margin-bottom: 0
+    }
+
+    html body .task-list-item-checkbox {
+      margin: 0 .2em .25em -1.8em;
+      vertical-align: middle
+    }
+
+    html body .task-list-item-checkbox:hover {
+      cursor: pointer
+    }
+
+    html body blockquote {
+      margin: 16px 0;
+      font-size: inherit;
+      padding: 0 15px;
+      color: #5c5c5c;
+      background-color: #f0f0f0;
+      border-left: 4px solid #d6d6d6
+    }
+
+    html body blockquote>:first-child {
+      margin-top: 0
+    }
+
+    html body blockquote>:last-child {
+      margin-bottom: 0
+    }
+
+    html body hr {
+      height: 4px;
+      margin: 32px 0;
+      background-color: #d6d6d6;
+      border: 0 none
+    }
+
+    html body table {
+      margin: 10px 0 15px 0;
+      border-collapse: collapse;
+      border-spacing: 0;
+      display: block;
+      width: 100%;
+      overflow: auto;
+      word-break: normal;
+      word-break: keep-all
+    }
+
+    html body table th {
+      font-weight: bold;
+      color: #000
+    }
+
+    html body table td,
+    html body table th {
+      border: 1px solid #d6d6d6;
+      padding: 6px 13px
+    }
+
+    html body dl {
+      padding: 0
+    }
+
+    html body dl dt {
+      padding: 0;
+      margin-top: 16px;
+      font-size: 1em;
+      font-style: italic;
+      font-weight: bold
+    }
+
+    html body dl dd {
+      padding: 0 16px;
+      margin-bottom: 16px
+    }
+
+    html body code {
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: .85em !important;
+      color: #000;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      padding: .2em 0
+    }
+
+    html body code::before,
+    html body code::after {
+      letter-spacing: -0.2em;
+      content: "\00a0"
+    }
+
+    html body pre>code {
+      padding: 0;
+      margin: 0;
+      font-size: .85em !important;
+      word-break: normal;
+      white-space: pre;
+      background: transparent;
+      border: 0
+    }
+
+    html body .highlight {
+      margin-bottom: 16px
+    }
+
+    html body .highlight pre,
+    html body pre {
+      padding: 1em;
+      overflow: auto;
+      font-size: .85em !important;
+      line-height: 1.45;
+      border: #d6d6d6;
+      border-radius: 3px
+    }
+
+    html body .highlight pre {
+      margin-bottom: 0;
+      word-break: normal
+    }
+
+    html body pre code,
+    html body pre tt {
+      display: inline;
+      max-width: initial;
+      padding: 0;
+      margin: 0;
+      overflow: initial;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0
+    }
+
+    html body pre code:before,
+    html body pre tt:before,
+    html body pre code:after,
+    html body pre tt:after {
+      content: normal
+    }
+
+    html body p,
+    html body blockquote,
+    html body ul,
+    html body ol,
+    html body dl,
+    html body pre {
+      margin-top: 0;
+      margin-bottom: 16px
+    }
+
+    html body kbd {
+      color: #000;
+      border: 1px solid #d6d6d6;
+      border-bottom: 2px solid #c7c7c7;
+      padding: 2px 4px;
+      background-color: #f0f0f0;
+      border-radius: 3px
+    }
+
+    @media print {
+      html body {
+        background-color: #fff
+      }
+
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5,
+      html body h6 {
+        color: #000;
+        page-break-after: avoid
+      }
+
+      html body blockquote {
+        color: #5c5c5c
+      }
+
+      html body pre {
+        page-break-inside: avoid
+      }
+
+      html body table {
+        display: table
+      }
+
+      html body img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%
+      }
+
+      html body pre,
+      html body code {
+        word-wrap: break-word;
+        white-space: pre
+      }
+    }
+
+    .markdown-preview {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box
+    }
+
+    .markdown-preview .pagebreak,
+    .markdown-preview .newpage {
+      page-break-before: always
+    }
+
+    .markdown-preview pre.line-numbers {
+      position: relative;
+      padding-left: 3.8em;
+      counter-reset: linenumber
+    }
+
+    .markdown-preview pre.line-numbers>code {
+      position: relative
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows {
+      position: absolute;
+      pointer-events: none;
+      top: 1em;
+      font-size: 100%;
+      left: 0;
+      width: 3em;
+      letter-spacing: -1px;
+      border-right: 1px solid #999;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows>span {
+      pointer-events: none;
+      display: block;
+      counter-increment: linenumber
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows>span:before {
+      content: counter(linenumber);
+      color: #999;
+      display: block;
+      padding-right: .8em;
+      text-align: right
+    }
+
+    .markdown-preview .mathjax-exps .MathJax_Display {
+      text-align: center !important
+    }
+
+    .markdown-preview:not([for="preview"]) .code-chunk .btn-group {
+      display: none
+    }
+
+    .markdown-preview:not([for="preview"]) .code-chunk .status {
+      display: none
+    }
+
+    .markdown-preview:not([for="preview"]) .code-chunk .output-div {
+      margin-bottom: 16px
+    }
+
+    .scrollbar-style::-webkit-scrollbar {
+      width: 8px
+    }
+
+    .scrollbar-style::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: transparent
+    }
+
+    .scrollbar-style::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: rgba(150, 150, 150, 0.66);
+      border: 4px solid rgba(150, 150, 150, 0.66);
+      background-clip: content-box
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode]) {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      overflow: auto
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+      position: relative;
+      top: 0
+    }
+
+    @media screen and (min-width:914px) {
+      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+        padding: 2em calc(50% - 457px + 2em)
+      }
+    }
+
+    @media screen and (max-width:914px) {
+      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+        padding: 2em
+      }
+    }
+
+    @media screen and (max-width:450px) {
+      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+        font-size: 14px !important;
+        padding: 1em
+      }
+    }
+
+    @media print {
+      html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
+        display: none
+      }
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
+      position: fixed;
+      bottom: 8px;
+      left: 8px;
+      font-size: 28px;
+      cursor: pointer;
+      color: inherit;
+      z-index: 99;
+      width: 32px;
+      text-align: center;
+      opacity: .4
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn {
+      opacity: 1
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      padding: 32px 0 48px 0;
+      font-size: 14px;
+      box-shadow: 0 0 4px rgba(150, 150, 150, 0.33);
+      box-sizing: border-box;
+      overflow: auto;
+      background-color: inherit
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar {
+      width: 8px
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: transparent
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: rgba(150, 150, 150, 0.66);
+      border: 4px solid rgba(150, 150, 150, 0.66);
+      background-clip: content-box
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a {
+      text-decoration: none
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
+      padding: 0 1.6em;
+      margin-top: .8em
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li {
+      margin-bottom: .8em
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
+      list-style-type: none
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+      left: 300px;
+      width: calc(100% - 300px);
+      padding: 2em calc(50% - 457px - 150px);
+      margin: 0;
+      box-sizing: border-box
+    }
+
+    @media screen and (max-width:1274px) {
+      html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+        padding: 2em
+      }
+    }
+
+    @media screen and (max-width:450px) {
+      html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+        width: 100%
+      }
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview {
+      left: 50%;
+      transform: translateX(-50%)
+    }
+
+    html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc {
+      display: none
+    }
+
+    /* Please visit the URL below for more information: */
+    /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+  </style>
+</head>
+
+<body for="html-export">
+  <div class="mume markdown-preview  ">
+    <h1 class="mume-header" id="node-postgres-and-prepared-statements">Node-Postgres And Prepared Statements</h1>
+
+    <hr>
+    <div class="code-chunk" data-id="code-chunk-id-0" data-cmd="toc">
+      <div class="input-div">
+        <div class="btn-group">
+          <div class="run-btn btn"><span>&#x25B6;&#xFE0E;</span></div>
+          <div class="run-all-btn btn">all</div>
+        </div>
+        <div class="status">running...</div>
+      </div>
+      <div class="output-div"></div>
+    </div>
+    <ul>
+      <li><a href="#connecting">Connecting</a></li>
+      <li><a href="#prepared-statement">Prepared Statement</a></li>
+      <li><a href="#try-it-out-for-yourself">Try it out for yourself</a></li>
+      <li><a href="#what-youve-learned">What you&apos;ve learned</a></li>
+    </ul>
+    <hr>
+    <p>The library <a href="https://www.node-postgres.com">node-postgres</a> is, not too surprisingly, the library that
+      Node.js<br>
+      applications use to connect to a database managed by a PostgreSQL RDBMS. The<br>
+      applications that you deal with will use this library to make connections to the<br>
+      database and get rows returned from your SQL <code>SELECT</code> statements.</p>
+    <h2 class="mume-header" id="connecting">Connecting</h2>
+
+    <p>The <strong>node-postgres</strong> library provides two ways to connect to it. You can use a<br>
+      single <code>Client</code> object, or you can use a <code>Pool</code> of <code>Client</code> objects.
+      Normally,<br>
+      you want to use a <code>Pool</code> because creating and opening single connections to any<br>
+      database server is a &quot;costly&quot; operation in terms of CPU and network resources.<br>
+      A <code>Pool</code> creates a group of those <code>Client</code> connections and lets your code use<br>
+      them whenever it needs to.</p>
+    <p>To use a <code>Pool</code>, you specify any specific portions of the following connection<br>
+      parameters that you need. The default values for each parameter is listed with<br>
+      each parameter.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Connection parameter</th>
+          <th>What it indicates</th>
+          <th>Default value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>user</td>
+          <td>The name of the user you want to connect as</td>
+          <td>The user name that runs the application</td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>The password to use</td>
+          <td>The password set in your configuration</td>
+        </tr>
+        <tr>
+          <td>database</td>
+          <td>The name of the database to connect to</td>
+          <td>The user&apos;s database</td>
+        </tr>
+        <tr>
+          <td>port</td>
+          <td>The port over which to connect</td>
+          <td>5432</td>
+        </tr>
+        <tr>
+          <td>host</td>
+          <td>The name of the server to connect to</td>
+          <td>localhost</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Normally, you will only override the user and password fields, and sometimes the<br>
+      database if it doesn&apos;t match the user&apos;s name. You do that by instantiating a<br>
+      new <code>Pool</code> object and passing in an object with those key/value pairs.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> Pool <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;pg&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> pool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pool</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  user<span class="token punctuation">:</span> <span class="token string">&apos;application_user&apos;</span><span class="token punctuation">,</span>
+  password<span class="token punctuation">:</span> <span class="token string">&apos;iy7qTEcZ&apos;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Once you have an instance of the <code>Pool</code> class, you can use the <code>query</code> method on<br>
+      it to run queries. (The <code>query</code> method returns a Promise, so it&apos;s nice to just<br>
+      use <code>await</code> for it to finish.)</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> results <span class="token operator">=</span> <span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs
+  FROM puppies;
+`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>results<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>When this runs, you will get an object that contains a property named &quot;rows&quot;.<br>
+      The value of &quot;rows&quot; will be an array of the rows that match the statement.<br>
+      Here&apos;s an example output from the code above.</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>{
+  rows:
+    [ { id: 1, name: &apos;Cooper&apos;, age_yrs: &apos;1.0&apos; },
+      { id: 2, name: &apos;Indie&apos;, age_yrs: &apos;0.5&apos; },
+      { id: 3, name: &apos;Kota&apos;, age_yrs: &apos;0.7&apos; },
+      { id: 4, name: &apos;Zoe&apos;, age_yrs: &apos;0.8&apos; },
+      { id: 5, name: &apos;Charley&apos;, age_yrs: &apos;1.5&apos; },
+      { id: 6, name: &apos;Ladybird&apos;, age_yrs: &apos;0.6&apos; },
+      { id: 7, name: &apos;Callie&apos;, age_yrs: &apos;0.9&apos; },
+      { id: 8, name: &apos;Jaxson&apos;, age_yrs: &apos;0.4&apos; },
+      { id: 9, name: &apos;Leinni&apos;, age_yrs: &apos;1.0&apos; },
+      { id: 10, name: &apos;Max&apos;, age_yrs: &apos;1.6&apos; } ],
+}
+</code></pre>
+    <p>You can see that the &quot;rows&quot; property contains an array of objects. Each object<br>
+      represents a row in the &quot;puppies&quot; table that matches the query. Each object has<br>
+      a property named after the column selected in the <code>SELECT</code> statement. The query<br>
+      read <code>SELECT id, name, age_yrs</code> and each object has an &quot;id&quot;, &quot;name&quot;, and an<br>
+      &quot;age_yrs&quot; property.</p>
+    <p>You can then use that array to loop over and do things with it. For example,<br>
+      you could print them to the console like this:</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> row <span class="token keyword">of</span> results<span class="token punctuation">.</span>rows<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>row<span class="token punctuation">.</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>row<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>row<span class="token punctuation">.</span>age_yrs<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> old&lt;/li&gt;`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</pre>
+    <p>Which would show</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>1. Cooper is 1.0 years old
+2. Indie is 0.5 years old
+3. Kots is 0.7 years old
+...
+</code></pre>
+    <h2 class="mume-header" id="prepared-statement">Prepared Statement</h2>
+
+    <p>Prepared statements are SQL statements that have parameters in them that you can<br>
+      use to substitute values. The parameters are normally part of the <code>WHERE</code> clause<br>
+      in all statements. You will also use then in the <code>SET</code> portion of <code>UPDATE</code><br>
+      statements and the <code>VALUES</code> portion of <code>INSERT</code> statements.</p>
+    <p>For example, say your application collected the information to create a new row<br>
+      in the puppy table by asking for the puppy&apos;s name, age, breed, weight, and if<br>
+      it was microchipped. You&apos;d have those values stored in variables somewhere.<br>
+      You&apos;d want to create an <code>INSERT</code> statement that inserts the data from those<br>
+      variables into a SQL statement that the RDBMS could then execute to insert a<br>
+      new row.</p>
+    <p>Think about what a generic <code>INSERT</code> statement would look like. It would have to<br>
+      have the</p>
+    <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> puppies <span class="token punctuation">(</span>name<span class="token punctuation">,</span> age_yrs<span class="token punctuation">,</span> breed<span class="token punctuation">,</span> weight_lbs<span class="token punctuation">,</span> microchipped<span class="token punctuation">)</span>
+</pre>
+    <p>portion of the statement. The part that would change with each time you inserted<br>
+      would be the specific values that would go into the <code>VALUES</code> section of the<br>
+      <code>INSERT</code> statement. With prepared statements, you use <em>positional parameters</em><br>
+      to act as placeholders for the actual values that you will provide the query.</p>
+    <p>For example, the generic <code>INSERT</code> statement from above would look like this.</p>
+    <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> puppies <span class="token punctuation">(</span>name<span class="token punctuation">,</span> age_yrs<span class="token punctuation">,</span> breed<span class="token punctuation">,</span> weight_lbs<span class="token punctuation">,</span> microchipped<span class="token punctuation">)</span>
+<span class="token keyword">VALUES</span> <span class="token punctuation">(</span>$<span class="token number">1</span><span class="token punctuation">,</span> $<span class="token number">2</span><span class="token punctuation">,</span> $<span class="token number">3</span><span class="token punctuation">,</span> $<span class="token number">4</span><span class="token punctuation">,</span> $<span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Each of the &quot;<span class="katex"><span class="katex-mathml"><math
+            xmlns="http://www.w3.org/1998/Math/MathML">
+            <semantics>
+              <mrow>
+                <mi mathvariant="normal">&quot;</mi>
+                <mi>p</mi>
+                <mi>l</mi>
+                <mi>a</mi>
+                <mi>c</mi>
+                <mi>e</mi>
+                <mi>h</mi>
+                <mi>o</mi>
+                <mi>l</mi>
+                <mi>d</mi>
+                <mi>e</mi>
+                <mi>r</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>s</mi>
+                <mi>a</mi>
+                <mi>p</mi>
+                <mi>o</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>t</mi>
+                <mi>i</mi>
+                <mi>o</mi>
+                <mi>n</mi>
+                <mi>a</mi>
+                <mi>l</mi>
+                <mi>a</mi>
+                <mi>r</mi>
+                <mi>g</mi>
+                <mi>u</mi>
+                <mi>m</mi>
+                <mi>e</mi>
+                <mi>n</mi>
+                <mi>t</mi>
+                <mi>f</mi>
+                <mi>o</mi>
+                <mi>r</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>p</mi>
+                <mi>a</mi>
+                <mi>r</mi>
+                <mi>a</mi>
+                <mi>m</mi>
+                <mi>e</mi>
+                <mi>t</mi>
+                <mi>e</mi>
+                <mi>r</mi>
+                <mi>s</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>a</mi>
+                <mi>t</mi>
+                <mi>y</mi>
+                <mi>o</mi>
+                <mi>u</mi>
+                <mi>p</mi>
+                <mi>a</mi>
+                <mi>s</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>n</mi>
+                <mi mathvariant="normal">.</mi>
+                <mi>T</mi>
+                <mi>h</mi>
+                <mi>a</mi>
+                <mi>t</mi>
+                <mi>m</mi>
+                <mi>e</mi>
+                <mi>a</mi>
+                <mi>n</mi>
+                <mi>s</mi>
+                <mo separator="true">,</mo>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>v</mi>
+                <mi>a</mi>
+                <mi>l</mi>
+                <mi>u</mi>
+                <mi>e</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>a</mi>
+                <mi>t</mi>
+                <mi>p</mi>
+                <mi>a</mi>
+                <mi>s</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>n</mi>
+                <mi>f</mi>
+                <mi>o</mi>
+                <mi>r</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>f</mi>
+                <mi>i</mi>
+                <mi>r</mi>
+                <mi>s</mi>
+                <mi>t</mi>
+                <mi>p</mi>
+                <mi>a</mi>
+                <mi>r</mi>
+                <mi>a</mi>
+                <mi>m</mi>
+                <mi>e</mi>
+                <mi>t</mi>
+                <mi>e</mi>
+                <mi>r</mi>
+                <mi>w</mi>
+                <mi>i</mi>
+                <mi>l</mi>
+                <mi>l</mi>
+                <mi>b</mi>
+                <mi>e</mi>
+                <mi>p</mi>
+                <mi>u</mi>
+                <mi>t</mi>
+                <mi>w</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>r</mi>
+                <mi>e</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi mathvariant="normal">&quot;</mi>
+              </mrow>
+              <annotation encoding="application/x-tex">&quot; placeholders is a positional argument for the parameters
+                that
+                you pass in. That means, the value that pass in for the first parameter will be
+                put where the &quot;</annotation>
+            </semantics>
+          </math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+              style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span
+              class="mord">&quot;</span><span class="mord mathdefault">p</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault">c</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">h</span><span class="mord mathdefault">o</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">d</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span
+              class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault">n</span><span class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault"
+              style="margin-right:0.03588em;">g</span><span class="mord mathdefault">u</span><span
+              class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">n</span><span class="mord mathdefault">t</span><span class="mord mathdefault"
+              style="margin-right:0.10764em;">f</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault" style="margin-right:0.02778em;">r</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">p</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault"
+              style="margin-right:0.03588em;">y</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault">u</span><span class="mord mathdefault">p</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span
+              class="mord mathdefault">n</span><span class="mord">.</span><span class="mord mathdefault"
+              style="margin-right:0.13889em;">T</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span
+              class="mord mathdefault">s</span><span class="mpunct">,</span><span class="mspace"
+              style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.03588em;">v</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault" style="margin-right:0.01968em;">l</span><span
+              class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">p</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault"
+              style="margin-right:0.10764em;">f</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault" style="margin-right:0.02778em;">r</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span
+              class="mord mathdefault" style="margin-right:0.02778em;">r</span><span
+              class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">p</span><span class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault"
+              style="margin-right:0.02691em;">w</span><span class="mord mathdefault">i</span><span
+              class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">b</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">p</span><span
+              class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault"
+              style="margin-right:0.02691em;">w</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord">&quot;</span></span></span></span>1&quot; placeholder
+      is, which is the value for the &quot;name&quot; of the<br>
+      puppy. The &quot;$2&quot; corresponds to the &quot;age_yrs&quot; column, so it should contain the<br>
+      age of the puppy. This continues for the third, fourth, and fifth parameters,<br>
+      as well.</p>
+    <p>Assume that in your code, you have the variables <code>name</code>, <code>age</code>, <code>breedName</code>,<br>
+      <code>weight</code>, and <code>isMicrochipped</code> containing the values that the user provided for<br>
+      the new puppy. Then, your use of the <code>query</code> method will now include another<br>
+      argument, the values that you want to pass in inside an array.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`
+  INSERT INTO puppies (name, age_yrs, breed, weight_lbs, microchipped)
+  VALUES ($1, $2, $3, $4, $5);
+`</span></span><span class="token punctuation">,</span> <span class="token punctuation">[</span>name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> breedName<span class="token punctuation">,</span> weight<span class="token punctuation">,</span> isMicrochipped<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>You can see that the variable <code>name</code> is in the first position of the array, so<br>
+      it will be substituted into the placeholder &quot;<span class="katex"><span class="katex-mathml"><math
+            xmlns="http://www.w3.org/1998/Math/MathML">
+            <semantics>
+              <mrow>
+                <mn>1</mn>
+                <mi mathvariant="normal">&quot;</mi>
+                <mi mathvariant="normal">.</mi>
+                <mi>T</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi mathvariant="normal">&#x2018;</mi>
+                <mi>a</mi>
+                <mi>g</mi>
+                <mi>e</mi>
+                <mi mathvariant="normal">&#x2018;</mi>
+                <mi>v</mi>
+                <mi>a</mi>
+                <mi>r</mi>
+                <mi>i</mi>
+                <mi>a</mi>
+                <mi>b</mi>
+                <mi>l</mi>
+                <mi>e</mi>
+                <mi>i</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>n</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>s</mi>
+                <mi>e</mi>
+                <mi>c</mi>
+                <mi>o</mi>
+                <mi>n</mi>
+                <mi>d</mi>
+                <mi>p</mi>
+                <mi>o</mi>
+                <mi>s</mi>
+                <mi>i</mi>
+                <mi>t</mi>
+                <mi>i</mi>
+                <mi>o</mi>
+                <mi>n</mi>
+                <mi>o</mi>
+                <mi>f</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi>a</mi>
+                <mi>r</mi>
+                <mi>r</mi>
+                <mi>a</mi>
+                <mi>y</mi>
+                <mo separator="true">,</mo>
+                <mi>s</mi>
+                <mi>o</mi>
+                <mi>i</mi>
+                <mi>t</mi>
+                <mi>w</mi>
+                <mi>i</mi>
+                <mi>l</mi>
+                <mi>l</mi>
+                <mi>b</mi>
+                <mi>e</mi>
+                <mi>s</mi>
+                <mi>u</mi>
+                <mi>b</mi>
+                <mi>s</mi>
+                <mi>t</mi>
+                <mi>i</mi>
+                <mi>t</mi>
+                <mi>u</mi>
+                <mi>t</mi>
+                <mi>e</mi>
+                <mi>d</mi>
+                <mi>i</mi>
+                <mi>n</mi>
+                <mi>t</mi>
+                <mi>o</mi>
+                <mi>t</mi>
+                <mi>h</mi>
+                <mi>e</mi>
+                <mi mathvariant="normal">&quot;</mi>
+              </mrow>
+              <annotation encoding="application/x-tex">1&quot;. The `age` variable is in the
+                second position of the array, so it will be substituted into the &quot;</annotation>
+            </semantics>
+          </math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+              style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span
+              class="mord">&quot;</span><span class="mord">.</span><span class="mord mathdefault"
+              style="margin-right:0.13889em;">T</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord">&#x2018;</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span
+              class="mord">&#x2018;</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault">b</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span
+              class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span
+              class="mord mathdefault">d</span><span class="mord mathdefault">p</span><span
+              class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault"
+              style="margin-right:0.10764em;">f</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span
+              class="mord mathdefault">a</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault"
+              style="margin-right:0.02778em;">r</span><span class="mord mathdefault">a</span><span
+              class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span
+              class="mspace" style="margin-right:0.16666666666666666em;"></span><span
+              class="mord mathdefault">s</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span class="mord mathdefault"
+              style="margin-right:0.02691em;">w</span><span class="mord mathdefault">i</span><span
+              class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault"
+              style="margin-right:0.01968em;">l</span><span class="mord mathdefault">b</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">s</span><span
+              class="mord mathdefault">u</span><span class="mord mathdefault">b</span><span
+              class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span
+              class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span
+              class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span
+              class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span
+              class="mord mathdefault">e</span><span class="mord">&quot;</span></span></span></span>2&quot;<br>
+      placeholder.</p>
+    <p>The full documentation for how to use queries with <strong>node-postgres</strong> can be<br>
+      found on the <a href="https://node-postgres.com/features/queries">Queries</a> documentation page on their Web
+      site.</p>
+    <h2 class="mume-header" id="try-it-out-for-yourself">Try it out for yourself</h2>
+
+    <p>Make sure you have a database with a table that has data in it. If you don&apos;t,<br>
+      create a new database and run the following SQL.</p>
+    <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> puppies <span class="token punctuation">(</span>
+  id <span class="token keyword">SERIAL</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+  name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  age_yrs <span class="token keyword">NUMERIC</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  breed <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  weight_lbs <span class="token keyword">INTEGER</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  microchipped <span class="token keyword">BOOLEAN</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">FALSE</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">insert</span> <span class="token keyword">into</span> puppies<span class="token punctuation">(</span>name<span class="token punctuation">,</span> age_yrs<span class="token punctuation">,</span> breed<span class="token punctuation">,</span> weight_lbs<span class="token punctuation">,</span> microchipped<span class="token punctuation">)</span>
+<span class="token keyword">values</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Cooper&apos;</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">&apos;Miniature Schnauzer&apos;</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Indie&apos;</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token string">&apos;Yorkshire Terrier&apos;</span><span class="token punctuation">,</span> <span class="token number">13</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Kota&apos;</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token string">&apos;Australian Shepherd&apos;</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token string">&apos;no&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Zoe&apos;</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">,</span> <span class="token string">&apos;Korean Jindo&apos;</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Charley&apos;</span><span class="token punctuation">,</span> <span class="token number">1.5</span><span class="token punctuation">,</span> <span class="token string">&apos;Basset Hound&apos;</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token string">&apos;no&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Ladybird&apos;</span><span class="token punctuation">,</span> <span class="token number">0.6</span><span class="token punctuation">,</span> <span class="token string">&apos;Labradoodle&apos;</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Callie&apos;</span><span class="token punctuation">,</span> <span class="token number">0.9</span><span class="token punctuation">,</span> <span class="token string">&apos;Corgi&apos;</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token string">&apos;no&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Jaxson&apos;</span><span class="token punctuation">,</span> <span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token string">&apos;Beagle&apos;</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Leinni&apos;</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">&apos;Miniature Schnauzer&apos;</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token string">&apos;yes&apos;</span> <span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">&apos;Max&apos;</span><span class="token punctuation">,</span> <span class="token number">1.6</span><span class="token punctuation">,</span> <span class="token string">&apos;German Shepherd&apos;</span><span class="token punctuation">,</span> <span class="token number">65</span><span class="token punctuation">,</span> <span class="token string">&apos;no&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Now that you have ten rows in the &quot;puppies&quot; table of a database, you can create<br>
+      a simple Node.js project to access it.</p>
+    <p>Create a new directory somewhere that&apos;s not part of an existing project. Run<br>
+      <code>npm init -y</code> to initialize the <strong>package.json</strong> file. Then, run
+      <code>npm install pg</code> to install the library from this section. (Why is the name of the library<br>
+      &quot;node-postgres&quot; but you install &quot;pg&quot;? Dunno.) Finally, open Visual Studio Code<br>
+      for the current directory with <code>code .</code>.</p>
+    <p>Create a new file named <strong>sql-test.js</strong>.</p>
+    <p>The first thing you need to do is import the <code>Pool</code> class from the<br>
+      <strong>node-postgres</strong> library. The name of the library in the <strong>node_modules</strong><br>
+      directory is &quot;pg&quot;. That line of code looks like this and can be found all over the<br>
+      <a href="https://www.node-postgres.com">node-postgres</a> documentation.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> Pool <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;pg&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Now, write some SQL that will select all of the records from the &quot;puppies&quot;<br>
+      table. (This is assuming you want to select puppies. If you&apos;re using a different<br>
+      table with different data, write the appropriate SQL here.)</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> Pool <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;pg&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> allPuppies <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs, breed, weight_lbs, microchipped
+  FROM puppies;
+`</span></span><span class="token punctuation">;</span>
+</pre>
+    <p>You will now use that with a new <code>Pool</code> object. You will need to know the name<br>
+      of the database that the &quot;puppies&quot; table is in (or whatever database you want<br>
+      to connect to).</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> Pool <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;pg&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> allPuppies <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs, breed, weight_lbs, microchipped
+  FROM puppies;
+`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> pool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pool</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  database<span class="token punctuation">:</span> <span class="token string">&apos;&#xAB;database name&#xBB;&apos;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Of course, replace &quot;&#xAB;database name&#xBB;&quot; with the name of your database. Otherwise,<br>
+      when you run it, you will see this error message.</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>UnhandledPromiseRejectionWarning: error: database &quot;&#xAB;database name&#xBB;&quot; does not exist
+</code></pre>
+    <p>This will, by default, connect to &quot;localhost&quot; on port &quot;5432&quot; with your user<br>
+      credentials because you did not specify any other parameters.</p>
+    <p>Once you have the pool, you can execute the query that you have in <code>allPuppies</code>.<br>
+      Remember that the <code>query</code> method returns a Promise. This code wraps the call to<br>
+      <code>query</code> in an <code>async function</code> so that it can use the <code>await</code> keyword for<br>
+      simplicity&apos;s sake. Then, it prints out the rows that it fetched to the console.<br>
+      Finally, it calls <code>end</code> on the connection pool object to tell <strong>node-postgres</strong><br>
+      to close all the connections and quit. Otherwise, your application will just<br>
+      hang and you&apos;ll have to close it with Control+C.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> Pool <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;pg&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> allPuppiesSql <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs, breed, weight_lbs, microchipped
+  FROM puppies;
+`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> pool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pool</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  database<span class="token punctuation">:</span> <span class="token string">&apos;&#xAB;database name&#xBB;&apos;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">selectAllPuppies</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> results <span class="token operator">=</span> <span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>allPuppiesSql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>results<span class="token punctuation">.</span>rows<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  pool<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">selectAllPuppies</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>When you run this with <code>node sql-test.js</code>, you should see some output like this<br>
+      although likely in a nicer format.</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>[ { id: 1, name: &apos;Cooper&apos;, age_yrs: &apos;1.0&apos;, breed: &apos;Miniature Schnauzer&apos;, weight_lbs: 18, microchipped: true },
+  { id: 2, name: &apos;Indie&apos;, age_yrs: &apos;0.5&apos;, breed: &apos;Yorkshire Terrier&apos;, weight_lbs: 13, microchipped: true },
+  { id: 3, name: &apos;Kota&apos;, age_yrs: &apos;0.7&apos;, breed: &apos;Australian Shepherd&apos;, weight_lbs: 26, microchipped: false },
+  { id: 4, name: &apos;Zoe&apos;, age_yrs: &apos;0.8&apos;, breed: &apos;Korean Jindo&apos;, weight_lbs: 32, microchipped: true },
+  { id: 5, name: &apos;Charley&apos;, age_yrs: &apos;1.5&apos;, breed: &apos;Basset Hound&apos;, weight_lbs: 25, microchipped: false },
+  { id: 6, name: &apos;Ladybird&apos;, age_yrs: &apos;0.6&apos;, breed: &apos;Labradoodle&apos;, weight_lbs: 20, microchipped: true },
+  { id: 7, name: &apos;Callie&apos;, age_yrs: &apos;0.9&apos;, breed: &apos;Corgi&apos;, weight_lbs: 16, microchipped: false },
+  { id: 8, name: &apos;Jaxson&apos;, age_yrs: &apos;0.4&apos;, breed: &apos;Beagle&apos;, weight_lbs: 19, microchipped: true },
+  { id: 9, name: &apos;Leinni&apos;, age_yrs: &apos;1.0&apos;, breed: &apos;Miniature Schnauzer&apos;, weight_lbs: 25, microchipped: true },
+  { id: 10, name: &apos;Max&apos;, age_yrs: &apos;1.6&apos;, breed: &apos;German Shepherd&apos;, weight_lbs: 65, microchipped: false } ]
+</code></pre>
+    <p>Now, try one of those parameterized queries. Comment out the <code>selectAllPuppies</code><br>
+      function and invocation.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token comment">// async function selectAllPuppies() {</span>
+<span class="token comment">//   const results = await pool.query(allPuppiesSql);</span>
+<span class="token comment">//   console.log(results.rows);</span>
+<span class="token comment">//   pool.end();</span>
+<span class="token comment">// }</span>
+
+<span class="token comment">// selectAllPuppies();</span>
+</pre>
+    <p>Add the following content to the bottom of the file.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token comment">// Define the parameterized query where it will select a puppy</span>
+<span class="token comment">// based on an id</span>
+<span class="token keyword">const</span> singlePuppySql <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs, breed, weight_lbs, microchipped
+  FROM puppies
+  WHERE ID = $1;
+`</span></span><span class="token punctuation">;</span>
+
+<span class="token comment">// Run the parameterized SQL by passing in an array that contains</span>
+<span class="token comment">// the puppyId to the query method. Then, print the results and</span>
+<span class="token comment">// end the pool.</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">selectOnePuppy</span><span class="token punctuation">(</span><span class="token parameter">puppyId</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> results <span class="token operator">=</span> <span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>singlePuppySql<span class="token punctuation">,</span> <span class="token punctuation">[</span>puppyId<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>results<span class="token punctuation">.</span>rows<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  pool<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Get the id from the command line and store it</span>
+<span class="token comment">// in the variable &quot;id&quot;. Pass that value to the</span>
+<span class="token comment">// selectOnePuppy function.</span>
+<span class="token keyword">const</span> id <span class="token operator">=</span> Number<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">selectOnePuppy</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Now, when you run the program, include a number after the command. For example,<br>
+      if you run <code>node sql-test.js 1</code>, it will print out</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>[ { id: 1,
+    name: &apos;Cooper&apos;,
+    age_yrs: &apos;1.0&apos;,
+    breed: &apos;Miniature Schnauzer&apos;,
+    weight_lbs: 18,
+    microchipped: true } ]
+</code></pre>
+    <p>If you run <code>node sql-test.js 4</code>, it will print out</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>[ { id: 4,
+    name: &apos;Zoe&apos;,
+    age_yrs: &apos;0.8&apos;,
+    breed: &apos;Korean Jindo&apos;,
+    weight_lbs: 32,
+    microchipped: true } ]
+</code></pre>
+    <p>That&apos;s because the number that you type on the command line is being substituted<br>
+      in for the &quot;$1&quot; in the parameterized query. That means, when you pass in &quot;4&quot;,<br>
+      It&apos;s like the RDMBS takes the parameterized query</p>
+    <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> age_yrs<span class="token punctuation">,</span> breed<span class="token punctuation">,</span> weight_lbs<span class="token punctuation">,</span> microchipped
+<span class="token keyword">FROM</span> puppies
+<span class="token keyword">WHERE</span> ID <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span>
+</pre>
+    <p>and your value &quot;4&quot;</p>
+    <p>and mushes them together to make</p>
+    <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> age_yrs<span class="token punctuation">,</span> breed<span class="token punctuation">,</span> weight_lbs<span class="token punctuation">,</span> microchipped
+<span class="token keyword">FROM</span> puppies
+<span class="token keyword">WHERE</span> ID <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">-- Value substituted here by PostgreSQL.</span>
+</pre>
+    <p>That happens because when you run the query, you call the <code>query</code> method like<br>
+      this.</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>singlePuppySql<span class="token punctuation">,</span> <span class="token punctuation">[</span>puppyId<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>which passes along the sql stored in <code>singlePuppySql</code> and the value stored in<br>
+      <code>puppyId</code> (as the first parameter) to PostgreSQL.</p>
+    <p>What do you think will happen if you change <code>singlePuppySql</code> to have <em>two</em><br>
+      parameters instead of one, but only pass in one parameter through the <code>query</code><br>
+      method?</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">const</span> singlePuppySql <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+  SELECT id, name, age_yrs, breed, weight_lbs, microchipped
+  FROM puppies
+  WHERE ID = $1
+  AND age_yrs &gt; $2;
+`</span></span><span class="token punctuation">;</span>
+</pre>
+    <p>PostgreSQL is smart enough to see that you&apos;ve only provided one parameter value<br>
+      but it needs <em>two</em> positional parameters. It gives you the error message</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>error: bind message supplies 1 parameters, but prepared statement &quot;&quot; requires 2
+</code></pre>
+    <p>In this error message, the term &quot;bind message&quot; is the kind of message that the<br>
+      <code>query</code> method sends to PostgreSQL when you provide parameters to it.</p>
+    <p>Change the query back to how it was. Now, add an extra parameter to the<br>
+      invocation of the <code>query</code> method. What do you think will</p>
+    <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>singlePuppySql<span class="token punctuation">,</span> <span class="token punctuation">[</span>puppyId<span class="token punctuation">,</span> <span class="token string">&apos;extra parameter&apos;</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+    <p>Again, PostgreSQL gives you an error message about a mismatch in the number of<br>
+      placeholders in the SQL and the number of values you passed to it.</p>
+    <pre data-role="codeBlock" data-info class="language-"><code>error: bind message supplies 2 parameters, but prepared statement &quot;&quot; requires 1
+</code></pre>
+    <h2 class="mume-header" id="what-youve-learned">What you&apos;ve learned</h2>
+
+    <p>Here, you&apos;ve seen how to connect to a PostgreSQL database using the<br>
+      <strong>node-postgres</strong> library named &quot;pg&quot;. You saw how to run simple SQL statements<br>
+      against it and handle the results. You also saw how to create parameterized<br>
+      queries so that you can pass in values to be substituted.</p>
+    <p>If you are using the <strong>node-postgres</strong> library and running your own handcrafted<br>
+      SQL, you will most often use parameterized queries. It&apos;s good to get familiar<br>
+      with them.</p>
+
+  </div>
+  <div class="md-sidebar-toc">
+    <ul>
+      <li><a href="#node-postgres-and-prepared-statements">Node-Postgres And Prepared Statements</a>
+        <ul>
+          <li><a href="#connecting">Connecting</a></li>
+          <li><a href="#prepared-statement">Prepared Statement</a></li>
+          <li><a href="#try-it-out-for-yourself">Try it out for yourself</a></li>
+          <li><a href="#what-youve-learned">What you&apos;ve learned</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <a id="sidebar-toc-btn">&#x2261;</a>
+
+
+
+
+
+
+
+
+  <script>
+
+    var sidebarTOCBtn = document.getElementById( 'sidebar-toc-btn' )
+    sidebarTOCBtn.addEventListener( 'click', function ( event ) {
+      event.stopPropagation()
+      if ( document.body.hasAttribute( 'html-show-sidebar-toc' ) ) {
+        document.body.removeAttribute( 'html-show-sidebar-toc' )
+      } else {
+        document.body.setAttribute( 'html-show-sidebar-toc', true )
+      }
+    } )
+  </script>
+
+
+</body>
+
+</html>

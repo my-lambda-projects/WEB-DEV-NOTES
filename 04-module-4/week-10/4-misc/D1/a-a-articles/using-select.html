@@ -1,0 +1,398 @@
+<h1 id="app-academy-open">App Academy Open</h1>
+<h2 id="using-select">Using SELECT</h2>
+<p>In the first reading, we covered SQL and PostgreSQL and how to set up PostgreSQL. In this reading, we’re going to learn how to write a simple SQL query using SELECT.</p>
+<h2 id="what-is-a-query">What is a query?</h2>
+<p>SQL stands for <em>Structured Query Language</em>, and whenever we write SQL we’re usually querying a database. A query is simply a question we’re asking a database, and we’re aiming to get a response back. The response comes back to us as a list of table rows.</p>
+<h2 id="example-table">Example table</h2>
+<p>Let’s say we had the following database table called <code>puppies</code>. We’ll use this table to make our queries:</p>
+<p><em><strong>puppies table</strong></em></p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age_yrs</th>
+<th>breed</th>
+<th>weight_lbs</th>
+<th>microchipped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cooper</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>18</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Indie</td>
+<td>0.5</td>
+<td>Yorkshire Terrier</td>
+<td>13</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Kota</td>
+<td>0.7</td>
+<td>Australian Shepherd</td>
+<td>26</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Zoe</td>
+<td>0.8</td>
+<td>Korean Jindo</td>
+<td>32</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Charley</td>
+<td>1.5</td>
+<td>Basset Hound</td>
+<td>25</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+<td>0.6</td>
+<td>Labradoodle</td>
+<td>20</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Callie</td>
+<td>0.9</td>
+<td>Corgi</td>
+<td>16</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Jaxson</td>
+<td>0.4</td>
+<td>Beagle</td>
+<td>19</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Leinni</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>25</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+<td>1.6</td>
+<td>German Shepherd</td>
+<td>65</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-psql-in-the-terminal">Using psql in the terminal</h2>
+<p>As we covered in the first reading, psql allows us to access the PostgreSQL server and make queries via the terminal. Open up the terminal on your machine, and connect to the PostgreSQL server by using the following psql command:</p>
+<pre><code>psql -U postgres</code></pre>
+<p>The above command lets you access the PostgreSQL server as the user ‘postgres’ (<code>-U</code> stands for user). After you enter this command, you’ll be prompted for the password that you set for the ‘postgres’ user during installation. Type it in, and hit Enter. Once you’ve successfully logged in, you should see the following in the terminal:</p>
+<pre><code>Password for user postgres:
+psql (11.5, server 11.6)
+Type &quot;help&quot; for help.
+
+postgres=#</code></pre>
+<p>You can exit psql at anytime with the command <code>\q</code>, and you can log back in with <code>psql -U postgres</code>. (<em>See this <a href="https://gist.github.com/Kartones/dd3ff5ec5ea238d4c546">Postgres Cheatsheet</a> for a list of more PSQL commands.</em>)</p>
+<p>We’ll use the following PostgreSQL to create the <code>puppies</code> table above. After you’ve logged into the psql server, type the following code and hit Enter.</p>
+<p><em><strong>puppies.sql</strong></em></p>
+<pre><code>create table puppies (
+  name VARCHAR(100),
+  age_yrs NUMERIC(2,1),
+  breed VARCHAR(100),
+  weight_lbs INT,
+  microchipped BOOLEAN
+);
+
+insert into puppies
+values
+(&#39;Cooper&#39;, 1, &#39;Miniature Schnauzer&#39;, 18, &#39;yes&#39;);
+
+insert into puppies
+values
+(&#39;Indie&#39;, 0.5, &#39;Yorkshire Terrier&#39;, 13, &#39;yes&#39;),
+(&#39;Kota&#39;, 0.7, &#39;Australian Shepherd&#39;, 26, &#39;no&#39;),
+(&#39;Zoe&#39;, 0.8, &#39;Korean Jindo&#39;, 32, &#39;yes&#39;),
+(&#39;Charley&#39;, 1.5, &#39;Basset Hound&#39;, 25, &#39;no&#39;),
+(&#39;Ladybird&#39;, 0.6, &#39;Labradoodle&#39;, 20, &#39;yes&#39;),
+(&#39;Callie&#39;, 0.9, &#39;Corgi&#39;, 16, &#39;no&#39;),
+(&#39;Jaxson&#39;, 0.4, &#39;Beagle&#39;, 19, &#39;yes&#39;),
+(&#39;Leinni&#39;, 1, &#39;Miniature Schnauzer&#39;, 25, &#39;yes&#39; ),
+(&#39;Max&#39;, 1.6, &#39;German Shepherd&#39;, 65, &#39;no&#39;);</code></pre>
+<p>In the above SQL, we created a new table called <code>puppies</code>, and we gave it the following columns: <code>name</code>, <code>age_yrs</code>, <code>breed</code>, <code>weight_lbs</code>, and <code>microchipped</code>. We filled the table with ten rows containing data for each puppy, by using <code>insert into puppies values ()</code>.</p>
+<p>We used the following <a href="http://www.postgresqltutorial.com/postgresql-data-types/">PostgreSQL data types</a>: <code>VARCHAR</code>, <code>NUMERIC</code>, <code>INT</code>, and <code>BOOLEAN</code>.</p>
+<ul>
+<li><code>VARCHAR(n)</code> is a variable-length character string that lets you store up to <em>n</em> characters. Here we’ve set the character limit to 100 for the <code>name</code> and <code>breed</code> columns.</li>
+<li><code>NUMERIC(p,s)</code> is a floating-point number with <em>p</em> digits and <em>s</em> number of places after the decimal point. Here we’ve set the values for the <code>age_yrs</code> column to up to two digits before the decimal and one place after the decimal.</li>
+<li><code>INT</code> is a 4-byte integer, which we’ve set on the <code>weight_lbs</code> column.</li>
+<li><code>BOOLEAN</code> is, of course, a Boolean value. We’ve set the <code>microchipped</code> column to accept Boolean values. SQL accepts the standard Boolean values <code>true</code>, <code>false</code>, or <code>null</code>. However, you’ll note that we’ve used <code>yes</code> and <code>no</code> in our <code>microchipped</code> column because <a href="http://www.postgresqltutorial.com/postgresql-boolean/">PostgreSQL Booleans</a> can be any of the following values:</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>TRUE</th>
+<th>FALSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>true</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>‘t’</td>
+<td>‘f’</td>
+</tr>
+<tr class="odd">
+<td>‘true’</td>
+<td>‘false’</td>
+</tr>
+<tr class="even">
+<td>‘yes’</td>
+<td>‘no’</td>
+</tr>
+<tr class="odd">
+<td>‘y’</td>
+<td>‘n’</td>
+</tr>
+<tr class="even">
+<td>‘1’</td>
+<td>‘0’</td>
+</tr>
+</tbody>
+</table>
+<h2 id="simple-select-query">Simple SELECT Query</h2>
+<p>We can write a simple <a href="https://sqlzoo.net/wiki/SELECT_Reference">SELECT query</a> to get results back from the table above. The syntax for the SELECT query is <code>SELECT [columns] FROM [table]</code>.</p>
+<h3 id="select-all-rows">SELECT all rows</h3>
+<p>Using <code>SELECT *</code> is a quick way to get back all the rows in a given table. It is discouraged in queries that you write for your applications. Use it only when playing around with data, not for production code.</p>
+<pre><code>SELECT *
+FROM   puppies;</code></pre>
+<p>Type the query above into your psql terminal, and make sure to add a semicolon at the end, which terminates the statement. <code>SELECT</code> and <code>FROM</code> should be capitalized. The above query should give us back the entire <code>puppies</code> table:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age_yrs</th>
+<th>breed</th>
+<th>weight_lbs</th>
+<th>microchipped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cooper</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>18</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Indie</td>
+<td>0.5</td>
+<td>Yorkshire Terrier</td>
+<td>13</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Kota</td>
+<td>0.7</td>
+<td>Australian Shepherd</td>
+<td>26</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Zoe</td>
+<td>0.8</td>
+<td>Korean Jindo</td>
+<td>32</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Charley</td>
+<td>1.5</td>
+<td>Basset Hound</td>
+<td>25</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+<td>0.6</td>
+<td>Labradoodle</td>
+<td>20</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Callie</td>
+<td>0.9</td>
+<td>Corgi</td>
+<td>16</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Jaxson</td>
+<td>0.4</td>
+<td>Beagle</td>
+<td>19</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Leinni</td>
+<td>1</td>
+<td>Miniature Schnauzer</td>
+<td>25</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+<td>1.6</td>
+<td>German Shepherd</td>
+<td>65</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h3 id="select-by-column">SELECT by column</h3>
+<p>We can see all the rows in a given column by using <code>SELECT [column name]</code>.</p>
+<pre><code>SELECT name
+FROM   puppies;</code></pre>
+<p>Type the query above into your psql terminal, and make sure to add a semicolon at the end, which terminates the statement. <code>SELECT</code> and <code>FROM</code> should be capitalized. The above query should give us back the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cooper</td>
+</tr>
+<tr class="even">
+<td>Indie</td>
+</tr>
+<tr class="odd">
+<td>Kota</td>
+</tr>
+<tr class="even">
+<td>Zoe</td>
+</tr>
+<tr class="odd">
+<td>Charley</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+</tr>
+<tr class="odd">
+<td>Callie</td>
+</tr>
+<tr class="even">
+<td>Jaxson</td>
+</tr>
+<tr class="odd">
+<td>Leinni</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+</tr>
+</tbody>
+</table>
+<h3 id="select-multiple-columns">SELECT multiple columns</h3>
+<p>To see multiple columns, we can concatenate the column names by using commas between column names.</p>
+<pre><code>SELECT name
+     , age_yrs
+     , weight_lbs
+FROM   puppies;</code></pre>
+<p>Type the query above into your psql terminal, and make sure to add a semicolon at the end, which terminates the statement. <code>SELECT</code> and <code>FROM</code> should be capitalized. The above query should give us back the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>age_yrs</th>
+<th>weight_lbs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cooper</td>
+<td>1</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td>Indie</td>
+<td>0.5</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td>Kota</td>
+<td>0.7</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td>Zoe</td>
+<td>0.8</td>
+<td>32</td>
+</tr>
+<tr class="odd">
+<td>Charley</td>
+<td>1.5</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+<td>0.6</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>Callie</td>
+<td>0.9</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>Jaxson</td>
+<td>0.4</td>
+<td>19</td>
+</tr>
+<tr class="odd">
+<td>Leinni</td>
+<td>1</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+<td>1.6</td>
+<td>65</td>
+</tr>
+</tbody>
+</table>
+<h2 id="formatting-select-statements">Formatting SELECT statements</h2>
+<p>This is another of those hot-button topics with software developers. Some people like to put all the stuff on one line for each SQL keyword.</p>
+<pre><code>SELECT name, age_yrs, weight_lbs
+FROM   puppies;</code></pre>
+<p>That works for short lists. But some tables have hundreds of columns. That gets long.</p>
+<p>Some developers like what you saw earlier, the “each column name on its own line with the comma at the front”.</p>
+<pre><code>SELECT name
+     , age_yrs
+     , weight_lbs
+FROM   puppies;</code></pre>
+<p>They like this because if they need to comment out a column name, they can just put a couple of dashes at the beginning of the line.</p>
+<pre><code>SELECT name
+--     , age_yrs
+     , weight_lbs
+FROM   puppies;</code></pre>
+<p>Some developers just do a word wrap when lines get too long.</p>
+<p>All of these are fine. Just stay consistent within a project how you do them.</p>
+<h2 id="what-we-learned">What we learned:</h2>
+<ul>
+<li>What a query is</li>
+<li>How to connect to the PostgreSQL server with psql</li>
+<li>How to construct an example SQL table</li>
+<li>PostgreSQL data types</li>
+<li>How to write a simple SELECT query</li>
+<li>How to SELECT all rows, rows by column, and rows by multiple columns</li>
+</ul>
+<p>Did you find this lesson helpful?</p>
+<p><a href="https://open.appacademy.io/learn/js-py---sep-2020-online/week-10-sep-2020-online/using-select">Source</a></p>

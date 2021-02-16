@@ -1,0 +1,9 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:result-grid', location = 'includes/js/result-grid.js' */
+define("confluence/result-grid",["ajs","jquery","confluence/control","confluence/select-grid","raphael"],function(g,e,n,p,q){return n.extend({init:function(b){this.type=this.type||"ResultGrid";var c,f,m,h,l,d,k;f=b.gridContainer||e(b.baseElement).find(".data-table");f.length||g.debug("gridContainer for AJS.ResultGrid not found!");m=function(a){return a.id};c=new p({gridContainer:f,columns:b.columns,selectionCallback:b.selectionCallback,getRowId:b.getRowId||m,dontShiftFocus:b.dontShiftFocus});d=b.messageHandler||
+g.MessageHandler({baseElement:e(b.baseElement).find(".message-panel")});k=b.noResultMessage||g.I18n.getText("result.grid.no.result.message");e.extend(this,{update:function(a,b){d.clearMessages();h&&(h(),l.remove(),h=null);c.clear();if(!a||!a.length)return c.hide(),a=e.isFunction(k)?k(b):k,d.displayMessages(a),!1;c.update(a);c.show();return!0},updateAndSelect:function(a,c,b){this.update(a,c)&&this.selectIndex(b)},prependAndSelect:function(a,b){a&&a.length?(d.clearMessages(),c.prependAndSelect(a,b),
+c.show()):g.debug("ResultGrid.prependAndSelect called with no data, returning.")},select:function(a){c.select(a)},selectIndex:function(a){c.selectIndex(a)},clear:function(){d.clearMessages();c.hide()},loading:function(){c.show();var a=f.width(),b=f.height();this.clear();if(!h){var d,e;d=a/2-73;e=b/2-73;a-=d;b-=e;l=g("div").addClass("spinner-container").width(a).height(b).css({"padding-left":d,"padding-top":e}).insertAfter(f);h=q.spinner(l[0],60,"#666")}},isVisible:function(){return c.isVisible()}})}})});
+require("confluence/module-exporter").exportModuleAsGlobal("confluence/result-grid","AJS.ResultGrid");
+}catch(e){WRMCB(e)};

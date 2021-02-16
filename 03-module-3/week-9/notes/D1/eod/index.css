@@ -1,0 +1,24 @@
+body {
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+.a-heading {
+    color: blanchedalmond;
+    margin-top: 5px;
+}
+#first-heading {
+    color: tomato;
+    font-size: 1rem;
+}
+
+h1 {
+    color: firebrick;
+}
+div {
+    width: 400px;
+    height: 300px;
+    background: palevioletred;
+}
+
+div:hover {
+    box-shadow: 5px 5px 5px 5px black;
+}

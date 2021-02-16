@@ -1,0 +1,39 @@
+<p>Actual Database: postgres</p>
+<p>SQL: Structured Query Language</p>
+<p>Why do we use databases? So that products have a place to permanently store data. We</p>
+<p>Who acesses a database and why you might acess it through a client like psql or postbird.</p>
+<p>Node.js (aka servers) take signals from webusers</p>
+<p>Sequelize is an object relational mapper.</p>
+<p>Another ORM is SQL-Alchemy for python</p>
+<p>ORM: gives you tools to make models and represent the data from a database.</p>
+<p>Sequelize works for many different RDMS’s<br />
+–&gt; way to connect to and manage your database data.</p>
+<p>npx is a package you have installed and run it’s binary commands (like a command line tool)</p>
+<h3 id="config.json-cant-use-single-quotes-in-json.">config.json ====&gt; can’t use single quotes in json.</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="er">//while</span> <span class="er">building</span> <span class="er">your</span> <span class="er">app**</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize_recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;HfKfK79k&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize_recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;HfKfK79k&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-16" title="16">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb1-17" title="17">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-18" title="18">  <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span>  <span class="er">//Gets</span> <span class="er">deployed</span> <span class="er">with</span> <span class="er">real</span> <span class="er">sensitive</span> <span class="er">information**</span></a>
+<a class="sourceLine" id="cb1-19" title="19">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize_recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-20" title="20">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;HfKfK79k&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-21" title="21">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_production&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-23" title="23">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-24" title="24">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb1-25" title="25">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-26" title="26"><span class="fu">}</span></a></code></pre></div>
+<p>lll</p>

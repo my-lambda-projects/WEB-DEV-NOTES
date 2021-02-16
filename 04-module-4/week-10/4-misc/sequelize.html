@@ -1,0 +1,231 @@
+<h1 id="sequelize">SEQUELIZE</h1>
+<p>For this guide, we will be using the Recipe Box App data model that we used in week 10 of App Academy. Here is what it looks like: <img src="sequelizeTables.png" alt="Recipe Box App Database - Used for this guide" /> ## Initial Setup First, we need to install pg (for postgres), sequelize, and sequelize-cli (be sure to include the @^ versions because I tried this without that, and it looks different with newer versions).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">npm</span> install sequelize@^5.0.0 pg@^8.0.0</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ex">npm</span> install sequelize-cli@^5.0.0 --save-dev</a></code></pre></div>
+<p><strong>Next</strong>, create the user that you want to access your database, so log into psql.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">psql</span></a></code></pre></div>
+<p>You know you were successful when you see <code>=#</code> in your terminal after the user name. Go ahead and create the user you want to access your database.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">create</span> user recipe_box_app with createdb password <span class="st">&#39;password&#39;</span><span class="kw">;</span></a></code></pre></div>
+<p>Press enter and you should see:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">CREATE</span> ROLE</a></code></pre></div>
+<p><strong><em>NOW</em></strong>, let’s initialize this project for sequelize.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Quit psql:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">\<span class="ex">q</span></a></code></pre></div>
+<p>Initialize your project for sequelize.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">npx</span> sequelize-cli init</a></code></pre></div>
+<p>Some directories and a file should have been generated automatically into your project: 1. config directory * config.json file 2. migrations directory 3. models directory * index.js file 4. seeders directory</p>
+<p><strong>Open</strong> your config/config.json file and you should see:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="dt">&quot;operatorsAliases&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb7-9" title="9">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb7-10" title="10">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-13" title="13">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-14" title="14">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-15" title="15">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-16" title="16">    <span class="dt">&quot;operatorsAliases&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb7-17" title="17">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb7-18" title="18">  <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-19" title="19">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-20" title="20">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-21" title="21">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;database_production&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-22" title="22">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-23" title="23">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;mysql&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-24" title="24">    <span class="dt">&quot;operatorsAliases&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb7-25" title="25">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="fu">}</span></a></code></pre></div>
+<ol type="1">
+<li>Change all of the usernames to the username from “root” to the username that you created before: <code>"username": "recipe_box_app"</code></li>
+<li>Change the password line to provide the password for the user you created for this app: <code>"password": "password"</code></li>
+<li>Change the database line for all three environments (development, test, and production) to <code>"database": "recipe_box_development"</code>, <code>"database": "recipe_box_test"</code>, and <code>"database": "recipe_box_production"</code>.</li>
+<li>Change the dialect line to <code>"dialect": "postgres"</code></li>
+<li>Remove the <code>"operatorsAliases"</code> line</li>
+<li>Add the line: <code>"seederStorage": "sequelize"</code></li>
+</ol>
+<p>Your <code>config/config.json</code> file should now look like this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;development&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;password&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_development&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb8-10" title="10">  <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;password&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-14" title="14">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-15" title="15">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-16" title="16">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb8-17" title="17">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb8-18" title="18">  <span class="dt">&quot;production&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-19" title="19">    <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-20" title="20">    <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;password&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="dt">&quot;database&quot;</span><span class="fu">:</span> <span class="st">&quot;recipe_box_production&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-22" title="22">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;127.0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-23" title="23">    <span class="dt">&quot;dialect&quot;</span><span class="fu">:</span> <span class="st">&quot;postgres&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-24" title="24">    <span class="dt">&quot;seederStorage&quot;</span><span class="fu">:</span> <span class="st">&quot;sequelize&quot;</span></a>
+<a class="sourceLine" id="cb8-25" title="25">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="fu">}</span></a></code></pre></div>
+<p><strong>After updating your config file</strong>, <em>make sure postbird is not logged in, and you are not logged into psql anywhere else</em> and generate the database by running the command:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">npx</span> sequelize-cli db:create</a></code></pre></div>
+<p>This will create your recipe_box_development database. ## Models and Migrations Make sure that you start by generating the table that does not depend on anything else, meaning it does not contain any foreign keys.</p>
+<p><strong>NOTE:</strong> <em>As you continue creating tables, make sure you generate models and migrations for tables that only contain foreign keys to models that have already been generated.</em></p>
+<p>We will generate all the models and migrations before moving actually migrating, because with the timestamps on the migration files, they will be created in the right order as long as we do this right.</p>
+<p>Our Recipes table does not depend on anything, it contains no foreign keys, so we will make it first.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p><strong>NOTE:</strong> <em>You <strong>do not</strong> want to create the Ingredients or Instructions table before the Recipes and MeasurementUnits tables</em></p>
+<p>For each model you generate, a new file will appear in your models and migrations folders.</p>
+<p>To generate the Recipes model:<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">npx</span> sequelize-cli model:generate \</a>
+<a class="sourceLine" id="cb10-2" title="2">  --name Recipe \</a>
+<a class="sourceLine" id="cb10-3" title="3">  --attributes title:string</a></code></pre></div>
+<p>To generate the MeasurementUnits model:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">npx</span> sequelize-cli model:generate \</a>
+<a class="sourceLine" id="cb11-2" title="2">  --name MeasurementUnit \</a>
+<a class="sourceLine" id="cb11-3" title="3">  --attributes name:string</a></code></pre></div>
+<p><strong>After</strong> creating the tables with no dependencies, we can create the tables that depend on them.</p>
+<p>To generate the Instructions model:<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">npx</span> sequelize-cli model:generate \</a>
+<a class="sourceLine" id="cb12-2" title="2">  --name Instruction \</a>
+<a class="sourceLine" id="cb12-3" title="3">  --attributes specification:text,listOrder:integer,recipeId:integer</a></code></pre></div>
+<p>To generate the Ingredients model:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">npx</span> sequelize-cli model:generate \</a>
+<a class="sourceLine" id="cb13-2" title="2">  --name Ingredients \</a>
+<a class="sourceLine" id="cb13-3" title="3">  --attributes amount:numeric,measurementUnitId:integer,foodStuff:string,recipeId:integer</a></code></pre></div>
+<h2 id="migrations">Migrations</h2>
+<p>In the migrations files, you want to make sure that you put in any constraints on the datatypes like string and numeric, by going to the <code>type: Sequelize.STRING</code> or <code>type: Sequelize.NUMERIC</code> line and adding parentheses, specifying the limits like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="er">type:</span> <span class="er">Sequelize.STRING(100)</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1"><span class="er">type:</span> <span class="er">Sequelize.NUMERIC(5,3)</span></a></code></pre></div>
+<p>You may be asked to make sure null values are not allowed for that column, you would add the line:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb16-1" title="1"><span class="er">allowNull:</span> <span class="er">false</span></a></code></pre></div>
+<p>To make sure that all values in the column are unique, add the line:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb17-1" title="1"><span class="er">unique:</span> <span class="er">true</span></a></code></pre></div>
+<p>To specify the column as a foreign key (This is an example from the Ingredients table)<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb18-1" title="1"><span class="er">references:</span> <span class="fu">{</span> <span class="er">model</span><span class="fu">:</span> <span class="st">&quot;Recipe&quot;</span> <span class="fu">}</span></a></code></pre></div>
+<h2 id="migrate">Migrate</h2>
+<p>Once you have your Migration files fixed the way you need them, you will migrate by running:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate</a></code></pre></div>
+<p>If you end up forgetting something or put in a wrong value, you can undo your most recent migration OR all migrations by running:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate:undo</a></code></pre></div>
+<p>OR</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1"><span class="ex">npx</span> sequelize-cli db:migrate:undo:all</a></code></pre></div>
+<h2 id="models-and-associations">Models and Associations</h2>
+<p>In your models files, you will specify the associations. You can have one-to-one, one-to-many, or many-to-many.</p>
+<p>For our example, the Recipes and Instructions table have a one-to-many association, the Recipes and Instructions table have a one-to-many association, and the MeasurementUnits and Ingredients have a on-to-many relationship.</p>
+<p>Let’s associate the Recipes and Instructions first. We will go into the Recipes model file at <code>models/recipe.js</code> and in the <code>Recipe.associate</code> file. Since the Recipes table does not contain a foreign key, but is referenced by the Instructions table, we will call the <code>hasMany</code> function here:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">Recipe</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Instruction</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>In plain English, you can read the above code as: “Each recipe has many instructions, and each instruction references the recipe with the foreign key ‘recipeId’.”</p>
+<p>Since the Instruction model contains a foreign key referencing the Recipe model, it <em>belongs to</em> the Recipe model. So, in the <code>models/instruction.js</code> we will associate the Instruction model to the Recipe model using the <code>belongsTo</code> function:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="va">Instruction</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Recipe</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>In plain English, you can read the above code as: “Each Instruction belongs to a recipe that is referenced by the foreign key ‘recipeId’.”</p>
+<p>To set up the Recipes to Ingredients association, In the <code>models/recipe.js</code> file, define the association as:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="va">Recipe</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Ingredient</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>and in the <code>models/ingredient.js</code> file, define the association as:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="va">Ingredient</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">Recipe</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;recipeId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Finally, for the Ingredients to MeasurementUnits associations, In the <code>models/ingredient.js</code> file, define the association as:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="va">Ingredient</span>.<span class="at">belongsTo</span>(<span class="va">models</span>.<span class="at">MeasurementUnit</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;measurementUnitId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>and in the <code>models/measurementunit.js</code> file, define the association as:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="va">MeasurementUnit</span>.<span class="at">hasMany</span>(<span class="va">models</span>.<span class="at">Ingredient</span><span class="op">,</span> <span class="op">{</span> <span class="dt">foreignKey</span><span class="op">:</span> <span class="st">&#39;measurementUnitId&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The many to many relationship is the only one that is <strong><em>really</em></strong> different, which I can make a file about later upon request. ## Seeding Tables Now we need to seed the tables, so we will go back to the terminal and generate the seed files. You will run:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" title="1"><span class="ex">npx</span> sequelize-cli seed:generate --name recipe-seeder</a></code></pre></div>
+<p>You can name the seeder file anything you would like. The file with the name you gave it will appear in your <code>seeders/</code> folder. We need to open it up and put in information for each item that we want to seed into the table. <strong>NOTE:</strong> <em>Make sure you provide the createdAt and updatedAt values, otherwise they will be considered null, which is not allowed.</em></p>
+<p>When you open the <code>seeders/recipe-seeder</code> file, you will see this:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb29-2" title="2"></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-4" title="4">  <span class="dt">up</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-5" title="5">    <span class="co">/*</span></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="co">      Add altering commands here.</span></a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="co">      Return a promise to correctly handle asynchronicity.</span></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="co">      Example:</span></a>
+<a class="sourceLine" id="cb29-9" title="9"><span class="co">      return queryInterface.bulkInsert(&#39;People&#39;, [{</span></a>
+<a class="sourceLine" id="cb29-10" title="10"><span class="co">        name: &#39;John Doe&#39;,</span></a>
+<a class="sourceLine" id="cb29-11" title="11"><span class="co">        isBetaMember: false</span></a>
+<a class="sourceLine" id="cb29-12" title="12"><span class="co">      }], {});</span></a>
+<a class="sourceLine" id="cb29-13" title="13"><span class="co">    */</span></a>
+<a class="sourceLine" id="cb29-14" title="14">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb29-15" title="15">  <span class="dt">down</span><span class="op">:</span> (queryInterface<span class="op">,</span> Sequelize) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-16" title="16">    <span class="co">/*</span></a>
+<a class="sourceLine" id="cb29-17" title="17"><span class="co">      Add reverting commands here.</span></a>
+<a class="sourceLine" id="cb29-18" title="18"><span class="co">      Return a promise to correctly handle asynchronicity.</span></a>
+<a class="sourceLine" id="cb29-19" title="19"><span class="co">      Example:</span></a>
+<a class="sourceLine" id="cb29-20" title="20"><span class="co">        return queryInterface.bulkDelete(&#39;People&#39;, null, {});</span></a>
+<a class="sourceLine" id="cb29-21" title="21"><span class="co">    */</span></a>
+<a class="sourceLine" id="cb29-22" title="22">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb29-23" title="23"><span class="op">};</span></a></code></pre></div>
+<p>Inside of the up and down methods here, you see a comment with an “Example” in it. These are extremely helpful so you don’t have to memorize exactly what to do here. You can take these out of the comments and use them, but make sure you change ‘People’ to the table name, which should be <em>plural</em> here.</p>
+<p>You will place your seed data as an array of POJOs in the bulkInsert method in the up section. The up method of the Recipes seeder will look a little like this:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="cf">return</span> <span class="va">queryInterface</span>.<span class="at">bulkInsert</span>(<span class="st">&#39;Recipes&#39;</span><span class="op">,</span> [</a>
+<a class="sourceLine" id="cb30-2" title="2">  <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Vegetable Soup&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb30-3" title="3">  <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Pot Roast&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb30-4" title="4">  <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Macaroni and Cheese&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">},</span></a>
+<a class="sourceLine" id="cb30-5" title="5">  <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Lasagna&#39;</span><span class="op">,</span> <span class="dt">createdAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">,</span> <span class="dt">updatedAt</span><span class="op">:</span> <span class="kw">new</span> <span class="at">Date</span>() <span class="op">}</span></a>
+<a class="sourceLine" id="cb30-6" title="6">]<span class="op">,</span> <span class="op">{}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This will translate into SQL as:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> Recipes (title)</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb31-3" title="3">(<span class="st">&#39;Vegetable Soup&#39;</span>),</a>
+<a class="sourceLine" id="cb31-4" title="4">(<span class="st">&#39;Pot Roast&#39;</span>),</a>
+<a class="sourceLine" id="cb31-5" title="5">(<span class="st">&#39;Macaroni and Cheese&#39;</span>),</a>
+<a class="sourceLine" id="cb31-6" title="6">(<span class="st">&#39;Lasagna&#39;</span>);</a></code></pre></div>
+<p>If you need to undo the most recent seed you can run:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" title="1"><span class="ex">npx</span> sequelize-cli db:seed:undo</a></code></pre></div>
+<p>Or you can undo all seeds by running:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1"><span class="ex">npx</span> sequelize-cli db:seed:undo:all</a></code></pre></div>
+<h2 id="accessing-the-data">Accessing the Data</h2>
+<p>You can access and query the data using the <code>findByPk</code>, <code>findOne</code>, and <code>findAll</code> methods. First, make sure you import the models in your JavaScript file. In this case, we are assuming your JavaScript file is in the root of your project and so is the models folder.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">const</span> <span class="op">{</span> Recipe<span class="op">,</span> Ingredient<span class="op">,</span> Instruction<span class="op">,</span> MeasurementUnit <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./models&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>The models folder exports each of the models that you have created. We have these four in our data model, so we will destructure the models to access each table individually. The associations that you have defined in each of your models will allow you to access data of related tables when you query your database using the <code>include</code> option.</p>
+<p>If you want to find all recipes, for the recipe list, you would use the <code>findAll</code> method. You need to await this, so make sure your function is async.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">findAllRecipes</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-2" title="2">  <span class="cf">return</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">findAll</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>If you would like to include all the ingredients so you can create a shopping list for all the recipes, you would use <code>include</code>. This is possible because of the association you have defined in your Recipe and Ingredient models.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">getShoppingList</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb36-2" title="2">  <span class="cf">return</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">findAll</span>(<span class="op">{</span> <span class="dt">include</span><span class="op">:</span> [ Ingredient ] <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="op">}</span></a></code></pre></div>
+<p>If you only want to find one where there is chicken in the ingredients list, you would use <code>findOne</code> and <code>findByPk</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">findAChickenRecipe</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-2" title="2">  <span class="kw">const</span> chickenRecipe <span class="op">=</span> <span class="cf">await</span> <span class="va">Ingredient</span>.<span class="at">findOne</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb37-3" title="3">    <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-4" title="4">      <span class="dt">foodStuff</span><span class="op">:</span> <span class="st">&#39;chicken&#39;</span></a>
+<a class="sourceLine" id="cb37-5" title="5">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb37-6" title="6">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-7" title="7">  <span class="cf">return</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">findByPk</span>(<span class="va">chickenRecipe</span>.<span class="at">recipeId</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-8" title="8"><span class="op">}</span></a></code></pre></div>
+<h2 id="data-access-to-createupdatedelete-rows">Data Access to Create/Update/Delete Rows</h2>
+<p>You have two options when you want to create a row in a table (where you are saving one record into the table). You can either <code>.build</code> the row and then <code>.save</code> it, or you can <code>.create</code> it. Either way it does the same thing. Here are some examples:</p>
+<p>Let’s say we have a form that accepts the name of the recipe (for simplicity). When we get the results of the form, we can:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">const</span> newRecipe <span class="op">=</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">build</span>(<span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Chicken Noodle Soup&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-2" title="2"><span class="cf">await</span> <span class="va">newRecipe</span>.<span class="at">save</span>()<span class="op">;</span></a></code></pre></div>
+<p>This just created our new recipe and added it to our Recipes table. You can do the same thing like this:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb39-1" title="1"><span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">create</span>(<span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Chicken Noodle Soup&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>If you want to modify an item in your table, you can use <code>update</code>. Let’s say we want to change the chicken noodle soup to chicken noodle soup with extra veggies, first we need to get the recipe, then we can update it.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">const</span> modRecipe <span class="op">=</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Chicken Noodle Soup&#39;</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb40-2" title="2"><span class="cf">await</span> <span class="va">modRecipe</span>.<span class="at">update</span>(<span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Chicken Noodle Soup with Extra Veggies&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>To delete an item from your table, you will do the same kind of process. Find the recipe you want to delete and <code>destroy</code> it, like this:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">const</span> deleteThis <span class="op">=</span> <span class="cf">await</span> <span class="va">Recipe</span>.<span class="at">findOne</span>(<span class="op">{</span> <span class="dt">where</span><span class="op">:</span> <span class="op">{</span> <span class="dt">title</span><span class="op">:</span> <span class="st">&#39;Chicken Noodle Soup with Extra Veggies&#39;</span> <span class="op">}</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="cf">await</span> <span class="va">deleteThis</span>.<span class="at">destroy</span>()<span class="op">;</span></a></code></pre></div>
+<p><strong>NOTE:</strong> If you do not await these, you will receive a promise, so you will need to use <code>.then</code> and <code>.catch</code> to do more with the items you are accessing and modifying.</p>
+<h2 id="documentation">Documentation</h2>
+<p>For the data types and validations in your models, here are the official docs. The sequelize docs are hard to look at, so these are the specific sections with just the lists: <strong>Sequelize Data Types:</strong> <em>https://sequelize.org/v5/manual/data-types.html</em> <strong>Validations:</strong> <em>https://sequelize.org/v5/manual/models-definition.html#validations</em> When you access the data in your queries, here are the operators available, again because the docs are hard to navigate, this is the specific section with the list of operators. <strong>Operators:</strong> <em>https://sequelize.org/v5/manual/querying.html#operators</em> The documentation for building, saving, creating, updating and destroying is linked here, it does a pretty good job of explaining in my opinion, it just has a title that we have not been using in this course. When they talk about an instance, they mean an item stored in your table. <strong>Create/Update/Destroy:</strong> <em>https://sequelize.org/v5/manual/instances.html</em></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb42-1" title="1"></a></code></pre></div>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>If you want to create the database before you initialize sequelize for your project, you can log into psql in your terminal and run <code>create database recipe_box_developement with owner recipe_box_app;</code><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Our MeasurementUnits table aslo does not depend on anything, so you can create this one first if you would like.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>You don’t need to include the id, createdAt, or updatedAt attributes in when you generate your models, because they are automatically created every time.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>For the name, use a singular version of the table name and capitalize it.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>If you put spaces between the column:type pairs in the attributes list, you need to put them in a string, and still separate them with a comma, but leaving off the quotes is perfectly fine without spaces.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>The value for the model that you reference needs to be in quotes and should be singular, <em>or</em> however the referenced model is named in its model file if the model was not generated as specified here.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+</ol>
+</section>

@@ -1,0 +1,32 @@
+html,body {
+    padding: 0;
+    margin: 0;
+}
+
+#game-interface {
+    background: purple;
+    height: 515px;
+    width: 100%;
+}
+
+
+#typing-interface {
+    /* View Width */
+    width: 940px;
+    /* Replaced by flexbox */
+    margin: 0 auto;
+    position: relative;
+}
+
+#typing-interface img {
+    width: 100%;
+}
+
+.typing-indicator {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 255, 0.5);
+}

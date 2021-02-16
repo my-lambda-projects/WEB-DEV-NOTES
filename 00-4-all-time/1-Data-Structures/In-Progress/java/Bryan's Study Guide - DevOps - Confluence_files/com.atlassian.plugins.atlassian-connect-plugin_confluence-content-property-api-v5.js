@@ -1,0 +1,8 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.plugins.atlassian-connect-plugin:confluence-content-property-api-v5', location = 'v5/js/confluence/contentproperty/content-property.js' */
+(function(g,e){e("ac/confluence/content-property",["confluence/root","ajs"],function(e,d){function h(a){var b=e.getContentId();return d.contextPath()+"/rest/api/content/"+b+"/property/"+a}function k(a){d.log(a);d.flag({type:"error",title:a,body:"\x3cp\x3eThere was a problem communicating with the server. Please refresh the page and try again\x3c/p\x3e"})}function l(a,b){var c=h(a);g.getJSON(c).done(b).fail(function(c){404===c.status?b(null):k("Unable to check item state: "+a)})}function n(a,b){var c=
+a.key,f={url:h(c),contentType:"application/json",data:JSON.stringify(a)};f.type=a.version&&a.version.number&&1<a.version.number?"PUT":"POST";g.ajax(f).done(function(a){d.log("contentProperty "+c+" "+f.type+" successful");"function"===typeof b&&b(a)}).fail(function(a,d,e){k("Unable to "+f.type+" item: "+c);"function"===typeof b&&b({error:e})})}function m(a,b){d.trigger("contentProperty.update",{contentProperty:a,extension:b})}return{getContentProperty:function(a,b){l(a,b)},syncPropertyFromServer:function(a,
+b){l(a,function(a){m(a,b._context.extension);b(a)})},setContentProperty:function(a,b){m(a,b._context.extension);n(a,b)}}})})(AJS.$,define);
+}catch(e){WRMCB(e)};

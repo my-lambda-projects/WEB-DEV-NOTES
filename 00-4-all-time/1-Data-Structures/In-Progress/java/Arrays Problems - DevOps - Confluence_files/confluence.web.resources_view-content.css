@@ -1,0 +1,77 @@
+/* module-key = 'confluence.web.resources:view-content', location = 'includes/css/time.css' */
+.wiki-content time {
+  padding: 0;
+  margin: 0 1px 0 1px;
+  background-color: #eee;
+  border: solid 1px #ddd;
+  border-radius: 3px;
+  white-space: nowrap;
+  resize: none;
+  outline: 0 none;
+  -webkit-touch-callout: all;
+  -webkit-user-select: all;
+  -khtml-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all
+}
+
+.wiki-content time:focus {
+  outline: 0 none
+}
+
+.wiki-content time:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0 2px 0 0;
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAW0lEQVR4AWMgAcyYicZGgKke0x/N/I8Opz+a7AlVAOTigHAF2C0lSQGcBcOkmgAhqWcCpoJnk2Qw9U+SmfkMFrAdM7fBlSCkt83ogJnAClTyDC0UnwHFWBmoAABeoGyUiuDGtQAAAABJRU5ErkJggg==');
+  position: relative;
+  top: -1px
+}
+
+ul.inline-task-list time:before {
+  content: none
+}
+
+/* module-key = 'confluence.web.resources:view-content', location = 'includes/css/view-content.less' */
+.wiki-content .confluence-embedded-file-wrapper {
+  max-width: 100%
+}
+
+.wiki-content .confluence-embedded-file-wrapper .confluence-embedded-image {
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  max-width: calc(100% - 4px)
+}
+
+.wiki-content .image-left-wrapper {
+  display: table;
+  margin: 0 auto 10px 0
+}
+
+.wiki-content .image-left-wrap-wrapper {
+  float: left;
+  margin: 0 10px 10px 0
+}
+
+.wiki-content .image-center-wrapper {
+  display: table;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.wiki-content .image-right-wrapper {
+  display: table;
+  margin: 0 0 10px auto
+}
+
+.wiki-content .image-right-wrap-wrapper {
+  float: right;
+  margin: 0 0 10px 10px
+}

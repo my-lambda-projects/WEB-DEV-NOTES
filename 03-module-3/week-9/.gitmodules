@@ -1,0 +1,3 @@
+[submodule "Modernize-Craigslist"]
+	path = Modernize-Craigslist
+	url = https://github.com/bgoonz/Modernize-Craigslist.git

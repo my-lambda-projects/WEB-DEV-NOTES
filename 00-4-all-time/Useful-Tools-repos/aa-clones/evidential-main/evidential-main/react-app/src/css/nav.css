@@ -1,0 +1,68 @@
+/****
+NavBar.css -- works with site layout wrappers
+****/
+
+.ev-main-nav {
+  padding: 5px 0;
+  font-size: 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-color-dark);
+  background-color: var(--primary-color-light);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5) 5%, var(--primary-color-light) 15%, var(--primary-color-light) 85%, rgba(255, 255, 255, 0.5) 95%);
+}
+
+.ev-main-nav > ul {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  margin: 0 15px;
+}
+
+.ev-main-nav .logo {
+  display: block;
+  text-decoration: none;
+  text-shadow: none;
+  position: relative;
+  z-index: 1;
+  margin: 0 30px;
+  font-family: 'Times New Roman', Times, serif;
+  --letter-space: .5em;
+}
+
+.ev-main-nav .logo::first-letter {
+  display: inline-block;
+  margin-right: var(--letter-space);
+}
+
+.ev-main-nav .logo > span {
+  font-size: 2em;
+  position: absolute;
+  bottom: -.25em;
+  margin: 0 calc(-1*var(--letter-space));
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: -webkit-transform .8s ease-in-out, opacity .8s ease-in-out;
+  -ms-transition: -ms-transform .8s ease-in-out, opacity .8s ease-in-out;
+  transition: transform .8s ease-in-out, opacity .8s ease-in-out;
+}
+
+/* .ev-main-nav .logo::first-line {
+  color: rgba(var(--raw-rgb-primary-color), 1);;
+  transition: color .8s ease-in-out;
+}
+.ev-main-nav:hover .logo::first-line {
+  color: rgba(var(--raw-rgb-primary-color), .7);
+} */
+
+.ev-main-nav .logo:hover::first-line {
+  text-shadow: 0px 0px 1px var(--primary-color);
+}
+
+.ev-main-nav:hover .logo > span {
+  opacity: 60%;
+  -webkit-transform:rotate(15deg);
+  -ms-transform:rotate(15deg);
+  transform:rotate(15deg);
+}

@@ -1,0 +1,106 @@
+{
+	"name": "reflow-markdown",
+	"displayName": "Reflow Markdown",
+	"description": "Format lines in markdown headers, paragraphs, blockquotes, lists, etc. to a preferred line-length.",
+	"version": "2.1.0",
+	"publisher": "marvhen",
+	"icon": "img/logo.png",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"keywords": [
+		"markdown",
+		"text",
+		"format",
+		"reflow",
+		"wrap"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/marvhen/reflowmarkdown"
+	},
+	"galleryBanner": {
+		"color": "#000000",
+		"theme": "dark"
+	},
+	"activationEvents": [
+		"onCommand:extension.reflowMarkdown"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Reflow Markdown configuration",
+			"properties": {
+				"reflowMarkdown.preferredLineLength": {
+					"type": "number",
+					"default": 80,
+					"description": "Preferred line length for reflowed lines.",
+					"minimum": 0
+				},
+				"reflowMarkdown.doubleSpaceBetweenSentences": {
+					"type": "boolean",
+					"default": false,
+					"description": "Insert two spaces instead of one between each sentence."
+				},
+				"reflowMarkdown.resizeHeaderDashLines": {
+					"type": "boolean",
+					"default": false,
+					"description": "The dashes and equal signs under headers will be re-written to be the same length as the header text."
+				},
+				"reflowMarkdown.wrapLongLinks": {
+					"type": "string",
+					"default": "wrap",
+					"description": "Specifies how links will be wrapped when they in the middle of a line and cause it to extend beyond the preferred length.",
+					"enum": [
+						"wrap",
+						"doNotWrap"
+					],
+					"enumDescriptions": [
+						"The link text and the link url are started on the next line, which itself may be longer than the preferrd length.",
+						"The link text and the link url are kept on the current line, resulting in it being longer than the preferred length."
+					]
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.reflowMarkdown",
+				"title": "Reflow Markdown"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.reflowMarkdown",
+				"key": "alt+q",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"test": "mocha ./out/testUnit/",
+		"testAndWatch": "mocha --watch --watch-extensions js,md ./out/testUnit/",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/chai": "^4.1.2",
+		"@types/mocha": "5.0.0",
+		"@types/node": "^7.0.61",
+		"chai": "4.1.2",
+		"mocha": "5.1.0",
+		"typescript": "2.8.1",
+		"vscode": "^1.0.0"
+	},
+	"__metadata": {
+		"id": "13c9e1dd-6632-4cf9-940e-c1a25a51a85b",
+		"publisherId": "ca052f90-1759-4eb1-afce-52e71b6de05a",
+		"publisherDisplayName": "marvhen"
+	}
+}

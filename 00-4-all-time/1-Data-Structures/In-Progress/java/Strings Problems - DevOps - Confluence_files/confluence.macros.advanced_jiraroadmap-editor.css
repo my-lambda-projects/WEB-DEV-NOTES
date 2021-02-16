@@ -1,0 +1,697 @@
+/* module-key = 'confluence.macros.advanced:jiraroadmap-editor', location = 'com/atlassian/confluence/plugins/macros/advanced/jiraroadmap/jiraroadmap.css' */
+#insert-menu .macro-jiraroadmap .icon {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAABxVBMVEUAAAAAAABVVVVAQIAzZmZVVYBJSW1NTWZAVWo7TnZJSW1EVWZAUHA8S2lHVXFDUWtATXNAVWo9UnBFTmxCVXFAUm1GT3JCUmtEU3FAVXFBVW9AU2xET2xCUnBAU2xDUm9CUG1AUm1CVG5BUmxEUW9DVG1CUm9BUW1EVHBEU21DUW9DUW5CUGxBU25BUm1DUW9CU21DU3BBU29CUW9BU25DUm9DUW5DUW1CUW5DUm9CUm5CUW9BU25DUm1CUW5CU21CUm1DUm9DU21CUm5BUW9CUW5BUm1DUm5BUm5DUW9CU25CUm1BUW5CU25CUm9CUW5DU29CUm5DUm5CU21CUm5CUm9BUW5CUm5BUm5CUm5CUm5BUm1CUW5CU25DUm5CU29CUm1DU25CUm5DUm1CUW5CUm5BUm5CUW5CUm9CUm5CUm5CUm5CUm9CUm5DUm5CUm5CUm5CUm1DU25CUm5CU29CUm5CUm1CUW5CUm5CUm5CUW5CUm5BUm5CUm5BUm1CUm5CUm5CUm9CUm5CUm5CUm5CU25CUm5CUm9CUW5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm5CUm7///8CGVnJAAAAlXRSTlMAAQMEBQYHCgwNDg8QERITFBgZGhscHR8iJCcoLTI0NTY4Ojs8PT4/QERFSElKS0xNUFNVVldYW2FjZGVmZ2hpcHN+gIGEhYaJiouMjY6PkJGSmZqen6CipKWnqKmqrK2vsLW4ubq7vL2+wMHExcfIyc3P0NLT1NXW19jd3uDi5Ojp6uvs7u/w8fLz9Pb3+Pn6+/z9/sAZ0QcAAAABYktHRJaRaSs5AAACXElEQVQYGe3B+zuTYRwG8NvMIeSQM5VEDiktSwclSWoK0ZFyqIZSSkihJVqY2mZp9//b9Tz7rWvv+3zffm2fD1L+S+7qBq/J6cN5EKqfDFFi/+3VdJjljlFu7QhMSlfpRPgs7GUt0ZlIDWz10qkPLtgoDtOxS7DRzYSpzmaTc8N71OZgY5aaDxJ1v6j8LoC1dSobbojcp3YM1qJU/JDpoOaBtSCVZcj0UGuEtUUq8RZI5H2lVgFr/dR2OvJhknFiiVoANmrpXB/sPKNT3w/CTuU2HboMe60xOnIPJk1BysWvp8GocChCoVdHIZJ1pufxuMmT2xdLkCJSN7yyuUdLW58nLmRCrspPs0AbpDwhigy6INKyT6EhSORvUCrugcAw5QKZMMoOU4svPx+39O4HE7wwaqMWOgk7pfPURmF0k1oX7JVHqKzC6AG1IhjMUdmF0UNqRTCYo7ILo1vUumCvPEJlDUZt1EIe2Kl4T20URtlhJgRmrC3EmOCFmY9yH10wy9+gVNwDidoohXoh4wlRZNAFoSo/zQJtcOC4b/47rUU+PWrPRMrfcs4PjMwkMTLQfgDOFQ5FaSl6twAONQVp61sjHGmN0SB2Cg5UbtNoqwJyfgq8gFgtRWog1U9tp6MMSZRdCVHrg9QilXgLLLRSW4BUkMoyLK1Q2YRUlIoflqapRCC1TmXDDQsZm1S+QGqWmg/Jpd2h9hJS3UyY6vQm0TnNhGuQKg5T4OchiPVS4Abk3G9o9DodDpSu0mClBI7kjtHW0xw4VT8ZooWdiTr8C3d1Q3MSDdXpSElJ+AO/EU3FSllqQwAAAABJRU5ErkJggg==) no-repeat center;
+  background-size: contain
+}
+
+.jiraroadmap-iframe-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #c1c7d0;
+  box-sizing: border-box;
+  min-height: 260px;
+  overflow-y: auto
+}
+
+.jiraroadmap-iframe-container:focus {
+  outline: 0
+}
+
+.jiraroadmap-iframe-container iframe {
+  height: 100%;
+  width: 100%;
+  display: block
+}
+
+.jiraroadmap .preview-footer {
+  display: none
+}
+
+.jiraroadmap-preview {
+  position: relative
+}
+
+.jiraroadmap-preview .jiraroadmap-iframe-container {
+  height: auto
+}
+
+.jiraroadmap-preview iframe {
+  height: 600px
+}
+
+.jiraroadmap-preview .preview-footer {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: #f3f5f7;
+  border-top: 1px solid #c1c7d0
+}
+
+.jiraroadmap .error-screen h2 {
+  font-size: 16px;
+  font-weight: 600
+}
+
+.jiraroadmap .error-screen p {
+  font-size: 14px
+}
+
+.jiraroadmap .error-screen .message {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  width: 90%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  text-align: center;
+  color: #172b4d;
+  line-height: 20px
+}
+
+.jiraroadmap .error-screen {
+  position: relative;
+  background: #fff url('//d2cyaw4z41y1zi.cloudfront.net/nickguner.atlassian.net/wiki/s/1000.0.0-da105be110ec/_/download/resources/confluence.macros.advanced:jiraroadmap-editor/./error.svg') no-repeat center 20% / auto 32%;
+  width: 100%;
+  height: 255px;
+  border-radius: 3px;
+  overflow: hidden
+}
+
+.jiraroadmap-loading .spinner-container {
+  width: 100%;
+  position: relative;
+  height: 640px
+}
+
+.jiraroadmap-loading .spinner {
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%)
+}
+
+.jiraroadmap-loading .spinner-container svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-animation: .86s cubic-bezier(0.4, 0.15, 0.6, 0.85) infinite spin;
+  animation: .86s cubic-bezier(0.4, 0.15, 0.6, 0.85) infinite spin;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  transform-origin: center;
+  stroke-dasharray: 140px;
+  stroke-dashoffset: 112.5px;
+  stroke-width: 5px
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg)
+  }
+
+  to {
+    -webkit-transform: rotate(360deg)
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg)
+  }
+
+  to {
+    transform: rotate(360deg)
+  }
+}
+
+.jiraroadmap-dialog {
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  max-width: 800px;
+  max-height: 498px;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%)
+}
+
+.jiraroadmap-dialog .aui-dialog2-header {
+  padding: 24px 32px;
+  border-radius: 6px 6px 0 0;
+  background-color: #fff;
+  border-bottom: 0;
+  height: auto
+}
+
+.jiraroadmap-dialog .aui-dialog2-content {
+  padding: 0 32px;
+  height: 368px;
+  overflow-y: auto
+}
+
+.jiraroadmap-dialog .aui-dialog2-footer {
+  background-color: #fff;
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  height: 78px;
+  padding: 24px 32px
+}
+
+.jiraroadmap-dialog form.aui {
+  display: flex;
+  margin: 0
+}
+
+.jiraroadmap-dialog .field-error {
+  color: #de350b;
+  font-size: 11px;
+  min-height: 10px;
+  margin: 8px 0 12px 0
+}
+
+.jiraroadmap-dialog form.aui .field-group {
+  padding: 0 16px 0 0
+}
+
+.jiraroadmap-dialog form.aui .field-group:last-child {
+  padding: 0
+}
+
+.jiraroadmap-dialog form.aui .field-group input {
+  max-width: none;
+  border-radius: 3px;
+  padding: 8px;
+  font-size: 14px;
+  height: 32px;
+  border-width: 2px;
+  border-style: solid;
+  background-color: rgba(9, 30, 66, 0.04);
+  border-color: transparent
+}
+
+.jiraroadmap-dialog form.aui .field-group input:focus {
+  outline: 0;
+  border-color: #4c9aff
+}
+
+.jiraroadmap-dialog form.aui .field-label {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  color: #6b778c;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px
+}
+
+.jiraroadmap-dialog .error-screen {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  border: 0
+}
+
+.jiraroadmap-dialog .button-update {
+  margin: 24px 12px 0 0
+}
+
+.jiraroadmap-dialog .jiraroadmap-loading,
+.jiraroadmap-dialog .jiraroadmap-loading .spinner-container {
+  height: 100%;
+  width: 100%
+}
+
+.jiraroadmap-dialog .jiraroadmap-iframe-container {
+  overflow: hidden;
+  height: 260px
+}
+
+.jiraroadmap-dialog .jiraroadmap-iframe-container iframe {
+  transform: scale(0.85);
+  -webkit-transform: scale(0.85);
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  width: 865px;
+  height: 305px
+}
+
+.jiraroadmap .aui-button.aui-button-link,
+.jiraroadmap .aui-button.aui-button-link:visited,
+.jiraroadmap .aui-button.aui-button-text,
+.jiraroadmap .aui-button.aui-button-text:visited {
+  background-color: transparent;
+  border-color: transparent;
+  color: #0052cc;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 4px 0
+}
+
+.jiraroadmap .aui-button.aui-button-primary,
+.jiraroadmap .aui-button.aui-button-primary:visited {
+  background-image: none;
+  background-color: #0052cc;
+  border-color: transparent;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600
+}
+
+.jiraroadmap .aui-button.aui-button-primary:hover,
+.jiraroadmap .aui-button.aui-button-primary:focus {
+  background-color: #0065ff
+}
+
+.jiraroadmap .aui-button.aui-button-primary[disabled],
+.jiraroadmap .aui-button.aui-button-primary[disabled]:hover,
+.jiraroadmap .aui-button.aui-button-primary[disabled]:focus,
+.jiraroadmap .aui-button.aui-button-primary[disabled]:visited {
+  background-color: #f4f5f7;
+  border-color: transparent;
+  color: #a5adba;
+  cursor: default;
+  pointer-events: none
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-search input {
+  min-height: 0;
+  font-family: inherit
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-result-selectable .select2-match,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-result-unselectable .select2-match {
+  text-decoration: none;
+  font-weight: bold
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results ul.select2-result-sub {
+  padding: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-dropdown2 .select2-search {
+  padding: 5px
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop {
+  margin-top: 3px;
+  margin-bottom: 0;
+  z-index: 9999
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop.select2-drop-above.select2-drop-active {
+  box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+  background: #fff;
+  border: 0 solid #dfe1e6;
+  border-radius: 3px;
+  color: #344563;
+  margin-bottom: 3px;
+  margin-top: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results ul.select2-result-sub>li .select2-result-label,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-label,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-searching,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-no-results,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-more-results {
+  box-sizing: content-box;
+  display: block;
+  line-height: 1.14285714;
+  padding: 7px 10px
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-result-label {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: inherit
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results {
+  margin: 0;
+  padding: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-more-results,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-searching,
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-no-results {
+  background-color: transparent
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-search input,
+.jiraroadmap-macro-dropdown.aui-select2-drop {
+  border: 1px solid transparent
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-search input {
+  border-radius: 3.01px
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice,
+.jiraroadmap-macro-dropdown.aui-select2-drop {
+  color: inherit;
+  max-width: none
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-dropdown2.aui-style-default {
+  margin-left: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-selectable {
+  background-color: transparent;
+  color: #344563;
+  text-decoration: none;
+  cursor: pointer
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-highlighted {
+  background-color: #ebecf0;
+  color: #344563
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-unselectable {
+  background-color: transparent;
+  color: #7a869a;
+  cursor: not-allowed;
+  text-decoration: none
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children {
+  border-top: 1px solid #dfe1e6;
+  border-bottom: 1px solid #dfe1e6;
+  margin: 3px 0;
+  padding: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children:first-child {
+  border-top: 0;
+  margin-top: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children:last-child {
+  border-bottom: 0;
+  margin-bottom: 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children>:first-child {
+  margin-top: 3px
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children>:last-child {
+  margin-bottom: 3px
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children>.select2-result-label {
+  color: #6b778c;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.45454545;
+  letter-spacing: 0;
+  text-transform: uppercase
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children+.select2-result>.select2-result-label {
+  margin-top: 3px
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop .select2-results .select2-result-with-children+.select2-result-with-children {
+  border-top: 0
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice>span {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice .select2-arrow {
+  background: 0;
+  border: 0;
+  -webkit-filter: none;
+  filter: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container-active .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container-active .select2-choices {
+  border: 0;
+  outline: 0;
+  box-shadow: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice .select2-arrow b {
+  display: none;
+  background: 0
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice {
+  padding-right: 23px;
+  position: relative;
+  width: inherit
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container a.select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container a.select2-choice:focus,
+.jiraroadmap-dialog .aui-select2-container.select2-container a.select2-choice:hover,
+.jiraroadmap-dialog .aui-select2-container.select2-container a.select2-choice:active {
+  text-decoration: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:after {
+  border: 4px solid transparent;
+  content: "";
+  height: 0;
+  left: 100%;
+  margin-left: -18px;
+  margin-top: -2px;
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  width: 0
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:after {
+  border-top-color: #344563
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:hover:after,
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice.active:after {
+  opacity: 1
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:after {
+  margin-top: 0;
+  top: 12px
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-input {
+  color: inherit !important
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container-disabled .select2-default {
+  color: #7a869a !important
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-dropdown-open .select2-default {
+  color: #fff !important
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-default {
+  color: #333 !important
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-choices .select2-search-field input {
+  font-family: inherit;
+  font-size: 14px;
+  height: 1.4285714285714em;
+  line-height: 1.4285714285714;
+  margin: 0;
+  padding: 0
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container-multi .select2-choices {
+  min-height: 0;
+  background: #fff
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container-multi.text {
+  height: auto
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-choices .select2-search-choice {
+  background: transparent;
+  border: 1px solid #dfe1e6;
+  border-radius: 3.01px;
+  color: #344563;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 1px 18px 1px 5px;
+  position: relative;
+  margin: 1px 5px 1px 0;
+  text-align: left;
+  text-decoration: none
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-choices .select2-search-choice-focus {
+  border-color: transparent
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-choice abbr {
+  padding-top: 10px;
+  position: absolute;
+  top: 10px
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-allowclear .select2-choice abbr {
+  display: block
+}
+
+.jiraroadmap-dialog .aui-select2-container .select2-search-choice-close {
+  cursor: pointer;
+  display: block;
+  left: auto;
+  position: absolute;
+  right: 5px;
+  top: 2px
+}
+
+@media all and (-webkit-min-device-pixel-ratio:1.5),
+all and (min-resolution:1.5dppx) {
+
+  .jiraroadmap-dialog .aui-select2-container.select2-container .select2-search-choice-close,
+  .jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice abbr {
+    top: 3px
+  }
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container a.select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:visited {
+  box-sizing: border-box;
+  transition: background-color .1s ease-out;
+  background: rgba(9, 30, 66, 0.04);
+  border: 1px solid transparent;
+  border-radius: 3.01px;
+  color: #344563;
+  cursor: pointer;
+  display: inline-block;
+  -webkit-filter: none;
+  filter: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-variant: normal;
+  font-weight: normal;
+  height: 32px;
+  line-height: 1.4285714285714;
+  margin: 0;
+  padding: 6px 8px;
+  text-decoration: none;
+  text-shadow: none;
+  vertical-align: top;
+  white-space: nowrap
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:hover {
+  background: #ebecf0;
+  border-color: #ebecf0;
+  box-shadow: none;
+  color: #344563;
+  text-decoration: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:hover::after {
+  border-top-color: #344563
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-container-active .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:active {
+  background: #deebff;
+  border-color: transparent;
+  color: #0052cc;
+  box-shadow: none;
+  -webkit-filter: none;
+  filter: none;
+  text-shadow: none;
+  text-decoration: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-container-active .select2-choice::after,
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice:active::after {
+  border-top-color: #0052cc
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open:not(.select2-container-multi) .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open:not(.select2-container-multi) .select2-choices {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-width: 0;
+  padding-bottom: 5px;
+  background: #344563;
+  color: #fff
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open:not(.select2-container-multi) .select2-choice::after,
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open:not(.select2-container-multi) .select2-choices::after {
+  border-top-color: #fff
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open.select2-drop-above .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-dropdown-open.select2-drop-above .select2-choices {
+  border-radius: 3.01px;
+  border-bottom-width: 1px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-width: 0;
+  padding-bottom: 4px;
+  padding-top: 5px
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container.select2-drop-above .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-dropdown-open.select2-drop-above .select2-choice,
+.jiraroadmap-dialog .aui-select2-container.select2-dropdown-open.select2-drop-above .select2-choices,
+.jiraroadmap-dialog .aui-select2-container.select2-container-multi .select2-choices .select2-search-choice {
+  -webkit-filter: none;
+  filter: none
+}
+
+.jiraroadmap-dialog .aui-select2-container.select2-container .select2-choice abbr {
+  display: none
+}
+
+.jiraroadmap-dialog .aui-select2-container .aui-avatar {
+  margin-right: 5px
+}
+
+.jiraroadmap-dialog .aui-select2-container.aui-has-avatar .select2-search-choice-close {
+  top: 5px
+}
+
+.jiraroadmap-dialog .aui-select2-container.aui-has-avatar .select2-choices .select2-search-field input {
+  padding: 1px 0
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-has-avatar .select2-results .select2-result-label .aui-avatar {
+  margin-right: 5px;
+  vertical-align: middle
+}
+
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-has-avatar .select2-more-results,
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-has-avatar .select2-searching,
+.jiraroadmap-macro-dropdown.aui-select2-drop.aui-has-avatar .select2-no-results {
+  padding-bottom: 5px;
+  padding-top: 5px
+}

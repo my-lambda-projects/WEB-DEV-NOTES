@@ -1,0 +1,6 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-invite-to-edit:share-dialog-service', location = 'js/service/share-page.js' */
+define("confluence/invite-to-edit/service/share-page",["wrm","jquery"],function(a,d){var b="click.share-page";var c={initDialog:function(f,h,g,i){var e=d(f);if(e.length){e.click(function(j){j.preventDefault()});e.off(b).on(b,function(j){if(j.screenX===0&&j.screenY===0){c.openDialog(false,"keyPress")}else{c.openDialog(false,"mouseClick")}j.preventDefault();j.stopPropagation();return false});c.openDialog=function(k,j){e.off(b);i.eventTrigger=j;i.beforeLoad&&typeof i.beforeLoad==="function"&&i.beforeLoad();a.require(["wrc!invite-to-edit-async-loader"]).done(function(){i.afterLoad&&typeof i.afterLoad==="function"&&i.afterLoad();require("confluence/invite-to-edit/dialog-async-loader")(f,h,d.extend(false,{hideCallback:function(){i.onHide&&typeof i.onHide==="function"&&i.onHide()},width:250,hideDelay:3600000},g),i);e.click()})}}},openDialog:function(){}};return c});
+}catch(e){WRMCB(e)};

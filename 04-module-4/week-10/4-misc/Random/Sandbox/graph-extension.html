@@ -1,0 +1,11 @@
+<pre class="graphviz"><code>digraph finite_state_machine {
+    rankdir=LR;
+    size=&quot;8,5&quot;
+
+    node [shape = circle];
+
+
+    q1 -&gt; q2 [ label = &quot;1&gt;&gt;2&quot; ];
+    q2 -&gt; q1 [ label = &quot;2&gt;&gt;1&quot; ];
+    q2 -&gt; q2 [ label = &quot;self&quot; ];
+}</code></pre>

@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "eod",
+    "password": "eod",
+    "database": "eod_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "test": {
+    "username": "eod",
+    "password": "eod",
+    "database": "eod_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "production": {
+    "username": "eod",
+    "password": "eod",
+    "database": "eod_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  }
+}

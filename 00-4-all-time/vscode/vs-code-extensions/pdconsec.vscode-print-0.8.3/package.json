@@ -1,0 +1,212 @@
+{
+	"name": "vscode-print",
+	"displayName": "VS Code Printing Free",
+	"description": "Syntax-coloured line-numbered printing in VS Code.",
+	"version": "0.8.3",
+	"icon": "PDCONSEC-zipper-PRINTER2.png",
+	"author": {
+		"name": "Peter Wone",
+		"email": "peter.wone@outlook.com"
+	},
+	"publisher": "pdconsec",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/PeterWone/vsc-print"
+	},
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"category": "%commands.category%",
+				"command": "extension.print",
+				"title": "%commands.title.print%",
+				"icon": {
+					"dark": "./printer-icon-dog-ear-inverse.svg",
+					"light": "./printer-icon-dog-ear.svg"
+				}
+			},
+			{
+				"category": "%commands.category%",
+				"command": "extension.browse",
+				"title": "%commands.title.browse%"
+			}
+		],
+		"configuration": [
+			{
+				"title": "%configuration.title.print%",
+				"properties": {
+					"print.lineSpacing": {
+						"type": "number",
+						"enum": [
+							1,
+							1.5,
+							2
+						],
+						"enumDescriptions": [
+							"%print.lineSpacing.single%",
+							"%print.lineSpacing.line-and-a-half%",
+							"%print.lineSpacing.double%"
+						],
+						"description": "%print.lineSpacing.description%",
+						"default": 1
+					},
+					"print.fontSize": {
+						"title": "%print.fontSize.title%",
+						"type": "string",
+						"enum": [
+							"6pt",
+							"7pt",
+							"8pt",
+							"9pt",
+							"10pt",
+							"11pt",
+							"11.5pt",
+							"12pt",
+							"13pt"
+						],
+						"description": "%print.fontSize.description%",
+						"default": "10pt"
+					},
+					"print.renderMarkdown": {
+						"type": "boolean",
+						"default": true,
+						"description": "%print.renderMarkdown.description%"
+					},
+					"print.lineNumbers": {
+						"type": "string",
+						"description": "%print.lineNumbers.description%",
+						"enum": [
+							"on",
+							"off",
+							"inherit"
+						],
+						"default": "inherit"
+					},
+					"print.alternateBrowser": {
+						"type": "boolean",
+						"description": "%print.alternateBrowser.description%",
+						"default": true
+					},
+					"print.browserPath": {
+						"type": "string",
+						"description": "%print.browserPath.description%"
+					},
+					"print.colourScheme": {
+						"title": "%print.colourScheme.title%",
+						"type": "string",
+						"default": "vs2015",
+						"markdownDescription": "%print.colourScheme.markdownDescription%"
+					},
+					"print.printAndClose": {
+						"type": "boolean",
+						"default": true,
+						"description": "%print.printAndClose.description%"
+					},
+					"print.editorContextMenuItemPosition": {
+						"default": "Top",
+						"type": "string",
+						"markdownDescription": "%print.editorContextMenuItemPosition.markdownDescription%",
+						"enum": [
+							"Top",
+							"Bottom",
+							"None"
+						]
+					},
+					"print.editorTitleMenuButton": {
+						"default": true,
+						"type": "boolean",
+						"description": "%print.editorTitleMenuButton.description%"
+					}
+				}
+			}
+		],
+		"markdown.markdownItPlugins": true,
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "editorLangId",
+					"command": "extension.print",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"when": "editorLangId && etmButton",
+					"command": "extension.print",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"when": "editorLangId",
+					"command": "extension.print",
+					"group": "navigation"
+				}
+			],
+			"editor/context": [
+				{
+					"when": "editorLangId && ecmPrint == Top",
+					"command": "extension.print",
+					"group": "navigation"
+				},
+				{
+					"when": "editorLangId && ecmPrint == Bottom",
+					"command": "extension.print",
+					"group": "Z_commands"
+				}
+			]
+		},
+		"remote.extensionKind": {
+			"pdconsec.vscode-print": [
+				"ui"
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"compile": "npm run webpack",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^12.7.12",
+		"@types/vscode": "^1.51.0",
+		"del": "^5.1.0",
+		"event-stream": "^4.0.1",
+		"gulp": "^4.0.2",
+		"gulp-filter": "^6.0.0",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-typescript": "^5.0.1",
+		"run-sequence": "^2.2.1",
+		"ts-loader": "^8.0.11",
+		"tslint": "^5.20.0",
+		"typescript": "^3.6.4",
+		"vsce": "^1.67.1",
+		"vscode-nls": "^4.1.1",
+		"vscode-nls-dev": "^3.3.1",
+		"vscode-test": "^1.4.1",
+		"webpack": "^5.4.0",
+		"webpack-cli": "^4.2.0"
+	},
+	"dependencies": {
+		"@types/highlight.js": "^10.1.0",
+		"@types/markdown-it": "0.0.9",
+		"highlight.js": "^10.4.0"
+	},
+	"__metadata": {
+		"id": "05046d70-8146-42f5-ac9e-b97b37c8c0ef",
+		"publisherId": "a803a703-65fb-4fa9-955a-c9259bf2560d",
+		"publisherDisplayName": "PD Consulting"
+	}
+}

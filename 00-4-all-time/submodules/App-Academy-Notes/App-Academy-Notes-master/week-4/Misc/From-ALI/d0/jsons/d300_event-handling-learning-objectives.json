@@ -1,0 +1,17 @@
+{
+  "template": {
+    "taskId": "53d89086-145c-48ba-aafc-8531a7e67c1c",
+    "name": "Event Handling Learning Objectives",
+    "repo": "Modular-Curriculum",
+    "path": "content/dom/objectives/reading-event-handling-objectives.md",
+    "type": "Reading",
+    "timeEstimate": 300,
+    "urls": [
+      "event-handling-learning-objectives"
+    ],
+    "topic": "Homework for Wednesday",
+    "subtopic": "Learning Objectives",
+    "body": "# Event Handling Lesson Learning Objectives\n\nBelow is a complete list of the terminal learning objectives for this lesson.\nWhen you complete this lesson, you should be able to perform each of the\nfollowing objectives. These objectives capture how you may be evaluated on the\nassessment for this lesson.\n\n1. Given an HTML page that includes `<button id=\"increment-count\">I have been\n   clicked <span id=\"clicked-count\">0</span> times</button>`, write JavaScript\n   that increases the value of the content of span#clicked-count by 1 every time\n   `button#increment-count` is clicked.\n2. Given an HTML page that includes\n   `<input type=\"checkbox\" id=\"on-off\"><div id=\"now-you-see-me\">Now you see\n   me</div>`, write JavaScript that sets the display of div#now-you-see-me to\n   \"none\" when input#on-off is checked and to \"block\" when input#on-off is not\n   checked.\n3. Given an HTML file that includes\n   `<input id=\"stopper\" type=\"text\" placeholder=\"Quick! Type STOP\">`, write\n   JavaScript that will change the background color of the page to cyan five\n   seconds after a page loads unless the field input#stopper contains only the\n   text \"STOP\".\n4. Given an HTML page with that includes `<input type=”text” id=”fancypants”>`,\n   write JavaScript that changes the background color of the textbox to #E8F5E9\n   when the caret is in the textbox and turns it back to its normal color when\n   focus is elsewhere.\n5. Given an HTML page that includes a form with two password fields, write\n   JavaScript that subscribes to the forms submission event and cancels it if\n   the values in the two password fields differ.\n6. Given an HTML page that includes a div styled as a square with a red\n   background, write JavaScript that allows a user to drag the square around the\n   screen.\n7. Given an HTML page that has 300 DIVs, create one click event subscription\n   that will print the id of the element clicked on to the console.\n8. Identify the definition of the bubbling principle.\n"
+  },
+  "success": true
+}

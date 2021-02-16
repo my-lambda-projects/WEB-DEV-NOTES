@@ -1,0 +1,106 @@
+{
+	"name": "vscode-simple-icons",
+	"displayName": "Simple icons",
+	"description": "An icon theme that tries to be simple",
+	"version": "1.13.5",
+	"publisher": "LaurentTreguier",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/LaurentTreguier/vscode-simple-icons/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/LaurentTreguier/vscode-simple-icons.git"
+	},
+	"engines": {
+		"vscode": "^1.47.0"
+	},
+	"categories": [
+		"Themes",
+		"Other"
+	],
+	"keywords": [
+		"icon",
+		"theme",
+		"icon-theme",
+		"simple",
+		"icons"
+	],
+	"icon": "images/logo.png",
+	"extensionKind": [
+		"ui"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"iconThemes": [
+			{
+				"id": "simple-icons",
+				"label": "Simple icons",
+				"path": "./simple-icons.json"
+			},
+			{
+				"id": "minimalistic-icons",
+				"label": "Minimalistic icons",
+				"path": "./minimalistic-icons.json"
+			}
+		],
+		"configuration": [
+			{
+				"title": "Simple icons",
+				"properties": {
+					"simpleIcons.hideArrows": {
+						"type": "boolean",
+						"default": true,
+						"description": "Whether arrows are shown next to folders",
+						"scope": "application"
+					},
+					"simpleIcons.simple.folder.color": {
+						"type": [
+							"string",
+							"null"
+						],
+						"default": null,
+						"description": "Standard folders color (null = default color)",
+						"scope": "application"
+					},
+					"simpleIcons.simple.file.color": {
+						"type": [
+							"string",
+							"null"
+						],
+						"default": null,
+						"description": "Standard files color (null = default color)",
+						"scope": "application"
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "bash generator.sh",
+		"compile": "webpack --mode production",
+		"watch": "webpack --mode none --watch"
+	},
+	"devDependencies": {
+		"@types/node": "^12.12.53",
+		"@types/vscode": "^1.47.0",
+		"@types/webpack": "^4.41.21",
+		"ovsx": "0.1.0-next.dacd2fd",
+		"svgo": "^1.3.2",
+		"ts-loader": "^8.0.1",
+		"ts-node": "^8.10.2",
+		"typescript": "^3.9.7",
+		"vsce": "^1.77.0",
+		"webpack": "^4.44.0",
+		"webpack-cli": "^3.3.12"
+	},
+	"dependencies": {},
+	"__metadata": {
+		"id": "23d65a8c-fcd4-4897-86da-7fe55088e2c6",
+		"publisherId": "08f24380-f487-49dd-ba4a-ea7bc7bda282",
+		"publisherDisplayName": "Laurent Tréguier"
+	}
+}

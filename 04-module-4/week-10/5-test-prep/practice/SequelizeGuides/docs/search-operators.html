@@ -1,0 +1,58 @@
+<p><a href="http://docs.sequelizejs.com/manual/tutorial/querying.html#operators">Official Docs</a></p>
+<p>We often want to specify comparisons like “greater than”, “less than” in our <code>where</code> clauses.</p>
+<p>In sequelize, we need to use special properties called “operators” to do this. Here are some of the most common. (Note: there are of course many more operators - there’s no need to memorize all of them, but be sure to read through them so that you have an idea of what you can do!)</p>
+<p><em>Note</em>: Up until very recently, we used regular object properties to refer to operators. In upcoming versions of Sequelize, these will be replaced by Symbols that must be obtained from Sequelize, like so:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// Sequelize stores these operators on the `Sequelize.Op` module:</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> Op <span class="op">=</span> <span class="va">Sequelize</span>.<span class="at">Op</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      [<span class="va">Op</span>.<span class="at">lte</span>]<span class="op">:</span> <span class="dv">7</span> <span class="co">// square brackets are needed for property names that aren&#39;t plain strings</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="op">}</span>)</a></code></pre></div>
+<p>The examples below demonstrate using operators as regular object properties, with the Symbol equivalent in an adjacent comment.</p>
+<p>Here is a list of some of the more commonly used operators, and their usage:</p>
+<ul>
+<li>$gt: Greater than // soon to be replaced by [Op.gt]</li>
+<li>$gte: Greater than or equal // soon to be replaced by [Op.gte]</li>
+<li>$lt: Less than // soon to be replaced by [Op.lt]</li>
+<li>$lte: Less than or equal // soon to be replaced by [Op.lte]</li>
+<li>$ne: Not equal // soon to be replaced by [Op.ne]</li>
+<li>$eq: Equal // soon to be replaced by [Op.eq]</li>
+<li>$or: Use or logic for multiple properties // soon to be replaced by [Op.or]</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// gt, gte, lt, lte</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co">// SELECT * FROM pugs WHERE age &lt;= 7</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">$lte</span><span class="op">:</span> <span class="dv">7</span> <span class="co">// soon to be replaced by [Op.lte]</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="op">}</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// $ne</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">// SELECT * FROM pugs WHERE age != 7</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">      <span class="dt">$ne</span><span class="op">:</span> <span class="dv">7</span> <span class="co">// soon to be replaced by [Op.ne]</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="op">}</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// $or</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">// SELECT * FROM pugs WHERE age = 7 OR age = 6</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="va">Pug</span>.<span class="at">findAll</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="dt">where</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="dt">age</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="dt">$or</span><span class="op">:</span> [ <span class="co">// soon to be replaced by [Op.or]</span></a>
+<a class="sourceLine" id="cb4-8" title="8">        <span class="op">{</span><span class="dt">$eq</span><span class="op">:</span> <span class="dv">7</span><span class="op">},</span> <span class="co">// soon to be replaced by [Op.eq]</span></a>
+<a class="sourceLine" id="cb4-9" title="9">        <span class="op">{</span><span class="dt">$eq</span><span class="op">:</span> <span class="dv">6</span><span class="op">}</span> <span class="co">// soon to be replaced by [Op.eq]</span></a>
+<a class="sourceLine" id="cb4-10" title="10">      ]</a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="op">}</span>)</a></code></pre></div>
