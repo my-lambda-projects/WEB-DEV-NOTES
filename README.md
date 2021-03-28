@@ -1,4 +1,3 @@
-[![DeepSource](https://deepsource.io/gh/bgoonz/WEB-DEV-NOTES.svg/?label=active+issues)](https://deepsource.io/gh/bgoonz/WEB-DEV-NOTES/?ref=repository-badge)
 
 
 
